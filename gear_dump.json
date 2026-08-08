@@ -1,0 +1,1499 @@
+{
+ "rackets": [
+  {
+   "no": 1,
+   "brand": "BABOLAT",
+   "name": "Pure Strike 100",
+   "grp": "own",
+   "scores": [
+    7,
+    7,
+    6,
+    7,
+    7,
+    10,
+    5,
+    8,
+    9,
+    7,
+    9
+   ],
+   "difficulty": 7,
+   "price": 230,
+   "specs": [
+    "335g custom",
+    "100",
+    "16x20",
+    "~67 RA",
+    "~320",
+    "~320",
+    "21/23/21"
+   ]
+  },
+  {
+   "no": 2,
+   "brand": "HEAD",
+   "name": "Extreme MP",
+   "grp": "own",
+   "scores": [
+    6,
+    6,
+    10,
+    10,
+    6,
+    9,
+    6,
+    9,
+    8,
+    6,
+    8
+   ],
+   "difficulty": 5,
+   "price": 200,
+   "specs": [
+    "329g custom · 2g lead 10&2",
+    "100",
+    "16x19",
+    "~66 RA",
+    "~322",
+    "~325",
+    "23/26/21"
+   ]
+  },
+  {
+   "no": 3,
+   "brand": "HEAD",
+   "name": "Squared 2026",
+   "grp": "own",
+   "scores": [
+    6,
+    6,
+    7,
+    7,
+    8,
+    8,
+    10,
+    8,
+    9,
+    8,
+    6
+   ],
+   "difficulty": 5,
+   "price": 260,
+   "specs": [
+    "327g custom",
+    "100",
+    "16x18",
+    "—",
+    "~315",
+    "~312",
+    "23"
+   ]
+  },
+  {
+   "no": 4,
+   "brand": "HEAD",
+   "name": "Radical Team",
+   "grp": "tested",
+   "scores": [
+    6,
+    5,
+    6,
+    7,
+    7,
+    4,
+    9,
+    6,
+    5,
+    7,
+    4
+   ],
+   "difficulty": 2,
+   "price": 130,
+   "specs": [
+    "280g",
+    "102",
+    "16x19",
+    "—",
+    "~290",
+    "~335",
+    "23"
+   ]
+  },
+  {
+   "no": 5,
+   "brand": "WILSON",
+   "name": "Pro Staff RF97 Autograph",
+   "grp": "next",
+   "scores": [
+    8,
+    8,
+    6,
+    7,
+    8,
+    10,
+    3,
+    9,
+    9,
+    8,
+    8
+   ],
+   "difficulty": 10,
+   "price": 260,
+   "specs": [
+    "340g",
+    "97",
+    "16x19",
+    "68 RA",
+    "335",
+    "315",
+    "21.5"
+   ]
+  },
+  {
+   "no": 6,
+   "brand": "TECNIFIBRE",
+   "name": "TF40 305",
+   "grp": "next",
+   "scores": [
+    9,
+    9,
+    5,
+    5,
+    9,
+    7,
+    6,
+    6,
+    6,
+    9,
+    7
+   ],
+   "difficulty": 7,
+   "price": 230,
+   "specs": [
+    "305g",
+    "98",
+    "18x20",
+    "70 RA",
+    "~322",
+    "~320",
+    "21.5"
+   ]
+  },
+  {
+   "no": 7,
+   "brand": "YONEX",
+   "name": "Percept 97D",
+   "grp": "next",
+   "scores": [
+    9,
+    9,
+    5,
+    5,
+    8,
+    9,
+    5,
+    6,
+    6,
+    9,
+    8
+   ],
+   "difficulty": 8,
+   "price": 250,
+   "specs": [
+    "320g",
+    "97",
+    "18x20",
+    "62 RA",
+    "~327",
+    "~310",
+    "21"
+   ]
+  },
+  {
+   "no": 8,
+   "brand": "WILSON",
+   "name": "Defyer 98 Pro",
+   "grp": "next",
+   "scores": [
+    8,
+    8,
+    7,
+    6,
+    8,
+    7,
+    7,
+    7,
+    7,
+    8,
+    7
+   ],
+   "difficulty": 5,
+   "price": 260,
+   "specs": [
+    "305g",
+    "98",
+    "16x20",
+    "—",
+    "—",
+    "—",
+    "—"
+   ]
+  },
+  {
+   "no": 9,
+   "brand": "WILSON",
+   "name": "Defyer 100",
+   "grp": "next",
+   "scores": [
+    6,
+    6,
+    8,
+    8,
+    7,
+    7,
+    7,
+    8,
+    7,
+    6,
+    6
+   ],
+   "difficulty": 3,
+   "price": 250,
+   "specs": [
+    "300g",
+    "100",
+    "16x19",
+    "—",
+    "—",
+    "—",
+    "—"
+   ]
+  },
+  {
+   "no": 10,
+   "brand": "BABOLAT",
+   "name": "Pure Aero 2016",
+   "grp": "fr",
+   "scores": [
+    5,
+    5,
+    9,
+    8,
+    5,
+    6,
+    7,
+    8,
+    7,
+    5,
+    5
+   ],
+   "difficulty": 3,
+   "price": 110,
+   "specs": [
+    "300g",
+    "100",
+    "16x19",
+    "67 RA",
+    "~324",
+    "~320",
+    "23/26/23"
+   ]
+  },
+  {
+   "no": 11,
+   "brand": "BABOLAT",
+   "name": "Pure Drive 2015",
+   "grp": "fr",
+   "scores": [
+    5,
+    4,
+    7,
+    9,
+    4,
+    6,
+    7,
+    9,
+    8,
+    4,
+    5
+   ],
+   "difficulty": 3,
+   "price": 100,
+   "specs": [
+    "300g",
+    "100",
+    "16x19",
+    "72 RA",
+    "~324",
+    "~320",
+    "23/26/23"
+   ]
+  },
+  {
+   "no": 12,
+   "brand": "WILSON",
+   "name": "Blade 98 v8",
+   "grp": "fr",
+   "scores": [
+    8,
+    8,
+    6,
+    5,
+    9,
+    6,
+    7,
+    6,
+    6,
+    9,
+    7
+   ],
+   "difficulty": 6,
+   "price": 180,
+   "specs": [
+    "305g",
+    "98",
+    "16x19",
+    "~62 RA",
+    "~321",
+    "~320",
+    "21"
+   ]
+  },
+  {
+   "no": 13,
+   "brand": "BABOLAT",
+   "name": "Pure Strike 100 g3",
+   "grp": "fr",
+   "scores": [
+    7,
+    7,
+    6,
+    6,
+    7,
+    5,
+    8,
+    6,
+    6,
+    7,
+    5
+   ],
+   "difficulty": 4,
+   "price": 180,
+   "specs": [
+    "300g",
+    "100",
+    "16x19",
+    "~66 RA",
+    "~316",
+    "~325",
+    "21/23/21"
+   ]
+  },
+  {
+   "no": 14,
+   "brand": "WILSON",
+   "name": "Pro Staff Precision 103",
+   "grp": "fr",
+   "scores": [
+    5,
+    5,
+    5,
+    7,
+    4,
+    6,
+    6,
+    6,
+    6,
+    4,
+    6
+   ],
+   "difficulty": 2,
+   "price": 120,
+   "specs": [
+    "300g custom",
+    "103",
+    "16x20",
+    "—",
+    "~305",
+    "~340",
+    "~24"
+   ]
+  },
+  {
+   "no": 15,
+   "brand": "WILSON",
+   "name": "Pro Staff X v14",
+   "grp": "fr",
+   "scores": [
+    7,
+    7,
+    6,
+    7,
+    7,
+    8,
+    5,
+    7,
+    7,
+    7,
+    7
+   ],
+   "difficulty": 5,
+   "price": 240,
+   "specs": [
+    "315g",
+    "100",
+    "16x19",
+    "~66 RA",
+    "~322",
+    "~320",
+    "21.5"
+   ]
+  },
+  {
+   "no": 16,
+   "brand": "WILSON",
+   "name": "Pro Staff 97 v14",
+   "grp": "fr",
+   "scores": [
+    8,
+    8,
+    6,
+    6,
+    8,
+    8,
+    5,
+    7,
+    7,
+    8,
+    8
+   ],
+   "difficulty": 7,
+   "price": 250,
+   "specs": [
+    "315g",
+    "97",
+    "16x19",
+    "65 RA",
+    "~325",
+    "~310",
+    "21.5"
+   ]
+  },
+  {
+   "no": 17,
+   "brand": "WILSON",
+   "name": "Pro Staff 97 v13",
+   "grp": "fr",
+   "scores": [
+    8,
+    8,
+    6,
+    6,
+    8,
+    8,
+    5,
+    7,
+    7,
+    8,
+    8
+   ],
+   "difficulty": 7,
+   "price": 200,
+   "specs": [
+    "315g",
+    "97",
+    "16x19",
+    "66 RA",
+    "~325",
+    "~310",
+    "21.5"
+   ]
+  },
+  {
+   "no": 18,
+   "brand": "BABOLAT",
+   "name": "Pure Aero 100",
+   "grp": "fr",
+   "scores": [
+    6,
+    6,
+    10,
+    8,
+    7,
+    6,
+    7,
+    10,
+    7,
+    6,
+    6
+   ],
+   "difficulty": 3,
+   "price": 230,
+   "specs": [
+    "300g stock",
+    "100",
+    "16x19",
+    "~65 RA",
+    "~324",
+    "~320",
+    "23/26/23"
+   ]
+  },
+  {
+   "no": 19,
+   "brand": "BABOLAT",
+   "name": "Pure Drive 98 (2021)",
+   "grp": "fr",
+   "scores": [
+    7,
+    7,
+    6,
+    9,
+    4,
+    7,
+    7,
+    9,
+    8,
+    4,
+    6
+   ],
+   "difficulty": 5,
+   "price": 150,
+   "specs": [
+    "305g",
+    "98",
+    "16x19",
+    "~71 RA",
+    "~318",
+    "~320",
+    "23"
+   ]
+  },
+  {
+   "no": 20,
+   "brand": "YONEX",
+   "name": "VCORE Pro 97H",
+   "grp": "fr",
+   "scores": [
+    8,
+    8,
+    8,
+    7,
+    10,
+    10,
+    3,
+    9,
+    8,
+    9,
+    7
+   ],
+   "difficulty": 9,
+   "price": 200,
+   "specs": [
+    "330g",
+    "97",
+    "16x19",
+    "61 RA",
+    "~330",
+    "~310",
+    "21"
+   ]
+  },
+  {
+   "no": 21,
+   "brand": "WILSON",
+   "name": "Blade 98 18x20",
+   "grp": "bench",
+   "scores": [
+    9,
+    9,
+    5,
+    5,
+    9,
+    7,
+    6,
+    6,
+    6,
+    9,
+    7
+   ],
+   "difficulty": 7,
+   "price": 230,
+   "specs": [
+    "305g",
+    "98",
+    "18x20",
+    "60 RA",
+    "~322",
+    "~320",
+    "21"
+   ]
+  },
+  {
+   "no": 22,
+   "brand": "BABOLAT",
+   "name": "Pure Strike 98",
+   "grp": "bench",
+   "scores": [
+    8,
+    9,
+    6,
+    6,
+    7,
+    7,
+    7,
+    7,
+    7,
+    8,
+    7
+   ],
+   "difficulty": 6,
+   "price": 230,
+   "specs": [
+    "305g",
+    "98",
+    "18x20",
+    "66 RA",
+    "~320",
+    "~315",
+    "21"
+   ]
+  },
+  {
+   "no": 23,
+   "brand": "WILSON",
+   "name": "RF 01 Pro",
+   "grp": "bench",
+   "scores": [
+    7,
+    7,
+    7,
+    7,
+    7,
+    8,
+    5,
+    8,
+    8,
+    7,
+    8
+   ],
+   "difficulty": 8,
+   "price": 270,
+   "specs": [
+    "320g",
+    "97",
+    "16x19",
+    "~65 RA",
+    "~330",
+    "~310",
+    "22.5"
+   ]
+  },
+  {
+   "no": 24,
+   "brand": "HEAD",
+   "name": "Radical Pro",
+   "grp": "bench",
+   "scores": [
+    7,
+    7,
+    7,
+    6,
+    8,
+    8,
+    6,
+    7,
+    7,
+    8,
+    7
+   ],
+   "difficulty": 6,
+   "price": 230,
+   "specs": [
+    "310g",
+    "98",
+    "16x19",
+    "~63 RA",
+    "~322",
+    "~315",
+    "20/23/21"
+   ]
+  },
+  {
+   "no": 25,
+   "brand": "BABOLAT",
+   "name": "Pure Aero 98",
+   "grp": "bench",
+   "scores": [
+    7,
+    7,
+    9,
+    8,
+    6,
+    7,
+    7,
+    8,
+    8,
+    6,
+    7
+   ],
+   "difficulty": 4,
+   "price": 230,
+   "specs": [
+    "305g",
+    "98",
+    "16x20",
+    "~66 RA",
+    "~320",
+    "~315",
+    "23"
+   ]
+  },
+  {
+   "no": 26,
+   "brand": "TECNIFIBRE",
+   "name": "TFight 305S",
+   "grp": "rx_researched",
+   "scores": [
+    8,
+    8,
+    7,
+    6,
+    8,
+    7,
+    7,
+    7,
+    7,
+    9,
+    7
+   ],
+   "difficulty": 6,
+   "price": 220,
+   "specs": [
+    "305g",
+    "98",
+    "18x19",
+    "63 RA",
+    "325",
+    "320",
+    "22.5"
+   ]
+  }
+ ],
+ "beds": [
+  {
+   "i": 0,
+   "mains": "BABOLAT RPM Blast 1.25",
+   "crosses": "BABOLAT Touch VS 1.30 gut",
+   "scores": [
+    9,
+    9,
+    7,
+    7,
+    10,
+    7,
+    6,
+    10
+   ],
+   "tech": {
+    "stiff": 167.5,
+    "mat": "co-poly",
+    "xmat": "natural gut",
+    "priceV": 35,
+    "own": false,
+    "hybrid": true
+   }
+  },
+  {
+   "i": 1,
+   "mains": "WILSON Revolve Spin",
+   "crosses": "full bed",
+   "scores": [
+    9,
+    7,
+    7,
+    7,
+    7,
+    6,
+    6,
+    7
+   ],
+   "tech": {
+    "stiff": 210,
+    "mat": "co-poly",
+    "xmat": "",
+    "priceV": 13,
+    "own": false,
+    "hybrid": false
+   }
+  },
+  {
+   "i": 2,
+   "mains": "VÖLKL V-Square 1.20",
+   "crosses": "full bed",
+   "scores": [
+    9,
+    6,
+    8,
+    7,
+    7,
+    6,
+    4,
+    6
+   ],
+   "tech": {
+    "stiff": 215,
+    "mat": "co-poly",
+    "xmat": "",
+    "priceV": 13,
+    "own": false,
+    "hybrid": false
+   }
+  },
+  {
+   "i": 3,
+   "mains": "TOROLINE Wasabi",
+   "crosses": "TOROLINE Caviar (K-Pop)",
+   "scores": [
+    9,
+    6,
+    8,
+    8,
+    7,
+    6,
+    6,
+    7
+   ],
+   "tech": {
+    "stiff": 195,
+    "mat": "co-poly (soft)",
+    "xmat": "co-poly",
+    "priceV": 14,
+    "own": false,
+    "hybrid": true
+   }
+  },
+  {
+   "i": 4,
+   "mains": "TOROLINE Wasabi",
+   "crosses": "TOROLINE Wasabi X (Pro)",
+   "scores": [
+    10,
+    7,
+    7,
+    6,
+    7,
+    6,
+    6,
+    7
+   ],
+   "tech": {
+    "stiff": 190,
+    "mat": "co-poly (soft)",
+    "xmat": "co-poly (soft)",
+    "priceV": 14,
+    "own": false,
+    "hybrid": true
+   }
+  },
+  {
+   "i": 5,
+   "mains": "TOROLINE O-Toro",
+   "crosses": "TOROLINE Wasabi X (Spin King)",
+   "scores": [
+    10,
+    7,
+    7,
+    6,
+    8,
+    6,
+    6,
+    7
+   ],
+   "tech": {
+    "stiff": 187.5,
+    "mat": "co-poly (soft)",
+    "xmat": "co-poly (soft)",
+    "priceV": 14,
+    "own": false,
+    "hybrid": true
+   }
+  },
+  {
+   "i": 6,
+   "mains": "TOROLINE O-Toro",
+   "crosses": "full bed",
+   "scores": [
+    9,
+    7,
+    7,
+    7,
+    8,
+    6,
+    7,
+    7
+   ],
+   "tech": {
+    "stiff": 185,
+    "mat": "co-poly (soft)",
+    "xmat": "",
+    "priceV": 14,
+    "own": false,
+    "hybrid": false
+   }
+  },
+  {
+   "i": 7,
+   "mains": "TOROLINE O-Toro",
+   "crosses": "TOROLINE Enso Pro",
+   "scores": [
+    8,
+    7,
+    7,
+    7,
+    9,
+    6,
+    7,
+    9
+   ],
+   "tech": {
+    "stiff": 180,
+    "mat": "co-poly (soft)",
+    "xmat": "co-poly (soft)",
+    "priceV": 14,
+    "own": false,
+    "hybrid": true
+   }
+  },
+  {
+   "i": 8,
+   "mains": "SOLINCO Mach 10 · 23 kg",
+   "crosses": "LUXILON ALU Power Rough",
+   "scores": [
+    10,
+    7,
+    8,
+    8,
+    8,
+    10,
+    5,
+    5
+   ],
+   "tech": {
+    "stiff": 222.5,
+    "mat": "co-poly",
+    "xmat": "co-poly",
+    "priceV": 19,
+    "own": false,
+    "hybrid": true
+   }
+  },
+  {
+   "i": 9,
+   "mains": "SOLINCO Mach 10",
+   "crosses": "LUXILON ALU Power",
+   "scores": [
+    9,
+    7,
+    8,
+    8,
+    8,
+    10,
+    6,
+    5
+   ],
+   "tech": {
+    "stiff": 222.5,
+    "mat": "co-poly",
+    "xmat": "co-poly",
+    "priceV": 19,
+    "own": false,
+    "hybrid": true
+   }
+  },
+  {
+   "i": 10,
+   "mains": "SOLINCO Hyper-G",
+   "crosses": "LUXILON ALU Power",
+   "scores": [
+    8,
+    6,
+    8,
+    8,
+    7,
+    9,
+    6,
+    4
+   ],
+   "tech": {
+    "stiff": 225,
+    "mat": "co-poly",
+    "xmat": "co-poly",
+    "priceV": 19,
+    "own": false,
+    "hybrid": true
+   }
+  },
+  {
+   "i": 11,
+   "mains": "BABOLAT RPM Blast 1.25",
+   "crosses": "full bed",
+   "scores": [
+    9,
+    6,
+    8,
+    8,
+    6,
+    6,
+    5,
+    5
+   ],
+   "tech": {
+    "stiff": 235,
+    "mat": "co-poly",
+    "xmat": "",
+    "priceV": 18,
+    "own": false,
+    "hybrid": false
+   }
+  },
+  {
+   "i": 12,
+   "mains": "SOLINCO Mach 10",
+   "crosses": "LUXILON 4G Soft",
+   "scores": [
+    9,
+    8,
+    7,
+    6,
+    8,
+    5,
+    8,
+    7
+   ],
+   "tech": {
+    "stiff": 227.5,
+    "mat": "co-poly",
+    "xmat": "co-poly",
+    "priceV": 19,
+    "own": false,
+    "hybrid": true
+   }
+  },
+  {
+   "i": 13,
+   "mains": "SOLINCO Mach 10",
+   "crosses": "LUXILON 4G",
+   "scores": [
+    9,
+    7,
+    8,
+    7,
+    7,
+    5,
+    9,
+    5
+   ],
+   "tech": {
+    "stiff": 227.5,
+    "mat": "co-poly",
+    "xmat": "co-poly",
+    "priceV": 19,
+    "own": false,
+    "hybrid": true
+   }
+  },
+  {
+   "i": 14,
+   "mains": "SOLINCO Mach 10",
+   "crosses": "HEAD Lynx Tour",
+   "scores": [
+    9,
+    8,
+    5,
+    5,
+    7,
+    8,
+    6,
+    6
+   ],
+   "tech": {
+    "stiff": 210,
+    "mat": "co-poly",
+    "xmat": "co-poly",
+    "priceV": 15,
+    "own": false,
+    "hybrid": true
+   }
+  },
+  {
+   "i": 15,
+   "mains": "SOLINCO Hyper-G",
+   "crosses": "SOLINCO Mach 10",
+   "scores": [
+    8,
+    7,
+    6,
+    5,
+    8,
+    7,
+    7,
+    5
+   ],
+   "tech": {
+    "stiff": 222.5,
+    "mat": "co-poly",
+    "xmat": "co-poly",
+    "priceV": 16,
+    "own": false,
+    "hybrid": true
+   }
+  },
+  {
+   "i": 16,
+   "mains": "SOLINCO Hyper-G",
+   "crosses": "HEAD Lynx Tour",
+   "scores": [
+    7,
+    7,
+    6,
+    6,
+    8,
+    7,
+    5,
+    5
+   ],
+   "tech": {
+    "stiff": 212.5,
+    "mat": "co-poly",
+    "xmat": "co-poly",
+    "priceV": 15,
+    "own": false,
+    "hybrid": true
+   }
+  },
+  {
+   "i": 17,
+   "mains": "SOLINCO Hyper-G",
+   "crosses": "LUXILON 4G",
+   "scores": [
+    7,
+    5,
+    9,
+    8,
+    6,
+    5,
+    9,
+    4
+   ],
+   "tech": {
+    "stiff": 230,
+    "mat": "co-poly",
+    "xmat": "co-poly",
+    "priceV": 18,
+    "own": false,
+    "hybrid": true
+   }
+  },
+  {
+   "i": 18,
+   "mains": "SOLINCO Conf. Soft",
+   "crosses": "SOLINCO Mach 10",
+   "scores": [
+    7,
+    6,
+    7,
+    7,
+    8,
+    7,
+    7,
+    7
+   ],
+   "tech": {
+    "stiff": 220,
+    "mat": "",
+    "xmat": "co-poly",
+    "priceV": 8,
+    "own": false,
+    "hybrid": true
+   }
+  },
+  {
+   "i": 19,
+   "mains": "SOLINCO Confidential",
+   "crosses": "SOLINCO Mach 10",
+   "scores": [
+    7,
+    5,
+    8,
+    8,
+    7,
+    9,
+    8,
+    5
+   ],
+   "tech": {
+    "stiff": 217.5,
+    "mat": "co-poly",
+    "xmat": "co-poly",
+    "priceV": 16,
+    "own": false,
+    "hybrid": true
+   }
+  },
+  {
+   "i": 20,
+   "mains": "SOLINCO Conf. Soft",
+   "crosses": "HEAD Lynx Tour",
+   "scores": [
+    6,
+    6,
+    7,
+    7,
+    8,
+    6,
+    5,
+    7
+   ],
+   "tech": {
+    "stiff": 200,
+    "mat": "",
+    "xmat": "co-poly",
+    "priceV": 7,
+    "own": false,
+    "hybrid": true
+   }
+  },
+  {
+   "i": 21,
+   "mains": "SOLINCO Confidential",
+   "crosses": "HEAD Lynx Tour",
+   "scores": [
+    6,
+    5,
+    8,
+    8,
+    7,
+    8,
+    6,
+    5
+   ],
+   "tech": {
+    "stiff": 207.5,
+    "mat": "co-poly",
+    "xmat": "co-poly",
+    "priceV": 15,
+    "own": false,
+    "hybrid": true
+   }
+  },
+  {
+   "i": 22,
+   "mains": "SOLINCO Conf. Soft",
+   "crosses": "LUXILON 4G",
+   "scores": [
+    6,
+    4,
+    9,
+    9,
+    6,
+    5,
+    8,
+    6
+   ],
+   "tech": {
+    "stiff": 235,
+    "mat": "",
+    "xmat": "co-poly",
+    "priceV": 11,
+    "own": false,
+    "hybrid": true
+   }
+  },
+  {
+   "i": 23,
+   "mains": "SOLINCO Confidential",
+   "crosses": "LUXILON 4G",
+   "scores": [
+    6,
+    3,
+    10,
+    10,
+    5,
+    7,
+    10,
+    4
+   ],
+   "tech": {
+    "stiff": 225,
+    "mat": "co-poly",
+    "xmat": "co-poly",
+    "priceV": 18,
+    "own": false,
+    "hybrid": true
+   }
+  },
+  {
+   "i": 24,
+   "mains": "SOLINCO Mach 10 1.30",
+   "crosses": "LUXILON 4G",
+   "scores": [
+    8,
+    6,
+    9,
+    8,
+    6,
+    5,
+    10,
+    4
+   ],
+   "tech": {
+    "stiff": 227.5,
+    "mat": "co-poly",
+    "xmat": "co-poly",
+    "priceV": 19,
+    "own": false,
+    "hybrid": true
+   }
+  },
+  {
+   "i": 25,
+   "mains": "RESTRING Zero",
+   "crosses": "full bed",
+   "scores": [
+    8,
+    7,
+    7,
+    7,
+    7,
+    6,
+    8,
+    6
+   ],
+   "tech": {
+    "stiff": 205,
+    "mat": "co-poly",
+    "xmat": "",
+    "priceV": 16,
+    "own": false,
+    "hybrid": false
+   }
+  },
+  {
+   "i": 26,
+   "mains": "RESTRING Zero 1.28",
+   "crosses": "RESTRING Sync 1.23",
+   "scores": [
+    8,
+    7,
+    7,
+    7,
+    8,
+    8,
+    7,
+    6
+   ],
+   "tech": {
+    "stiff": 202.5,
+    "mat": "co-poly",
+    "xmat": "co-poly",
+    "priceV": 16,
+    "own": false,
+    "hybrid": true
+   }
+  },
+  {
+   "i": 27,
+   "mains": "LUXILON 4G",
+   "crosses": "HEAD Lynx Tour",
+   "scores": [
+    6,
+    5,
+    9,
+    9,
+    6,
+    6,
+    9,
+    6
+   ],
+   "tech": {
+    "stiff": 217.5,
+    "mat": "co-poly",
+    "xmat": "co-poly",
+    "priceV": 17,
+    "own": false,
+    "hybrid": true
+   }
+  },
+  {
+   "i": 28,
+   "mains": "LUXILON 4G",
+   "crosses": "SOLINCO Conf. Soft",
+   "scores": [
+    6,
+    5,
+    9,
+    10,
+    6,
+    5,
+    9,
+    6
+   ],
+   "tech": {
+    "stiff": 235,
+    "mat": "co-poly",
+    "xmat": "",
+    "priceV": 11,
+    "own": false,
+    "hybrid": true
+   }
+  },
+  {
+   "i": 29,
+   "mains": "HEAD Lynx Tour",
+   "crosses": "LUXILON 4G",
+   "scores": [
+    7,
+    5,
+    8,
+    9,
+    6,
+    7,
+    8,
+    6
+   ],
+   "tech": {
+    "stiff": 217.5,
+    "mat": "co-poly",
+    "xmat": "co-poly",
+    "priceV": 17,
+    "own": false,
+    "hybrid": true
+   }
+  },
+  {
+   "i": 30,
+   "mains": "HEAD Lynx Tour",
+   "crosses": "SOLINCO Conf. Soft",
+   "scores": [
+    7,
+    6,
+    7,
+    7,
+    8,
+    7,
+    6,
+    7
+   ],
+   "tech": {
+    "stiff": 200,
+    "mat": "co-poly",
+    "xmat": "",
+    "priceV": 7,
+    "own": false,
+    "hybrid": true
+   }
+  }
+ ]
+}
