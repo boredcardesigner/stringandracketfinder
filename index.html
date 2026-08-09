@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- no external font requests: Azonix is embedded in the stylesheet below -->
-<title>String &amp; Racket Finder v.8.0 beta_70</title>
+<title>String &amp; Racket Finder v.8.0 beta_79</title>
 <style>
   /* ---------- interface type: system UI, pinned ----------
      The face is unchanged — system-ui still leads, so this renders exactly as before on
@@ -308,6 +308,23 @@
   .mrow{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:11.5px;color:var(--soft);}
   .mrow input[type=checkbox]{accent-color:var(--cyan);width:14px;height:14px;cursor:pointer;}
   .mfoot{display:flex;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap;}
+  /* .go2 only ever existed as ".mfoot .go2". The two primary calls to action —
+     "find my gear" in easy and "tune the sliders for me" in intermediate — sit
+     OUTSIDE any .mfoot, so they inherited nothing and rendered as raw browser
+     chrome: square, grey, 21px tall. This standalone rule fixes that; the .mfoot
+     rule below still wins where it applies, so nothing else moves. */
+  .go2{ background:var(--cyan); color:#04262b; border:none; border-radius:999px;
+        padding:8px 18px; font-family:inherit; font-size:11px; font-weight:700;
+        letter-spacing:.06em; text-transform:uppercase; cursor:pointer;
+        transition:filter .15s ease, box-shadow .15s ease; }
+  .go2:hover{ filter:brightness(1.08);
+        box-shadow:0 0 15px color-mix(in srgb, var(--cyan) 45%, transparent); }
+  /* the two buttons that carry the whole flow, deliberately 30% larger than the
+     house pill so they read as the answer, not as one control among many */
+  .go2.cta{ font-size:14.5px; padding:11px 24px; letter-spacing:.05em; }
+  @media (max-width:760px){
+    .go2.cta{ width:100%; text-align:center; padding:14px 18px; }
+  }
   .mfoot .go2{background:var(--cyan);color:#04262b;border:none;border-radius:999px;padding:8px 18px;
     font-family:inherit;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;}
   .mfoot .go2:hover{filter:brightness(1.1);}
@@ -645,7 +662,13 @@
   .crv_ledger .minus{ color:var(--signal-fg,var(--signal)); }
   .crv_ledger i{ color:var(--muted); font-style:normal; font-size:10px; }
   .crv_note{ margin-top:11px; font-size:10px; color:var(--muted); line-height:1.5; }
-  .ghead{ cursor:pointer; user-select:none; display:flex; align-items:center; gap:7px; }
+  /* the group header carries its own colour (set inline), so currentColor gives the
+     band and the rail their tint without repeating the palette here */
+  .ghead{ cursor:pointer; user-select:none; display:flex; align-items:center; gap:7px;
+          text-transform:uppercase; letter-spacing:.09em !important;
+          border-left:4px solid currentColor; border-top:1px solid color-mix(in srgb, currentColor 30%, transparent);
+          background:linear-gradient(to right, color-mix(in srgb, currentColor 13%, transparent), transparent 62%);
+          margin-top:6px; }
   .ghead:hover{ filter:brightness(1.25); }
   .ghead .gcaret{ font-size:9px; opacity:.8; width:10px; }
   .ghead .gcount{ font-size:9.5px; color:var(--muted); font-weight:400; }
@@ -841,6 +864,14 @@
            font-family:inherit; transition:color .15s ease, border-color .15s ease, background .15s ease; }
   .limbtn:hover{ color:var(--bright); border-color:var(--cyan); }
   .limbtn.on{ color:var(--card); background:var(--cyan); border-color:var(--cyan); }
+  /* Slider row pitch on touch. Measured: rows sat 13px apart in intermediate and 17px
+     in pro while the THUMB is 17px wide — adjacent thumbs overlapped vertically, so a
+     fingertip had no clean target. The row wrapper carries the extra space (not the
+     input's own margin) so the track, the fill and the ::after glow are untouched.
+     Desktop is deliberately excluded: it was fine with a mouse and stays byte-identical. */
+  @media (pointer:coarse), (max-width:760px){
+    .slwrap{ margin:9px 0; }
+  }
   /* live lookup line in the string transfer-specs panel */
   .rf_live{ font-size:10.5px; color:var(--muted); margin:2px 0 4px; min-height:14px; letter-spacing:.02em; }
   .rf_live.busy{ color:var(--amber); }
@@ -1201,7 +1232,53 @@
   .hycard_t b{ color:var(--bronze); }
   .hycard_b{ font-size:11.5px; line-height:1.5; opacity:.9; margin-bottom:7px; }
   .hycard_b b{ color:var(--bronze); }
-  .hycard_f{ display:flex; gap:8px; flex-wrap:wrap; margin-top:9px; }
+  .hycard_f{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:9px; }
+  /* "find it to buy" is the commercial end of the whole app — affiliate links are the
+     point of the project — so it gets the accent colour, the far-right anchor position
+     (margin-left:auto pushes it there regardless of how many buttons sit left of it),
+     and a pulse that only starts on hover. Idle it stays calm like everything else. */
+  .buybtn{ margin-left:auto; background:var(--cyan); color:#04262b;
+           border:1px solid var(--cyan); border-radius:999px;
+           padding:9px 20px; font-family:inherit; font-size:12px; font-weight:700;
+           letter-spacing:.05em; text-transform:uppercase; cursor:pointer; white-space:nowrap;
+           transition:transform .18s ease, box-shadow .18s ease, filter .18s ease; }
+  .buybtn:hover, .buybtn:focus-visible{
+           filter:brightness(1.06); transform:translateY(-1px);
+           animation:buyPulse 1.5s ease-in-out infinite; outline:none; }
+  @keyframes buyPulse{
+    0%,100%{ box-shadow:0 0 0 0 color-mix(in srgb, var(--cyan) 60%, transparent),
+                        0 0 14px color-mix(in srgb, var(--cyan) 35%, transparent); }
+    50%    { box-shadow:0 0 0 7px color-mix(in srgb, var(--cyan) 0%, transparent),
+                        0 0 26px color-mix(in srgb, var(--cyan) 60%, transparent); } }
+  .buybtn:active{ transform:translateY(0); }
+  @media (prefers-reduced-motion: reduce){
+    .buybtn:hover, .buybtn:focus-visible{ animation:none;
+           box-shadow:0 0 20px color-mix(in srgb, var(--cyan) 55%, transparent); } }
+  /* compact twin for dense contexts — heatmap rows, pick cards, setup lines.
+     Same identity (accent fill, pill, hover pulse), just sized to sit inside a row
+     without pushing it around. NOT margin-left:auto: these sit inline with siblings. */
+  /* dense bar-chart rows: actions shrink out of the way so the bars keep the row.
+     Measured before this: the buy pill rendered 90x30 inside a 196px label column. */
+  .rowact.tinyact{ display:inline-flex; gap:3px; margin-left:5px; vertical-align:middle; }
+  .rowact.tinyact .custbtn{ padding:0 4px; font-size:10px; letter-spacing:0; line-height:1.5; min-width:16px; text-align:center; }
+  /* the small buy pill, defined ONCE and used by both dense contexts — the weighted
+     ranking rows and the heatmap name cells — so the two cannot drift apart.
+     align-self keeps it from stretching to the width of a column flex parent. */
+  .buybtn.mini.tiny, .rowact.tinyact .buybtn.mini{
+        padding:0 7px; font-size:8px; letter-spacing:.05em; line-height:1.6;
+        text-transform:uppercase; align-self:flex-start; flex:none; }
+  @media (pointer:coarse), (max-width:760px){
+    .buybtn.mini.tiny, .rowact.tinyact .buybtn.mini{ padding:2px 9px; font-size:9px; }
+    .rowact.tinyact .custbtn{ padding:1px 5px; font-size:12px; min-width:22px; }
+  }
+  .su_buy{ display:inline-flex; gap:5px; margin-left:9px; flex-wrap:wrap; }
+  .pc_buy{ margin-left:6px; }
+  .buybtn.mini{ margin-left:0; padding:3px 10px; font-size:9.5px; letter-spacing:.06em;
+                border-radius:999px; vertical-align:middle; }
+  @media (max-width:760px){
+    .buybtn{ margin-left:0; width:100%; text-align:center; padding:13px 18px; font-size:13px; }
+    .buybtn.mini{ width:auto; display:inline-block; padding:6px 12px; font-size:10.5px; }
+  }
   .hybtn{ background:color-mix(in srgb, var(--bronze) 22%, transparent);
     border:1px solid var(--bronze); color:var(--bronze); border-radius:999px;
     padding:6px 14px; font-family:inherit; font-size:11px; cursor:pointer; }
@@ -1577,7 +1654,7 @@
 </head>
 <body>
 <div class="wrap">
-<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">String & Racket Finder v.8.0 beta_70 by Alexey Semenov von Rosenberg — two departments in one document. Racket department (v.09 beta): twenty-eight numbered frames rated across eleven axes with a difficulty column, an amber search bar that filters the bench or looks specs up online, and a bronze transfer-specs form that scores a researched frame from its specs. String department (Rev 05): thirty-eight string beds rated across eight axes including arm friendliness, with court-validated benchmarks marked cyan and queued beds amber. Both departments have clickable column headers, weight sliders and reset buttons.</h2>
+<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">String & Racket Finder v.8.0 beta_79 by Alexey Semenov von Rosenberg — two departments in one document. Racket department (v.09 beta): twenty-eight numbered frames rated across eleven axes with a difficulty column, an amber search bar that filters the bench or looks specs up online, and a bronze transfer-specs form that scores a researched frame from its specs. String department (Rev 05): thirty-eight string beds rated across eight axes including arm friendliness, with court-validated benchmarks marked cyan and queued beds amber. Both departments have clickable column headers, weight sliders and reset buttons.</h2>
 
 <!-- ================= landing ================= -->
 <div id="landing">
@@ -1588,7 +1665,7 @@
         <div class="ld_kicker azonix">A&sup3; Agentur edition</div>
       </div>
     </div>
-    <h1 class="ld_title azonix">String &amp; Racket Finder <span style="color:var(--cyan);">v.8.0 beta_70</span></h1>
+    <h1 class="ld_title azonix">String &amp; Racket Finder <span style="color:var(--cyan);">v.8.0 beta_79</span></h1>
     <p class="ld_lede">Twenty-six frames and thirty-eight string beds, scored on the same axes and matched to each other
        by the physics of the pairing. Tell it how you play and it hands you a shortlist &mdash; or open the whole
        workshop and rank everything yourself.</p>
@@ -1633,7 +1710,7 @@
   <div class="ez_top">
     <span class="ez_logo" id="ez_logo"></span>
     <div class="ez_head">
-      <div class="ez_title azonix">String &amp; Racket Finder <span style="color:var(--cyan);">v.8.0 beta_70</span></div>
+      <div class="ez_title azonix">String &amp; Racket Finder <span style="color:var(--cyan);">v.8.0 beta_79</span></div>
       <div class="ez_sub">easy mode &mdash; just tell me what to buy</div>
       <div class="ez_credit">
         <span class="azonix cred_ed">A³ Agentur edition</span>
@@ -1684,7 +1761,7 @@
       <button type="button" class="ichip ez_want" data-w="racket">a racket</button>
       <button type="button" class="ichip ez_want" data-w="string">a string</button></span></div>
     <div class="in_row in_act">
-      <button type="button" class="go2" onclick="easyRun()">find my gear</button>
+      <button type="button" class="go2 cta" onclick="easyRun()">find my gear</button>
       <span class="in_note" id="ez_note"></span>
       <span class="in_note prefnote" style="color:var(--cyan);"></span>
     </div>
@@ -1698,7 +1775,7 @@
   <div class="ez_top">
     <span class="ez_logo" id="mid_logo"></span>
     <div class="ez_head">
-      <div class="ez_title azonix">String &amp; Racket Finder <span style="color:var(--cyan);">v.8.0 beta_70</span></div>
+      <div class="ez_title azonix">String &amp; Racket Finder <span style="color:var(--cyan);">v.8.0 beta_79</span></div>
       <div class="ez_sub">intermediate &mdash; rank it with me</div>
       <div class="ez_credit">
         <span class="azonix cred_ed">A³ Agentur edition</span>
@@ -1743,7 +1820,7 @@
         <span class="in_seg"><button type="button" class="ichip" data-q="arm" data-v="yes">arm-friendly, please</button>
         <span style="font-size:10px;color:var(--muted);align-self:center;">stiff gear loses its medals while this is on</span></span></div>
     </div>
-    <div style="margin-top:10px;"><button type="button" class="go2" onclick="introApply()">tune the sliders for me</button>
+    <div style="margin-top:10px;"><button type="button" class="go2 cta" onclick="introApply()">tune the sliders for me</button>
       <span style="font-size:10px;color:var(--muted);margin-left:8px;">answers gate the lists &mdash; the sliders stay yours to drag</span>
       <span class="prefnote" style="font-size:10px;color:var(--cyan);margin-left:8px;"></span>
       <button type="button" class="hybtn ghost" style="margin-left:8px;font-size:10px;" onclick="prefReset()" title="forget the saved sliders and re-seed from your answers">reset saved sliders</button></div>
@@ -1802,7 +1879,7 @@
   <div class="ez_top">
     <span class="ez_logo"><img src="data:image/png;base64,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" alt="A³ Agentur logo" style="width:54px;height:54px;object-fit:contain;filter:drop-shadow(0 0 7px color-mix(in srgb, var(--magenta) 40%, transparent));"></span>
     <div class="ez_head">
-      <div class="ez_title azonix">String &amp; Racket Finder <span style="color:var(--cyan);">v.8.0 beta_70</span></div>
+      <div class="ez_title azonix">String &amp; Racket Finder <span style="color:var(--cyan);">v.8.0 beta_79</span></div>
       <div class="ez_sub">pro mode &mdash; the workshop &middot; friend's edition</div>
       <div class="ez_credit">
         <span class="azonix cred_ed">A&sup3; Agentur edition</span>
@@ -2005,7 +2082,8 @@
       <label>Balance (mm)<input id="af_bal" type="text" placeholder="320 — drives handling and swing feel"></label>
       <label>Beam (mm)<input id="af_beam" type="text" placeholder="23 — drives power and stiffness"></label>
       <label>Price (€)<input id="af_price" type="text" placeholder="230 (optional)"></label>
-      <label>Group name<input id="af_group" type="text" list="rk_groups" placeholder="researched — click to choose" title="click to choose an existing group, or type a new one"><datalist id="rk_groups"></datalist></label>
+      <label>Group<select id="af_group" title="pick the group this frame belongs to" onchange="srfGroupPick('af')"></select></label>
+      <label id="af_newgwrap" style="display:none;">New group name<input id="af_newg" type="text" placeholder="e.g. demo week"></label>
     </div>
     <div class="addfoot">
       <button class="primary" onclick="addResearched()">add to bench</button>
@@ -2216,7 +2294,8 @@
 
     <div class="addgrid" style="margin-top:14px;">
       <label>Price (€)<input id="sb_af_price" type="text" placeholder="16 (optional)"></label>
-      <label>Group name<input id="sb_af_group" type="text" list="sb_groups" placeholder="researched — click to choose" title="click to choose an existing group, or type a new one"><datalist id="sb_groups"></datalist></label>
+      <label>Group<select id="sb_af_group" title="pick the group this bed belongs to" onchange="srfGroupPick('sb_af')"></select></label>
+      <label id="sb_af_newgwrap" style="display:none;">New group name<input id="sb_af_newg" type="text" placeholder="e.g. demo week"></label>
     </div>
     <div class="addfoot">
       <div class="rf_live" id="sb_live" style="flex-basis:100%;"></div>
@@ -2452,6 +2531,29 @@ window.srfLimitBar = function(key, total, setter){
    all-variants, spec meta) are single dockable blocks. Intermediate mode borrows the
    REAL pro nodes — appendChild moves them, listeners and ids travel along — and pro
    takes them back on return. Identical by construction, nothing exists twice. */
+/* Group is a PICK, not a typing exercise. Both add panels used a free-text input with
+   a datalist, which most browsers only reveal on click and which invited typos that
+   silently created a new bronze group. Now: a real <select> listing every existing
+   group by its shown name, carrying the group KEY as the value — both save paths
+   already accept a key — plus one "+ new group…" entry that reveals a name field.
+   That keeps the ability to invent a group without making it the default path. */
+window.srfFillGroups = (selId, table, current) => {
+  const sel = document.getElementById(selId); if (!sel || !table) return;
+  const keys = Object.keys(table);
+  sel.innerHTML = keys.map(k =>
+      `<option value="${k}"${k === current ? " selected" : ""}>${String(table[k][1]).replace(/</g,"&lt;")}</option>`).join("")
+    + `<option value="__new">+ new group\u2026</option>`;
+  if (!current && keys.length) sel.value = keys.includes("researched") ? "researched" : keys[keys.length - 1];
+  srfGroupPick(selId.replace(/_group$/, "").replace(/^af$/, "af"));
+};
+window.srfGroupPick = (prefix) => {
+  const sel = document.getElementById(prefix === "af" ? "af_group" : "sb_af_group");
+  const wrap = document.getElementById(prefix === "af" ? "af_newgwrap" : "sb_af_newgwrap");
+  if (!sel || !wrap) return;
+  const isNew = sel.value === "__new";
+  wrap.style.display = isNew ? "" : "none";
+  if (isNew){ const f = document.getElementById(prefix === "af" ? "af_newg" : "sb_af_newg"); if (f) f.focus(); }
+};
 window.srfSearchDock = (m) => {
   [["rsearchBlock", "mid_rsSlot", "rsHome"], ["ssearchBlock", "mid_ssSlot", "ssHome"]]
     .forEach(([blk, slot, home]) => {
@@ -3073,7 +3175,7 @@ window.rebuildAll = () => {
   if (window.SRF && SRF.redraw) SRF.redraw();
 };
 window.exportAll = async () => {
-  const bundle = { app:"String & Racket Finder", version:"v.8.0 beta_70", theme:THEME, exported:new Date().toISOString() };
+  const bundle = { app:"String & Racket Finder", version:"v.8.0 beta_79", theme:THEME, exported:new Date().toISOString() };
   try{
     if (window.SRF){
       if (SRF.layout)   bundle.racketLayout = SRF.layout();
@@ -4084,8 +4186,11 @@ function applyTheme(name){
   r.setAttribute("data-theme", THEME);
   // accent text needs a readable variant on dark palettes — see srfAccentFg
   if (window.srfAccentFg){
-    r.style.setProperty("--magenta-fg", window.srfAccentFg("--magenta"));
-    r.style.setProperty("--signal-fg",  window.srfAccentFg("--signal"));
+    /* Every token used as TEXT gets a lifted twin. Measured before this: on
+       ultramarine vivid and both obsidians a group header sat at 3.06–3.18:1
+       against the card, because those palettes keep bronze and amber very dark. */
+    ["--magenta","--signal","--cyan","--amber","--bronze","--soft"].forEach(v =>
+      r.style.setProperty(v + "-fg", window.srfAccentFg(v)));
   }
   try { localStorage.setItem("srf:theme", THEME); } catch(e){}
 }
@@ -4094,40 +4199,54 @@ function applyTheme(name){
 
 const catsShort = ["Ctrl","Prec","Spin","Pwr","Feel","Stab","Man","Serve","Smsh","Slice","Ret","Diff"];
 const cats = ["Control (flat)", "Precision", "Spin", "Power", "Feel / comfort", "Stability", "Maneuverability", "Serve", "Smash & overhead", "Slice / touch", "Return / blocking"];
-const G = { own:["var(--magenta-fg,var(--magenta))","my quiver"], tested:["var(--cyan)","playtested — court tested"], next:["var(--amber)","selected — test next"], fr:["var(--muted)","friends' frames"], bench:["var(--muted)","bench"] , rx_researched:["var(--bronze)","researched — specs looked up online"] };
+/* One palette colour per group. "friends' frames" and "bench" both used to be
+   --muted, so two of the six groups were literally indistinguishable. Each colour
+   now also paints a rail down the left edge of that group's rows (see .namecell
+   below), which is what actually separates them when you scan the bench. */
+/* [colour, label, rail style]. Colour alone cannot separate six groups across
+   twenty palettes — measured: on theme 4.0 the quiver and the researched group land
+   12 units apart in RGB, and several themes put amber and bronze within 20. So each
+   group also owns a LINE STYLE on its left rail, which survives any palette. */
+const G = { own:["var(--magenta-fg,var(--magenta))","my quiver","solid"],
+            tested:["var(--cyan-fg,var(--cyan))","playtested — court tested","solid"],
+            next:["var(--amber-fg,var(--amber))","selected — test next","dashed"],
+            fr:["color-mix(in srgb, var(--cyan-fg,var(--cyan)) 45%, var(--magenta-fg,var(--magenta)))","friends' frames","dotted"],
+            bench:["var(--soft-fg,var(--soft))","bench","solid"],
+            rx_researched:["var(--bronze-fg,var(--bronze))","researched — specs looked up online","double"] };
+const gStyle = g => (G[g] && G[g][2]) || "solid";
 /* display order for the ungrouped ("original order") view: researched groups lead — any rx_*
    key ranks ahead of the quiver — then the established groups; unknown keys fall to the end */
 const GORDER = ["own","tested","next","fr","bench"];
 const gRank = g => String(g).startsWith("rx_") ? -1 : (GORDER.indexOf(g) === -1 ? GORDER.length : GORDER.indexOf(g));
 const rk = [
-  {n:"Pure Strike 100", b:"BABOLAT", o:["Alexey","var(--cyan)"], g:"own", s:[7,7,6,7,7,10,5,8,9,7,9], d:7, p:230, sp:["335g custom","100","16x20","~67 RA","~320","~320","21/23/21"]},
-  {n:"Extreme MP", b:"HEAD", o:["Alexey","var(--cyan)"], g:"own", s:[6,6,10,10,6,9,6,9,8,6,8], d:5, p:200, sp:["329g custom · 2g lead 10&2","100","16x19","~66 RA","~322","~325","23/26/21"]},
-  {n:"Squared 2026", b:"HEAD", o:["Alexey","var(--cyan)"], g:"own", s:[6,6,7,7,8,8,10,8,9,8,6], d:5, p:260, sp:["327g custom","100","16x18","—","~315","~312","23"]},
+  {n:"Pure Strike 100", b:"BABOLAT", o:null, g:"own", s:[7,7,6,7,7,10,5,8,9,7,9], d:7, p:230, sp:["335g custom","100","16x20","~67 RA","~320","~320","21/23/21"]},
+  {n:"Extreme MP", b:"HEAD", o:null, g:"own", s:[6,6,10,10,6,9,6,9,8,6,8], d:5, p:200, sp:["329g custom · 2g lead 10&2","100","16x19","~66 RA","~322","~325","23/26/21"]},
+  {n:"Squared 2026", b:"HEAD", o:null, g:"own", s:[6,6,7,7,8,8,10,8,9,8,6], d:5, p:260, sp:["327g custom","100","16x18","—","~315","~312","23"]},
   {n:"Radical Team", b:"HEAD", o:null, g:"tested", s:[6,5,6,7,7,4,9,6,5,7,4], d:2, p:130, sp:["280g","102","16x19","—","~290","~335","23"]},
   {n:"Pro Staff RF97 Autograph", b:"WILSON", o:null, g:"next", s:[8,8,6,7,8,10,3,9,9,8,8], d:10, p:260, sp:["340g","97","16x19","68 RA","335","315","21.5"]},
   {n:"TF40 305", b:"TECNIFIBRE", o:null, g:"next", s:[9,9,5,5,9,7,6,6,6,9,7], d:7, p:230, sp:["305g","98","18x20","70 RA","~322","~320","21.5"]},
   {n:"Percept 97D", b:"YONEX", o:null, g:"next", s:[9,9,5,5,8,9,5,6,6,9,8], d:8, p:250, sp:["320g","97","18x20","62 RA","~327","~310","21"]},
   {n:"Defyer 98 Pro", b:"WILSON", o:null, g:"next", s:[8,8,7,6,8,7,7,7,7,8,7], d:5, p:260, sp:["305g","98","16x20","—","—","—","—"]},
   {n:"Defyer 100", b:"WILSON", o:null, g:"next", s:[6,6,8,8,7,7,7,8,7,6,6], d:3, p:250, sp:["300g","100","16x19","—","—","—","—"]},
-  {n:"Pure Aero 2016", b:"BABOLAT", o:["Kirill","var(--magenta-fg,var(--magenta))"], g:"fr", s:[5,5,9,8,5,6,7,8,7,5,5], d:3, p:110, sp:["300g","100","16x19","67 RA","~324","~320","23/26/23"]},
-  {n:"Pure Drive 2015", b:"BABOLAT", o:["Daniel","var(--magenta-fg,var(--magenta))"], g:"fr", s:[5,4,7,9,4,6,7,9,8,4,5], d:3, p:100, sp:["300g","100","16x19","72 RA","~324","~320","23/26/23"]},
-  {n:"Blade 98 v8", b:"WILSON", o:["Nastya","var(--magenta-fg,var(--magenta))"], g:"fr", s:[8,8,6,5,9,6,7,6,6,9,7], d:6, p:180, sp:["305g","98","16x19","~62 RA","~321","~320","21"]},
-  {n:"Pure Strike 100 g3", b:"BABOLAT", o:["Milko","var(--magenta-fg,var(--magenta))"], g:"fr", s:[7,7,6,6,7,5,8,6,6,7,5], d:4, p:180, sp:["300g","100","16x19","~66 RA","~316","~325","21/23/21"]},
-  {n:"Pro Staff Precision 103", b:"WILSON", o:["Roman","var(--magenta-fg,var(--magenta))"], g:"fr", s:[5,5,5,7,4,6,6,6,6,4,6], d:2, p:120, sp:["300g custom","103","16x20","—","~305","~340","~24"]},
-  {n:"Pro Staff X v14", b:"WILSON", o:["Natasha","var(--magenta-fg,var(--magenta))"], g:"fr", s:[7,7,6,7,7,8,5,7,7,7,7], d:5, p:240, sp:["315g","100","16x19","~66 RA","~322","~320","21.5"]},
-  {n:"Pro Staff 97 v14", b:"WILSON", o:["Lisa","var(--magenta-fg,var(--magenta))"], g:"fr", s:[8,8,6,6,8,8,5,7,7,8,8], d:7, p:250, sp:["315g","97","16x19","65 RA","~325","~310","21.5"]},
-  {n:"Pro Staff 97 v13", b:"WILSON", o:["Markus","var(--magenta-fg,var(--magenta))"], g:"fr", s:[8,8,6,6,8,8,5,7,7,8,8], d:7, p:200, sp:["315g","97","16x19","66 RA","~325","~310","21.5"]},
-  {n:"Pure Aero 100", pt:1, b:"BABOLAT", o:["Edwin","var(--magenta-fg,var(--magenta))"], g:"fr", s:[6,6,10,8,7,6,7,10,7,6,6], d:3, p:230, sp:["300g stock","100","16x19","~65 RA","~324","~320","23/26/23"]},
-  {n:"Pure Drive 98 (2021)", pt:1, b:"BABOLAT", o:["Edwin","var(--magenta-fg,var(--magenta))"], g:"fr", s:[7,7,6,9,4,7,7,9,8,4,6], d:5, p:150, sp:["305g","98","16x19","~71 RA","~318","~320","23"]},
-  {n:"VCORE Pro 97H", pt:1, b:"YONEX", o:["Edwin","var(--magenta-fg,var(--magenta))"], g:"fr", s:[8,8,8,7,10,10,3,9,8,9,7], d:9, p:200, sp:["330g","97","16x19","61 RA","~330","~310","21"]},
+  {n:"Pure Aero 2016", b:"BABOLAT", o:null, g:"fr", s:[5,5,9,8,5,6,7,8,7,5,5], d:3, p:110, sp:["300g","100","16x19","67 RA","~324","~320","23/26/23"]},
+  {n:"Pure Drive 2015", b:"BABOLAT", o:null, g:"fr", s:[5,4,7,9,4,6,7,9,8,4,5], d:3, p:100, sp:["300g","100","16x19","72 RA","~324","~320","23/26/23"]},
+  {n:"Blade 98 v8", b:"WILSON", o:null, g:"fr", s:[8,8,6,5,9,6,7,6,6,9,7], d:6, p:180, sp:["305g","98","16x19","~62 RA","~321","~320","21"]},
+  {n:"Pure Strike 100 g3", b:"BABOLAT", o:null, g:"fr", s:[7,7,6,6,7,5,8,6,6,7,5], d:4, p:180, sp:["300g","100","16x19","~66 RA","~316","~325","21/23/21"]},
+  {n:"Pro Staff Precision 103", b:"WILSON", o:null, g:"fr", s:[5,5,5,7,4,6,6,6,6,4,6], d:2, p:120, sp:["300g custom","103","16x20","—","~305","~340","~24"]},
+  {n:"Pro Staff X v14", b:"WILSON", o:null, g:"fr", s:[7,7,6,7,7,8,5,7,7,7,7], d:5, p:240, sp:["315g","100","16x19","~66 RA","~322","~320","21.5"]},
+  {n:"Pro Staff 97 v14", b:"WILSON", o:null, g:"fr", s:[8,8,6,6,8,8,5,7,7,8,8], d:7, p:250, sp:["315g","97","16x19","65 RA","~325","~310","21.5"]},
+  {n:"Pro Staff 97 v13", b:"WILSON", o:null, g:"fr", s:[8,8,6,6,8,8,5,7,7,8,8], d:7, p:200, sp:["315g","97","16x19","66 RA","~325","~310","21.5"]},
+  {n:"Pure Aero 100", pt:1, b:"BABOLAT", o:null, g:"fr", s:[6,6,10,8,7,6,7,10,7,6,6], d:3, p:230, sp:["300g stock","100","16x19","~65 RA","~324","~320","23/26/23"]},
+  {n:"Pure Drive 98 (2021)", pt:1, b:"BABOLAT", o:null, g:"fr", s:[7,7,6,9,4,7,7,9,8,4,6], d:5, p:150, sp:["305g","98","16x19","~71 RA","~318","~320","23"]},
+  {n:"VCORE Pro 97H", pt:1, b:"YONEX", o:null, g:"fr", s:[8,8,8,7,10,10,3,9,8,9,7], d:9, p:200, sp:["330g","97","16x19","61 RA","~330","~310","21"]},
   {n:"Blade 98 18x20", b:"WILSON", o:null, g:"bench", s:[9,9,5,5,9,7,6,6,6,9,7], d:7, p:230, sp:["305g","98","18x20","60 RA","~322","~320","21"]},
   {n:"Pure Strike 98", b:"BABOLAT", o:null, g:"bench", s:[8,9,6,6,7,7,7,7,7,8,7], d:6, p:230, sp:["305g","98","18x20","66 RA","~320","~315","21"]},
   {n:"RF 01 Pro", b:"WILSON", o:null, g:"bench", s:[7,7,7,7,7,8,5,8,8,7,8], d:8, p:270, sp:["320g","97","16x19","~65 RA","~330","~310","22.5"]},
   {n:"Radical Pro", b:"HEAD", o:null, g:"bench", s:[7,7,7,6,8,8,6,7,7,8,7], d:6, p:230, sp:["310g","98","16x19","~63 RA","~322","~315","20/23/21"]},
   {n:"Pure Aero 98", b:"BABOLAT", o:null, g:"bench", s:[7,7,9,8,6,7,7,8,8,6,7], d:4, p:230, sp:["305g","98","16x20","~66 RA","~320","~315","23"]},
   {n:"TFight 305S", b:"TECNIFIBRE", o:null, g:"rx_researched", s:[8,8,7,6,8,7,7,7,7,9,7], d:6, p:220, sp:["305g","98","18x19","63 RA","325","320","22.5"], est:true},
-  {n:"Pro Staff 97 v13", b:"WILSON", o:["Alexey","var(--cyan)"], g:"own", s:[8,8,6,6,8,8,5,7,7,8,8], d:7, p:200, sp:["315g","97","16x19","66 RA","~325","~310","21.5"]},
-  {n:"Speed Pro", b:"HEAD", o:["Alexey","var(--cyan)"], g:"own", s:[8,9,6,6,8,8,7,8,8,8,7], d:6, p:250, sp:["310g","100","18x20","62 RA","~322","~315","23"]}
+  {n:"Pro Staff 97 v13", b:"WILSON", o:null, g:"own", s:[8,8,6,6,8,8,5,7,7,8,8], d:7, p:200, sp:["315g","97","16x19","66 RA","~325","~310","21.5"]},
+  {n:"Speed Pro", b:"HEAD", o:null, g:"own", s:[8,9,6,6,8,8,7,8,8,8,7], d:6, p:250, sp:["310g","100","18x20","62 RA","~322","~315","23"]}
 ];
 rk.forEach((r,i)=>{ r.no = i+1; });
 // ---------- performance curve: a smooth spline across every axis, area-filled ----------
@@ -4221,7 +4340,7 @@ function buildGrid(){
         `<button type="button" class="gonly" onclick="event.stopPropagation();rkGroupOnly('${r.g}')" aria-label="show only ${G[r.g][1]}">${solo?"all groups":"only"}</button></div>`;
     }
     if (sortIdx===null && !SEL.size && !filtering && RK_GCOLL.has(r.g)) return;   // folded: header stands, rows wait
-    h += `<div role="cell" class="namecell" data-no="${r.no}" style="color:${G[r.g][0]};display:flex;flex-direction:column;justify-content:center;padding:3px 4px;line-height:1.25;"><span style="font-weight:500;"><span style="color:var(--muted);font-weight:400;">No. ${r.no}</span> ${cmpBox("racket", r.no)}<span class="custname" role="button" tabindex="0" onclick="cOpen(${r.no})" onkeydown="if(event.key==='Enter'){cOpen(${r.no});}" onmouseenter="noteHoverIn(noteFrame,${r.no},event)" onmouseleave="noteHoverOut()" title="customize this frame — hover for play notes">${r.b} ${r.n}</span><button type="button" class="infobtn" aria-label="play notes for ${r.b} ${r.n}" onclick="event.stopPropagation();noteFrame(${r.no},event)">ⓘ</button>${r.feel?`<button type="button" class="custbtn feelbtn" aria-label="edit how ${r.b} ${r.n} feels for you" onclick="event.stopPropagation();fOpen(${r.feelOf})">edit feel</button>`:`<button type="button" class="custbtn" aria-label="customize ${r.b} ${r.n} — describe what you did to it" onclick="event.stopPropagation();cOpen(${r.no})">customize</button><button type="button" class="custbtn feelbtn" aria-label="re-score ${r.b} ${r.n} to your feel" onclick="event.stopPropagation();fOpen(${r.no})">my feel</button>`}${tag(r)}${r.cust?`<span class="custchip" title="${r.cust.text.replace(/"/g,'&quot;')}">customized</span>`:""}${r.feel?`<span class="custchip feelchip" title="your category read of the stock ${r.b} ${r.n} — the stock row is still on the bench">my feel</span>`:""}</span><span style="color:var(--muted);font-size:10px;font-weight:400;">${r.sp[0]} · ${r.sp[2]}</span></div>`;
+    h += `<div role="cell" class="namecell" data-no="${r.no}" style="color:${G[r.g][0]};display:flex;flex-direction:column;justify-content:center;padding:3px 4px 3px 7px;line-height:1.25;border-left:3px ${gStyle(r.g)} color-mix(in srgb, ${G[r.g][0]} 62%, transparent);"><span style="font-weight:500;"><span style="color:var(--muted);font-weight:400;">No. ${r.no}</span> ${cmpBox("racket", r.no)}<span class="custname" role="button" tabindex="0" onclick="cOpen(${r.no})" onkeydown="if(event.key==='Enter'){cOpen(${r.no});}" onmouseenter="noteHoverIn(noteFrame,${r.no},event)" onmouseleave="noteHoverOut()" title="customize this frame — hover for play notes">${r.b} ${r.n}</span><button type="button" class="infobtn" aria-label="play notes for ${r.b} ${r.n}" onclick="event.stopPropagation();noteFrame(${r.no},event)">ⓘ</button>${r.feel?`<button type="button" class="custbtn feelbtn" aria-label="edit how ${r.b} ${r.n} feels for you" onclick="event.stopPropagation();fOpen(${r.feelOf})">edit feel</button>`:`<button type="button" class="custbtn" aria-label="customize ${r.b} ${r.n} — describe what you did to it" onclick="event.stopPropagation();cOpen(${r.no})">customize</button><button type="button" class="custbtn feelbtn" aria-label="re-score ${r.b} ${r.n} to your feel" onclick="event.stopPropagation();fOpen(${r.no})">my feel</button>`}${tag(r)}${r.cust?`<span class="custchip" title="${r.cust.text.replace(/"/g,'&quot;')}">customized</span>`:""}${r.feel?`<span class="custchip feelchip" title="your category read of the stock ${r.b} ${r.n} — the stock row is still on the bench">my feel</span>`:""}${window.buyBtn("racket",(r.b?r.b+" ":"")+String(r.n).replace(/ · my feel$/,""),true,"buy",true)}</span><span style="color:var(--muted);font-size:10px;font-weight:400;">${r.sp[0]} · ${r.sp[2]}</span></div>`;
     h += `<div role="cell" class="spdcell" style="display:flex;align-items:center;justify-content:center;">${spiderIcon("racket", r.no, r.s)}</div>`;
     h += priceCell(r.p, sortIdx==="p");
     h += `<div role="cell" class="curvecell" style="display:flex;align-items:center;justify-content:center;">${perfCurve(r.s,200,44)}</div>`;
@@ -4355,8 +4474,7 @@ document.addEventListener("keydown", (e) => {
 }, true);
 
 function openAddPanel(){
-  const dl = document.getElementById("rk_groups");
-  if (dl) dl.innerHTML = Object.keys(G).map(k => `<option value="${G[k][1].replace(/"/g,"&quot;")}">`).join("");
+  window.srfFillGroups("af_group", G, "rx_researched");
   const raw=document.getElementById("specSearch").value.trim();
   const known = raw ? findSpecs(raw) : null;
   if (known){
@@ -4384,7 +4502,8 @@ function addResearched(){
   if(!g("af_brand")){ document.getElementById("af_brand").focus();
     document.getElementById("c_err") && (document.getElementById("c_err").textContent="");
     alert("Manufacturer is required — every frame on the bench carries its brand."); return; }
-  const groupName=g("af_group")||"researched";
+  const picked = g("af_group") || "researched";
+  const groupName = picked === "__new" ? (g("af_newg") || "researched") : picked;
   /* choosing an existing group by its shown name (or key) files the frame THERE —
      only genuinely new names create a fresh bronze group */
   const gTyped = groupName.toLowerCase();
@@ -4503,6 +4622,18 @@ function specRefURL(raw){
 window.specSearchURL = specSearchURL;
 window.specRefURL = specRefURL;
 window.shopFor = (name) => window.open(specSearchURL(name), "_blank", "noopener");
+/* Every buy button in the app comes from here — winners, budget picks, heatmap rows,
+   setup cards, both benches. One maker means one look, one behaviour, and one place
+   to hang affiliate IDs on later. kind: "racket" | "string". */
+window.buyBtn = (kind, name, mini, label, tiny) => {
+  const n = String(name || "").trim(); if (!n) return "";
+  const fn = kind === "string" ? "shopString" : "shopFor";
+  const safe = n.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+  if (tiny && !label) label = "buy";      // dense rows say just "buy"
+  return `<button type="button" class="buybtn${mini ? " mini" : ""}${tiny ? " tiny" : ""}" ` +
+    `title="find ${safe} to buy" aria-label="buy ${safe}" ` +
+    `onclick="event.stopPropagation();${fn}('${safe}')">${label || "buy now"} \u2197</button>`;
+};
 
 /* ============================================================
    FAMILY SEARCH
@@ -4758,9 +4889,9 @@ function showSpecCard(raw, found){
         `a solid starting point, not a reading off your own racquet.</i></div>` +
       `<div class="hycard_f">` +
         `<button type="button" class="hybtn" onclick="useSpecs('${esc(k).replace(/'/g,"\\'")}')">use these specs \u2192 add to bench</button>` +
-        `<button type="button" class="hybtn" onclick="shopFor('${esc(k).replace(/'/g,"\\'")}')">find it to buy \u2197</button>` +
         `<button type="button" class="hybtn ghost" onclick="crossCheck('${esc(k).replace(/'/g,"\\'")}')">cross-check specs</button>` +
         `<button type="button" class="hybtn ghost" id="spec_reset" style="display:none;" onclick="specRevert('${esc(k).replace(/'/g,"\\'")}')">revert to filed values</button>` +
+        `<button type="button" class="buybtn" onclick="shopFor('${esc(k).replace(/'/g,"\\'")}')">find it to buy \u2197</button>` +
       `</div>` +
     `</div>`;
 }
@@ -4967,7 +5098,7 @@ function render(){
   mobileCards(null);
   document.getElementById("rank").innerHTML = note + disp.map((r,n) => r.ghost ? ghostRow(r) :
     `<div style="display:flex;align-items:center;gap:8px;margin:3px 0;font-size:12px;${r.est===true?"opacity:.62;":""}">
-      <span style="width:196px;color:var(--fg);line-height:1.2;">${meds.indexOf(r.no)>=0?`<span class="medal ${["mG","mS","mB"][meds.indexOf(r.no)]}" title="your #${meds.indexOf(r.no)+1} suggestion — same as the strip above">${meds.indexOf(r.no)+1}</span> `:""}${r.no === budgetNo ? EURO + " " : ""}<b style="font-weight:600;">${r.b}</b> ${r.n}${tag(r)}${(x => x ? `<span class="lvlflag ${x.cls}" title="why this row is not your suggestion">${x.txt}</span>` : "")(bandFor(r))}${rowActs(r)}${(x => x ? ` <span class="stcknote" title="the untouched stock read under the same weights">stock \u2300 ${x}</span>` : "")(stockAvg(r, w, tw))}</span>
+      <span style="width:196px;color:var(--fg);line-height:1.2;">${meds.indexOf(r.no)>=0?`<span class="medal ${["mG","mS","mB"][meds.indexOf(r.no)]}" title="your #${meds.indexOf(r.no)+1} suggestion — same as the strip above">${meds.indexOf(r.no)+1}</span> `:""}${r.no === budgetNo ? EURO + " " : ""}<b style="font-weight:600;">${r.b}</b> ${r.n}${tag(r)}${(x => x ? `<span class="lvlflag ${x.cls}" title="why this row is not your suggestion">${x.txt}</span>` : "")(bandFor(r))}${rowActs(r, true)}${(x => x ? ` <span class="stcknote" title="the untouched stock read under the same weights">stock \u2300 ${x}</span>` : "")(stockAvg(r, w, tw))}</span>
       <div style="flex:1;background:color-mix(in srgb, var(--fg) 10%, transparent);border-radius:3px;height:13px;">
         <div style="width:${(r.sc/10*100).toFixed(1)}%;background:${G[r.g][0]};height:13px;border-radius:3px;"></div>
       </div>
@@ -5035,15 +5166,24 @@ window.srfSetupWhy = (role, sc, pure, bedWhy, price) => {
   }
   return f + (bedWhy ? ` \u00b7 string: ${bedWhy}` : "");
 };
-window.rowActs = (r) => {
+/* tiny=true is for the weighted-ranking rows: those live inside a 196px label
+   column next to a bar chart, so full-size pills wrapped the frame name onto two
+   lines and inflated every row. There the actions shrink and the buy button drops
+   to just "buy" — the bar is the point of that view, not the buttons. */
+window.rowActs = (r, tiny) => {
   if (r.no == null || r.no <= 0) return "";
-  if (r.feel) return `<span class="rowact"><button type="button" class="custbtn feelbtn" ` +
-    `onclick="event.stopPropagation();fOpen(${r.feelOf})">edit feel</button></span>`;
-  return `<span class="rowact">` +
-    `<button type="button" class="custbtn" title="physical mods \u2014 lead tape, weight, balance" ` +
-      `onclick="event.stopPropagation();cOpen(${r.no})">customize</button>` +
-    `<button type="button" class="custbtn feelbtn" title="re-score the categories to how it plays for you" ` +
-      `onclick="event.stopPropagation();fOpen(${r.no})">my feel</button></span>`;
+  if (r.feel) return `<span class="rowact${tiny ? " tinyact" : ""}"><button type="button" class="custbtn feelbtn" ` +
+    `title="edit how this frame feels for you" onclick="event.stopPropagation();fOpen(${r.feelOf})">${tiny ? "\u270E" : "edit feel"}</button>` +
+    window.buyBtn("racket", (r.b ? r.b + " " : "") + String(r.n).replace(/ \u00b7 my feel$/, ""), true, tiny ? "buy" : undefined) + `</span>`;
+  /* In the ranking the two secondary actions become glyphs — the gear already meant
+     "customize" in this file's earlier revisions, so it is the house sign for it. The
+     full words stay everywhere else, where there is room for them. */
+  return `<span class="rowact${tiny ? " tinyact" : ""}">` +
+    `<button type="button" class="custbtn" title="customize \u2014 physical mods, lead tape, weight, balance" ` +
+      `aria-label="customize this frame" onclick="event.stopPropagation();cOpen(${r.no})">${tiny ? "\u2699" : "customize"}</button>` +
+    `<button type="button" class="custbtn feelbtn" title="my feel \u2014 re-score the categories to how it plays for you" ` +
+      `aria-label="re-score this frame to your feel" onclick="event.stopPropagation();fOpen(${r.no})">${tiny ? "\u270E" : "my feel"}</button>` +
+    window.buyBtn("racket", (r.b ? r.b + " " : "") + r.n, true, tiny ? "buy" : undefined) + `</span>`;
 };
 /* stock average under the same weights — shown next to a re-scored row's number */
 window.stockAvg = (r, w, tw) => {
@@ -5093,7 +5233,9 @@ window.paintSetups4 = () => {
       `<span><span class="su_lbl">${LBL[o2.role]}</span><b>${nm} + ${esc(String(s.x.bed.m))}` +
       `${s.x.bed.x && !/full bed/i.test(String(s.x.bed.x)) ? " \u00d7 " + esc(String(s.x.bed.x)) : ""}</b>` +
       `<span class="rsn">${srfSetupWhy(o2.role, scOf(o2.f), pure, why ? esc(why.t) : "", o2.f.p)}</span></span>` +
-      `<span class="sc">pairing ${s.r.sc.toFixed(1)}/10${pTot != null ? `<i class="su_pr">~${pTot}\u20ac all-in</i>` : ""}</span></div>`;
+      `<span class="sc">pairing ${s.r.sc.toFixed(1)}/10${pTot != null ? `<i class="su_pr">~${pTot}\u20ac all-in</i>` : ""}` +
+      `<span class="su_buy">${window.buyBtn("racket", (o2.f.b ? o2.f.b + " " : "") + o2.f.n, true, "buy frame")}` +
+      `${window.buyBtn("string", String(s.x.bed.m).split(" \u00b7 ")[0], true, "buy string")}</span></span></div>`;
   }).join("");
 };
 function paintWinners(scored){
@@ -5154,7 +5296,7 @@ function paintWinners(scored){
         : `<div class="win_name" title="from the wider market — not on your bench">` +
           `<b>${esc(r.b)}</b> ${esc(r.n)}${r.src === "market" ? MK_BADGE : ""}</div>`) +
       `<div class="win_meta">score ${(r.__sc != null ? r.__sc : (r.sc || 0)).toFixed(1)}/10${r.p != null ? ` · ~${r.p}€` : ""} · difficulty ${r.d}/10${(x => x ? ` · <span class="stcknote">stock \u2300 ${x}</span>` : "")(stockAvg(r, w, w.reduce((a,b)=>a+b,0)||1))}</div>` +
-      (r.no != null && r.no > 0 ? `<div style="margin-top:5px;">${rowActs(r)}</div>` : "") +
+      `<div style="margin-top:5px;">${r.no != null && r.no > 0 ? rowActs(r) : window.buyBtn("racket", (r.b ? r.b + " " : "") + r.n, true)}</div>` +
       (b ? `<div class="win_bed"><span class="win_bl">best string setup for this frame</span>${bedLabel(b.x)}` +
            `<span class="win_match">pairing ${b.r.sc.toFixed(1)}/10${b.x.tech.priceV != null ? ` · ~${b.x.tech.priceV}€ a bed` : ""}</span></div>` : "") +
       (() => { const role = roleOf(r);
@@ -5828,9 +5970,9 @@ function sbShowSpecCard(raw, found, slot){
     `</div>` +
     (note ? `<div class="hycard_b" style="margin-top:8px;">${note}</div>` : "") +
     `<div class="hycard_f">` +
-      `<button type="button" class="hybtn" onclick="shopString('${esc(k).replace(/'/g,"\\'")}')">find it to buy \u2197</button>` +
+      `<button type="button" class="hybtn" onclick="sbToLab('${esc(k).replace(/'/g,"\\'")}')">use these specs \u2192 add to NEEERDY \u2193</button>` +
       `<button type="button" class="hybtn ghost" onclick="sbCrossCheck('${esc(k).replace(/'/g,"\\'")}')">cross-check specs</button>` +
-      `<button type="button" class="hybtn ghost" onclick="sbToLab('${esc(k).replace(/'/g,"\\'")}')">add to NEEERDY \u2193</button>` +
+      `<button type="button" class="buybtn" onclick="shopString('${esc(k).replace(/'/g,"\\'")}')">find it to buy \u2197</button>` +
     `</div></div>`;
 }
 
@@ -6076,8 +6218,7 @@ function sbSafeHit(q, F){
   return ok ? F : null;
 }
 function sbOpenAddPanel(){
-  const sdl = document.getElementById("sb_groups");
-  if (sdl) sdl.innerHTML = Object.keys(SBG).map(k => `<option value="${SBG[k][1].replace(/"/g,"&quot;")}">`).join("");
+  window.srfFillGroups("sb_af_group", SBG, "researched");
   const raw=document.getElementById("sb_specSearch").value.trim();
   /* the hybrid pair is a query too — transfer specs used to read only the full-bed
      bar, so a mains x crosses search opened a blank form and everything was retyped */
@@ -6129,7 +6270,8 @@ function sbAddResearched(){
   if(!brand){ document.getElementById("sb_af_brand").focus();
     alert("Manufacturer is required — every bed on the bench carries its brand."); return; }
   const xbrand=v("sb_af_xbrand");
-  const groupName=(v("sb_af_group")||"researched").toLowerCase();
+  const sbPicked = v("sb_af_group") || "researched";
+  const groupName=(sbPicked === "__new" ? (v("sb_af_newg") || "researched") : sbPicked).toLowerCase();
   const tag = SBG[groupName] ? groupName
     : (Object.keys(SBG).find(k => String(SBG[k][1]).toLowerCase() === groupName) || "researched");   // shown names count too; unknown names file under researched
   const gauge=v("sb_af_g"), tension=v("sb_af_t");
@@ -6182,17 +6324,56 @@ window.sbCloseAddPanel=sbCloseAddPanel; window.sbAddResearched=sbAddResearched;
    row so the estimator can tell this string apart from its neighbours right away.
    Fails quietly: offline, on file://, or with no API deployed, the panel behaves
    exactly as it did before and the typed values are left alone. */
+/* Type srfCrawlerCheck() in the browser console on the live site. It pings the
+   serverless function and prints a verdict — the fastest way to answer "is the
+   crawler actually wired up?" without guessing from a search result. */
+window.srfCrawlerCheck = async () => {
+  const out = { page: location.origin, endpoint: "/api/stringspecs" };
+  try {
+    const r = await fetch("/api/stringspecs?q=__ping");
+    out.httpStatus = r.status;
+    if (!r.ok){
+      out.verdict = r.status === 404
+        ? "NOT DEPLOYED \u2014 no function at /api/stringspecs (is the file at api/stringspecs.js in the repo root?)"
+        : "REACHED, BUT FAILING \u2014 check the Vercel function logs";
+      console.warn("[srf crawler]", out.verdict, out); return out;
+    }
+    const j = await r.json();
+    out.vendors = j.vendors; out.version = j.version; out.serverTime = j.time;
+    out.verdict = "LIVE \u2014 crawler answering, brands covered: " + (j.vendors || []).join(", ");
+    console.info("[srf crawler]", out.verdict, out);
+    // second leg: a real lookup, so we also know the crawl half works
+    const r2 = await fetch("/api/stringspecs?q=" + encodeURIComponent("restring slap"));
+    const j2 = r2.ok ? await r2.json() : null;
+    out.sampleQuery = "restring slap";
+    out.sampleFound = !!(j2 && j2.found);
+    out.sampleSource = j2 && j2.source;
+    console.info("[srf crawler] sample lookup:", out.sampleFound ? "FOUND \u2192 " + j2.source : "no vendor page matched");
+  } catch(e){
+    out.verdict = "UNREACHABLE \u2014 " + e.message + " (are you on https, not a local file?)";
+    console.warn("[srf crawler]", out.verdict);
+  }
+  return out;
+};
 window.srfLiveLookup = async (q) => {
   const lv = document.getElementById("sb_live");
   const say = (cls, txt) => { if (lv){ lv.className = "rf_live " + cls; lv.innerHTML = txt; } };
   if (!/^https?:$/.test(location.protocol)){ say("", "not on file \u2014 fill the specs in yourself"); return; }
   say("busy", "looking this string up\u2026");
-  let d = null;
+  let d = null, reachable = false;
   try {
     const r = await fetch("/api/stringspecs?q=" + encodeURIComponent(q));
+    reachable = r.ok;                       // 404 here means the function is not deployed
     d = r.ok ? await r.json() : null;
   } catch(e){ d = null; }
-  if (!d || !d.found){ say("", "nothing found online \u2014 fill the specs in yourself, they file the same way"); return; }
+  /* These two cases used to print the same sentence, which made the whole thing
+     impossible to test — you could not tell a missing API from an empty result. */
+  if (!reachable){
+    say("", "lookup service offline \u2014 fill the specs in yourself " +
+            "(<a href=\"/api/stringspecs?q=__ping\" target=\"_blank\" rel=\"noopener\">check the endpoint</a>)");
+    return;
+  }
+  if (!d || !d.found){ say("", "the lookup ran but found no vendor page for that name \u2014 fill the specs in yourself, they file the same way"); return; }
   const row = d.row, set = (id, v) => { if (v != null && v !== "") setFiled(id, v); };
   set("sb_af_brand", row[1]);
   set("sb_af_m", row[0]);
@@ -6355,8 +6536,8 @@ function buildGrid(){
         `<button type="button" class="gonly" onclick="event.stopPropagation();sbGroupOnly('${lastG}')" aria-label="show only ${SBG[lastG][1]}">${solo?"all groups":"only"}</button></div>`; }
     if(sortIdx===null && !SBSEL.size && SB_GCOLL.has(gkey(b))) return;
     const col=rowColor(b);
-    h+=`<div role="cell" class="namecell" data-bi="${b.i}" style="display:flex;flex-direction:column;justify-content:center;padding:5px 4px;line-height:1.25;border-left:2px solid ${col};">
-          <span style="font-weight:500;"><span style="color:var(--muted);font-weight:400;font-size:10px;">No. ${b.no}</span> ${cmpBox("string", b.i)}<span class="custname" role="button" tabindex="0" onclick="sbOpen(${b.i})" onkeydown="if(event.key==='Enter'){sbOpen(${b.i});}" onmouseenter="noteHoverIn(noteBed,${b.i},event)" onmouseleave="noteHoverOut()" title="claim this bed — hover for play notes" style="color:var(--bright);">${b.m}</span><button type="button" class="infobtn" aria-label="play notes" onclick="event.stopPropagation();noteBed(${b.i},event)">ⓘ</button>${(sbTop.indexOf(b.i)>=0)?`<span class="medal ${["mG","mS","mB"][sbTop.indexOf(b.i)]}" title="your #${sbTop.indexOf(b.i)+1} suggestion — same as your suggestions">${sbTop.indexOf(b.i)+1}</span>`:""}${b.i === sbBudgetI ? SB_EURO : ""}</span>
+    h+=`<div role="cell" class="namecell" data-bi="${b.i}" style="display:flex;flex-direction:column;justify-content:center;padding:5px 4px;line-height:1.25;border-left:3px solid color-mix(in srgb, ${col} 55%, transparent);">
+          <span style="font-weight:500;"><span style="color:var(--muted);font-weight:400;font-size:10px;">No. ${b.no}</span> ${cmpBox("string", b.i)}<span class="custname" role="button" tabindex="0" onclick="sbOpen(${b.i})" onkeydown="if(event.key==='Enter'){sbOpen(${b.i});}" onmouseenter="noteHoverIn(noteBed,${b.i},event)" onmouseleave="noteHoverOut()" title="claim this bed — hover for play notes" style="color:var(--bright);">${b.m}</span><button type="button" class="infobtn" aria-label="play notes" onclick="event.stopPropagation();noteBed(${b.i},event)">ⓘ</button>${(sbTop.indexOf(b.i)>=0)?`<span class="medal ${["mG","mS","mB"][sbTop.indexOf(b.i)]}" title="your #${sbTop.indexOf(b.i)+1} suggestion — same as your suggestions">${sbTop.indexOf(b.i)+1}</span>`:""}${b.i === sbBudgetI ? SB_EURO : ""}${window.buyBtn("string", String(b.m).split(" \u00b7 ")[0], true, "buy", true)}</span>
           <span style="color:var(--muted);font-size:10px;">× ${b.x}${b.mt?` · ${b.mt}${b.ct?"/"+b.ct:""} kg`:""}</span>${tagChip(b)}
           ${b.note?`<span class="custchip" title="${String(b.note).replace(/"/g,'&quot;')}">noted</span>`:""}${b.twin?`<span class="custchip" style="color:var(--amber);background:color-mix(in srgb, var(--amber) 14%, transparent);" title="identical derived stats to ${String(b.twin).replace(/"/g,'&quot;')} \u2014 reopen transfer specs and add stiffness, shape or gauge to separate them">twin est.</span>`:""}</div>`;
     h+=`<div role="cell" class="spdcell" style="display:flex;align-items:center;justify-content:center;">${spiderIcon("string", b.i, b.s)}</div>`;
@@ -6552,7 +6733,7 @@ function sbMobileCards(rows, total){
     return `<article class="mcard">
       <header>
         <div class="who">
-          <div class="nm">${cmpBox("string", b.i)}${n+1}. ${esc(b.m)}${b.twin?`<span class="custchip" style="color:var(--amber);background:color-mix(in srgb, var(--amber) 14%, transparent);" title="identical derived stats to ${String(b.twin).replace(/"/g,'&quot;')}">twin est.</span>`:""}<button type="button" class="infobtn" aria-label="play notes" onclick="noteBed(${b.i},event)">ⓘ</button>${spiderIcon("string", b.i, b.s)}</div>
+          <div class="nm">${cmpBox("string", b.i)}${n+1}. ${esc(b.m)}${window.buyBtn("string", String(b.m).split(" \u00b7 ")[0], true)}${b.twin?`<span class="custchip" style="color:var(--amber);background:color-mix(in srgb, var(--amber) 14%, transparent);" title="identical derived stats to ${String(b.twin).replace(/"/g,'&quot;')}">twin est.</span>`:""}<button type="button" class="infobtn" aria-label="play notes" onclick="noteBed(${b.i},event)">ⓘ</button>${spiderIcon("string", b.i, b.s)}</div>
           <div class="sp">\u00d7 ${esc(b.x)}${b.mt?` \u00b7 ${b.mt}${b.ct?"/"+b.ct:""} kg`:""}</div>
         </div>
         <div class="pr">
@@ -8235,7 +8416,7 @@ function ezPod(cls, label, medal, name, spec, why, buyFn, buyLabel){
   return `<div class="ez_pod ${cls}"><div class="ez_prank">${medal}${label}</div>` +
     `<div class="ez_pname">${name}</div><div class="ez_pspec">${spec}</div>` +
     `<div class="ez_pwhy">${why}</div>` +
-    `<div class="ez_pbuy"><button type="button" class="hybtn" onclick="${buyFn}">${buyLabel} \u2197</button></div></div>`;
+    `<div class="ez_pbuy"><button type="button" class="buybtn" style="margin-left:0;" onclick="${buyFn}">${buyLabel} \u2197</button></div></div>`;
 }
 
 /* ================= market catalogue =================
@@ -8671,6 +8852,7 @@ window.midPaint = (skipSliderSync) => {
       `<span class="mid_rk">#${idx + 1}</span> ` +
       (mi >= 0 ? `<span class="medal ${["mG","mS","mB"][mi]}">${mi + 1}</span> ` : "") +
       (mi === 0 ? `<span style="font-size:9px;color:var(--gold);letter-spacing:.08em;">BEST MATCH</span>` : "") +
+      `<span class="pc_buy">${window.buyBtn("racket", (x.f.b ? x.f.b + " " : "") + x.f.n, true)}</span>` +
       `<div class="nm" style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;">${cmpBox("racket", cid)}<span class="jump2"${jump}><b>${esc(x.f.b)}</b> ${esc(x.f.n)}</span>${x.f.src === "market" ? MK_BADGE : ""}` +
       (band ? `<span class="lvlflag ${band.cls}" title="from your answers">${band.txt}</span>` : "") +
       `<span style="margin-left:auto;">${spiderIcon("racket", cid, x.f.s)}</span></div>` +
@@ -8707,7 +8889,7 @@ window.midPaint = (skipSliderSync) => {
     return `<div class="mid_pc${mi === 0 ? " gold" : ""}" data-k="${esc(String(x.bed.m) + String(x.bed.x || ""))}">` +
       `<span class="mid_rk">#${idx + 1}</span> ` +
       (mi >= 0 ? `<span class="medal ${["mG","mS","mB"][mi]}">${mi + 1}</span> ` : "") +
-      `<div class="nm" style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;">${cmpBox("string", cid)}<span style="min-width:0;">${bName(x.bed)}</span>${x.bed.twin?`<span class="custchip" style="color:var(--amber);background:color-mix(in srgb, var(--amber) 14%, transparent);" title="identical derived stats to ${String(x.bed.twin).replace(/"/g,'&quot;')}">twin est.</span>`:""}` +
+      `<div class="nm" style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;">${cmpBox("string", cid)}<span style="min-width:0;">${bName(x.bed)}</span>${window.buyBtn("string", String(x.bed.m).split(" \u00b7 ")[0], true)}${x.bed.twin?`<span class="custchip" style="color:var(--amber);background:color-mix(in srgb, var(--amber) 14%, transparent);" title="identical derived stats to ${String(x.bed.twin).replace(/"/g,'&quot;')}">twin est.</span>`:""}` +
       (band ? `<span class="lvlflag ${band.cls}" title="from your answers">${band.txt}</span>` : "") +
       `<span style="margin-left:auto;">${spiderIcon("string", cid, x.bed.s)}</span></div>` +
       `<div class="sp">${x.tech.hybrid ? "hybrid" : "full bed"}${x.tech.priceV != null ? ` \u00b7 ~${x.tech.priceV}\u20ac` : ""}${x.tech.stiff != null ? ` \u00b7 ~${Math.round(x.tech.stiff)} lb/in` : ""} \u00b7 match ${x.sc.toFixed(1)}/10 \u00b7 demand ${x.bed.demand.toFixed(0)}/10</div>` +
@@ -8756,7 +8938,9 @@ window.midPaint = (skipSliderSync) => {
     return `<div class="mid_su">${BADGE(o2.role)}` +
       `<span><span class="su_lbl">${LBL[o2.role]}</span><b>${esc(o2.f.b)} ${esc(o2.f.n)} + ${esc(String(s.x.bed.m))}${s.x.bed.x && !/full bed/i.test(String(s.x.bed.x)) ? " \u00d7 " + esc(String(s.x.bed.x)) : ""}</b>` +
       `<span class="rsn">${srfSetupWhy(o2.role, scOfF(o2.f), pure, why ? esc(why.t) : "", o2.f.p)}</span></span>` +
-      `<span class="sc">pairing ${s.r.sc.toFixed(1)}/10${pTot != null ? `<i class="su_pr">~${pTot}\u20ac all-in</i>` : ""}</span></div>`;
+      `<span class="sc">pairing ${s.r.sc.toFixed(1)}/10${pTot != null ? `<i class="su_pr">~${pTot}\u20ac all-in</i>` : ""}` +
+      `<span class="su_buy">${window.buyBtn("racket", (o2.f.b ? o2.f.b + " " : "") + o2.f.n, true, "buy frame")}` +
+      `${window.buyBtn("string", String(s.x.bed.m).split(" \u00b7 ")[0], true, "buy string")}</span></span></div>`;
   }).join("");
   if (window.cmpPaintAll) cmpPaintAll();   // the rebuild wiped the checkbox states — re-tick them
   // a re-rank that changes nothing looks identical to a frozen page — so say which it was
