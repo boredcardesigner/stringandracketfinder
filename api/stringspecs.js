@@ -1,0 +1,30 @@
+{
+ "generated": "2026-08-09T15:37:25.602449Z",
+ "source": "seed (crawler not yet run)",
+ "rows": [
+  [
+   "Slap",
+   "RESTRING",
+   "co-poly",
+   "hexagonal",
+   "1.23 / 1.28",
+   195,
+   "very low (notch-resistant)",
+   "low\u2013mid",
+   "15\u201318",
+   "12\u201316 h"
+  ],
+  [
+   "Vivo",
+   "RESTRING",
+   "co-poly (recycled)",
+   "hexagonal",
+   "1.23 / 1.28",
+   212,
+   "very low (maker-rated)",
+   "mid",
+   "14\u201317",
+   "10\u201314 h"
+  ]
+ ]
+}
