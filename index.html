@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- no external font requests: Azonix is embedded in the stylesheet below -->
-<title>String &amp; Racket Finder v.8.0 beta_68</title>
+<title>String &amp; Racket Finder v.8.0 beta_70</title>
 <style>
   /* ---------- interface type: system UI, pinned ----------
      The face is unchanged — system-ui still leads, so this renders exactly as before on
@@ -841,6 +841,11 @@
            font-family:inherit; transition:color .15s ease, border-color .15s ease, background .15s ease; }
   .limbtn:hover{ color:var(--bright); border-color:var(--cyan); }
   .limbtn.on{ color:var(--card); background:var(--cyan); border-color:var(--cyan); }
+  /* live lookup line in the string transfer-specs panel */
+  .rf_live{ font-size:10.5px; color:var(--muted); margin:2px 0 4px; min-height:14px; letter-spacing:.02em; }
+  .rf_live.busy{ color:var(--amber); }
+  .rf_live.ok{ color:var(--cyan); }
+  .rf_live a{ color:var(--soft); }
   /* Touch targets. Measured on a 390px phone the primary nav was 49x21 (mode buttons)
      and 67x25 (HOME), against Apple's 44pt minimum — the two controls every visitor
      needs first were the hardest to hit.
@@ -1572,7 +1577,7 @@
 </head>
 <body>
 <div class="wrap">
-<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">String & Racket Finder v.8.0 beta_68 by Alexey Semenov von Rosenberg — two departments in one document. Racket department (v.09 beta): twenty-eight numbered frames rated across eleven axes with a difficulty column, an amber search bar that filters the bench or looks specs up online, and a bronze transfer-specs form that scores a researched frame from its specs. String department (Rev 05): thirty-eight string beds rated across eight axes including arm friendliness, with court-validated benchmarks marked cyan and queued beds amber. Both departments have clickable column headers, weight sliders and reset buttons.</h2>
+<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">String & Racket Finder v.8.0 beta_70 by Alexey Semenov von Rosenberg — two departments in one document. Racket department (v.09 beta): twenty-eight numbered frames rated across eleven axes with a difficulty column, an amber search bar that filters the bench or looks specs up online, and a bronze transfer-specs form that scores a researched frame from its specs. String department (Rev 05): thirty-eight string beds rated across eight axes including arm friendliness, with court-validated benchmarks marked cyan and queued beds amber. Both departments have clickable column headers, weight sliders and reset buttons.</h2>
 
 <!-- ================= landing ================= -->
 <div id="landing">
@@ -1583,7 +1588,7 @@
         <div class="ld_kicker azonix">A&sup3; Agentur edition</div>
       </div>
     </div>
-    <h1 class="ld_title azonix">String &amp; Racket Finder <span style="color:var(--cyan);">v.8.0 beta_68</span></h1>
+    <h1 class="ld_title azonix">String &amp; Racket Finder <span style="color:var(--cyan);">v.8.0 beta_70</span></h1>
     <p class="ld_lede">Twenty-six frames and thirty-eight string beds, scored on the same axes and matched to each other
        by the physics of the pairing. Tell it how you play and it hands you a shortlist &mdash; or open the whole
        workshop and rank everything yourself.</p>
@@ -1628,7 +1633,7 @@
   <div class="ez_top">
     <span class="ez_logo" id="ez_logo"></span>
     <div class="ez_head">
-      <div class="ez_title azonix">String &amp; Racket Finder <span style="color:var(--cyan);">v.8.0 beta_68</span></div>
+      <div class="ez_title azonix">String &amp; Racket Finder <span style="color:var(--cyan);">v.8.0 beta_70</span></div>
       <div class="ez_sub">easy mode &mdash; just tell me what to buy</div>
       <div class="ez_credit">
         <span class="azonix cred_ed">A³ Agentur edition</span>
@@ -1693,7 +1698,7 @@
   <div class="ez_top">
     <span class="ez_logo" id="mid_logo"></span>
     <div class="ez_head">
-      <div class="ez_title azonix">String &amp; Racket Finder <span style="color:var(--cyan);">v.8.0 beta_68</span></div>
+      <div class="ez_title azonix">String &amp; Racket Finder <span style="color:var(--cyan);">v.8.0 beta_70</span></div>
       <div class="ez_sub">intermediate &mdash; rank it with me</div>
       <div class="ez_credit">
         <span class="azonix cred_ed">A³ Agentur edition</span>
@@ -1797,7 +1802,7 @@
   <div class="ez_top">
     <span class="ez_logo"><img src="data:image/png;base64,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" alt="A³ Agentur logo" style="width:54px;height:54px;object-fit:contain;filter:drop-shadow(0 0 7px color-mix(in srgb, var(--magenta) 40%, transparent));"></span>
     <div class="ez_head">
-      <div class="ez_title azonix">String &amp; Racket Finder <span style="color:var(--cyan);">v.8.0 beta_68</span></div>
+      <div class="ez_title azonix">String &amp; Racket Finder <span style="color:var(--cyan);">v.8.0 beta_70</span></div>
       <div class="ez_sub">pro mode &mdash; the workshop &middot; friend's edition</div>
       <div class="ez_credit">
         <span class="azonix cred_ed">A&sup3; Agentur edition</span>
@@ -2214,6 +2219,7 @@
       <label>Group name<input id="sb_af_group" type="text" list="sb_groups" placeholder="researched — click to choose" title="click to choose an existing group, or type a new one"><datalist id="sb_groups"></datalist></label>
     </div>
     <div class="addfoot">
+      <div class="rf_live" id="sb_live" style="flex-basis:100%;"></div>
       <button class="primary" onclick="sbAddResearched()">add to bench</button>
       <button class="ghost" onclick="sbCloseAddPanel()">cancel</button>
       <span class="hint">the bench scores it — all 8 axes are <b>derived</b> from both strings — mains lead on spin and control, crosses on feel, comfort and life</span>
@@ -2839,6 +2845,8 @@ const STRINGINFO = {
 "TOROLINE Caviar (K-Pop)": "A softer, more playable co-poly in the Toroline range, oriented toward feel and comfort rather than maximum bite. Expect a more muted, pocketing response and a longer comfortable window than the shaped spin strings, with control still well ahead of a multifilament.",
 "TOROLINE Enso Pro": "A control-oriented co-poly with a smoother, more damped character. Less shaped bite than the Wasabi family, more emphasis on a consistent, predictable ball and a comfortable impact. Suits a player prioritising placement and arm health over maximum spin.",
 "RESTRING Zero": "A control-first polyester with a firm, direct response and low free power. Expect the stringbed to keep the ball in front of you and to reward full swings with precise depth. Little help on a short swing — the string assumes you bring the racquet-head speed.",
+"RESTRING Slap": "Zero's hexagonal DNA with the volume turned one notch down: same six-sided bite and snapback coating, but a touch softer, more controlled and more forgiving off-centre \u2014 the ball stays on a tighter leash. Engineered to resist notching, so the fresh feel lasts longer than most shaped polys. String it ~1 kg lower than your usual poly.",
+"RESTRING Vivo": "The recycled one \u2014 and the firm one. A hexagonal co-poly from RPET with a crisp, direct response the maker itself calls slightly firmer, so drop ~1 kg from your usual poly tension. Control and bite first, tension maintenance is its headline strength; spin comes from the edges digging in, not from a slick surface.",
 "RESTRING Sync": "A more balanced string in the same family: some of Zero's control but with a softer, more forgiving impact and slightly more power. Often the better half of a hybrid, or a full bed for a player who found Zero too demanding.",
 "SOLINCO Confidential Soft": "See Conf. Soft — the softest Confidential, comfort-oriented, more pocketing, less crisp feedback.",
 "VÖLKL V-Square": "A shaped spin polyester with genuinely aggressive bite — the square-ish profile grabs the ball hard. Expect big spin potential and firm, controlled depth. Like most sharply shaped strings, the edges round off and the bite fades before the string actually breaks, so its best window is short.",
@@ -3065,7 +3073,7 @@ window.rebuildAll = () => {
   if (window.SRF && SRF.redraw) SRF.redraw();
 };
 window.exportAll = async () => {
-  const bundle = { app:"String & Racket Finder", version:"v.8.0 beta_68", theme:THEME, exported:new Date().toISOString() };
+  const bundle = { app:"String & Racket Finder", version:"v.8.0 beta_70", theme:THEME, exported:new Date().toISOString() };
   try{
     if (window.SRF){
       if (SRF.layout)   bundle.racketLayout = SRF.layout();
@@ -5757,7 +5765,7 @@ window.shopString = (name) => window.open(sbURL(name), "_blank", "noopener");
 function sbFindSpecs(query){
   const q = specNorm(query);
   if (!q) return null;
-  const rows = NERD.map(r => ({ row:r, key:(r[1] + " " + r[0]) }));
+  const rows = NERD.concat(typeof NERDX !== "undefined" ? NERDX : []).map(r => ({ row:r, key:(r[1] + " " + r[0]) }));
   let exact = rows.find(x => specNorm(x.key) === q || specNorm(x.row[0]) === q);
   if (exact) return { key:exact.key, row:exact.row, exact:true };
   const qt = q.split(" ").filter(w => w.length > 1);
@@ -6002,11 +6010,50 @@ function sbOne(mat, shape, gauge, tension){
 }
 // a hybrid is not one string: mains drive spin, control and precision; crosses drive feel, comfort and lifespan.
 const AXW=[0.75,0.55,0.70,0.70,0.40,0.50,0.45,0.40];   // share attributed to the mains, per axis
-function sbEstimate(mat, shape, gauge, tension, xmat, xshape, xgauge, xtension){
-  const M=sbOne(mat, shape, gauge, tension);
+/* Find a string's lab row by name — longest model-token wins (the 4G-Soft lesson).
+   Searches the built-in table, user-filed rows AND crawler-fed rows alike. */
+function sbLabRowFor(q){
+  q = specNorm(String(q || ""));
+  if (!q) return null;
+  let best = null;
+  NERD.concat(typeof NERDX !== "undefined" ? NERDX : []).forEach(r => {
+    const model = specNorm(String(r[0])), full = specNorm(String(r[1]) + " " + String(r[0]));
+    if (!model) return;
+    const hit = q === full || q === model || q.endsWith(" " + model) || q.includes(full);
+    if (hit && (!best || model.length > best.len)) best = { r, len: model.length };
+  });
+  return best ? best.r : null;
+}
+/* The lab row is what actually separates two co-polys: dynamic stiffness bends
+   arm/feel/power one way and control/precision the other (anchor 205 = the filed
+   Zero), the tension-loss and energy-return columns move longevity and power, and
+   the real profile grades spin instead of the old binary "shaped" flag. Before
+   this, EVERY round-ish co-poly at 1.24\u20131.28 and ~23 kg collapsed onto one
+   identical vector \u2014 the Zero/Slap/Vivo triplet Alexey caught. */
+function sbLabAdjust(vec, row){
+  if (!row) return vec;
+  const v = vec.slice();
+  const S = parseFloat(row[5]);
+  if (isFinite(S)){
+    const d = (205 - S) / 12;                 // softer than Zero => d > 0
+    v[7] += d * 0.9;  v[4] += d * 0.6;  v[1] += d * 0.4;   // arm, feel, power
+    v[2] -= d * 0.5;  v[3] -= d * 0.3;                      // control, precision
+  }
+  const tl = String(row[6] || "").toLowerCase();
+  if (/very low/.test(tl)){ v[6] += 1; v[2] += 0.5; } else if (/high/.test(tl)) v[6] -= 1;
+  const er = String(row[7] || "").toLowerCase();
+  if (/high/.test(er)) v[1] += 0.7;
+  const pf = String(row[3] || "").toLowerCase();
+  if (/hept/.test(pf)) v[0] += 1.5; else if (/hex|square|penta|octa|six/.test(pf)) v[0] += 1;
+  return v;
+}
+function sbEstimate(mat, shape, gauge, tension, xmat, xshape, xgauge, xtension, mName, xName){
   const cap=x=>Math.max(1,Math.min(9,Math.round(x)));   // estimates cap at 9 — a magenta 10 is earned on court
+  let M=sbOne(mat, shape, gauge, tension);
+  M=sbLabAdjust(M, sbLabRowFor(mName));
   if(!xmat) return M.map(cap);                          // full bed: one string does everything
-  const X=sbOne(xmat, xshape, xgauge, xtension);
+  let X=sbOne(xmat, xshape, xgauge, xtension);
+  X=sbLabAdjust(X, sbLabRowFor(xName));
   return M.map((v,i)=>cap(v*AXW[i] + X[i]*(1-AXW[i])));
 }
 function sbSyncCross(){
@@ -6053,11 +6100,23 @@ function sbOpenAddPanel(){
     if (/^\d/.test(g)) set("sb_af_g", g);
     const pr = String(known.row[8]).split(/[–-]/)[0].trim();
     if (/^\d/.test(pr)) set("sb_af_price", pr);
-    set("sb_af_mat", known.row[2]); set("sb_af_shape", known.row[3]);
+    /* the selects hold option VALUES (poly/multi/gut/syngut, round/shaped) — the lab
+       rows hold prose ("co-poly", "hexagonal"). Writing prose into a select silently
+       does nothing, so the material never actually transferred until now. */
+    const matOpt = /gut/.test(known.row[2]) && !/syn/.test(known.row[2]) ? "gut"
+                 : /multi/.test(known.row[2]) ? "multi"
+                 : /syn/.test(known.row[2]) ? "syngut" : "poly";
+    const shapeOpt = /hex|hept|square|penta|octa|six|shaped|edge/i.test(String(known.row[3])) ? "shaped" : "round";
+    set("sb_af_mat", matOpt); set("sb_af_shape", shapeOpt);
+    const lv = document.getElementById("sb_live");
+    if (lv){ lv.className = "rf_live ok"; lv.textContent = "already on file \u2014 specs from the lab table"; }
   } else if(q){
     const parts = q.split(/\s+/);
     document.getElementById("sb_af_brand").value = /^[A-Za-z]/.test(parts[0]) ? parts[0] : "";
     document.getElementById("sb_af_m").value = parts.slice(1).join(" ") || q;
+    /* nothing on file: ask the crawler. The browser cannot fetch a retailer itself
+       (CORS), so /api/stringspecs does it server-side and hands back a lab row. */
+    srfLiveLookup(q);
   }
   document.getElementById("sb_addPanel").classList.add("open");
   document.getElementById("sb_af_m").focus();
@@ -6078,11 +6137,19 @@ function sbAddResearched(){
   const xg=v("sb_af_xg"), xt=v("sb_af_xt");
   const crosses = full ? "full bed" : (v("sb_af_x") || "full bed");
   const isHybrid = !full && crosses!=="full bed";
+  const mFull = brand + " " + mains;
+  const xFull = isHybrid ? ((xbrand ? xbrand + " " : "") + (v("sb_af_x") || "")) : "";
+  const sArr = isHybrid
+      ? sbEstimate(v("sb_af_mat"), v("sb_af_shape"), gauge, tension, v("sb_af_xmat"), v("sb_af_xshape"), xg, xt, mFull, xFull)
+      : sbEstimate(v("sb_af_mat"), v("sb_af_shape"), gauge, tension, undefined, undefined, undefined, undefined, mFull);
+  /* twin detector: identical derived stats never pass silently again — the new row
+     says which bed it mirrors and how to separate them. No fake jitter: invented
+     spread would break the no-medals-without-receipts rule. */
+  const twinOf = beds.find(b => Array.isArray(b.s) && b.s.length === sArr.length && b.s.join() === sArr.join());
   beds.push({ m:brand.toUpperCase()+" "+mains + (tension?" \u00b7 "+tension+" kg":"") + (gauge?" "+gauge:""),
               x:(isHybrid && xbrand ? xbrand.toUpperCase()+" " : "")+crosses + (isHybrid && xg ? " "+xg : ""),
-              s:isHybrid
-                  ? sbEstimate(v("sb_af_mat"), v("sb_af_shape"), gauge, tension, v("sb_af_xmat"), v("sb_af_xshape"), xg, xt)
-                  : sbEstimate(v("sb_af_mat"), v("sb_af_shape"), gauge, tension),
+              s:sArr,
+              twin: twinOf ? (twinOf.m + (twinOf.x && !/full bed/i.test(String(twinOf.x)) ? " \u00d7 " + twinOf.x : "")) : undefined,
               mt:tension, ct:isHybrid?xt:"", paid:v("sb_af_price"), tag, est:ALL });
   // give it a lab row too, so a researched string is not invisible in NEEERDY STUFF
   if (typeof NERDX !== "undefined"){
@@ -6108,6 +6175,70 @@ document.getElementById("sb_specSearch").addEventListener("input", e=>{ sbQ=sbNo
 document.getElementById("sb_specSearch").addEventListener("keydown", e=>{ if(e.key==="Enter") sbRunSpecSearch(); });
 window.sbRunSpecSearch=sbRunSpecSearch; window.sbOpenAddPanel=sbOpenAddPanel;
 window.sbCloseAddPanel=sbCloseAddPanel; window.sbAddResearched=sbAddResearched;
+
+/* ---------- live lookup: the search bar's half of the crawler ----------
+   Calls /api/stringspecs (a Vercel serverless function — see api/stringspecs.js),
+   fills the transfer-specs form from what it finds, and files the result as a lab
+   row so the estimator can tell this string apart from its neighbours right away.
+   Fails quietly: offline, on file://, or with no API deployed, the panel behaves
+   exactly as it did before and the typed values are left alone. */
+window.srfLiveLookup = async (q) => {
+  const lv = document.getElementById("sb_live");
+  const say = (cls, txt) => { if (lv){ lv.className = "rf_live " + cls; lv.innerHTML = txt; } };
+  if (!/^https?:$/.test(location.protocol)){ say("", "not on file \u2014 fill the specs in yourself"); return; }
+  say("busy", "looking this string up\u2026");
+  let d = null;
+  try {
+    const r = await fetch("/api/stringspecs?q=" + encodeURIComponent(q));
+    d = r.ok ? await r.json() : null;
+  } catch(e){ d = null; }
+  if (!d || !d.found){ say("", "nothing found online \u2014 fill the specs in yourself, they file the same way"); return; }
+  const row = d.row, set = (id, v) => { if (v != null && v !== "") setFiled(id, v); };
+  set("sb_af_brand", row[1]);
+  set("sb_af_m", row[0]);
+  const g = String(row[4] || "").split("/")[0].trim();
+  if (/^\d/.test(g)) set("sb_af_g", g);
+  if (row[8]) set("sb_af_price", String(row[8]).split(/[\u2013-]/)[0].trim());
+  const mat = /gut/.test(row[2]) && !/syn/.test(row[2]) ? "gut"
+            : /multi/.test(row[2]) ? "multi" : /syn/.test(row[2]) ? "syngut" : "poly";
+  set("sb_af_mat", mat);
+  set("sb_af_shape", /hex|hept|square|penta|octa|six|shaped|edge/i.test(String(row[3])) ? "shaped" : "round");
+  if (window.srfLabFeed && row[0] && row[1])
+    srfLabFeed([[row[0], row[1], row[2] || "co-poly", row[3] || "round", row[4] || "",
+                 row[5] == null ? "" : row[5], row[6] || "", row[7] || "", row[8] || "", row[9] || ""]]);
+  const src = d.source ? ` \u00b7 <a href="${d.source}" target="_blank" rel="noopener">source</a>` : "";
+  say("ok", (row[5] == null || row[5] === ""
+        ? "found online \u2014 no stiffness published, so the scores stay derived"
+        : "found online \u2014 " + row[5] + " lb/in filed") + src);
+};
+
+/* ---------- lab feed: the crawler's landing pad ----------
+   tools/crawl_strings.mjs writes stringdb.json next to index.html. Every row it
+   carries lands in the SAME lab table that the search autofill, the estimator and
+   the NEEERDY table read — a crawled string files, fills and scores exactly like a
+   hand-curated one. Rows already on file win; the feed never overwrites. */
+window.srfLabFeed = (rows) => {
+  if (!Array.isArray(rows)) return 0;
+  let added = 0;
+  rows.forEach(r => {
+    if (!Array.isArray(r) || r.length < 6 || !r[0] || !r[1]) return;
+    const k = (String(r[1]) + " " + String(r[0])).toLowerCase();
+    const dup = NERD.some(x => (x[1] + " " + x[0]).toLowerCase() === k)
+             || (typeof NERDX !== "undefined" && NERDX.some(x => (x[1] + " " + x[0]).toLowerCase() === k));
+    if (!dup){ NERD.push(r.slice(0, 10)); added++; }
+  });
+  if (added){
+    if (typeof buildNerd === "function") buildNerd();
+    if (typeof sbUpdateMeta === "function") sbUpdateMeta();
+    console.info("[srf] lab feed:", added, "row(s) from stringdb.json");
+  }
+  return added;
+};
+if (/^https?:$/.test(location.protocol))   // file:// cannot fetch and would log noise
+  fetch("stringdb.json", { cache: "no-store" })
+    .then(r => r.ok ? r.json() : null)
+    .then(j => { const rows = j && (Array.isArray(j) ? j : j.rows); if (rows) srfLabFeed(rows); })
+    .catch(() => {});   // no file yet — the built-in table stands alone
 
 
 // ---------- per-member string bench: beds are a shared catalogue, the claiming is personal ----------
@@ -6227,7 +6358,7 @@ function buildGrid(){
     h+=`<div role="cell" class="namecell" data-bi="${b.i}" style="display:flex;flex-direction:column;justify-content:center;padding:5px 4px;line-height:1.25;border-left:2px solid ${col};">
           <span style="font-weight:500;"><span style="color:var(--muted);font-weight:400;font-size:10px;">No. ${b.no}</span> ${cmpBox("string", b.i)}<span class="custname" role="button" tabindex="0" onclick="sbOpen(${b.i})" onkeydown="if(event.key==='Enter'){sbOpen(${b.i});}" onmouseenter="noteHoverIn(noteBed,${b.i},event)" onmouseleave="noteHoverOut()" title="claim this bed — hover for play notes" style="color:var(--bright);">${b.m}</span><button type="button" class="infobtn" aria-label="play notes" onclick="event.stopPropagation();noteBed(${b.i},event)">ⓘ</button>${(sbTop.indexOf(b.i)>=0)?`<span class="medal ${["mG","mS","mB"][sbTop.indexOf(b.i)]}" title="your #${sbTop.indexOf(b.i)+1} suggestion — same as your suggestions">${sbTop.indexOf(b.i)+1}</span>`:""}${b.i === sbBudgetI ? SB_EURO : ""}</span>
           <span style="color:var(--muted);font-size:10px;">× ${b.x}${b.mt?` · ${b.mt}${b.ct?"/"+b.ct:""} kg`:""}</span>${tagChip(b)}
-          ${b.note?`<span class="custchip" title="${String(b.note).replace(/"/g,'&quot;')}">noted</span>`:""}</div>`;
+          ${b.note?`<span class="custchip" title="${String(b.note).replace(/"/g,'&quot;')}">noted</span>`:""}${b.twin?`<span class="custchip" style="color:var(--amber);background:color-mix(in srgb, var(--amber) 14%, transparent);" title="identical derived stats to ${String(b.twin).replace(/"/g,'&quot;')} \u2014 reopen transfer specs and add stiffness, shape or gauge to separate them">twin est.</span>`:""}</div>`;
     h+=`<div role="cell" class="spdcell" style="display:flex;align-items:center;justify-content:center;">${spiderIcon("string", b.i, b.s)}</div>`;
     const pr=bedPrice(b);
     h+=`<div role="cell" class="pricecell" style="display:flex;align-items:center;justify-content:center;">${pr?`<span style="color:var(--amber);font-weight:600;font-size:11.5px;">${pr.own?"":"~"}${pr.v}<span style="font-size:9px;font-weight:400;">€</span></span>`:`<span style="color:var(--fg);opacity:.55;font-size:11px;">—</span>`}</div>`;
@@ -6421,7 +6552,7 @@ function sbMobileCards(rows, total){
     return `<article class="mcard">
       <header>
         <div class="who">
-          <div class="nm">${cmpBox("string", b.i)}${n+1}. ${esc(b.m)}<button type="button" class="infobtn" aria-label="play notes" onclick="noteBed(${b.i},event)">ⓘ</button>${spiderIcon("string", b.i, b.s)}</div>
+          <div class="nm">${cmpBox("string", b.i)}${n+1}. ${esc(b.m)}${b.twin?`<span class="custchip" style="color:var(--amber);background:color-mix(in srgb, var(--amber) 14%, transparent);" title="identical derived stats to ${String(b.twin).replace(/"/g,'&quot;')}">twin est.</span>`:""}<button type="button" class="infobtn" aria-label="play notes" onclick="noteBed(${b.i},event)">ⓘ</button>${spiderIcon("string", b.i, b.s)}</div>
           <div class="sp">\u00d7 ${esc(b.x)}${b.mt?` \u00b7 ${b.mt}${b.ct?"/"+b.ct:""} kg`:""}</div>
         </div>
         <div class="pr">
@@ -6540,7 +6671,13 @@ const NERD=[
   ["Caviar","TOROLINE","co-poly","hexagonal","1.20 / 1.25",200,"mid","low–mid","12–15","8–12 h"],
   ["O-Toro","TOROLINE","co-poly (soft)","round","1.20 / 1.25",185,"low","mid","12–15","10–14 h"],
   ["Enso Pro","TOROLINE","co-poly (soft)","round","1.25",175,"low","mid–high","13–16","10–14 h"],
-  ["Moto","GAMMA","co-poly","heptagonal","1.24 / 1.29",195,"low","low","6–9","10–14 h"]
+  ["Moto","GAMMA","co-poly","heptagonal","1.24 / 1.29",195,"low","low","6–9","10–14 h"],
+  /* ReString family completed 09.08.2026 — stiffness figures are DERIVED anchors
+     relative to the filed Zero (205) and Sync (200), from maker + review reads:
+     Slap = Zero's shape, softer/more controlled, notch-resistant; Vivo = recycled
+     RPET hexagonal that the maker itself says "plays slightly firmer". */
+  ["Slap","RESTRING","co-poly","hexagonal","1.23 / 1.28",195,"very low (notch-resistant)","low\u2013mid","15\u201318","12\u201316 h"],
+  ["Vivo","RESTRING","co-poly (recycled)","hexagonal","1.23 / 1.28",212,"very low (maker-rated)","mid","14\u201317","10\u201314 h"],
 ];
 const NHEAD=["string","brand","material","profile","gauges (mm)","stiffness<br>lb/in","tension<br>loss","energy<br>return","€ / set","lifespan"];
 let nerdSort=5, nerdDesc=false;   // default: softest first
@@ -6675,7 +6812,10 @@ window.SRF.bedTech = (i) => { const b = beds[i]; if(!b) return null;
            priceV: p? p.v : null, own: p? !!p.own : false,
            hybrid: !/full bed/i.test(b.x||"") };
 };
-window.SRF.sbEstimate = (m,s,g,t,xm,xs,xg,xt) => sbEstimate(m,s,g,t,xm,xs,xg,xt);
+/* names matter now: the lab row is what separates two co-polys, so the bridge must
+   carry mName/xName through or every external caller falls back to the coarse model */
+window.SRF.sbEstimate = (m,s,g,t,xm,xs,xg,xt,mn,xn) => sbEstimate(m,s,g,t,xm,xs,xg,xt,mn,xn);
+window.SRF.sbLabRowFor = (q) => sbLabRowFor(q);
 window.SRF.strings = () => NERD.map(r=>({ name:r[0], brand:r[1], label:r[1]+" "+r[0], material:r[2], gauges:r[4] }));
 
 
@@ -8567,7 +8707,7 @@ window.midPaint = (skipSliderSync) => {
     return `<div class="mid_pc${mi === 0 ? " gold" : ""}" data-k="${esc(String(x.bed.m) + String(x.bed.x || ""))}">` +
       `<span class="mid_rk">#${idx + 1}</span> ` +
       (mi >= 0 ? `<span class="medal ${["mG","mS","mB"][mi]}">${mi + 1}</span> ` : "") +
-      `<div class="nm" style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;">${cmpBox("string", cid)}<span style="min-width:0;">${bName(x.bed)}</span>` +
+      `<div class="nm" style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;">${cmpBox("string", cid)}<span style="min-width:0;">${bName(x.bed)}</span>${x.bed.twin?`<span class="custchip" style="color:var(--amber);background:color-mix(in srgb, var(--amber) 14%, transparent);" title="identical derived stats to ${String(x.bed.twin).replace(/"/g,'&quot;')}">twin est.</span>`:""}` +
       (band ? `<span class="lvlflag ${band.cls}" title="from your answers">${band.txt}</span>` : "") +
       `<span style="margin-left:auto;">${spiderIcon("string", cid, x.bed.s)}</span></div>` +
       `<div class="sp">${x.tech.hybrid ? "hybrid" : "full bed"}${x.tech.priceV != null ? ` \u00b7 ~${x.tech.priceV}\u20ac` : ""}${x.tech.stiff != null ? ` \u00b7 ~${Math.round(x.tech.stiff)} lb/in` : ""} \u00b7 match ${x.sc.toFixed(1)}/10 \u00b7 demand ${x.bed.demand.toFixed(0)}/10</div>` +
