@@ -16,6 +16,11 @@
      explicitly so the ⓘ, ▲ and ↗ glyphs cannot drag a whole run into a fallback face. */
   body{
     background:var(--page); margin:0; padding:24px; display:flex; justify-content:center;
+    /* the root text colour. Without it every element that never sets `color` itself fell
+       back to the browser default BLACK — invisible on a dark canvas. It only showed up
+       in the corners nobody styled explicitly: the "theme" label, the research-panel
+       labels and hints, the pairing name in intermediate mode. */
+    color:var(--fg);
     font-family:system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text",
                 "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial,
                 sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji";
@@ -31,11 +36,11 @@
   }
   .wrap{width:100%;max-width:1220px;}
   /* signature a³ magenta (Klein Magenta) sliders */
-  .a3-slider{-webkit-appearance:none;appearance:none;height:4px;border-radius:3px;background:color-mix(in srgb, var(--fg) 18%, transparent);outline:none;cursor:pointer;}
-  .a3-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:14px;height:14px;border-radius:50%;background:var(--magenta);border:2px solid var(--card);box-shadow:0 0 0 1px var(--magenta),0 0 7px color-mix(in srgb, var(--magenta) 60%, transparent);cursor:pointer;}
-  .a3-slider::-moz-range-thumb{width:12px;height:12px;border-radius:50%;background:var(--magenta);border:2px solid var(--card);box-shadow:0 0 7px color-mix(in srgb, var(--magenta) 60%, transparent);cursor:pointer;}
-  .a3-slider::-moz-range-progress{background:var(--magenta);height:4px;border-radius:3px;}
-  .a3-slider::-moz-range-track{background:color-mix(in srgb, var(--fg) 18%, transparent);height:4px;border-radius:3px;}
+  .a3-slider{-webkit-appearance:none;appearance:none;height:7px;border-radius:4px;background:color-mix(in srgb, var(--fg) 30%, transparent);outline:none;cursor:pointer;}
+  .a3-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:17px;height:17px;border-radius:50%;background:var(--magenta);border:2px solid var(--card);box-shadow:0 0 0 1px var(--magenta),0 0 7px color-mix(in srgb, var(--magenta) 60%, transparent);cursor:pointer;}
+  .a3-slider::-moz-range-thumb{width:15px;height:15px;border-radius:50%;background:var(--magenta);border:2px solid var(--card);box-shadow:0 0 7px color-mix(in srgb, var(--magenta) 60%, transparent);cursor:pointer;}
+  .a3-slider::-moz-range-progress{background:var(--magenta);height:7px;border-radius:4px;}
+  .a3-slider::-moz-range-track{background:color-mix(in srgb, var(--fg) 30%, transparent);height:7px;border-radius:4px;}
   .lnk{transition:color .15s ease;}
   .lnk:hover{text-decoration:underline;color:var(--cyan);}
   .soc{display:inline-flex;opacity:0.9;transition:opacity .15s ease, transform .15s ease;}
@@ -66,7 +71,7 @@
     will-change: opacity, transform;
   }
   .hdr.on{ color:var(--cyan); font-weight:600; }
-  .hdr.diff{ color:var(--magenta); font-weight:500; }
+  .hdr.diff{ color:var(--magenta-fg,var(--magenta)); font-weight:500; }
   .hdr.price{ color:var(--amber); font-weight:500; }
   .hdr.price::after{ background-image:linear-gradient(100deg, transparent 40%, rgba(255,255,255,0.92) 50%, transparent 60%); }
   .hdr.price:hover{ color:var(--amber); text-shadow:0 0 9px color-mix(in srgb, var(--amber) 90%, transparent); }
@@ -75,7 +80,7 @@
     color:var(--cyan); text-shadow:0 0 9px color-mix(in srgb, var(--cyan) 80%, transparent);
     animation: pulseHard .42s ease-in-out infinite;
   }
-  .hdr.diff:hover{ color:var(--magenta); text-shadow:0 0 9px color-mix(in srgb, var(--magenta) 90%, transparent); }
+  .hdr.diff:hover{ color:var(--magenta-fg,var(--magenta)); text-shadow:0 0 9px color-mix(in srgb, var(--magenta) 90%, transparent); }
   /* gold must win over hover + on */
   .hdr:active, .hdr.gold, .hdr.diff:active, .hdr.diff.gold{
     color:var(--gold) !important;
@@ -85,7 +90,7 @@
 
   /* reset button */
   .resetbtn{
-    background:transparent; border:1px solid var(--magenta); color:var(--magenta);
+    background:transparent; border:1px solid var(--magenta); color:var(--magenta-fg,var(--magenta));
     border-radius:4px; padding:3px 10px; font-size:11px; font-family:inherit; cursor:pointer;
     
     transition: color .18s ease, border-color .18s ease, box-shadow .18s ease;
@@ -126,7 +131,7 @@
   }
   .wv.gold{ color:var(--gold) !important; text-shadow:0 0 10px color-mix(in srgb, var(--gold) 90%, transparent); }
   .slabel{ transition:color .18s ease; }
-  .slabel.gold{ color:var(--gold); }
+  .slabel.gold{ color:var(--gold); text-shadow:0 0 10px color-mix(in srgb, var(--gold) 90%, transparent); }
 
   @media (prefers-reduced-motion: reduce){
     .hdr, .resetbtn, .a3-slider::-webkit-slider-thumb, .a3-slider::-moz-range-thumb{ animation:none !important; }
@@ -244,7 +249,7 @@
   .sbhdr{cursor:pointer;text-align:center;padding:4px 2px;color:var(--muted);font-weight:400;position:relative;
     transition:color .18s ease,text-shadow .18s ease;}
   .sbhdr.on{color:var(--cyan);font-weight:600;}
-  .sbhdr.idxh{color:var(--magenta);font-weight:500;}
+  .sbhdr.idxh{color:var(--magenta-fg,var(--magenta));font-weight:500;}
   .sbhdr::after{content:attr(data-label);position:absolute;inset:0;pointer-events:none;padding:inherit;text-align:inherit;
     font:inherit;font-weight:inherit;letter-spacing:inherit;line-height:inherit;
     background-image:linear-gradient(100deg,transparent 40%,rgba(255,255,255,0.92) 50%,transparent 60%);
@@ -253,11 +258,11 @@
     animation-delay:var(--d,0s);}
   .sbhdr.idxh::after{background-image:linear-gradient(100deg,transparent 40%,rgba(255,255,255,0.92) 50%,transparent 60%);}
   .sbhdr:hover{color:var(--cyan);text-shadow:0 0 9px color-mix(in srgb, var(--cyan) 80%, transparent);animation:pulseHard .42s ease-in-out infinite;}
-  .sbhdr.idxh:hover{color:var(--magenta);text-shadow:0 0 9px color-mix(in srgb, var(--magenta) 90%, transparent);}
+  .sbhdr.idxh:hover{color:var(--magenta-fg,var(--magenta));text-shadow:0 0 9px color-mix(in srgb, var(--magenta) 90%, transparent);}
   .sbhdr:hover::after{ animation:gloss 1.15s linear 1; }
   .sbhdr:active,.sbhdr.gold{color:var(--gold)!important;text-shadow:0 0 12px color-mix(in srgb, var(--gold) 95%, transparent)!important;
     animation:pulseGold .26s ease-in-out infinite!important;}
-  .sbbtn{position:relative;background:transparent;border:1px solid var(--magenta);color:var(--magenta);border-radius:999px;
+  .sbbtn{position:relative;background:transparent;border:1px solid var(--magenta);color:var(--magenta-fg,var(--magenta));border-radius:999px;
     padding:3px 10px;font-size:11px;font-family:inherit;cursor:pointer;
     transition:color .18s ease,border-color .18s ease,box-shadow .18s ease;}
   .sbbtn::after{content:attr(data-label);position:absolute;inset:0;pointer-events:none;display:flex;align-items:center;
@@ -270,7 +275,9 @@
   .sbbtn:hover::after,.sbbtn:active::after,.sbbtn.gold::after{animation:none;opacity:0;}
   .sbbtn:active,.sbbtn.gold{color:var(--gold)!important;border-color:var(--gold)!important;
     box-shadow:0 0 16px color-mix(in srgb, var(--gold) 75%, transparent)!important;animation:pulseGold .26s ease-in-out infinite!important;}
-  .est{color:var(--amber);font-size:9px;vertical-align:super;cursor:help;}
+  /* the dagger rides on heatmap cells whose colour changes per value — a fixed amber
+     hit 1.0:1 on the light end of the ramp, so it inherits the cell colour instead */
+  .est{color:currentColor;opacity:.7;font-weight:700;font-size:9px;vertical-align:super;cursor:help;}
   .deptrule{margin:34px 0 18px;border:none;border-top:1px solid color-mix(in srgb, var(--fg) 15%, transparent);}
   .depthead{font-size:15px;font-weight:500;letter-spacing:0.02em;color:var(--bright);margin-bottom:4px;}
   .deptsub{font-size:11.5px;color:var(--muted);margin-bottom:14px;}
@@ -297,7 +304,7 @@
   .mgrid input,.mgrid select{background:var(--field);border:1px solid #1c3a3b;color:var(--bright);border-radius:6px;
     padding:7px 9px;font-family:inherit;font-size:12px;outline:none;transition:border-color .15s ease;}
   .mgrid input:focus,.mgrid select:focus{border-color:var(--cyan);}
-  .mgrid input.bad{border-color:var(--magenta);}
+  .mgrid input.bad{border-color:var(--magenta-fg,var(--magenta));}
   .mrow{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:11.5px;color:var(--soft);}
   .mrow input[type=checkbox]{accent-color:var(--cyan);width:14px;height:14px;cursor:pointer;}
   .mfoot{display:flex;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap;}
@@ -305,13 +312,31 @@
     font-family:inherit;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;}
   .mfoot .go2:hover{filter:brightness(1.1);}
   .mnote{font-size:10.5px;color:var(--muted);margin-left:auto;max-width:44ch;line-height:1.5;}
-  .merr{color:var(--magenta);font-size:11px;margin-top:9px;min-height:14px;}
+  .merr{color:var(--magenta-fg,var(--magenta));font-size:11px;margin-top:9px;min-height:14px;}
   .preview{margin-top:12px;padding:9px 12px;background:var(--field);border:1px dashed color-mix(in srgb, var(--cyan) 35%, transparent);border-radius:8px;font-size:11.5px;color:var(--soft);}
   .preview b{color:var(--cyan);}
 
   /* ---------- customization + chatroom ---------- */
   .custname{cursor:pointer;border-bottom:1px dotted color-mix(in srgb, var(--cyan) 35%, transparent);}
   .custname:hover{color:var(--cyan);}
+  /* two different actions on every frame: "customize" (magenta) = physical mods that
+     re-derive the specs; "my feel" (cyan) = re-scoring the categories by hand. */
+  .feelbtn{ border-color:color-mix(in srgb, var(--cyan) 45%, transparent) !important;
+            color:var(--cyan) !important; }
+  .feelbtn:hover{ background:color-mix(in srgb, var(--cyan) 18%, transparent) !important;
+            color:var(--bright) !important; }
+  .feelchip{ background:color-mix(in srgb, var(--gold) 16%, transparent) !important;
+            color:var(--gold) !important; border-color:color-mix(in srgb, var(--gold) 40%, transparent) !important; }
+  /* the tiny stock value riding on a re-scored cell — the stock stats stay visible
+     right next to the revisited number, as asked */
+  .stckv{ position:absolute; right:2px; bottom:1px; font-style:normal; font-weight:400;
+          font-size:7.5px; line-height:1; opacity:.75; }
+  .stcknote{ font-size:9px; color:var(--muted); letter-spacing:.03em; white-space:nowrap; }
+  .fp_row{ display:flex; align-items:center; gap:8px; font-size:11px; color:var(--soft); margin:3px 0; }
+  .fp_row .slabel{ width:118px; }
+  .fp_row .wv{ width:24px; text-align:right; color:var(--bright); }
+  .fp_row .fp_stock{ width:58px; font-size:9.5px; color:var(--muted); }
+  .rowact{ display:inline-flex; gap:4px; margin-left:6px; vertical-align:middle; }
   .custchip{display:inline-block;font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:color-mix(in srgb, var(--cyan) 16%, transparent);
     color:var(--cyan);padding:1px 6px;border-radius:3px;margin-left:5px;cursor:help;}
   .cpanel{display:none;background:var(--panel);border:1px solid var(--cyan);border-radius:10px;padding:16px 18px;margin:0 0 14px;}
@@ -325,7 +350,7 @@
   .c_advl b{ color:var(--bright); font-weight:600; }
   .c_advn{ font-size:10.5px; color:var(--muted); margin-top:6px; line-height:1.55; }
   .c_advn b{ color:var(--cyan); font-weight:600; }
-  .c_ph{ font-size:9.5px; letter-spacing:.09em; text-transform:uppercase; color:var(--magenta); margin:6px 0 8px; }
+  .c_ph{ font-size:9.5px; letter-spacing:.09em; text-transform:uppercase; color:var(--magenta-fg,var(--magenta)); margin:6px 0 8px; }
   .c_sprow{ display:flex; gap:26px; flex-wrap:wrap; align-items:flex-start; margin-bottom:10px; }
   .c_spcol{ display:flex; flex-direction:column; align-items:center; gap:6px; }
   .c_pt{ font-size:10px; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; }
@@ -361,11 +386,11 @@
   .post .ph{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;font-size:11px;margin-bottom:6px;}
   .post .pa{color:var(--bright);font-weight:600;font-size:12px;}
   .post .pm{color:var(--muted);}
-  .post .pr{background:color-mix(in srgb, var(--magenta) 14%, transparent);color:var(--magenta);border-radius:999px;padding:1px 8px;font-size:10px;font-weight:600;}
+  .post .pr{background:color-mix(in srgb, var(--magenta) 14%, transparent);color:var(--magenta-fg,var(--magenta));border-radius:999px;padding:1px 8px;font-size:10px;font-weight:600;}
   .post .pt{color:var(--fg);font-size:12.5px;line-height:1.55;white-space:pre-wrap;}
   .post img{max-width:100%;border-radius:8px;margin-top:9px;border:1px solid color-mix(in srgb, var(--fg) 12%, transparent);}
   .post .del{margin-left:auto;background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer;font-family:inherit;}
-  .post .del:hover{color:var(--magenta);}
+  .post .del:hover{color:var(--magenta-fg,var(--magenta));}
   .empty{color:var(--muted);font-size:12px;padding:18px 4px;}
 
   /* ---------- home club + map ---------- */
@@ -399,7 +424,7 @@
   .bchip:active{border-color:var(--gold);color:var(--gold);}
   .bchip.on:active{background:var(--gold);color:#241a00;}
   .bclear{background:none;border:none;color:var(--muted);font-size:10.5px;cursor:pointer;font-family:inherit;text-decoration:underline;}
-  .bclear:hover{color:var(--magenta);}
+  .bclear:hover{color:var(--magenta-fg,var(--magenta));}
   .bsum{color:var(--cyan);font-weight:600;}
 
   /* ---------- perfect 10: gliding light through the glyphs, never a box sweep ---------- */
@@ -424,8 +449,8 @@
   .dirs b{ font-size:7px; cursor:pointer; opacity:.35; color:var(--fg); transition:opacity .15s ease, color .15s ease, transform .12s ease; }
   .dirs b:hover{ opacity:1; color:var(--cyan); transform:scale(1.35); }
   .dirs b.on{ opacity:1; color:var(--cyan); }
-  .hdr.low .dirs b.on, .sbhdr.low .dirs b.on{ color:var(--magenta); }
-  .hdr.low, .sbhdr.low{ color:var(--magenta) !important; }
+  .hdr.low .dirs b.on, .sbhdr.low .dirs b.on{ color:var(--magenta-fg,var(--magenta)); }
+  .hdr.low, .sbhdr.low{ color:var(--magenta-fg,var(--magenta)) !important; }
 
   /* Animation policy: nothing loops on its own. Gloss is a response to the pointer,
      and the perfect-10 sheen only fires when its row is hovered — 21 cells shimmering
@@ -440,7 +465,7 @@
                 cursor:pointer; opacity:.35; color:var(--fg); transition:opacity .15s ease,color .15s ease,transform .12s ease; }
   .dirs button:hover{ opacity:1; color:var(--cyan); transform:scale(1.35); }
   .dirs button.on{ opacity:1; color:var(--cyan); }
-  .hdr.low .dirs button.on, .sbhdr.low .dirs button.on{ color:var(--magenta); }
+  .hdr.low .dirs button.on, .sbhdr.low .dirs button.on{ color:var(--magenta-fg,var(--magenta)); }
   :focus-visible{ outline:2px solid var(--cyan); outline-offset:2px; border-radius:3px; }
   .hdr:focus-visible, .sbhdr:focus-visible, .custname:focus-visible{ outline:2px solid var(--cyan); outline-offset:1px; }
   .skip{ position:absolute; left:-9999px; }
@@ -498,7 +523,7 @@
   .introcard::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:4px;
     background:linear-gradient(180deg, var(--magenta), var(--cyan)); }
   .in_head{ display:flex; align-items:baseline; gap:10px; margin-bottom:9px; }
-  .in_title{ font-size:13px; font-weight:700; color:var(--magenta); letter-spacing:.02em;
+  .in_title{ font-size:13px; font-weight:700; color:var(--magenta-fg,var(--magenta)); letter-spacing:.02em;
              text-shadow:0 0 14px color-mix(in srgb, var(--magenta) 45%, transparent); }
   .in_sub{ font-size:10.5px; color:var(--muted); flex:1; }
   .in_x{ background:none; border:none; color:var(--fg); opacity:.5; font-size:17px; line-height:1;
@@ -512,7 +537,7 @@
           cursor:pointer; transition:color .13s ease, border-color .13s ease, background .13s ease; }
   .ichip:hover{ color:var(--cyan); border-color:var(--cyan); }
   .ichip.on{ background:color-mix(in srgb, var(--magenta) 20%, transparent); color:var(--bright);
-             border-color:var(--magenta); font-weight:600; }
+             border-color:var(--magenta-fg,var(--magenta)); font-weight:600; }
   .in_act{ margin-top:9px; }
   .in_note{ font-size:10.5px; color:var(--muted); }
   .in_summary{ display:flex; align-items:center; gap:9px; flex-wrap:wrap; font-size:11px; color:var(--soft); }
@@ -568,7 +593,7 @@
   /* pro mode never hides a row — it labels the ones outside the player's declared band */
   .lvlflag{ font-size:8.5px; letter-spacing:.07em; text-transform:uppercase; padding:1px 5px;
             border-radius:3px; margin-left:5px; white-space:nowrap; vertical-align:middle; }
-  .lvlflag.over{ background:color-mix(in srgb, var(--signal) 20%, transparent); color:var(--signal); }
+  .lvlflag.over{ background:color-mix(in srgb, var(--signal) 20%, transparent); color:var(--signal-fg,var(--signal)); }
   .lvlflag.under{ background:color-mix(in srgb, var(--fg) 10%, transparent); color:var(--muted); }
 
   /* ---------- frame ⇄ string calibrator ---------- */
@@ -595,7 +620,7 @@
   .cal_why{ display:flex; flex-direction:column; gap:3px; }
   .cal_why span{ font-size:10.5px; line-height:1.45; color:var(--soft); }
   .cal_why .plus{ color:var(--cyan); }
-  .cal_why .minus{ color:var(--signal); }
+  .cal_why .minus{ color:var(--signal-fg,var(--signal)); }
   .cal_pod{ cursor:pointer; transition:border-color .15s ease, transform .12s ease; }
   .cal_pod:hover{ transform:translateY(-1px); border-color:color-mix(in srgb, var(--cyan) 55%, transparent); }
   .cal_pod.reviewing{ border-color:var(--cyan); box-shadow:0 0 0 1px var(--cyan) inset; }
@@ -617,7 +642,7 @@
   .crv_ledger{ display:flex; flex-direction:column; gap:4px; margin-top:2px; }
   .crv_ledger span{ font-size:11px; line-height:1.5; color:var(--soft); }
   .crv_ledger .plus{ color:var(--cyan); }
-  .crv_ledger .minus{ color:var(--signal); }
+  .crv_ledger .minus{ color:var(--signal-fg,var(--signal)); }
   .crv_ledger i{ color:var(--muted); font-style:normal; font-size:10px; }
   .crv_note{ margin-top:11px; font-size:10px; color:var(--muted); line-height:1.5; }
   .ghead{ cursor:pointer; user-select:none; display:flex; align-items:center; gap:7px; }
@@ -658,7 +683,7 @@
   .mid_slwrap{ display:grid; grid-template-columns:1fr 1fr; gap:8px 26px; margin-top:12px; }
   .mid_slh{ font-size:10px; letter-spacing:.09em; text-transform:uppercase; color:var(--cyan); margin-bottom:4px; }
   .custbtn{ font-size:8.5px; letter-spacing:.07em; text-transform:uppercase; cursor:pointer;
-            border:1px solid color-mix(in srgb, var(--magenta) 45%, transparent); color:var(--magenta);
+            border:1px solid color-mix(in srgb, var(--magenta) 45%, transparent); color:var(--magenta-fg,var(--magenta));
             background:transparent; border-radius:5px; padding:1px 6px; margin-left:5px; line-height:1.5; }
   .custbtn:hover{ background:color-mix(in srgb, var(--magenta) 18%, transparent); color:var(--bright); }
   .mid_srch{ display:flex; gap:9px; align-items:center; background:var(--field); border:1px solid var(--slate);
@@ -678,6 +703,10 @@
            border-radius:10px; padding:9px 12px; margin:6px 0; font-size:11.5px; }
   .mid_su .rsn{ display:block; font-size:10px; color:var(--muted); }
   .mid_su .sc{ margin-left:auto; color:var(--gold); font-weight:700; white-space:nowrap; }
+  .mid_su .su_lbl{ display:block; font-size:8.5px; letter-spacing:.11em; text-transform:uppercase; color:var(--muted); }
+  .mid_su .sc .su_pr{ display:block; font-style:normal; font-size:9px; font-weight:400; color:var(--muted); text-align:right; }
+  .win_why{ font-size:9.5px; color:var(--muted); line-height:1.45; margin-top:4px; }
+  .win_why b{ color:var(--soft); font-weight:600; }
   .rank_note{ font-size:10.5px; color:var(--muted); line-height:1.5; border-left:2px solid var(--cyan);
               padding:4px 9px; margin:2px 0 8px; background:color-mix(in srgb, var(--cyan) 6%, transparent); border-radius:0 6px 6px 0; }
   .rank_note b{ color:var(--fg); font-weight:600; }
@@ -702,13 +731,13 @@
   .ld_mode:hover{ border-color:var(--cyan); transform:translateY(-2px);
                   box-shadow:0 10px 26px color-mix(in srgb, var(--cyan) 18%, transparent); }
   .ld_mode.pro{ border-color:color-mix(in srgb, var(--magenta) 40%, transparent); }
-  .ld_mode.pro:hover{ border-color:var(--magenta); box-shadow:0 10px 26px color-mix(in srgb, var(--magenta) 20%, transparent); }
+  .ld_mode.pro:hover{ border-color:var(--magenta-fg,var(--magenta)); box-shadow:0 10px 26px color-mix(in srgb, var(--magenta) 20%, transparent); }
   .ld_mtag{ font-size:9.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--cyan); }
-  .ld_mode.pro .ld_mtag{ color:var(--magenta); }
+  .ld_mode.pro .ld_mtag{ color:var(--magenta-fg,var(--magenta)); }
   .ld_mtitle{ font-size:15px; font-weight:700; color:var(--bright); }
   .ld_mdesc{ font-size:11.5px; line-height:1.6; color:var(--soft); }
   .ld_mgo{ font-size:11px; color:var(--cyan); margin-top:5px; }
-  .ld_mode.pro .ld_mgo{ color:var(--magenta); }
+  .ld_mode.pro .ld_mgo{ color:var(--magenta-fg,var(--magenta)); }
   .ld_foot{ display:flex; gap:22px; align-items:flex-end; flex-wrap:wrap;
             border-top:1px solid color-mix(in srgb, var(--fg) 12%, transparent); padding-top:19px; }
   .ld_agentur{ flex:1; min-width:250px; margin-left:auto; text-align:right; }
@@ -733,6 +762,109 @@
   .ez_credit .cred_ed{ font-size:9.5px; color:var(--bright); }
   .ez_credit .cred_by{ font-size:9.5px; color:var(--soft); }
   .ez_credit .cred_url{ font-size:9.5px; color:var(--cyan); text-decoration:none; }
+  /* the ladder is easy -> intermediate -> pro; pro stays reachable but is no longer
+     the default next step out of easy mode */
+  .ez_skip{ display:block; margin-top:9px; font-size:10.5px; color:var(--muted); }
+  .ez_skip a{ color:var(--soft); text-decoration:underline; }
+  .ez_skip a:hover{ color:var(--cyan); }
+  /* pro-mode invitation at the end of intermediate. House rules apply: ONE thin border,
+     calm at rest, the pro identity colour (magenta) answers on hover — never shouts idle.
+     Same ladder logic as easy -> intermediate, one rung up. */
+  .mid_proinv{ margin-top:18px; border:1px solid color-mix(in srgb, var(--fg) 16%, transparent);
+               border-radius:10px; padding:15px 16px; background:var(--card2);
+               transition:border-color .25s ease, box-shadow .25s ease; }
+  .mid_proinv:hover{ border-color:color-mix(in srgb, var(--magenta) 55%, transparent);
+               box-shadow:0 0 16px color-mix(in srgb, var(--magenta) 14%, transparent); }
+  .mpi_kick{ font-size:9.5px; letter-spacing:.12em; text-transform:uppercase;
+             color:var(--magenta-fg,var(--magenta)); }
+  .mpi_title{ font-size:14.5px; font-weight:600; color:var(--bright); margin:4px 0 5px; }
+  .mpi_body{ font-size:11.5px; color:var(--soft); line-height:1.65; max-width:66ch; }
+  .mpi_body b{ color:var(--fg); font-weight:600; }
+  .mpi_row{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-top:11px; }
+  .mpi_btn{ background:transparent; border:1px solid var(--magenta);
+            color:var(--magenta-fg,var(--magenta)); border-radius:999px; padding:8px 16px;
+            font-family:inherit; font-size:11.5px; letter-spacing:.04em; cursor:pointer;
+            transition:background .18s ease, color .18s ease, box-shadow .18s ease; }
+  .mpi_btn:hover{ background:var(--magenta); color:var(--card);
+            box-shadow:0 0 14px color-mix(in srgb, var(--magenta) 45%, transparent); }
+  .mpi_fine{ font-size:9.5px; color:var(--muted); font-style:italic; }
+  @media (max-width:760px){
+    .mpi_row{ align-items:stretch; }
+    .mpi_btn{ width:100%; text-align:center; padding:12px 16px; }
+    .mpi_fine{ width:100%; }
+  }
+  /* ---------- mode-transition intro ----------
+     A centred window shown when hopping between easy / intermediate / pro (any
+     direction). The bezel carries a slow pulsating halo in the TARGET mode's identity
+     colour — sanctioned motion: this overlay IS the interaction. It waits for a click;
+     nothing auto-dismisses, so it stays as long as the reader needs. Landing is exempt:
+     its three cards already are the intro. */
+  .srfintro{ position:fixed; inset:0; z-index:9000; display:flex; align-items:center;
+             justify-content:center; padding:22px; cursor:pointer;
+             background:color-mix(in srgb, var(--page) 72%, transparent);
+             backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px);
+             animation:introFade .3s ease; }
+  @keyframes introFade{ from{ opacity:0; } to{ opacity:1; } }
+  .srfintro_card{ max-width:430px; width:100%; background:var(--card);
+             border:1px solid var(--intro-c); border-radius:13px; padding:22px 24px 18px;
+             animation:introHalo 3.4s ease-in-out infinite; }
+  @keyframes introHalo{
+    0%,100%{ box-shadow:0 0 12px color-mix(in srgb, var(--intro-c) 22%, transparent),
+                        0 0 34px color-mix(in srgb, var(--intro-c) 10%, transparent); }
+    50%    { box-shadow:0 0 26px color-mix(in srgb, var(--intro-c) 52%, transparent),
+                        0 0 74px color-mix(in srgb, var(--intro-c) 26%, transparent); } }
+  @media (prefers-reduced-motion: reduce){
+    .srfintro{ animation:none; }
+    .srfintro_card{ animation:none;
+             box-shadow:0 0 22px color-mix(in srgb, var(--intro-c) 40%, transparent); } }
+  .srfintro_kick{ font-size:9.5px; letter-spacing:.13em; text-transform:uppercase;
+             color:var(--intro-fg,var(--intro-c)); }
+  .srfintro_title{ font-size:19px; color:var(--bright); margin:6px 0 3px; }
+  .srfintro_tag{ font-size:11px; color:var(--intro-fg,var(--intro-c)); margin-bottom:9px; }
+  .srfintro_body{ font-size:12px; color:var(--soft); line-height:1.7; }
+  .srfintro_body b{ color:var(--fg); font-weight:600; }
+  .srfintro_hint{ margin-top:15px; font-size:9.5px; letter-spacing:.07em;
+             text-transform:uppercase; color:var(--muted); text-align:center; }
+  .srfintro_skip{ position:absolute; left:16px; bottom:12px; font-size:9.5px;
+             color:var(--muted); text-decoration:underline; cursor:pointer; }
+  .srfintro_skip:hover{ color:var(--soft); }
+  @media (max-width:760px){ .srfintro_card{ padding:18px 17px 14px; } }
+  /* row-limit bar: every heatmap opens at the top 5 and expands on request.
+     Long benches used to dump 38 rows onto a phone screen before the first tap. */
+  .limbar{ display:flex; align-items:center; gap:7px; flex-wrap:wrap;
+           margin:9px 0 2px; padding-top:8px;
+           border-top:1px solid color-mix(in srgb, var(--fg) 12%, transparent); }
+  .limcount{ font-size:10.5px; color:var(--muted); margin-right:auto; letter-spacing:.03em; }
+  .limbtn{ background:var(--field); color:var(--soft); cursor:pointer;
+           border:1px solid color-mix(in srgb, var(--fg) 22%, transparent);
+           border-radius:999px; padding:5px 11px; font-size:10.5px; letter-spacing:.03em;
+           font-family:inherit; transition:color .15s ease, border-color .15s ease, background .15s ease; }
+  .limbtn:hover{ color:var(--bright); border-color:var(--cyan); }
+  .limbtn.on{ color:var(--card); background:var(--cyan); border-color:var(--cyan); }
+  /* Touch targets. Measured on a 390px phone the primary nav was 49x21 (mode buttons)
+     and 67x25 (HOME), against Apple's 44pt minimum — the two controls every visitor
+     needs first were the hardest to hit.
+     First attempt used invisible ::after overlays; that was WRONG and measurably so —
+     a 44px box around a 14px social icon reached down over the mode button and stole
+     its taps. Real padding instead: the box is honest, siblings lay out around it, and
+     nothing can swallow a neighbour. */
+  @media (pointer:coarse), (max-width:760px){
+    .modeseg .modebtn{ padding:12px 15px; font-size:11.5px; }
+    .mcap{ padding:11px 17px; }
+    #themeBtn.thememain{ padding:11px 14px; }
+    /* pro mode keeps its socials outside .ez_socbox, so these are deliberately
+       generic — otherwise the same icons stay 14px there while easy and mid get fixed */
+    .ez_socbox, .soc_row{ gap:15px; }
+    .soc{ padding:9px; }
+    .soc svg{ width:18px; height:18px; }
+    a.lnk{ display:inline-block; padding:9px 4px; }
+    /* the heatmap ⓘ sits inside dense data rows — a full 44px would break the table,
+       so it gets as much as the row can carry rather than the guideline number */
+    .infobtn{ padding:6px 8px; }
+  }
+    .limcount{ width:100%; margin:0 0 3px; }
+    .limbtn{ flex:1; min-width:88px; text-align:center; padding:8px 6px; font-size:11px; }
+  }
   .ez_socbox{ display:flex; align-items:center; gap:8px; }
   .ez_socbox .soc svg{ width:14px; height:14px; }
   .ez_card{ background:var(--card); border-radius:13px; padding:17px 19px; margin-bottom:15px; }
@@ -822,7 +954,7 @@
          background:var(--field); border:1px solid color-mix(in srgb, var(--fg) 18%, transparent);
          color:var(--fg); border-radius:999px; padding:9px 13px; font-family:inherit; font-size:12px; cursor:pointer; }
   .crit.on{ border-color:var(--cyan); color:var(--cyan); }
-  .crit.low{ border-color:var(--magenta); color:var(--magenta); }
+  .crit.low{ border-color:var(--magenta-fg,var(--magenta)); color:var(--magenta-fg,var(--magenta)); }
   .crit i{ font-style:normal; font-size:10px; opacity:.8; }
   /* @mobile-block id=cards scope=mobile-only promote=maybe
      Card list shown under 820px. Markup comes from mobileCards()/sbMobileCards()
@@ -902,7 +1034,7 @@
   @media (max-width:820px){
   }
 
-  .mcard .dv{ font-size:12px; font-weight:700; color:var(--magenta);
+  .mcard .dv{ font-size:12px; font-weight:700; color:var(--magenta-fg,var(--magenta));
               background:color-mix(in srgb, var(--magenta) 16%, transparent);
               border-radius:6px; padding:2px 7px; letter-spacing:.02em; }
   @media (max-width:820px){
@@ -1102,7 +1234,7 @@
   .specgrid i{ display:block; font-style:normal; font-size:9px; letter-spacing:.08em;
                text-transform:uppercase; opacity:.7; margin-bottom:2px; }
   .specgrid b{ font-size:12.5px; color:var(--bronze); font-weight:700; }
-  .reqmark{ color:var(--magenta); }
+  .reqmark{ color:var(--magenta-fg,var(--magenta)); }
   .specwhy{ font-size:10.5px; opacity:.72; line-height:1.45; margin:4px 0 9px; }
   #af_specnote{ display:block; font-size:10.5px; color:var(--bronze); margin-top:6px; }
 
@@ -1115,15 +1247,15 @@
           border-bottom:1px solid color-mix(in srgb, var(--bronze) 45%, transparent);
           color:var(--bronze); font-family:inherit; font-size:13px; font-weight:700;
           padding:1px 0 2px; outline:none; }
-  .sf_in:focus{ border-bottom-color:var(--magenta); color:var(--fg); }
+  .sf_in:focus{ border-bottom-color:var(--magenta-fg,var(--magenta)); color:var(--fg); }
   .sf_u{ font-style:normal; font-size:10px; opacity:.6; }
   .sf_was{ font-size:9.5px; color:var(--bronze); opacity:.75; letter-spacing:.02em;
            text-decoration:line-through; width:100%; }
   /* a correction reads as a correction: wine red against the filed bronze */
-  .specf.edited .sf_in{ color:var(--magenta); border-bottom-color:var(--magenta); }
+  .specf.edited .sf_in{ color:var(--magenta-fg,var(--magenta)); border-bottom-color:var(--magenta-fg,var(--magenta)); }
   .specf.comparing .sf_in{ animation:specCompare .62s ease-in-out 8; }
   @keyframes specCompare{
-    0%,100%{ color:var(--magenta); }
+    0%,100%{ color:var(--magenta-fg,var(--magenta)); }
     50%    { color:var(--bronze); }
   }
   @media (prefers-reduced-motion:reduce){ .specf.comparing .sf_in{ animation:none; } }
@@ -1192,7 +1324,7 @@
   .socchip span{ max-width:13ch; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .socchip svg{ flex:none; }
   .socchip:hover{ transform:translateY(-1px); }
-  .soc_ig{ color:var(--magenta); background:color-mix(in srgb, var(--magenta) 12%, transparent);
+  .soc_ig{ color:var(--magenta-fg,var(--magenta)); background:color-mix(in srgb, var(--magenta) 12%, transparent);
            border-color:color-mix(in srgb, var(--magenta) 34%, transparent); }
   .soc_ig:hover{ background:color-mix(in srgb, var(--magenta) 24%, transparent); }
   .soc_li{ color:var(--cyan); background:color-mix(in srgb, var(--cyan) 12%, transparent);
@@ -1204,7 +1336,7 @@
 
   /* an overridden figure, in any panel */
   .addpanel input.edited, .addpanel select.edited,
-  .roomfind input.edited, .roomfind select.edited{ color:var(--signal); border-color:var(--signal) !important; }
+  .roomfind input.edited, .roomfind select.edited{ color:var(--signal-fg,var(--signal)); border-color:var(--signal-fg,var(--signal)) !important; }
   .addpanel input.comparing, .addpanel select.comparing,
   .roomfind input.comparing, .roomfind select.comparing{ animation:specCompare .62s ease-in-out 8; }
   .fieldwas{ display:block; font-size:9.5px; color:var(--bronze); opacity:.8;
@@ -1251,7 +1383,7 @@
          margin-left:4px; letter-spacing:.04em; }
 
   /* ---------- customization analysis ---------- */
-  .custi{ color:var(--signal) !important; opacity:.75; }
+  .custi{ color:var(--signal-fg,var(--signal)) !important; opacity:.75; }
   .custi:hover{ opacity:1; }
   .cd_note{ font-size:12px; line-height:1.55; color:var(--fg); opacity:.92;
             border-left:2px solid var(--signal); padding-left:9px; margin-bottom:4px; }
@@ -1264,7 +1396,7 @@
   .cd_ax{ opacity:.85; }
   .cd_d{ font-weight:700; text-align:right; }
   .cd_d.up{ color:var(--cyan); }
-  .cd_d.dn{ color:var(--magenta); }
+  .cd_d.dn{ color:var(--magenta-fg,var(--magenta)); }
   .cd_bar{ display:block; height:6px; border-radius:3px;
            background:color-mix(in srgb, var(--fg) 10%, transparent); overflow:hidden; }
   .cd_bar i{ display:block; height:100%; border-radius:3px; }
@@ -1291,7 +1423,7 @@
            border:1px solid color-mix(in srgb, var(--cyan) 40%, transparent);
            box-shadow:0 -6px 22px rgba(0,0,0,.45); backdrop-filter:blur(6px); }
   .cmpbar.show{ display:flex; }
-  .cmpbar.full{ border-color:var(--signal); }
+  .cmpbar.full{ border-color:var(--signal-fg,var(--signal)); }
   .cmp_n{ flex:none; width:22px; height:22px; border-radius:50%;
           display:flex; align-items:center; justify-content:center;
           background:var(--cyan); color:var(--page); font-size:11px; font-weight:700; }
@@ -1301,7 +1433,7 @@
              background:color-mix(in srgb, var(--fg) 10%, transparent); }
   .cmp_chip button{ background:none; border:none; color:var(--fg); opacity:.5;
                     cursor:pointer; font-size:12px; line-height:1; padding:0 2px; }
-  .cmp_chip button:hover{ opacity:1; color:var(--signal); }
+  .cmp_chip button:hover{ opacity:1; color:var(--signal-fg,var(--signal)); }
   .cmpbar .hybtn[disabled]{ opacity:.4; cursor:default; }
   /* the panel */
   .cmp_grid{ display:grid; gap:3px; font-size:11.5px; margin-bottom:12px; }
@@ -1362,7 +1494,7 @@
   .sp_key i{ width:14px; height:0; border-top:2px solid; border-radius:2px; }
   .sp_key .k_act{ border-color:var(--gold); }
   .sp_key .k_tgt{ border-top-style:dotted; border-color:color-mix(in srgb, var(--fg) 55%, transparent); }
-  .sp_key .k_dif{ border-color:var(--signal); }
+  .sp_key .k_dif{ border-color:var(--signal-fg,var(--signal)); }
   [data-theme="1.0a"] .sp_key .k_dif, [data-theme="1.0b"] .sp_key .k_dif,
   [data-theme="2.0a"] .sp_key .k_dif, [data-theme="2.0b"] .sp_key .k_dif{ border-color:var(--amber); }
   @media (max-width:820px){
@@ -1497,7 +1629,7 @@
     <span class="ez_logo" id="ez_logo"></span>
     <div class="ez_head">
       <div class="ez_title azonix">String &amp; Racket Finder <span style="color:var(--cyan);">v.7.0 beta_58</span></div>
-      <div class="ez_sub">easy mode</div>
+      <div class="ez_sub">easy mode &mdash; just tell me what to buy</div>
       <div class="ez_credit">
         <span class="azonix cred_ed">A³ Agentur edition</span>
         <span class="cred_by">by Alexey Semenov von Rosenberg</span>
@@ -1636,36 +1768,50 @@
     <div class="mid_foot"><span id="mid_live" style="color:var(--cyan);"></span>
       Live with every drag &middot; one engine everywhere: your answers gate, arm-friendly guards the medals, the calibrator pairs. Nothing is scored twice.
       <span style="opacity:.7;">&middot; build mid-2</span></div>
+
+    <div class="mid_proinv" role="region" aria-label="invitation to pro mode">
+      <div class="mpi_kick">// clearance upgrade available</div>
+      <div class="mpi_title">You just ranked two benches with eleven sliders. That was the shallow end.</div>
+      <div class="mpi_body">The workshop keeps the raw numbers on the table: every axis of all
+        <b><span id="mpi_nf">28</span> frames</b> and <b><span id="mpi_nb">38</span> stringbeds</b>, the <b>frame&#8646;string calibrator</b> that scores
+        pairings by physics &mdash; shock compounding, power budget, pattern wear &mdash; the
+        <b>lab table</b> with dynamic stiffness in lb/in and tension-loss curves, spider dials,
+        sortable hard specs, and a <b>&dagger;</b> on every value nobody has court-tested yet.
+        No medals without receipts.</div>
+      <div class="mpi_row">
+        <button type="button" class="mpi_btn" onclick="setMode('pro')">initiate nerd protocol &rarr;</button>
+        <span class="mpi_fine">side effects may include opinions about gauge, string-savers discourse, and reading stiffness charts at 1 a.m.</span>
+      </div>
+    </div>
   </div>
 </div>
 
 <div id="proWrap">
 <div style="background:var(--card);border-radius:12px;padding:1.25rem;color:var(--fg);">
-<div id="pro_head" style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:14px;flex-wrap:wrap;">
-  <span style="order:99;display:flex;align-items:center;gap:10px;padding-top:4px;">
-    <span class="modeseg" role="group" aria-label="mode">
-      <button type="button" class="modebtn" onclick="setMode('easy')">easy</button>
-      <button type="button" class="modebtn" onclick="setMode('mid')">intermediate</button>
-      <button type="button" class="modebtn" aria-pressed="true">pro</button>
-    </span>
-    <button type="button" class="mcap ghost" onclick="setMode('landing')" title="back to the start page">home</button>
-  </span>
-  <div class="azonix" style="font-size:21px;color:var(--bright);padding-top:2px;letter-spacing:0.01em;">String &amp; Racket Finder <span style="color:var(--cyan);">v.7.0 beta_58</span></div>
-  <div style="font-size:11px;color:var(--muted);letter-spacing:0.03em;">friend's edition</div>
-  <div style="display:flex;align-items:center;gap:9px;opacity:0.68;">
-    <img src="data:image/png;base64,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" alt="A³ Agentur logo" style="width:54px;height:54px;object-fit:contain;filter:drop-shadow(0 0 7px color-mix(in srgb, var(--magenta) 40%, transparent));">
-    <div style="line-height:1.4;">
-      <div class="azonix" style="font-size:10px;color:var(--bright);">A³ Agentur edition</div>
-      <div style="font-size:9.5px;color:var(--soft);">By Alexey Semenov von Rosenberg</div>
-      <div style="display:flex;align-items:center;gap:10px;margin-top:6px;flex-wrap:wrap;">
-        <a href="https://www.a3agentur.com" target="_blank" rel="noopener" class="lnk" style="font-size:10px;color:var(--cyan);text-decoration:none;">www.a3agentur.com</a>
-        <span style="display:flex;align-items:center;gap:8px;">
-          <a class="soc" href="https://www.behance.net/a_semenov" target="_blank" rel="noopener" aria-label="Behance"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:14px;height:14px;"><path fill="var(--magenta)" d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 3.211 3.483 3.312 4.588 2.029h3.168zm-7.686-4h4.965c-.105-1.547-1.136-2.219-2.477-2.219-1.466 0-2.277.768-2.488 2.219zm-9.574 6.988H0V5.021h6.953c5.476.081 5.58 5.444 2.72 6.906 3.461 1.26 3.577 8.061-3.207 8.061zM3 11h3.584c2.508 0 2.906-3-.312-3H3v3zm3.391 3H3v3.016h3.341c3.055 0 2.868-3.016.05-3.016z"/></svg></a>
-          <a class="soc" href="https://www.linkedin.com/in/alexeysemenovvonrosenberg/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:14px;height:14px;"><path fill="var(--magenta)" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg></a>
-          <a class="soc" href="https://www.instagram.com/ttaburett/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="var(--magenta)" stroke-width="2" style="width:14px;height:14px;"><rect x="2" y="2" width="20" height="20" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1.3" fill="var(--magenta)" stroke="none"/></svg></a>
-        </span>
+<div id="pro_head" style="margin-bottom:14px;">
+  <!-- same header grammar as easy and intermediate: logo -> title / mode line / credit.
+       The logo and the three social anchors below are THE originals — every other
+       screen clones them from here, so they moved but were not rewritten. -->
+  <div class="ez_top">
+    <span class="ez_logo"><img src="data:image/png;base64,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" alt="A³ Agentur logo" style="width:54px;height:54px;object-fit:contain;filter:drop-shadow(0 0 7px color-mix(in srgb, var(--magenta) 40%, transparent));"></span>
+    <div class="ez_head">
+      <div class="ez_title azonix">String &amp; Racket Finder <span style="color:var(--cyan);">v.7.0 beta_58</span></div>
+      <div class="ez_sub">pro mode &mdash; the workshop &middot; friend's edition</div>
+      <div class="ez_credit">
+        <span class="azonix cred_ed">A&sup3; Agentur edition</span>
+        <span class="cred_by">by Alexey Semenov von Rosenberg</span>
+        <a href="https://www.a3agentur.com" target="_blank" rel="noopener" class="lnk cred_url">www.a3agentur.com</a>
+        <span class="ez_socbox"><a class="soc" href="https://www.behance.net/a_semenov" target="_blank" rel="noopener" aria-label="Behance"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:14px;height:14px;"><path fill="var(--magenta)" d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 3.211 3.483 3.312 4.588 2.029h3.168zm-7.686-4h4.965c-.105-1.547-1.136-2.219-2.477-2.219-1.466 0-2.277.768-2.488 2.219zm-9.574 6.988H0V5.021h6.953c5.476.081 5.58 5.444 2.72 6.906 3.461 1.26 3.577 8.061-3.207 8.061zM3 11h3.584c2.508 0 2.906-3-.312-3H3v3zm3.391 3H3v3.016h3.341c3.055 0 2.868-3.016.05-3.016z"/></svg></a><a class="soc" href="https://www.linkedin.com/in/alexeysemenovvonrosenberg/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:14px;height:14px;"><path fill="var(--magenta)" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg></a><a class="soc" href="https://www.instagram.com/ttaburett/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="var(--magenta)" stroke-width="2" style="width:14px;height:14px;"><rect x="2" y="2" width="20" height="20" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1.3" fill="var(--magenta)" stroke="none"/></svg></a></span>
       </div>
     </div>
+    <span style="display:flex;align-items:center;gap:10px;padding-top:4px;">
+      <span class="modeseg" role="group" aria-label="mode">
+        <button type="button" class="modebtn" onclick="setMode('easy')">easy</button>
+        <button type="button" class="modebtn" onclick="setMode('mid')">intermediate</button>
+        <button type="button" class="modebtn" aria-pressed="true">pro</button>
+      </span>
+      <button type="button" class="mcap ghost" onclick="setMode('landing')" title="back to the start page">home</button>
+    </span>
   </div>
 </div>
 <div style="display:flex;gap:14px;font-size:11px;margin-bottom:12px;align-items:center;flex-wrap:wrap;">
@@ -1673,7 +1819,7 @@
   <span style="display:flex;align-items:center;gap:5px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--cyan);"></span><span style="color:var(--soft);">playtested</span></span>
   <span style="display:flex;align-items:center;gap:5px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--amber);"></span><span style="color:var(--soft);">test next</span></span>
   <span style="display:flex;align-items:center;gap:5px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--muted);"></span><span style="color:var(--soft);">friends + bench</span></span>
-  <span style="margin-left:auto;color:var(--muted);"><span style="color:var(--magenta);">▲ = difficulty 1–10</span></span>
+  <span style="margin-left:auto;color:var(--muted);"><span style="color:var(--magenta-fg,var(--magenta));">▲ = difficulty 1–10</span></span>
 </div>
 <div class="toolrow">
   <span id="themeSlotPro" style="display:contents;"></span><span class="toolbit" id="themeCtl">theme
@@ -1840,7 +1986,7 @@
     <div class="addgrid">
       <div class="ghosthint">Press <kbd>space</kbd> in any empty field to accept the greyed suggestion.</div>
       <label>Name<input id="af_name" type="text" placeholder="Tecnifibre T-Fight 305S"></label>
-      <label>Manufacturer <span style="color:var(--magenta);">*</span><input id="af_brand" type="text" placeholder="Tecnifibre"></label>
+      <label>Manufacturer <span style="color:var(--magenta-fg,var(--magenta));">*</span><input id="af_brand" type="text" placeholder="Tecnifibre"></label>
       <label>Weight<input id="af_weight" type="text" placeholder="305g"></label>
       <label>Head (in²)<input id="af_head" type="text" placeholder="98"></label>
       <label>Pattern<input id="af_pattern" type="text" placeholder="16x19"></label>
@@ -1901,6 +2047,20 @@
       <button class="mcap ghost" onclick="cClose()">cancel</button>
       <button class="mcap ghost" onclick="cRevert()">revert to stock</button>
       <span class="mnote">Customized frames keep their own row and show a <span style="color:var(--cyan);">customized</span> chip; hover it to read what was done.</span>
+    </div>
+  </div>
+<div class="cpanel" id="f_panel">
+    <h4 id="f_title">Adjust to my feel</h4>
+    <div class="sub">The bench scores are the house read. If a frame plays differently <em>for you</em> —
+      more powerful, less forgiving, comfier — drag its categories to what your arm says. The stock read
+      stays on the bench untouched; your version joins it as a second row and gets ranked like any other frame.</div>
+    <div id="f_rows" style="margin-top:9px;"></div>
+    <div class="merr" id="f_err"></div>
+    <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+      <button class="go2" onclick="fSave()">save my feel</button>
+      <button class="ghost" id="f_removeBtn" onclick="fRemove()" style="display:none;">remove my feel</button>
+      <button class="ghost" onclick="fClose()">cancel</button>
+      <span class="hint" style="font-size:10px;color:var(--muted);">stock numbers stay visible next to yours — cell corners and the ranking both keep them</span>
     </div>
   </div>
   <div class="boostbar" id="boost"></div>
@@ -1999,10 +2159,10 @@
   <div class="searchmeta" id="sb_searchMeta"></div>
   <div class="addpanel" id="sb_addPanel">
     <h4>Add researched string bed</h4>
-    <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--magenta);font-weight:600;margin:2px 0 7px;">mains</div>
+    <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--magenta-fg,var(--magenta));font-weight:600;margin:2px 0 7px;">mains</div>
     <div class="panelacts"><button type="button" class="hybtn ghost" onclick="crossCheckAny('string', (document.getElementById('sb_af_brand').value+' '+document.getElementById('sb_af_m').value).trim())">cross-check specs ↗</button></div>
     <div class="addgrid">
-      <label>Manufacturer <span style="color:var(--magenta);">*</span><input id="sb_af_brand" type="text" placeholder="Solinco"></label>
+      <label>Manufacturer <span style="color:var(--magenta-fg,var(--magenta));">*</span><input id="sb_af_brand" type="text" placeholder="Solinco"></label>
       <label>String<input id="sb_af_m" type="text" placeholder="Hyper-G"></label>
       <label>Material<select id="sb_af_mat">
         <option value="poly">polyester / co-poly</option>
@@ -2177,6 +2337,13 @@
     <b>4&nbsp;&middot;&nbsp;Patterns eat strings.</b> Open patterns let strings move more, so thin or heavily shaped beds wear fastest exactly where they bite hardest &mdash; the longevity penalty you'll see on some pairings. The classic exceptions are priced in too: natural-gut hybrids as the historic arm-saver in stiff frames, poly mains for spin control in everything modern.
     <span style="opacity:.75;">Tensions are read as filed per bed; in a stiff-on-stiff system, dropping 1&ndash;2&nbsp;kg buys back comfort before any string change does.</span>
   </div>
+
+  <div class="depthead azonix" style="margin-top:18px;">your four setups <span style="color:var(--cyan);">live</span></div>
+  <div class="deptsub">The calibration, finished for you: your gold, silver and bronze frames plus the budget pick,
+    each completed into a full frame&nbsp;+&nbsp;string setup by the calibrator's physics &mdash; re-searched on every
+    slider you drag and every answer you change. The separate racket and string rankings above stay exactly as they
+    are; this is the combined answer.</div>
+  <div id="pro_su" aria-live="polite"></div>
 </div>
   <div class="room" id="c_room">
     <div class="roomhead">THE CHATROOM</div>
@@ -2247,6 +2414,76 @@
 </div><!-- /proWrap -->
 </div>
 <script>
+
+/* ==== shared helpers — must run before any bench builds ==== */
+/* ---------- shared row-limit for all four heatmaps ----------
+   Each bench opens showing its top 5 and offers 10 / all. State is per bench so the
+   racket and string tables expand independently, and the setter name is passed in so
+   each IIFE keeps ownership of its own redraw. */
+window.SRFLIM = { racket:5, string:5, midR:5, midS:5 };
+window.srfLimitBar = function(key, total, setter){
+  const n = window.SRFLIM[key] || 5;
+  if (total <= 5) return "";
+  const shown = Math.min(n, total);
+  const btn = (label, v) => `<button type="button" class="limbtn${n === v ? " on" : ""}" ` +
+      `onclick="${setter}(${v})" aria-pressed="${n === v}">${label}</button>`;
+  return `<div class="limbar">` +
+    `<span class="limcount">showing ${shown} of ${total}</span>` +
+    btn("top 5", 5) +
+    (total > 10 ? btn("show 10", 10) : "") +
+    btn("show all (" + total + ")", 99999) +
+    `</div>`;
+};
+/* Slider track colours, shared by all three benches.
+   The filled half is the theme accent, but three palettes (obsidian x2, ultramarine
+   vivid) put that accent at only ~2:1 against the card — on a thin track that reads
+   as no fill at all. So the accent is lifted toward the theme's own bright tone (or
+   toward the page tone on light themes) until it clears 4.5:1. Hue is preserved,
+   only lightness moves, and themes that already pass are left untouched. */
+/* Same lift used for accent-coloured TEXT. The obsidian and ultramarine palettes put
+   their accent at ~2:1 against the card, which made every accent label and pill button
+   ("spin-first", "reset order", compare-bar names) almost unreadable. applyTheme writes
+   the result into --magenta-fg; --magenta itself is untouched so borders, the difficulty
+   triangle and the heatmap ten-colour keep their exact identity. */
+window.srfAccentFg = function(varName){
+  varName = varName || "--magenta";
+  try {
+    const cs = getComputedStyle(document.documentElement), g = n => cs.getPropertyValue(n).trim();
+    const hex = s => { s = String(s).trim().replace("#",""); if (s.length===3) s = s.split("").map(c=>c+c).join("");
+                       return [0,2,4].map(i => parseInt(s.substr(i,2),16)); };
+    const lum = c => { const v = c.map(x=>x/255).map(x => x<=0.03928 ? x/12.92 : Math.pow((x+0.055)/1.055,2.4));
+                       return 0.2126*v[0] + 0.7152*v[1] + 0.0722*v[2]; };
+    const ratio = (a,b) => { const A=lum(a), B=lum(b); return (Math.max(A,B)+0.05)/(Math.min(A,B)+0.05); };
+    const mix = (a,b,t) => a.map((v,i) => Math.round(v + (b[i]-v)*t));
+    const acc = hex(g(varName)), card = hex(g("--card"));
+    if (ratio(acc, card) >= 4.6) return g(varName);
+    const target = lum(card) > 0.4 ? hex(g("--page")) : hex(g("--bright"));
+    let out = acc;
+    for (let t = 0.06; t <= 0.7 && ratio(out, card) < 4.6; t += 0.06) out = mix(acc, target, t);
+    return "rgb(" + out.join(",") + ")";
+  } catch(e){ return "var(--magenta)"; }
+};
+window.srfTrackColors = (function(){
+  const REST = "color-mix(in srgb, var(--fg) 30%, transparent)";
+  const hex = s => { s = String(s).trim().replace("#",""); if (s.length===3) s = s.split("").map(c=>c+c).join("");
+                     return [0,2,4].map(i => parseInt(s.substr(i,2),16)); };
+  const lum = c => { const v = c.map(x=>x/255).map(x => x<=0.03928 ? x/12.92 : Math.pow((x+0.055)/1.055,2.4));
+                     return 0.2126*v[0] + 0.7152*v[1] + 0.0722*v[2]; };
+  const ratio = (a,b) => { const A=lum(a), B=lum(b); return (Math.max(A,B)+0.05)/(Math.min(A,B)+0.05); };
+  const mix = (a,b,t) => a.map((v,i) => Math.round(v + (b[i]-v)*t));
+  return function(dragging){
+    if (dragging) return { fill:"var(--gold)", rest:REST };
+    try {
+      const cs = getComputedStyle(document.documentElement), g = n => cs.getPropertyValue(n).trim();
+      const acc = hex(g("--magenta")), card = hex(g("--card"));
+      if (ratio(acc, card) >= 4.5) return { fill:"var(--magenta)", rest:REST };
+      const target = lum(card) > 0.4 ? hex(g("--page")) : hex(g("--bright"));
+      let out = acc;
+      for (let t = 0.06; t <= 0.62 && ratio(out, card) < 4.5; t += 0.06) out = mix(acc, target, t);
+      return { fill:"rgb(" + out.join(",") + ")", rest:REST };
+    } catch(e){ return { fill:"var(--magenta)", rest:REST }; }
+  };
+})();
 
 /* ============================================================
    Shared engine — defined once, used by both departments.
@@ -3435,7 +3672,7 @@ function spiderOverlay(items, hues, labels){
     `style="display:block;margin:0 auto;max-width:${size}px;">${web}${shapes}${lab}</svg>`;
 }
 function cmpHue(n){
-  return ["var(--cyan)","var(--signal)","var(--amber)","var(--bronze)","var(--magenta)"][n % 5];
+  return ["var(--cyan)","var(--signal)","var(--amber)","var(--bronze)","var(--magenta-fg,var(--magenta))"][n % 5];
 }
 function cmpItem(kind, id){
   if (kind === "racket"){
@@ -3817,6 +4054,11 @@ function applyTheme(name){
     r.style.setProperty("--"+k, val);
   });
   r.setAttribute("data-theme", THEME);
+  // accent text needs a readable variant on dark palettes — see srfAccentFg
+  if (window.srfAccentFg){
+    r.style.setProperty("--magenta-fg", window.srfAccentFg("--magenta"));
+    r.style.setProperty("--signal-fg",  window.srfAccentFg("--signal"));
+  }
   try { localStorage.setItem("srf:theme", THEME); } catch(e){}
 }
 
@@ -3824,7 +4066,7 @@ function applyTheme(name){
 
 const catsShort = ["Ctrl","Prec","Spin","Pwr","Feel","Stab","Man","Serve","Smsh","Slice","Ret","Diff"];
 const cats = ["Control (flat)", "Precision", "Spin", "Power", "Feel / comfort", "Stability", "Maneuverability", "Serve", "Smash & overhead", "Slice / touch", "Return / blocking"];
-const G = { own:["var(--magenta)","my quiver"], tested:["var(--cyan)","playtested — court tested"], next:["var(--amber)","selected — test next"], fr:["var(--muted)","friends' frames"], bench:["var(--muted)","bench"] , rx_researched:["var(--bronze)","researched — specs looked up online"] };
+const G = { own:["var(--magenta-fg,var(--magenta))","my quiver"], tested:["var(--cyan)","playtested — court tested"], next:["var(--amber)","selected — test next"], fr:["var(--muted)","friends' frames"], bench:["var(--muted)","bench"] , rx_researched:["var(--bronze)","researched — specs looked up online"] };
 /* display order for the ungrouped ("original order") view: researched groups lead — any rx_*
    key ranks ahead of the quiver — then the established groups; unknown keys fall to the end */
 const GORDER = ["own","tested","next","fr","bench"];
@@ -3839,17 +4081,17 @@ const rk = [
   {n:"Percept 97D", b:"YONEX", o:null, g:"next", s:[9,9,5,5,8,9,5,6,6,9,8], d:8, p:250, sp:["320g","97","18x20","62 RA","~327","~310","21"]},
   {n:"Defyer 98 Pro", b:"WILSON", o:null, g:"next", s:[8,8,7,6,8,7,7,7,7,8,7], d:5, p:260, sp:["305g","98","16x20","—","—","—","—"]},
   {n:"Defyer 100", b:"WILSON", o:null, g:"next", s:[6,6,8,8,7,7,7,8,7,6,6], d:3, p:250, sp:["300g","100","16x19","—","—","—","—"]},
-  {n:"Pure Aero 2016", b:"BABOLAT", o:["Kirill","var(--magenta)"], g:"fr", s:[5,5,9,8,5,6,7,8,7,5,5], d:3, p:110, sp:["300g","100","16x19","67 RA","~324","~320","23/26/23"]},
-  {n:"Pure Drive 2015", b:"BABOLAT", o:["Daniel","var(--magenta)"], g:"fr", s:[5,4,7,9,4,6,7,9,8,4,5], d:3, p:100, sp:["300g","100","16x19","72 RA","~324","~320","23/26/23"]},
-  {n:"Blade 98 v8", b:"WILSON", o:["Nastya","var(--magenta)"], g:"fr", s:[8,8,6,5,9,6,7,6,6,9,7], d:6, p:180, sp:["305g","98","16x19","~62 RA","~321","~320","21"]},
-  {n:"Pure Strike 100 g3", b:"BABOLAT", o:["Milko","var(--magenta)"], g:"fr", s:[7,7,6,6,7,5,8,6,6,7,5], d:4, p:180, sp:["300g","100","16x19","~66 RA","~316","~325","21/23/21"]},
-  {n:"Pro Staff Precision 103", b:"WILSON", o:["Roman","var(--magenta)"], g:"fr", s:[5,5,5,7,4,6,6,6,6,4,6], d:2, p:120, sp:["300g custom","103","16x20","—","~305","~340","~24"]},
-  {n:"Pro Staff X v14", b:"WILSON", o:["Natasha","var(--magenta)"], g:"fr", s:[7,7,6,7,7,8,5,7,7,7,7], d:5, p:240, sp:["315g","100","16x19","~66 RA","~322","~320","21.5"]},
-  {n:"Pro Staff 97 v14", b:"WILSON", o:["Lisa","var(--magenta)"], g:"fr", s:[8,8,6,6,8,8,5,7,7,8,8], d:7, p:250, sp:["315g","97","16x19","65 RA","~325","~310","21.5"]},
-  {n:"Pro Staff 97 v13", b:"WILSON", o:["Markus","var(--magenta)"], g:"fr", s:[8,8,6,6,8,8,5,7,7,8,8], d:7, p:200, sp:["315g","97","16x19","66 RA","~325","~310","21.5"]},
-  {n:"Pure Aero 100", pt:1, b:"BABOLAT", o:["Edwin","var(--magenta)"], g:"fr", s:[6,6,10,8,7,6,7,10,7,6,6], d:3, p:230, sp:["300g stock","100","16x19","~65 RA","~324","~320","23/26/23"]},
-  {n:"Pure Drive 98 (2021)", pt:1, b:"BABOLAT", o:["Edwin","var(--magenta)"], g:"fr", s:[7,7,6,9,4,7,7,9,8,4,6], d:5, p:150, sp:["305g","98","16x19","~71 RA","~318","~320","23"]},
-  {n:"VCORE Pro 97H", pt:1, b:"YONEX", o:["Edwin","var(--magenta)"], g:"fr", s:[8,8,8,7,10,10,3,9,8,9,7], d:9, p:200, sp:["330g","97","16x19","61 RA","~330","~310","21"]},
+  {n:"Pure Aero 2016", b:"BABOLAT", o:["Kirill","var(--magenta-fg,var(--magenta))"], g:"fr", s:[5,5,9,8,5,6,7,8,7,5,5], d:3, p:110, sp:["300g","100","16x19","67 RA","~324","~320","23/26/23"]},
+  {n:"Pure Drive 2015", b:"BABOLAT", o:["Daniel","var(--magenta-fg,var(--magenta))"], g:"fr", s:[5,4,7,9,4,6,7,9,8,4,5], d:3, p:100, sp:["300g","100","16x19","72 RA","~324","~320","23/26/23"]},
+  {n:"Blade 98 v8", b:"WILSON", o:["Nastya","var(--magenta-fg,var(--magenta))"], g:"fr", s:[8,8,6,5,9,6,7,6,6,9,7], d:6, p:180, sp:["305g","98","16x19","~62 RA","~321","~320","21"]},
+  {n:"Pure Strike 100 g3", b:"BABOLAT", o:["Milko","var(--magenta-fg,var(--magenta))"], g:"fr", s:[7,7,6,6,7,5,8,6,6,7,5], d:4, p:180, sp:["300g","100","16x19","~66 RA","~316","~325","21/23/21"]},
+  {n:"Pro Staff Precision 103", b:"WILSON", o:["Roman","var(--magenta-fg,var(--magenta))"], g:"fr", s:[5,5,5,7,4,6,6,6,6,4,6], d:2, p:120, sp:["300g custom","103","16x20","—","~305","~340","~24"]},
+  {n:"Pro Staff X v14", b:"WILSON", o:["Natasha","var(--magenta-fg,var(--magenta))"], g:"fr", s:[7,7,6,7,7,8,5,7,7,7,7], d:5, p:240, sp:["315g","100","16x19","~66 RA","~322","~320","21.5"]},
+  {n:"Pro Staff 97 v14", b:"WILSON", o:["Lisa","var(--magenta-fg,var(--magenta))"], g:"fr", s:[8,8,6,6,8,8,5,7,7,8,8], d:7, p:250, sp:["315g","97","16x19","65 RA","~325","~310","21.5"]},
+  {n:"Pro Staff 97 v13", b:"WILSON", o:["Markus","var(--magenta-fg,var(--magenta))"], g:"fr", s:[8,8,6,6,8,8,5,7,7,8,8], d:7, p:200, sp:["315g","97","16x19","66 RA","~325","~310","21.5"]},
+  {n:"Pure Aero 100", pt:1, b:"BABOLAT", o:["Edwin","var(--magenta-fg,var(--magenta))"], g:"fr", s:[6,6,10,8,7,6,7,10,7,6,6], d:3, p:230, sp:["300g stock","100","16x19","~65 RA","~324","~320","23/26/23"]},
+  {n:"Pure Drive 98 (2021)", pt:1, b:"BABOLAT", o:["Edwin","var(--magenta-fg,var(--magenta))"], g:"fr", s:[7,7,6,9,4,7,7,9,8,4,6], d:5, p:150, sp:["305g","98","16x19","~71 RA","~318","~320","23"]},
+  {n:"VCORE Pro 97H", pt:1, b:"YONEX", o:["Edwin","var(--magenta-fg,var(--magenta))"], g:"fr", s:[8,8,8,7,10,10,3,9,8,9,7], d:9, p:200, sp:["330g","97","16x19","61 RA","~330","~310","21"]},
   {n:"Blade 98 18x20", b:"WILSON", o:null, g:"bench", s:[9,9,5,5,9,7,6,6,6,9,7], d:7, p:230, sp:["305g","98","18x20","60 RA","~322","~320","21"]},
   {n:"Pure Strike 98", b:"BABOLAT", o:null, g:"bench", s:[8,9,6,6,7,7,7,7,7,8,7], d:6, p:230, sp:["305g","98","18x20","66 RA","~320","~315","21"]},
   {n:"RF 01 Pro", b:"WILSON", o:null, g:"bench", s:[7,7,7,7,7,8,5,8,8,7,8], d:8, p:270, sp:["320g","97","16x19","~65 RA","~330","~310","22.5"]},
@@ -3893,6 +4135,9 @@ function selScore(r){ let t=0; SEL.forEach((d,i)=> t += (d===-1 ? r.s[i] : -r.s[
    just sugar over collapse — every other group folds; press again to unfold all. */
 const RK_GCOLL = new Set();
 window.rkGroupToggle = (g) => { RK_GCOLL.has(g) ? RK_GCOLL.delete(g) : RK_GCOLL.add(g); buildGrid(); };
+/* row limit: buildGrid slices to SRFLIM.racket and appends the bar; mobileCards
+   receives the already-sliced array, so both views stay in step automatically */
+window.rkLimSet = (v) => { window.SRFLIM.racket = v; buildGrid(); };
 window.rkGroupOnly = (g) => {
   const all = [...document.querySelectorAll("#grid .ghead")].map(e => e.dataset.g);
   const solo = all.every(k => k === g ? !RK_GCOLL.has(k) : RK_GCOLL.has(k));
@@ -3922,6 +4167,8 @@ function buildGrid(){
   else rows = rk.slice().sort((a,b)=> gRank(a.g) - gRank(b.g));
   const filtering = !!(typeof searchQ!=="undefined" && searchQ);
   if (filtering) rows = rows.filter(r=>matches(r, searchQ));
+  const rowsTotal = rows.length;
+  rows = rows.slice(0, window.SRFLIM.racket || 5);
   if (!rows.length){
     document.getElementById("grid").innerHTML =
       `<div style="padding:22px 6px;color:var(--muted);font-size:12px;">No frame on the bench matches “${document.getElementById("specSearch").value.trim()}”. Use the amber <b style="color:var(--amber);">specs ↗</b> button to look it up online.</div>`;
@@ -3946,20 +4193,22 @@ function buildGrid(){
         `<button type="button" class="gonly" onclick="event.stopPropagation();rkGroupOnly('${r.g}')" aria-label="show only ${G[r.g][1]}">${solo?"all groups":"only"}</button></div>`;
     }
     if (sortIdx===null && !SEL.size && !filtering && RK_GCOLL.has(r.g)) return;   // folded: header stands, rows wait
-    h += `<div role="cell" class="namecell" data-no="${r.no}" style="color:${G[r.g][0]};display:flex;flex-direction:column;justify-content:center;padding:3px 4px;line-height:1.25;"><span style="font-weight:500;"><span style="color:var(--muted);font-weight:400;">No. ${r.no}</span> ${cmpBox("racket", r.no)}<span class="custname" role="button" tabindex="0" onclick="cOpen(${r.no})" onkeydown="if(event.key==='Enter'){cOpen(${r.no});}" onmouseenter="noteHoverIn(noteFrame,${r.no},event)" onmouseleave="noteHoverOut()" title="customize this frame — hover for play notes">${r.b} ${r.n}</span><button type="button" class="infobtn" aria-label="play notes for ${r.b} ${r.n}" onclick="event.stopPropagation();noteFrame(${r.no},event)">ⓘ</button><button type="button" class="custbtn" aria-label="customize ${r.b} ${r.n} — describe what you did to it" onclick="event.stopPropagation();cOpen(${r.no})">customize</button>${tag(r)}${r.cust?`<span class="custchip" title="${r.cust.text.replace(/"/g,'&quot;')}">customized</span>`:""}</span><span style="color:var(--muted);font-size:10px;font-weight:400;">${r.sp[0]} · ${r.sp[2]}</span></div>`;
+    h += `<div role="cell" class="namecell" data-no="${r.no}" style="color:${G[r.g][0]};display:flex;flex-direction:column;justify-content:center;padding:3px 4px;line-height:1.25;"><span style="font-weight:500;"><span style="color:var(--muted);font-weight:400;">No. ${r.no}</span> ${cmpBox("racket", r.no)}<span class="custname" role="button" tabindex="0" onclick="cOpen(${r.no})" onkeydown="if(event.key==='Enter'){cOpen(${r.no});}" onmouseenter="noteHoverIn(noteFrame,${r.no},event)" onmouseleave="noteHoverOut()" title="customize this frame — hover for play notes">${r.b} ${r.n}</span><button type="button" class="infobtn" aria-label="play notes for ${r.b} ${r.n}" onclick="event.stopPropagation();noteFrame(${r.no},event)">ⓘ</button>${r.feel?`<button type="button" class="custbtn feelbtn" aria-label="edit how ${r.b} ${r.n} feels for you" onclick="event.stopPropagation();fOpen(${r.feelOf})">edit feel</button>`:`<button type="button" class="custbtn" aria-label="customize ${r.b} ${r.n} — describe what you did to it" onclick="event.stopPropagation();cOpen(${r.no})">customize</button><button type="button" class="custbtn feelbtn" aria-label="re-score ${r.b} ${r.n} to your feel" onclick="event.stopPropagation();fOpen(${r.no})">my feel</button>`}${tag(r)}${r.cust?`<span class="custchip" title="${r.cust.text.replace(/"/g,'&quot;')}">customized</span>`:""}${r.feel?`<span class="custchip feelchip" title="your category read of the stock ${r.b} ${r.n} — the stock row is still on the bench">my feel</span>`:""}</span><span style="color:var(--muted);font-size:10px;font-weight:400;">${r.sp[0]} · ${r.sp[2]}</span></div>`;
     h += `<div role="cell" class="spdcell" style="display:flex;align-items:center;justify-content:center;">${spiderIcon("racket", r.no, r.s)}</div>`;
     h += priceCell(r.p, sortIdx==="p");
     h += `<div role="cell" class="curvecell" style="display:flex;align-items:center;justify-content:center;">${perfCurve(r.s,200,44)}</div>`;
     r.s.forEach((v,i) => {
       const [bg, fg] = cellColor(v);
       const ring = SEL.has(i) ? `box-shadow:inset 0 0 0 1.5px ${SEL.get(i)===1?"var(--magenta)":"var(--cyan)"};` : "";
-      h += `<div role="cell" class="cell${v>=10?" tencell":""}"${v>=10?` data-v="${v}"`:""} data-cat="${cats[i]}" data-val="${v}" style="background:${bg};color:${fg};${ring}text-align:center;padding:7px 2px;border-radius:3px;font-weight:500;font-size:12px;">${v}</div>`;
+      const gh=(r.feel&&r.stockS&&r.stockS[i]!==v)?r.stockS[i]:((r.cust&&r.stock&&r.stock.s[i]!==v)?r.stock.s[i]:null);
+      h += `<div role="cell" class="cell${v>=10?" tencell":""}"${v>=10?` data-v="${v}"`:""} data-cat="${cats[i]}" data-val="${v}" style="position:relative;background:${bg};color:${fg};${ring}text-align:center;padding:7px 2px;border-radius:3px;font-weight:500;font-size:12px;">${v}${gh!=null?`<i class="stckv" title="stock: ${gh}">${gh}</i>`:""}</div>`;
     });
     h += diffCell(r.d, sortIdx==="d");
   });
   h += `</div>`;
+  h += window.srfLimitBar("racket", rowsTotal, "rkLimSet");
   document.getElementById("grid").innerHTML = h;
-  critChips(); mobileCards(rows); if(window.cmpPaintAll) cmpPaintAll();
+  critChips(); mobileCards(rows, rowsTotal); if(window.cmpPaintAll) cmpPaintAll();
   seedGridMedals();   // re-seed the podium into the freshly built name cells
   document.getElementById("sortState").textContent = SEL.size
     ? "ranked by " + [...SEL].map(([i,d])=>cats[i]+(d===-1?" \u25B2":" \u25BC")).join(" + ") + (SEL.size>1?` (${SEL.size} combined)`:"")
@@ -4544,19 +4793,22 @@ function critChips(){
   }).join("");
 }
 let lastRows = null;
-function mobileCards(rows){
+let lastTotal = 0;
+function mobileCards(rows, total){
   const el=document.getElementById("gridM"); if(!el) return;
-  if(rows) lastRows = rows; else rows = lastRows;
+  if(rows){ lastRows = rows; lastTotal = total != null ? total : rows.length; } else rows = lastRows;
   if(!rows) return;
+  total = lastTotal;
   let tot; try{ tot = w.reduce((a,b)=>a+b,0)||1; }catch(e){ return; }   // weights not up yet — render() calls back
   el.innerHTML = rows.map((r,n)=>{
     const grid = r.s.map((v,i)=>{ const [bg,fg]=cellColor(v);
-      return `<div class="scell" style="background:${bg};color:${fg};"><i>${catsShort[i]}</i><b>${v}</b></div>`; }).join("")
+      const gh=(r.feel&&r.stockS&&r.stockS[i]!==v)?r.stockS[i]:((r.cust&&r.stock&&r.stock.s[i]!==v)?r.stock.s[i]:null);
+      return `<div class="scell" style="position:relative;background:${bg};color:${fg};"><i>${catsShort[i]}</i><b>${v}</b>${gh!=null?`<i class="stckv" title="stock: ${gh}">${gh}</i>`:""}</div>`; }).join("")
       + `<div class="scell tri"><i>Diff</i>${diffCell(r.d,false).match(/<svg.*<\/svg>/s)[0]}</div>`;
     return `<article class="mcard">
       <header>
         <div class="who">
-          <div class="nm">${cmpBox("racket", r.no)}${n+1}. ${esc((r.b?r.b+" ":"")+r.n)}<button type="button" class="infobtn" aria-label="play notes" onclick="noteFrame(${r.no},event)">ⓘ</button>${spiderIcon("racket", r.no, r.s)}</div>
+          <div class="nm">${cmpBox("racket", r.no)}${n+1}. ${esc((r.b?r.b+" ":"")+r.n)}${r.feel?`<span class="custchip feelchip">my feel</span>`:""}<button type="button" class="infobtn" aria-label="play notes" onclick="noteFrame(${r.no},event)">ⓘ</button>${spiderIcon("racket", r.no, r.s)}${rowActs(r)}</div>
           <div class="sp">${r.sp[0]} \u00b7 ${r.sp[1]} \u00b7 ${r.sp[2]}</div>
         </div>
         <div class="pr">
@@ -4605,8 +4857,8 @@ document.getElementById("sliders").innerHTML = cats.map((c,i) =>
   </div>`).join("");
 function fillTrack(el){
   const p = (el.value - el.min) / (el.max - el.min) * 100;
-  const c = el.classList.contains("dragging") ? "var(--gold)" : "var(--magenta)";
-  el.style.background = `linear-gradient(to right, ${c} 0%, ${c} ${p}%, color-mix(in srgb, var(--fg) 18%, transparent) ${p}%, color-mix(in srgb, var(--fg) 18%, transparent) 100%)`;
+  const t = window.srfTrackColors(el.classList.contains("dragging"));
+  el.style.background = `linear-gradient(to right, ${t.fill} 0%, ${t.fill} ${p}%, ${t.rest} ${p}%, ${t.rest} 100%)`;
 }
 cats.forEach((c,i) => fillTrack(document.getElementById("sl"+i)));
 function dragOn(el){
@@ -4630,6 +4882,13 @@ document.querySelectorAll(".a3-slider:not(.sbsl)").forEach(el => {
 // releasing outside the track must still clear the gold state
 ["pointerup","pointercancel"].forEach(e => window.addEventListener(e, () =>
   document.querySelectorAll(".a3-slider.dragging:not(.sbsl)").forEach(dragOff)));
+["pointerup","pointercancel"].forEach(e => window.addEventListener(e, () =>
+  document.querySelectorAll("#midWrap .a3-slider.dragging").forEach(el => {
+    el.classList.remove("dragging"); el.parentElement.classList.remove("dragging");
+    const r = el.closest("div");
+    if (r) r.querySelectorAll(".slabel.gold, .wv.gold").forEach(n => n.classList.remove("gold"));
+    if (window.midFill) midFill(el);
+  })));
 function render(){
   const tw = w.reduce((a,b)=>a+b,0) || 1;
   const scored = rk.map(r => ({...r, sc: r.s.reduce((a,v,i)=>a+v*w[i],0)/tw})).sort((a,b)=> b.sc-a.sc || (a.b+a.n).localeCompare(b.b+b.n));   // name tiebreak: equal scores can never jitter
@@ -4679,7 +4938,7 @@ function render(){
   mobileCards(null);
   document.getElementById("rank").innerHTML = note + disp.map((r,n) => r.ghost ? ghostRow(r) :
     `<div style="display:flex;align-items:center;gap:8px;margin:3px 0;font-size:12px;${r.est===true?"opacity:.62;":""}">
-      <span style="width:196px;color:var(--fg);line-height:1.2;">${meds.indexOf(r.no)>=0?`<span class="medal ${["mG","mS","mB"][meds.indexOf(r.no)]}" title="your #${meds.indexOf(r.no)+1} suggestion — same as the strip above">${meds.indexOf(r.no)+1}</span> `:""}${r.no === budgetNo ? EURO + " " : ""}<b style="font-weight:600;">${r.b}</b> ${r.n}${tag(r)}${(x => x ? `<span class="lvlflag ${x.cls}" title="why this row is not your suggestion">${x.txt}</span>` : "")(bandFor(r))}</span>
+      <span style="width:196px;color:var(--fg);line-height:1.2;">${meds.indexOf(r.no)>=0?`<span class="medal ${["mG","mS","mB"][meds.indexOf(r.no)]}" title="your #${meds.indexOf(r.no)+1} suggestion — same as the strip above">${meds.indexOf(r.no)+1}</span> `:""}${r.no === budgetNo ? EURO + " " : ""}<b style="font-weight:600;">${r.b}</b> ${r.n}${tag(r)}${(x => x ? `<span class="lvlflag ${x.cls}" title="why this row is not your suggestion">${x.txt}</span>` : "")(bandFor(r))}${rowActs(r)}${(x => x ? ` <span class="stcknote" title="the untouched stock read under the same weights">stock \u2300 ${x}</span>` : "")(stockAvg(r, w, tw))}</span>
       <div style="flex:1;background:color-mix(in srgb, var(--fg) 10%, transparent);border-radius:3px;height:13px;">
         <div style="width:${(r.sc/10*100).toFixed(1)}%;background:${G[r.g][0]};height:13px;border-radius:3px;"></div>
       </div>
@@ -4687,6 +4946,7 @@ function render(){
     </div>`).join("");
   seedGridMedals(scored, meds, budgetNo);
   paintWinners(scored);
+  if (window.paintSetups4) paintSetups4();   // the four finished setups follow the sliders live
   if (window.srfSeedFlags) srfSeedFlags();
 }
 window.srfRerank = () => { try { render(); } catch(e){} };
@@ -4728,6 +4988,85 @@ function seedGridMedals(scored, medNos, budgetNo){
    thing in the room). It needs the calibrator and market helpers from the tail of the
    script, so it bails quietly until everything has evaluated — the DOMContentLoaded
    repaint covers the boot window, same rule as the level flags. */
+/* the button pair every frame view shows: customize (physical) + my feel (scores).
+   A feel row itself gets a single "edit feel" that reopens its stock frame's panel. */
+/* one sentence per setup card: WHY this frame wears this medal, and why this bed.
+   The gold line names the raw-math winner when it was passed over ("VCORE Pro scores
+   higher but is above your level") — the exact question every ranked list raises. */
+window.srfSetupWhy = (role, sc, pure, bedWhy, price) => {
+  let f = "";
+  if (role === 0){
+    f = pure && pure.beaten
+      ? `<b>${pure.name}</b> scores higher on raw math (${pure.sc.toFixed(1)}) but is ${pure.band || "outside your answers"} \u2014 this is the strongest frame you can actually play (${sc.toFixed(1)}/10)`
+      : `top weighted score on your sliders \u2014 ${sc.toFixed(1)}/10, inside your band`;
+  } else if (role === 1 || role === 2){
+    f = `#${role + 1} of the frames your answers allow \u2014 ${sc.toFixed(1)}/10`;
+  } else {
+    f = `best value of the older generation \u2014 ${sc.toFixed(1)}/10${price != null ? ` at ~${price}\u20ac` : ""}`;
+  }
+  return f + (bedWhy ? ` \u00b7 string: ${bedWhy}` : "");
+};
+window.rowActs = (r) => {
+  if (r.no == null || r.no <= 0) return "";
+  if (r.feel) return `<span class="rowact"><button type="button" class="custbtn feelbtn" ` +
+    `onclick="event.stopPropagation();fOpen(${r.feelOf})">edit feel</button></span>`;
+  return `<span class="rowact">` +
+    `<button type="button" class="custbtn" title="physical mods \u2014 lead tape, weight, balance" ` +
+      `onclick="event.stopPropagation();cOpen(${r.no})">customize</button>` +
+    `<button type="button" class="custbtn feelbtn" title="re-score the categories to how it plays for you" ` +
+      `onclick="event.stopPropagation();fOpen(${r.no})">my feel</button></span>`;
+};
+/* stock average under the same weights — shown next to a re-scored row's number */
+window.stockAvg = (r, w, tw) => {
+  const src = r.feel ? r.stockS : (r.cust && r.stock ? r.stock.s : null);
+  if (!src) return null;
+  return (src.reduce((a, v, i) => a + v * w[i], 0) / tw).toFixed(1);
+};
+/* the four finished setups at the end of the calibrator — pro's version of the
+   intermediate answer block. Same shortlist, same calibrator, same why-generator, so
+   the two modes can never disagree about the answer. Repainted from render(), which
+   makes it live under the sliders. */
+window.paintSetups4 = () => {
+  const host = document.getElementById("pro_su"); if (!host) return;
+  try { void calibScore; void calBeds; void calMatStiff; } catch(e){ return; }
+  if (!window.srfShortlist) return;
+  let SL; try { SL = srfShortlist("racket"); } catch(e){ return; }
+  const meds = (SL.meds || []).filter(Boolean);
+  if (!meds.length){ host.innerHTML = ""; return; }
+  let armAsk = false; try { armAsk = INTRO.arm === "yes"; } catch(e){}
+  let cand = calBeds();
+  if (armAsk){ const soft = cand.filter(x => !srfArmHarshBed(x.bed, calMatStiff(x.tech))); if (soft.length) cand = soft; }
+  const pairFor = f => { let top = null;
+    cand.forEach(x => { const r = calibScore(f, x.bed, x.tech); if (!top || r.sc > top.r.sc) top = { x, r }; });
+    return top; };
+  const tw2 = w.reduce((a, b) => a + b, 0) || 1;
+  const rawTop = rk.map(r => ({ f: r, sc: r.s.reduce((a, v, i) => a + v * w[i], 0) / tw2 }))
+                   .sort((a, b) => b.sc - a.sc || (a.f.b + a.f.n).localeCompare(b.f.b + b.f.n))[0] || null;
+  const scOf = f => { const row = (SL.rows || []).find(x => x.f === f); return row ? row.sc : (f.__sc != null ? f.__sc : 0); };
+  const four = meds.slice(0, 3).map((f, i) => ({ f, role: i }));
+  if (SL.budget && SL.budget.f) four.push({ f: SL.budget.f, role: 3 });
+  const BADGE = n2 => n2 < 3 ? `<span class="medal ${["mG","mS","mB"][n2]}">${n2 + 1}</span>`
+    : `<span class="medal" style="background:linear-gradient(135deg,var(--amber),#8a6a28);" title="budget pick">\u20ac</span>`;
+  const LBL = ["gold setup","silver setup","bronze setup","budget setup"];
+  host.innerHTML = four.map(o2 => {
+    const s = pairFor(o2.f); if (!s) return "";
+    const why = (s.r.why || []).filter(w2 => w2.d > 0).sort((a, b) => b.d - a.d)[0];
+    const band = o2.role === 0 && rawTop && rawTop.f !== o2.f ? (srfBandOf("racket", rawTop.f) || {}) : null;
+    const pure = o2.role === 0 && rawTop && rawTop.f !== o2.f
+      ? { beaten: true, name: esc(rawTop.f.b + " " + rawTop.f.n), sc: rawTop.sc, band: band && band.txt ? band.txt : "" } : null;
+    const pTot = (o2.f.p != null && s.x.tech.priceV != null) ? Math.round(o2.f.p + s.x.tech.priceV) : null;
+    const nm = o2.f.no != null && o2.f.no > 0
+      ? `<span role="button" tabindex="0" style="cursor:pointer;text-decoration:underline dotted;" ` +
+        `onclick="advJump('racket',${o2.f.no})" onkeydown="if(event.key==='Enter')advJump('racket',${o2.f.no})" ` +
+        `title="show this frame on the bench">${esc(o2.f.b)} ${esc(o2.f.n)}</span>`
+      : `${esc(o2.f.b)} ${esc(o2.f.n)}${typeof MK_BADGE !== "undefined" ? MK_BADGE : ""}`;
+    return `<div class="mid_su">${BADGE(o2.role)}` +
+      `<span><span class="su_lbl">${LBL[o2.role]}</span><b>${nm} + ${esc(String(s.x.bed.m))}` +
+      `${s.x.bed.x && !/full bed/i.test(String(s.x.bed.x)) ? " \u00d7 " + esc(String(s.x.bed.x)) : ""}</b>` +
+      `<span class="rsn">${srfSetupWhy(o2.role, scOf(o2.f), pure, why ? esc(why.t) : "", o2.f.p)}</span></span>` +
+      `<span class="sc">pairing ${s.r.sc.toFixed(1)}/10${pTot != null ? `<i class="su_pr">~${pTot}\u20ac all-in</i>` : ""}</span></div>`;
+  }).join("");
+};
 function paintWinners(scored){
   const host = document.getElementById("winners"); if (!host) return;
   try { void calibScore; void calBeds; void ezOldGen; void calMatStiff; } catch(e){ return; }
@@ -4770,6 +5109,11 @@ function paintWinners(scored){
   const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
   const bedLabel = x => esc(x.bed.m) + (x.bed.x && !/full bed/i.test(String(x.bed.x)) ?
     ` <span style="color:var(--muted);">× ${esc(x.bed.x)}</span>` : ` <span style="color:var(--muted);">· full bed</span>`);
+  /* the raw-math top across the whole bench, for the gold card's why-line */
+  const tw3 = w.reduce((a,b)=>a+b,0) || 1;
+  const pureTop = rk.map(x => ({ f:x, sc: x.s.reduce((a,v,i)=>a+v*w[i],0)/tw3 }))
+                    .sort((a,b)=>b.sc-a.sc)[0] || null;
+  const roleOf = (r) => r === meds[0] ? 0 : r === meds[1] ? 1 : r === meds[2] ? 2 : 3;
   const card = (r, badge, label, extra) => {
     const b = bestBed(r);
     return `<div class="win_card${extra}">` +
@@ -4780,9 +5124,17 @@ function paintWinners(scored){
           `<b>${esc(r.b)}</b> ${esc(r.n)}</div>`
         : `<div class="win_name" title="from the wider market — not on your bench">` +
           `<b>${esc(r.b)}</b> ${esc(r.n)}${r.src === "market" ? MK_BADGE : ""}</div>`) +
-      `<div class="win_meta">score ${(r.__sc != null ? r.__sc : (r.sc || 0)).toFixed(1)}/10${r.p != null ? ` · ~${r.p}€` : ""} · difficulty ${r.d}/10</div>` +
+      `<div class="win_meta">score ${(r.__sc != null ? r.__sc : (r.sc || 0)).toFixed(1)}/10${r.p != null ? ` · ~${r.p}€` : ""} · difficulty ${r.d}/10${(x => x ? ` · <span class="stcknote">stock \u2300 ${x}</span>` : "")(stockAvg(r, w, w.reduce((a,b)=>a+b,0)||1))}</div>` +
+      (r.no != null && r.no > 0 ? `<div style="margin-top:5px;">${rowActs(r)}</div>` : "") +
       (b ? `<div class="win_bed"><span class="win_bl">best string setup for this frame</span>${bedLabel(b.x)}` +
            `<span class="win_match">pairing ${b.r.sc.toFixed(1)}/10${b.x.tech.priceV != null ? ` · ~${b.x.tech.priceV}€ a bed` : ""}</span></div>` : "") +
+      (() => { const role = roleOf(r);
+        const sc = r.__sc != null ? r.__sc : (r.sc || 0);
+        const band = role === 0 && pureTop && pureTop.f !== r ? (srfBandOf("racket", pureTop.f) || {}) : null;
+        const pure = role === 0 && pureTop && pureTop.f !== r
+          ? { beaten:true, name: esc(pureTop.f.b + " " + pureTop.f.n), sc: pureTop.sc, band: band && band.txt ? band.txt : "" } : null;
+        const bw = b && b.r.why ? (b.r.why.filter(w2=>w2.d>0).sort((a,c)=>c.d-a.d)[0]||{}).t : "";
+        return `<div class="win_why">${srfSetupWhy(role, sc, pure, bw ? esc(bw) : "", r.p)}</div>`; })() +
       `</div>`;
   };
   const ME = `<span class="medal" style="background:linear-gradient(135deg,var(--amber),#8a6a28);">€</span>`;
@@ -5014,7 +5366,7 @@ window.cSave = () => {
   const grp=document.getElementById("c_group").value;
   const own=document.getElementById("c_owner").value.trim();
   r.g=grp;
-  r.o = (grp==="fr" && own) ? [own,"var(--magenta)"] : (grp==="own" ? r.o : null);
+  r.o = (grp==="fr" && own) ? [own,"var(--magenta-fg,var(--magenta))"] : (grp==="own" ? r.o : null);
   r.pt = (grp==="tested") ? true : r.pt;
   if(!text){                       // regrouping alone is a valid edit — no description needed
     cClose(); buildGrid(); buildSpecs(); render();
@@ -5043,6 +5395,77 @@ window.cRevert = () => {
 
 // ---------- per-member layout: the 26 frames are a shared catalogue, the grouping is personal ----------
 const DEMO = rk.map(r=>({no:r.no, g:r.g, o:r.o?r.o.slice():null, pt:!!r.pt}));
+
+/* ---------- "my feel" — the second customize path ----------
+   cSave rewrites a frame from new PHYSICAL numbers; this one lets the player rewrite
+   the CATEGORY SCORES from how the frame plays for them. The stock row is never
+   touched: a feel-set lives as its own derived row (append-only, so member layouts
+   keep their indices), carries the stock scores with it for the cell-corner ghosts,
+   and is ranked by the engine like any other frame. One feel row per stock frame. */
+const FEEL_KEY = "srf:feel";
+let fNo = null;
+const feelLoad = () => { try { return JSON.parse(localStorage.getItem(FEEL_KEY) || "{}"); } catch(e){ return {}; } };
+const feelPersist = (m) => { try { localStorage.setItem(FEEL_KEY, JSON.stringify(m)); } catch(e){} };
+const feelRowOf = (no) => rk.find(x => x.feelOf === no);
+function mkFeelRow(base, vals){
+  const row = { no: Math.max(...rk.map(x => x.no)) + 1, feelOf: base.no,
+    b: base.b, n: base.n + " \u00b7 my feel", g: base.g, o: base.o ? base.o.slice() : null,
+    sp: base.sp.slice(), d: base.d, p: base.p, est: base.est,
+    s: vals.slice(), stockS: base.s.slice(), feel: true };
+  rk.push(row);                    // END of the array — append-only, like every other add
+  return row;
+}
+window.fOpen = (no) => {
+  const base = rk.find(x => x.no === no); if (!base) return;
+  if (base.feel){ window.fOpen(base.feelOf); return; }   // the edit button on a feel row
+  fNo = no;
+  const row = feelRowOf(no);
+  const cur = row ? row.s : base.s;
+  document.getElementById("f_title").textContent = "Adjust to my feel \u2014 " + base.b + " " + base.n;
+  document.getElementById("f_removeBtn").style.display = row ? "" : "none";
+  document.getElementById("f_err").textContent = "";
+  document.getElementById("f_rows").innerHTML = cats.map((c, i) =>
+    `<div class="fp_row"><span class="slabel">${c}</span>` +
+    `<input class="a3-slider" type="range" min="1" max="10" step="0.5" value="${cur[i]}" data-fi="${i}" ` +
+      `oninput="fRowPaint(this)" aria-label="${c} \u2014 my feel">` +
+    `<span class="wv">${cur[i]}</span>` +
+    `<span class="fp_stock">stock ${base.s[i]}</span></div>`).join("");
+  document.querySelectorAll("#f_rows .a3-slider").forEach(el => fRowPaint(el, true));
+  document.getElementById("f_panel").classList.add("open");
+};
+window.fRowPaint = (el, initOnly) => {
+  const t = window.srfTrackColors(false);
+  const p = (el.value - el.min) / (el.max - el.min) * 100;
+  el.style.background = `linear-gradient(to right, ${t.fill} 0%, ${t.fill} ${p}%, ${t.rest} ${p}%, ${t.rest} 100%)`;
+  if (!initOnly) el.parentElement.querySelector(".wv").textContent = el.value;
+};
+window.fClose = () => { document.getElementById("f_panel").classList.remove("open"); fNo = null; };
+window.fSave = () => {
+  const base = rk.find(x => x.no === fNo); if (!base) return;
+  const vals = [...document.querySelectorAll("#f_rows .a3-slider")].map(el => parseFloat(el.value));
+  if (vals.length !== cats.length){ document.getElementById("f_err").textContent = "Something went missing \u2014 reopen the panel."; return; }
+  let row = feelRowOf(fNo);
+  if (row){ row.s = vals.slice(); row.stockS = base.s.slice(); }
+  else row = mkFeelRow(base, vals);
+  const store = feelLoad(); store[fNo] = { s: vals, date: new Date().toISOString().slice(0,10) };
+  feelPersist(store);
+  fClose(); buildGrid(); buildSpecs(); render();
+};
+window.fRemove = () => {
+  const row = feelRowOf(fNo);
+  if (row){ const i = rk.indexOf(row); if (i >= 0) rk.splice(i, 1); }   // feel rows sit after all
+  const store = feelLoad(); delete store[fNo]; feelPersist(store);      // originals, so no index shifts
+  fClose(); buildGrid(); buildSpecs(); render();
+};
+/* boot: rebuild saved feel rows exactly as the member left them */
+(function reapplyFeels(){
+  const store = feelLoad();
+  Object.keys(store).forEach(k => {
+    const base = rk.find(x => x.no === +k);
+    if (base && !feelRowOf(+k) && Array.isArray(store[k].s) && store[k].s.length === cats.length)
+      mkFeelRow(base, store[k].s);
+  });
+})();
 // Several parts of the app need to know when the layout or a customization
 // changes — the member layer saves it, the chatroom repaints its pickers. A
 // single callback meant whoever registered last silently displaced the other.
@@ -5068,7 +5491,7 @@ function reapplyCust(r, c){
 function applyMap(map){
   rk.forEach(r=>{
     const m = map ? map[r.no] : null;
-    if(map){ r.g = m ? m.g : "bench"; r.o = (m && m.o) ? [m.o,"var(--magenta)"] : null; r.pt = !!(m && m.pt); }
+    if(map){ r.g = m ? m.g : "bench"; r.o = (m && m.o) ? [m.o,"var(--magenta-fg,var(--magenta))"] : null; r.pt = !!(m && m.pt); }
     if(map && m && m.cust && !r.cust) reapplyCust(r, m.cust);
   });
   buildGrid(); buildSpecs(); render();
@@ -5170,7 +5593,7 @@ let w = PRESETS.spin.slice();
 let sortIdx = null;   // null = ranked by weighted index
 
 function tagChip(b){
-  if (b.tag==="mine") return `<div style="margin-top:3px;"><span style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:color-mix(in srgb, var(--magenta) 18%, transparent);color:var(--magenta);padding:1px 6px;border-radius:3px;">my bed</span></div>`;
+  if (b.tag==="mine") return `<div style="margin-top:3px;"><span style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:color-mix(in srgb, var(--magenta) 18%, transparent);color:var(--magenta-fg,var(--magenta));padding:1px 6px;border-radius:3px;">my bed</span></div>`;
   if (b.tag==="researched") return `<div style="margin-top:3px;"><span style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:color-mix(in srgb, var(--bronze) 18%, transparent);color:var(--bronze);padding:1px 6px;border-radius:3px;">researched</span></div>`;
   if (b.tag==="benchmark")  return `<div style="margin-top:3px;"><span style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:color-mix(in srgb, var(--cyan) 24%, transparent);color:var(--cyan);padding:1px 6px;border-radius:3px;font-weight:600;">court-validated benchmark</span></div>`;
   if (b.tag==="validated") return `<div style="margin-top:3px;"><span style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:color-mix(in srgb, var(--cyan) 16%, transparent);color:var(--cyan);padding:1px 6px;border-radius:3px;">court-validated</span></div>`;
@@ -5265,7 +5688,7 @@ function buildSbSpecs(){
        `<div style="color:var(--muted);padding:4px 5px;">${mat}</div>`+
        `<div style="color:var(--fg);padding:4px 5px;">${st?st+" lb/in":"—"}</div>`+
        `<div style="color:var(--amber);padding:4px 5px;font-weight:600;">${pr?(pr.own?"":"~")+pr.v+"€":"—"}</div>`+
-       `<div style="color:var(--magenta);padding:4px 5px;font-weight:600;">${bedDemand(b)}</div>`;
+       `<div style="color:var(--magenta-fg,var(--magenta));padding:4px 5px;font-weight:600;">${bedDemand(b)}</div>`;
   });
   h+=`</div>`;
   document.getElementById("sb_specs").innerHTML=h;
@@ -5289,7 +5712,7 @@ function bedPrice(b){
   const v = (/full bed/i.test(b.x)) ? (a||0) : ((a||0)+(c||0))/2;
   return v?{v:Math.round(v)}:null;
 }
-function rowColor(b){ if(b.tag==="mine") return "var(--magenta)"; if(b.tag==="researched") return "var(--bronze)"; return b.tag==="benchmark"||b.tag==="validated"||b.tag==="tested" ? "var(--cyan)" : (b.tag==="queued" ? "var(--amber)" : "var(--muted)"); }
+function rowColor(b){ if(b.tag==="mine") return "var(--magenta-fg,var(--magenta))"; if(b.tag==="researched") return "var(--bronze)"; return b.tag==="benchmark"||b.tag==="validated"||b.tag==="tested" ? "var(--cyan)" : (b.tag==="queued" ? "var(--amber)" : "var(--muted)"); }
 
 
 // ---------- string department: search, online lookup, transfer specs ----------
@@ -5713,6 +6136,7 @@ window.sbAdoptDemo = () => { window.SRF.sbApply(window.SRF.sbDemo()); if(sbOnCha
 
 const SB_GCOLL = new Set();
 window.sbGroupToggle = (g) => { SB_GCOLL.has(g) ? SB_GCOLL.delete(g) : SB_GCOLL.add(g); buildGrid(); };
+window.sbLimSet = (v) => { window.SRFLIM.string = v; buildGrid(); };
 window.sbGroupOnly = (g) => {
   const all = [...document.querySelectorAll("#sb_grid .ghead")].map(e => e.dataset.g);
   const solo = all.every(k => k === g ? !SB_GCOLL.has(k) : SB_GCOLL.has(k));
@@ -5731,6 +6155,8 @@ function buildGrid(){
   else if(sortIdx==="d")  scored.sort((a,b)=>SBDIR*(bedDemand(a)-bedDemand(b)));
   else scored.sort((a,b)=>SBDIR*(a.s[sortIdx]-b.s[sortIdx]));
   if(typeof sbQ!=="undefined" && sbQ) scored=scored.filter(b=>sbMatches(b,sbQ));
+  const sbTotal = scored.length;
+  scored = scored.slice(0, window.SRFLIM.string || 5);
   if(!scored.length){
     document.getElementById("sb_grid").innerHTML=`<div style="padding:22px 6px;color:var(--muted);font-size:12px;">No bed matches \u201c${document.getElementById("sb_specSearch").value.trim()}\u201d. Use the amber <b style="color:var(--amber);">search</b> button to look it up online, or <b style="color:var(--bronze);">transfer specs</b> to add it.</div>`;
     document.getElementById("sb_sortState").textContent="no bench match"; return;
@@ -5757,7 +6183,7 @@ function buildGrid(){
     `<div class="sbhdr pricecell" data-i="p" data-label="Ø price" onclick="sbS('p')" title="rank by price per bed" style="--d:1.5s;animation-delay:1.5s;color:var(--amber);">Ø price</div>`+
     `<div class="sbhdr curvecell" data-label="curve" title="overall profile across all eight axes" style="--d:1.3s;animation-delay:1.3s;color:var(--cyan);">curve</div>` +
     SHORT.map((c,i)=>`<div role="columnheader" aria-sort="${SBSEL.has(i)?(SBSEL.get(i)===-1?"descending":"ascending"):"none"}" class="sbhdr${SBSEL.has(i)?" on":""}${SBSEL.get(i)===1?" low":""}" data-i="${i}" data-label="${AX[i]}" tabindex="0" onclick="sbS(${i})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();sbS(${i});}" title="rank by ${AX[i]} — Enter to toggle" style="--d:${(i*0.21).toFixed(2)}s;animation-delay:${(i*0.21).toFixed(2)}s">${c}<span class="dirs"><button type="button" class="${SBSEL.get(i)===-1?"on":""}" aria-label="rank ${AX[i]} highest first" aria-pressed="${SBSEL.get(i)===-1}" onclick="event.stopPropagation();sbSD(${i},-1)">\u25B2</button><button type="button" class="${SBSEL.get(i)===1?"on":""}" aria-label="rank ${AX[i]} lowest first" aria-pressed="${SBSEL.get(i)===1}" onclick="event.stopPropagation();sbSD(${i},1)">\u25BC</button></span></div>`).join("")+
-    `<div class="sbhdr" data-i="d" data-label="Demand" onclick="sbS('d')" title="rank by how demanding the bed is" style="--d:1.4s;animation-delay:1.4s;color:var(--magenta);">Demand</div>` +
+    `<div class="sbhdr" data-i="d" data-label="Demand" onclick="sbS('d')" title="rank by how demanding the bed is" style="--d:1.4s;animation-delay:1.4s;color:var(--magenta-fg,var(--magenta));">Demand</div>` +
     `<div class="sbhdr idxh${sortIdx==="idx"?" on":""}" data-i="idx" data-label="Index" onclick="sbS('idx')" title="rank by weighted index" style="--d:1.7s;animation-delay:1.7s">Index</div>`;
   
 
@@ -5794,8 +6220,9 @@ function buildGrid(){
     h+=`<div role="cell" style="display:flex;align-items:center;justify-content:center;color:var(--bright);font-weight:600;font-size:13px;">${b.idx.toFixed(1)}</div>`;
   });
   h+=`</div>`;
+  h+=window.srfLimitBar("string", sbTotal, "sbLimSet");
   document.getElementById("sb_grid").innerHTML=h;
-  sbCritChips(); sbMobileCards(scored); if(window.cmpPaintAll) cmpPaintAll();
+  sbCritChips(); sbMobileCards(scored, sbTotal); if(window.cmpPaintAll) cmpPaintAll();
   if (window.srfSeedFlags) srfSeedFlags();
   if(document.getElementById("sb_specs")) buildSbSpecs();
   // The ranking answers "what is best for my weights", so it must sort purely by
@@ -5962,7 +6389,7 @@ function sbCritChips(){
       onclick="sbS(${i})">${c}<i>${d===-1?"\u25B2 high":d===1?"\u25BC low":"\u2022"}</i></button>`;
   }).join("");
 }
-function sbMobileCards(rows){
+function sbMobileCards(rows, total){
   const el=document.getElementById("sb_gridM"); if(!el) return;
   el.innerHTML = rows.map((b,n)=>{
     const grid = b.s.map((v,i)=>{ const [bg,fg]=cellColor(v);
@@ -6020,8 +6447,8 @@ document.getElementById("sb_sliders").innerHTML = AX.map((c,i)=>
 
 function fillTrack(el){
   const p=(el.value-el.min)/(el.max-el.min)*100;
-  const c=el.classList.contains("dragging") ? "var(--gold)" : "var(--magenta)";
-  el.style.background=`linear-gradient(to right, ${c} 0%, ${c} ${p}%, color-mix(in srgb, var(--fg) 18%, transparent) ${p}%, color-mix(in srgb, var(--fg) 18%, transparent) 100%)`;
+  const t=window.srfTrackColors(el.classList.contains("dragging"));
+  el.style.background=`linear-gradient(to right, ${t.fill} 0%, ${t.fill} ${p}%, ${t.rest} ${p}%, ${t.rest} 100%)`;
 }
 function syncSliders(){
   w.forEach((v,i)=>{ const el=document.getElementById("sb_sl"+i); el.value=v;
@@ -6098,7 +6525,17 @@ let nerdSort=5, nerdDesc=false;   // default: softest first
 function matColor(m){ return m.indexOf("gut")>=0 ? "var(--cyan)" : (m.indexOf("soft")>=0||m.indexOf("slick")>=0 ? "var(--bronze)" : "var(--muted)"); }
 function stiffColor(v){
   const t=Math.max(0,Math.min(1,(v-100)/(240-100)));           // 100 = gut, 240 = stiffest poly
-  return `rgb(${Math.round(20+215*t)},${Math.round(190-120*t)},${Math.round(190-150*t)})`;
+  const c=[20+215*t, 190-120*t, 190-150*t];
+  /* The raw ramp lands between 150 and 240 lb/in — where every co-poly actually lives —
+     in a luminance dead zone where NEITHER dark nor light ink reaches 4.5:1 against it
+     (measured: 3.65 with the dark ink, 4.28 with white, at 200 lb/in). Lifting each
+     colour toward white until it clears the bar keeps the hue journey teal -> red intact
+     and puts the whole ramp at 5.8:1 or better with the existing dark ink. */
+  const lum=x=>{ const s=x.map(q=>q/255).map(q=> q<=0.03928 ? q/12.92 : Math.pow((q+0.055)/1.055,2.4));
+                 return 0.2126*s[0]+0.7152*s[1]+0.0722*s[2]; };
+  let out=c.slice();
+  for(let k=0.02; k<=0.9 && lum(out)<0.34; k+=0.02) out=c.map(q=>q+(255-q)*k);
+  return `rgb(${out.map(Math.round).join(",")})`;
 }
 function buildPrimer(){
   document.getElementById("sb_primer").innerHTML = PRIMER.map(p=>
@@ -6374,7 +6811,7 @@ window.SRF.strings = () => NERD.map(r=>({ name:r[0], brand:r[1], label:r[1]+" "+
   function quiverChips(){
     const q = (window.SRF && window.SRF.quiver) ? window.SRF.quiver() : [];
     if(!q.length) return `<span class="meta">no frames in your quiver yet</span>`;
-    return q.map(r=>`<span style="background:color-mix(in srgb, var(--magenta) 14%, transparent);color:var(--magenta);border-radius:999px;padding:2px 9px;font-size:10.5px;font-weight:600;white-space:nowrap;">${r.b} ${r.n}</span>`).join(" ");
+    return q.map(r=>`<span style="background:color-mix(in srgb, var(--magenta) 14%, transparent);color:var(--magenta-fg,var(--magenta));border-radius:999px;padding:2px 9px;font-size:10.5px;font-weight:600;white-space:nowrap;">${r.b} ${r.n}</span>`).join(" ");
   }
 
   function renderBar(){
@@ -7016,7 +7453,7 @@ function advisorShow(kind){
         .map(x => ({ x, d: advDist(x.f.s, hit.f.s) })).sort((a,b)=>a.d-b.d).slice(0,2);
       const bandR = srfBandOf("racket", hit.f);
       msgs.push(`<b>${advEsc(hit.f.b+" "+hit.f.n)}</b> sits at <b>#${allScored.indexOf(hit)+1}</b> for your sliders` +
-        (bandR ? ` \u2014 <span style="color:var(--signal);">but it is ${bandR.txt} on your intro answers</span>` : "") + `. ` +
+        (bandR ? ` \u2014 <span style="color:var(--signal-fg,var(--signal));">but it is ${bandR.txt} on your intro answers</span>` : "") + `. ` +
         `Closest characters you maybe didn\u2019t consider: ` +
         near.map(({x}) => `<b>${advEsc(x.f.b+" "+x.f.n)}</b> ` +
           `<button type="button" class="jump" onclick="advJump('racket',${x.f.no})">show</button>`).join(" and ") + `.`);
@@ -7047,7 +7484,7 @@ function advisorShow(kind){
         .map(x => ({ x, d: advDist(x.s, hit.s) })).sort((a,b)=>a.d-b.d).slice(0,2);
       const bandS = srfBandOf("string", hit);
       msgs.push(`<b>${advEsc(hit.m)}</b> ranks <b>#${allRanked.indexOf(hit)+1}</b> for your sliders` +
-        (bandS ? ` \u2014 <span style="color:var(--signal);">but it is ${bandS.txt} on your intro answers</span>` : "") + `. ` +
+        (bandS ? ` \u2014 <span style="color:var(--signal-fg,var(--signal));">but it is ${bandS.txt} on your intro answers</span>` : "") + `. ` +
         `Beds with the closest character you maybe didn\u2019t consider: ` +
         near.map(({x}) => `<b>${advEsc(x.m)}</b> ` +
           `<button type="button" class="jump" onclick="advJump('string',${x.i})">show</button>`).join(" and ") + `.`);
@@ -7508,7 +7945,60 @@ window.calRun = () => {
    to the physics therefore lands in both modes at once — the failure this file has
    already had twice is two copies of one rule drifting apart. */
 const MODE_KEY = "srf:mode";
+/* ---------- mode-transition intro ----------
+   Wraps setMode: the switch itself happens IMMEDIATELY (so deep links like
+   setMode('pro')+advJump keep working underneath), the intro sits on top and a click
+   anywhere lets the new mode through. Shown only for hops BETWEEN easy/mid/pro —
+   arriving from the landing is exempt, its cards are the intro. */
+const INTRO_OFF_KEY = "srf:introOff";
+const MODE_INTROS = {
+  easy: { c:"var(--cyan)",   fg:"var(--cyan)",
+          kick:"entering", title:"Easy Mode", tag:"just tell me what to buy",
+          body:"Four taps about your game and the house picks for you: a <b>gold, silver and bronze</b> frame, the same for the string, and the pairing that belongs together \u2014 plus a budget hero. Plain words, no numbers, nothing to configure. The picks come from the same engine the workshop uses; it just keeps the math out of sight." },
+  mid:  { c:"var(--amber)",  fg:"var(--amber)",
+          kick:"entering", title:"Intermediate", tag:"rank it with me",
+          body:"Say who you are, then <b>drag the priority sliders</b> and watch both benches re-rank live \u2014 rackets, strings and calibrator-paired setups. Your answers gate what gets recommended, medals mark the top picks, and every list opens at five so the shortlist stays a shortlist. The typo-proof search and online research are one keystroke away." },
+  pro:  { c:"var(--magenta)", fg:"var(--magenta-fg,var(--magenta))",
+          kick:"entering", title:"Pro Mode", tag:"the workshop \u2014 no medals without receipts",
+          body:"Everything on the table: <b>all axes of every frame and bed</b> with live weights, the frame\u21C4string <b>physics calibrator</b> (shock compounding, power budget, pattern wear), the <b>lab table</b> with dynamic stiffness in lb/in, spider dials, hard specs, transfer-specs research and the chatroom. Values marked \u2020 are derived, not court-tested \u2014 the bench never hides which is which." }
+};
+window.srfIntroDismiss = () => {
+  const el = document.getElementById("srfIntro");
+  if (el) el.remove();
+  document.removeEventListener("keydown", srfIntroKey, true);
+};
+function srfIntroKey(e){ if (e.key === "Escape" || e.key === "Enter" || e.key === " "){ e.preventDefault(); srfIntroDismiss(); } }
+window.srfIntroShow = (mode) => {
+  const I = MODE_INTROS[mode]; if (!I) return;
+  try { if (localStorage.getItem(INTRO_OFF_KEY) === "1") return; } catch(e){}
+  srfIntroDismiss();
+  const ov = document.createElement("div");
+  ov.className = "srfintro"; ov.id = "srfIntro";
+  ov.setAttribute("role","dialog"); ov.setAttribute("aria-modal","true");
+  ov.setAttribute("aria-label", I.title + " \u2014 what to expect");
+  ov.style.setProperty("--intro-c", I.c);
+  ov.style.setProperty("--intro-fg", I.fg);
+  ov.innerHTML =
+    `<div class="srfintro_card" tabindex="-1">` +
+      `<div class="srfintro_kick">${I.kick}</div>` +
+      `<div class="srfintro_title azonix">${I.title}</div>` +
+      `<div class="srfintro_tag">${I.tag}</div>` +
+      `<div class="srfintro_body">${I.body}</div>` +
+      `<div class="srfintro_hint">click anywhere to continue</div>` +
+    `</div>` +
+    `<span class="srfintro_skip" title="stop showing these mode intros">skip these intros</span>`;
+  ov.addEventListener("click", (e) => {
+    if (e.target.classList.contains("srfintro_skip")){
+      try { localStorage.setItem(INTRO_OFF_KEY, "1"); } catch(err){}
+    }
+    srfIntroDismiss();
+  });
+  document.addEventListener("keydown", srfIntroKey, true);
+  document.body.appendChild(ov);
+  const card = ov.querySelector(".srfintro_card"); if (card) card.focus({ preventScroll:true });
+};
 window.setMode = (m) => {
+  const prev = ["landing","easy","mid","pro"].find(k => document.body.classList.contains("mode-" + k));
   const mode = ["landing","easy","mid","pro"].includes(m) ? m : "landing";
   document.body.classList.remove("mode-landing","mode-easy","mode-mid","mode-pro");
   document.body.classList.add("mode-" + mode);
@@ -7524,10 +8014,18 @@ window.setMode = (m) => {
   if (mode === "easy"){ introPaint(); easyPaintWant(); }
   if (mode === "mid"){ introPaint(); if (window.midPaint) midPaint(); }
   if (mode === "pro" && typeof calRun === "function") calRun();
+  if (mode === "pro" && window.paintSetups4) paintSetups4();   // calibrator fns exist by now
+  // intro only for hops between the three working modes, never on re-entering the
+  // mode you are already in and never when coming from (or going to) the landing
+  if (prev && prev !== mode && prev !== "landing" && mode !== "landing") srfIntroShow(mode);
+  else srfIntroDismiss();
 };
 (function modeInit(){
-  let saved = null; try { saved = localStorage.getItem(MODE_KEY); } catch(e){}
-  document.body.classList.add("mode-" + (["landing","easy","mid","pro"].includes(saved) ? saved : "landing"));
+  /* Every fresh visit starts on the welcome page — deliberately. The last mode used to
+     be restored from localStorage; that survived leaving the site, so returning
+     visitors skipped the landing entirely. MODE_KEY is still written on every switch
+     (cheap, and other features may read it later), it is just no longer read here. */
+  document.body.classList.add("mode-landing");
   // the landing and easy headers borrow the brand marks already embedded in pro mode
   // rather than carrying a second copy of a 30 KB base64 logo
   const logo = document.querySelector('#proWrap img[alt="A\u00b3 Agentur logo"]');
@@ -7536,6 +8034,13 @@ window.setMode = (m) => {
   // pro mode carries the social set twice (header + chatroom), so dedupe by href.
   // landing, easy and intermediate all borrow it — each slot needs its own seen-set,
   // otherwise the first slot consumes every href and the rest come up empty.
+  /* the pro invitation quotes the bench sizes — read them live so the numbers can
+     never go stale the way the hardcoded intro copy did */
+  try {
+    const nf = document.getElementById("mpi_nf"), nb = document.getElementById("mpi_nb");
+    if (nf && window.SRF && SRF.frames) nf.textContent = SRF.frames().length;
+    if (nb && window.SRF && SRF.beds)   nb.textContent = SRF.beds().length;
+  } catch(e){}
   ["ld_socials","ez_socials","mid_socials"].forEach(id => {
     const box = document.getElementById(id); if (!box || box.firstChild) return;
     const seen = new Set();
@@ -7728,7 +8233,7 @@ const MK_BADGE = `<span style="font-size:8.5px;letter-spacing:.09em;text-transfo
   `background:color-mix(in srgb, var(--bronze) 22%, transparent);color:var(--bronze);` +
   `padding:1px 6px;border-radius:3px;margin-left:6px;">market</span>`;
 const CB_BADGE = `<span style="font-size:8.5px;letter-spacing:.09em;text-transform:uppercase;` +
-  `background:color-mix(in srgb, var(--signal) 20%, transparent);color:var(--signal);` +
+  `background:color-mix(in srgb, var(--signal) 20%, transparent);color:var(--signal-fg,var(--signal));` +
   `padding:1px 6px;border-radius:3px;margin-left:6px;">new combo</span>`;
 const DEAL_BADGE = `<span style="font-size:8.5px;letter-spacing:.09em;text-transform:uppercase;` +
   `background:color-mix(in srgb, var(--gold) 22%, transparent);color:var(--gold);` +
@@ -7879,6 +8384,10 @@ function midXid(kind, obj, tech){
     MID_XREG.push(kind === "racket" ? { kind, f: obj } : { kind, bed: obj, tech: tech || null }); }
   return obj.xid;
 }
+/* the two mid lists expand independently; midPaint(true) skips the slider rebuild
+   so expanding a list never resets a weight the user just dragged */
+window.midLimR = (v) => { window.SRFLIM.midR = v; midPaint(true); };
+window.midLimS = (v) => { window.SRFLIM.midS = v; midPaint(true); };
 window.midW  = (i, v, el) => { const p = document.getElementById("sl" + i);    if (p) p.value = v; if (window.W)   W(i, v);   const b = document.getElementById("mid_rv" + i); if (b) b.textContent = v; if (el) midFill(el); midPaint(true); };
 window.midWS = (i, v, el) => { const p = document.getElementById("sb_sl" + i); if (p) p.value = v; if (window.sbW) sbW(i, v); const b = document.getElementById("mid_sv" + i); if (b) b.textContent = v; if (el) midFill(el); midPaint(true); };
 /* the mid sliders ARE the pro sliders visually: same classes, same gradient fill,
@@ -7886,16 +8395,24 @@ window.midWS = (i, v, el) => { const p = document.getElementById("sb_sl" + i); i
    each bench keeps its own */
 function midFill(el){
   const p = (el.value - el.min) / (el.max - el.min) * 100;
-  const c = el.classList.contains("dragging") ? "var(--gold)" : "var(--magenta)";
-  el.style.background = `linear-gradient(to right, ${c} 0%, ${c} ${p}%, color-mix(in srgb, var(--fg) 18%, transparent) ${p}%, color-mix(in srgb, var(--fg) 18%, transparent) 100%)`;
+  const t = window.srfTrackColors(el.classList.contains("dragging"));
+  el.style.background = `linear-gradient(to right, ${t.fill} 0%, ${t.fill} ${p}%, ${t.rest} ${p}%, ${t.rest} 100%)`;
 }
 function midDragBind(host){
   host.querySelectorAll(".a3-slider").forEach(el => {
-    const on  = () => { midMark(); el.classList.add("dragging"); el.parentElement.classList.add("dragging"); midFill(el); };
-    const off = () => { el.classList.remove("dragging"); el.parentElement.classList.remove("dragging"); midFill(el); };
+    /* while a slider is held, its category name and value light up gold along with the
+       track — the pro benches always did this (lb/sb_lb), intermediate never had it */
+    const row = el.closest("div");
+    const lab = row ? row.querySelector(".slabel") : null;
+    const val = row ? row.querySelector(".wv") : null;
+    const glow = (onOff) => { [lab, val].forEach(n => { if (n) n.classList.toggle("gold", onOff); }); };
+    const on  = () => { midMark(); el.classList.add("dragging"); el.parentElement.classList.add("dragging"); glow(true); midFill(el); };
+    const off = () => { el.classList.remove("dragging"); el.parentElement.classList.remove("dragging"); glow(false); midFill(el); };
     el.addEventListener("pointerdown", on);
-    el.addEventListener("keydown", midMark);        // arrow-key nudges are gestures too
-    el.addEventListener("focus", midMark);
+    el.addEventListener("keydown", on);             // arrow-key nudges are gestures too
+    el.addEventListener("focus", on);
+    el.addEventListener("keyup", off);
+    el.addEventListener("blur", off);
     el.addEventListener("pointerup", off);
     el.addEventListener("pointercancel", off);
   });
@@ -7915,6 +8432,10 @@ function midSliders(){
     hostR.innerHTML = rl.map((l, i) => row(l, i, rw[i], "midW", "mid_rv")).join("");
     hostS.innerHTML = MID_SLBL.map((l, i) => row(l, i, sw[i], "midWS", "mid_sv")).join("");
     midDragBind(hostR); midDragBind(hostS);
+    /* first build never painted the gradient, so these tracks stayed flat grey until
+       something else forced a re-render — the main reason mid sliders looked dead */
+    hostR.querySelectorAll("input").forEach(midFill);
+    hostS.querySelectorAll("input").forEach(midFill);
     hostR.dataset.built = "1";
   } else {
     hostR.querySelectorAll("input").forEach((inp, i) => { inp.value = rw[i]; midFill(inp); const b = document.getElementById("mid_rv" + i); if (b) b.textContent = rw[i]; });
@@ -7994,16 +8515,17 @@ window.midPaint = (skipSliderSync) => {
       `<div class="st">strong where you care: <b>${strongest(x.f.s, rw, rl)}</b></div></div>`;
   };
   const fPrev = (MID_BASE ? MID_BASE.f : window.MID_PF) || [];
-  const fNow = fRows.slice(0, 8).map(x => x.f.b + x.f.n);
+  const fLim = window.SRFLIM.midR || 5;
+  const fNow = fRows.slice(0, fLim).map(x => x.f.b + x.f.n);
   window.MID_PF = fNow;
-  out.innerHTML = fRows.slice(0, 8).map(fCard).join("") ||
+  out.innerHTML = fRows.slice(0, fLim).map(fCard).join("") + window.srfLimitBar("midR", fRows.length, "midLimR") ||
     `<div style="color:var(--muted);font-size:11.5px;">No bench or market match for \u201c${esc(q)}\u201d \u2014 use <b>research online</b> to look it up.</div>`;
   if (fPrev.length) out.querySelectorAll(".mid_pc").forEach((c, i) => {
     if (fPrev[i] !== fNow[i]){ c.classList.remove("rowflash"); void c.offsetWidth; c.classList.add("rowflash"); } });
   const rn = document.getElementById("mid_rn");
   if (rn) rn.textContent = q
     ? `\u00b7 ${fRows.length} match${fRows.length === 1 ? "" : "es"} for \u201c${q}\u201d \u2014 gate lifted, flags tell the story`
-    : `\u00b7 top ${Math.min(8, fRows.length)} of ${frames.length} (bench + market)${gpF.gated ? " \u00b7 gated to your answers" : ""}`;
+    : `\u00b7 top ${Math.min(fLim, fRows.length)} of ${frames.length} (bench + market)${gpF.gated ? " \u00b7 gated to your answers" : ""}`;
   // ---- strings
   const sw = midSW(); const twS = sw.reduce((a, b) => a + b, 0) || 1;
   const bedsAll = calBeds().concat(mkBeds());
@@ -8029,33 +8551,49 @@ window.midPaint = (skipSliderSync) => {
       `<div class="st">strong where you care: <b>${strongest(x.bed.s, sw, MID_SLBL)}</b></div></div>`;
   };
   const bPrev = (MID_BASE ? MID_BASE.b : window.MID_PB) || [];
-  const bNow = bRows.slice(0, 8).map(x => String(x.bed.m) + String(x.bed.x || ""));
+  const bLim = window.SRFLIM.midS || 5;
+  const bNow = bRows.slice(0, bLim).map(x => String(x.bed.m) + String(x.bed.x || ""));
   window.MID_PB = bNow;
   const bd = document.getElementById("mid_bd");
-  if (bd) bd.innerHTML = bRows.slice(0, 8).map(bCard).join("") ||
+  if (bd) bd.innerHTML = bRows.slice(0, bLim).map(bCard).join("") + window.srfLimitBar("midS", bRows.length, "midLimS") ||
     `<div style="color:var(--muted);font-size:11.5px;">No bed matches \u201c${esc(q)}\u201d.</div>`;
   if (bd && bPrev.length) bd.querySelectorAll(".mid_pc").forEach((c, i) => {
     if (bPrev[i] !== bNow[i]){ c.classList.remove("rowflash"); void c.offsetWidth; c.classList.add("rowflash"); } });
   const sn = document.getElementById("mid_sn");
   if (sn) sn.textContent = q
     ? `\u00b7 ${bRows.length} match${bRows.length === 1 ? "" : "es"} for \u201c${q}\u201d \u2014 gate lifted`
-    : `\u00b7 top ${Math.min(8, bRows.length)} of ${bedsAll.length}${gpB.gated ? " \u00b7 gated to your answers" : ""}`;
+    : `\u00b7 top ${Math.min(bLim, bRows.length)} of ${bedsAll.length}${gpB.gated ? " \u00b7 gated to your answers" : ""}`;
   // ---- best setups: the medal frames, each paired by calibrator physics
   let armAsk = false; try { armAsk = INTRO.arm === "yes"; } catch(e){}
   let cand = bedsAll;
   if (armAsk){ const soft = cand.filter(x => !srfArmHarshBed(x.bed, calMatStiff(x.tech))); if (soft.length) cand = soft; }
-  const setups = fMeds.map(f => {
-    let top = null;
+  /* the answer block: your medal frames PLUS the budget pick, each completed into a
+     full setup by the calibrator, in medal order (the order IS the answer, so no
+     re-sorting by pairing score). */
+  const pairFor = f => { let top = null;
     cand.forEach(x => { const r = calibScore(f, x.bed, x.tech); if (!top || r.sc > top.r.sc) top = { x, r }; });
-    return top ? { f, x: top.x, r: top.r } : null;
-  }).filter(Boolean).sort((a, b) => b.r.sc - a.r.sc);
+    return top; };
+  const scOfF = f => { const row = SL.rows.find(x => x.f === f); return row ? row.sc : fScore(f).sc; };
+  /* the raw-math winner across the WHOLE pool, gates ignored — the frame the gold
+     line has to answer for when it is not the gold pick */
+  const pureRow = fSort(frames.map(fScore))[0] || null;
+  const four = fMeds.map((f, n2) => ({ f, role: n2 }));
+  if (SL.budget && SL.budget.f) four.push({ f: SL.budget.f, role: 3 });
+  const BADGE = n2 => n2 < 3 ? `<span class="medal ${["mG","mS","mB"][n2]}">${n2 + 1}</span>`
+    : `<span class="medal" style="background:linear-gradient(135deg,var(--amber),#8a6a28);" title="budget pick">\u20ac</span>`;
+  const LBL = ["gold setup","silver setup","bronze setup","budget setup"];
   const su = document.getElementById("mid_su");
-  if (su) su.innerHTML = setups.slice(0, 3).map((s, n) => {
-    const why = (s.r.why || []).filter(w => w.d > 0).sort((a, b) => b.d - a.d)[0];
-    return `<div class="mid_su"><span class="medal ${["mG","mS","mB"][n]}">${n + 1}</span>` +
-      `<span><b>${esc(s.f.b)} ${esc(s.f.n)} + ${esc(String(s.x.bed.m))}${s.x.bed.x && !/full bed/i.test(String(s.x.bed.x)) ? " \u00d7 " + esc(String(s.x.bed.x)) : ""}</b>` +
-      `<span class="rsn">${why ? esc(why.t) : "a balanced pairing across the four findings"}</span></span>` +
-      `<span class="sc">pairing ${s.r.sc.toFixed(1)}/10</span></div>`;
+  if (su) su.innerHTML = four.map(o2 => {
+    const s = pairFor(o2.f); if (!s) return "";
+    const why = (s.r.why || []).filter(w2 => w2.d > 0).sort((a, b) => b.d - a.d)[0];
+    const band = o2.role === 0 && pureRow && pureRow.f !== o2.f ? (srfBandOf("racket", pureRow.f) || {}) : null;
+    const pure = o2.role === 0 && pureRow && pureRow.f !== o2.f
+      ? { beaten: true, name: esc(pureRow.f.b + " " + pureRow.f.n), sc: pureRow.sc, band: band && band.txt ? band.txt : "" } : null;
+    const pTot = (o2.f.p != null && s.x.tech.priceV != null) ? Math.round(o2.f.p + s.x.tech.priceV) : null;
+    return `<div class="mid_su">${BADGE(o2.role)}` +
+      `<span><span class="su_lbl">${LBL[o2.role]}</span><b>${esc(o2.f.b)} ${esc(o2.f.n)} + ${esc(String(s.x.bed.m))}${s.x.bed.x && !/full bed/i.test(String(s.x.bed.x)) ? " \u00d7 " + esc(String(s.x.bed.x)) : ""}</b>` +
+      `<span class="rsn">${srfSetupWhy(o2.role, scOfF(o2.f), pure, why ? esc(why.t) : "", o2.f.p)}</span></span>` +
+      `<span class="sc">pairing ${s.r.sc.toFixed(1)}/10${pTot != null ? `<i class="su_pr">~${pTot}\u20ac all-in</i>` : ""}</span></div>`;
   }).join("");
   if (window.cmpPaintAll) cmpPaintAll();   // the rebuild wiped the checkbox states — re-tick them
   // a re-rank that changes nothing looks identical to a frozen page — so say which it was
@@ -8321,9 +8859,12 @@ window.easyRun = () => {
     `or a string that lives on permanent promo ` +
     `\u2014 status curated as of <b>Aug 2026</b>; a file on your disk cannot watch shop prices live, so every deal ` +
     `button opens a fresh search for today\u2019s offers instead of promising yesterday\u2019s.</span>` +
-    `<span>Want the numbers behind all of this \u2014 every axis, live sliders, the lab table and the calibrator?</span> ` +
-    `<button type="button" class="hybtn" onclick="setMode('pro')">open pro mode \u2192</button>` +
-    `<button type="button" class="hybtn ghost" onclick="easyRun()">re-run</button></div></div>`;
+    `<span>Next step up: keep these answers, then drag the priorities yourself and watch both ` +
+    `benches re-rank live.</span> ` +
+    `<button type="button" class="hybtn" onclick="setMode('mid')">continue to intermediate \u2192</button>` +
+    `<button type="button" class="hybtn ghost" onclick="easyRun()">re-run</button>` +
+    `<span class="ez_skip">or <a href="#" onclick="setMode('pro');return false;">skip straight to pro mode</a> ` +
+    `\u2014 every axis, live sliders, the lab table and the calibrator.</span></div></div>`;
 
   out.innerHTML = html;
   out.scrollIntoView({ behavior: "smooth", block: "start" });
