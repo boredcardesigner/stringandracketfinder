@@ -216,6 +216,32 @@
   .searchmeta a{color:var(--amber);text-decoration:none;border-bottom:1px dotted var(--amber);}
   .searchmeta a:hover{filter:brightness(1.15);}
   @media (prefers-reduced-motion:reduce){.searchbar{animation:none !important;}}
+  /* ---- weighted-ranking filter: the quiet cousin of the amber search bar.
+     Amber = the research engine (goes online, adds frames); this one only narrows
+     the ranked list below it, so it wears the cyan of the pure-math views. It sits
+     OUTSIDE #rank / #sb_rank, so a repaint never steals focus mid-word. ---- */
+  .rankhead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px;}
+  .rankhead .rh_t{font-size:12px;color:var(--muted);flex:none;}
+  .ranksearch{position:relative;display:flex;align-items:center;gap:4px;flex:1 1 210px;min-width:170px;max-width:360px;
+    background:var(--card2);border:1px solid color-mix(in srgb, var(--fg) 14%, transparent);border-radius:999px;padding:2px 5px 2px 10px;}
+  .ranksearch:focus-within{border-color:color-mix(in srgb, var(--cyan) 55%, transparent);}
+  .ranksearch .mag{flex:none;width:13px;height:13px;pointer-events:none;opacity:.75;}
+  .ranksearch input{flex:1;min-width:0;background:transparent;color:var(--bright);border:none;outline:none;
+    padding:5px 2px;font-family:inherit;font-size:12px;letter-spacing:.01em;}
+  .ranksearch input::placeholder{color:#7d928f;}
+  .ranksearch .rankclear{flex:none;background:transparent;border:none;color:var(--muted);cursor:pointer;
+    font-size:15px;line-height:1;padding:3px 8px;border-radius:999px;}
+  .ranksearch .rankclear:hover{color:var(--bright);background:color-mix(in srgb, var(--fg) 10%, transparent);}
+  .ranksearch input:placeholder-shown + .rankclear{visibility:hidden;}
+  .rankcount{font-size:11px;color:var(--muted);flex:none;white-space:nowrap;}
+  .rankcount b{color:var(--cyan-fg,var(--cyan));font-weight:600;}
+  /* the header row is shared by both rankings and all three spec tables, so the reset
+     button keeps its own right edge even when the label above wraps to two lines */
+  .rankhead > button{margin-left:auto;}
+  /* on a phone the row stacks: label, sort state, then the full-width filter, then the
+     reset button last — the button used to land between the count and the search box */
+  @media (max-width:820px){ .ranksearch{max-width:none;flex-basis:100%;order:3;}
+    .rankhead > button{margin-left:0;order:4;} }
 
   /* ---------- v09 transfer-specs (bronze) ---------- */
   
@@ -1680,7 +1706,7 @@
 </head>
 <body>
 <div class="wrap">
-<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">String & Racket Finder v.8.0 beta_86 by Alexey Semenov von Rosenberg — two departments in one document. Racket department (v.09 beta): twenty-six numbered frames rated across eleven axes with a difficulty column, an amber search bar that filters the bench or looks specs up online, and a bronze transfer-specs form that scores a researched frame from its specs. String department (Rev 05): thirty-eight string beds rated across eight axes including arm friendliness, with beds you have court-tested marked cyan and queued beds amber. Both departments have clickable column headers, weight sliders and reset buttons.</h2>
+<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">String & Racket Finder v.8.0 beta_86 by Alexey Semenov von Rosenberg — two departments in one document. Racket department (v.09 beta): one hundred fifty-five numbered frames — the full current lines of Head, Wilson, Yonex, Dunlop, Diadem, Tecnifibre, Babolat, Prince, Solinco, Lacoste and Pro Kennex — rated across eleven axes with a difficulty column, an amber search bar that filters the bench or looks specs up online, and a bronze transfer-specs form that scores a researched frame from its specs. String department (Rev 05): thirty-eight string beds rated across eight axes including arm friendliness, with beds you have court-tested marked cyan and queued beds amber. Both departments have clickable column headers, weight sliders and reset buttons, and every list — the weighted rankings, both hard-spec tables and the string stiffness table — carries a typo-tolerant filter bar and top 5 / show 10 / show all row limits.</h2>
 
 <!-- ================= landing ================= -->
 <div id="landing">
@@ -1692,7 +1718,7 @@
       </div>
     </div>
     <h1 class="ld_title azonix">String &amp; Racket Finder <span style="color:var(--cyan);">v.8.0 beta_86</span></h1>
-    <p class="ld_lede">Twenty-six frames and thirty-eight string beds, scored on the same axes and matched to each other
+    <p class="ld_lede">One hundred fifty-five frames &mdash; the current lines of eleven brands &mdash; and thirty-eight string beds, scored on the same axes and matched to each other
        by the physics of the pairing. Tell it how you play and it hands you a shortlist &mdash; or open the whole
        workshop and rank everything yourself.</p>
     <div class="ld_modes">
@@ -2227,11 +2253,36 @@
 </section>
   </div>
 <div style="margin-top:14px;">
-  <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">weighted ranking</div>
+  <div class="rankhead">
+    <span class="rh_t">weighted ranking</span>
+    <span class="ranksearch" role="search">
+      <svg class="mag" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <input id="rankFilter" type="text" autocomplete="off" spellcheck="false"
+             placeholder="filter this ranking &mdash; typos are fine&hellip;"
+             aria-label="filter the weighted racket ranking"
+             oninput="rankSearch(this.value)"
+             onkeydown="if(event.key==='Escape'){this.value='';rankSearch('');}">
+      <button type="button" class="rankclear" aria-label="clear ranking filter" title="clear"
+              onclick="var i=document.getElementById('rankFilter');i.value='';rankSearch('');i.focus();">&times;</button>
+    </span>
+    <span id="rank_n" class="rankcount" aria-live="polite"></span>
+  </div>
   <div id="rank"></div>
 </div>
 <div style="margin-top:16px;border-top:0.5px solid color-mix(in srgb, var(--fg) 15%, transparent);padding-top:12px;">
-  <div style="font-size:12px;color:var(--muted);margin-bottom:8px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;"><span>hard specs — the numbers behind every frame on the bench</span><span style="font-size:11px;">click a spec header to sort · <span id="specState" style="color:var(--cyan);">original order</span></span><button class="resetbtn" data-label="reset order" onclick="resetOrder()" style="margin-left:auto;">reset order</button></div>
+  <div class="rankhead" style="font-size:12px;color:var(--muted);"><span>hard specs — the numbers behind every frame on the bench</span><span style="font-size:11px;">click a spec header to sort · <span id="specState" style="color:var(--cyan);">original order</span></span>
+    <span class="ranksearch" role="search">
+      <svg class="mag" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <input id="hsRFilter" type="text" autocomplete="off" spellcheck="false"
+             placeholder="filter these specs &mdash; typos are fine&hellip;"
+             aria-label="filter the racket hard-spec table"
+             oninput="hsRSearch(this.value)"
+             onkeydown="if(event.key==='Escape'){this.value='';hsRSearch('');}">
+      <button type="button" class="rankclear" aria-label="clear spec filter" title="clear"
+              onclick="var i=document.getElementById('hsRFilter');i.value='';hsRSearch('');i.focus();">&times;</button>
+    </span>
+    <span id="hsR_n" class="rankcount" aria-live="polite"></span>
+    <button class="resetbtn" data-label="reset order" onclick="resetOrder()">reset order</button></div>
   <div id="specs" style="font-size:11px;"></div>
 </div>
 </div>
@@ -2406,7 +2457,20 @@
 </section>
   </div>
   <div style="margin-top:14px;">
-    <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">weighted ranking</div>
+    <div class="rankhead">
+      <span class="rh_t">weighted ranking</span>
+      <span class="ranksearch" role="search">
+        <svg class="mag" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+        <input id="sbRankFilter" type="text" autocomplete="off" spellcheck="false"
+               placeholder="filter this ranking &mdash; typos are fine&hellip;"
+               aria-label="filter the weighted string-bed ranking"
+               oninput="sbRankSearch(this.value)"
+               onkeydown="if(event.key==='Escape'){this.value='';sbRankSearch('');}">
+        <button type="button" class="rankclear" aria-label="clear ranking filter" title="clear"
+                onclick="var i=document.getElementById('sbRankFilter');i.value='';sbRankSearch('');i.focus();">&times;</button>
+      </span>
+      <span id="sbrank_n" class="rankcount" aria-live="polite"></span>
+    </div>
     <div id="sb_rank"></div>
   </div>
 
@@ -2427,18 +2491,40 @@
       Figures marked <span class="est">†</span> are typical published values rather than a measurement of your exact set.
     </div>
     <div id="sb_primer" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-bottom:16px;"></div>
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;font-size:11px;flex-wrap:wrap;">
+    <div class="rankhead" style="font-size:11px;">
       <span style="color:var(--muted);">click a header to sort · <span id="sb_nerdState" style="color:var(--amber);">by stiffness</span></span>
-      <button class="sbbtn" data-label="reset order" onclick="sbNerdReset()" style="margin-left:auto;">reset order</button>
+      <span class="ranksearch" role="search">
+        <svg class="mag" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+        <input id="nerdFilter" type="text" autocomplete="off" spellcheck="false"
+               placeholder="filter by string, brand or material&hellip;"
+               aria-label="filter the stiffness table"
+               oninput="nerdSearch(this.value)"
+               onkeydown="if(event.key==='Escape'){this.value='';nerdSearch('');}">
+        <button type="button" class="rankclear" aria-label="clear stiffness filter" title="clear"
+                onclick="var i=document.getElementById('nerdFilter');i.value='';nerdSearch('');i.focus();">&times;</button>
+      </span>
+      <span id="nerd_n" class="rankcount" aria-live="polite"></span>
+      <button class="sbbtn" data-label="reset order" onclick="sbNerdReset()">reset order</button>
     </div>
     <div id="sb_nerd" style="font-size:11px;overflow-x:auto;"></div>
   </div>
 </div>
   <div style="margin-top:16px;border-top:0.5px solid color-mix(in srgb, var(--fg) 15%, transparent);padding-top:12px;">
-    <div style="font-size:12px;color:var(--muted);margin-bottom:8px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+    <div class="rankhead" style="font-size:12px;color:var(--muted);">
       <span>hard specs — your tensions and notes travel with each bed</span>
       <span style="font-size:11px;">click a spec header to sort · <span id="sb_specState" style="color:var(--cyan);">original order</span></span>
-      <button class="sbbtn" data-label="reset order" onclick="sbResetOrder()" style="margin-left:auto;">reset order</button>
+      <span class="ranksearch" role="search">
+        <svg class="mag" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+        <input id="hsSFilter" type="text" autocomplete="off" spellcheck="false"
+               placeholder="filter these specs &mdash; typos are fine&hellip;"
+               aria-label="filter the string hard-spec table"
+               oninput="hsSSearch(this.value)"
+               onkeydown="if(event.key==='Escape'){this.value='';hsSSearch('');}">
+        <button type="button" class="rankclear" aria-label="clear spec filter" title="clear"
+                onclick="var i=document.getElementById('hsSFilter');i.value='';hsSSearch('');i.focus();">&times;</button>
+      </span>
+      <span id="hsS_n" class="rankcount" aria-live="polite"></span>
+      <button class="sbbtn" data-label="reset order" onclick="sbResetOrder()">reset order</button>
     </div>
     <div id="sb_specs" style="font-size:11px;overflow-x:auto;"></div>
   </div>
@@ -2550,11 +2636,13 @@
    Each bench opens showing its top 5 and offers 10 / all. State is per bench so the
    racket and string tables expand independently, and the setter name is passed in so
    each IIFE keeps ownership of its own redraw. */
-window.SRFLIM = { racket:5, string:5, midR:5, midS:5, rank:5, hsR:5, hsS:5 };
-/* Phones only. The weighted ranking and the two hard-spec tables stay FULL on desktop —
-   there a long list is a feature, you scan it. On a phone the same list is a wall, so
-   these three collapse to five with the usual bar. Checked at render time so a rotate
-   or a resize picks up the right behaviour on the next repaint. */
+window.SRFLIM = { racket:5, string:5, midR:5, midS:5, rank:5, sbrank:5, hsR:5, hsS:5, nerd:5 };
+/* Phones only — and now ONLY for the two hard-spec tables. Both weighted rankings used
+   to run full-length on desktop and collapse only on a phone, which made "top 5 / show
+   10 / show all" a mobile-only idea. With 155 frames on the bench a full ranking is a
+   wall on any screen, so both rankings now carry the same bar as every other table in
+   this file, on every screen, and open at their top 5. srfCut stays phone-only for the
+   spec sheets, where a long table of numbers really is meant to be scanned. */
 window.srfNarrow = () => window.matchMedia("(max-width:820px)").matches;
 window.srfCut = (arr, key) => window.srfNarrow() ? arr.slice(0, window.SRFLIM[key] || 5) : arr;
 window.srfLimitBar = function(key, total, setter){
@@ -2681,7 +2769,9 @@ window.srfTrackColors = (function(){
    Ranges as published by the makers, held in kg and converted for display.
    Brand defaults with per-frame overrides where a model is known to differ. */
 const TENSION_BRAND = { "BABOLAT":[23,27], "WILSON":[23,27], "HEAD":[22,26],
-                        "YONEX":[20,27], "TECNIFIBRE":[22,26] };
+                        "YONEX":[20,27], "TECNIFIBRE":[22,26],
+                        "DUNLOP":[20,27], "DIADEM":[23,27], "PRINCE":[22,27],
+                        "SOLINCO":[20,26], "LACOSTE":[23,25], "PRO KENNEX":[22,27] };
 const TENSION_FRAME = {
   "YONEX Percept 97D":[20,27], "YONEX VCORE Pro 97H":[20,27],
   "HEAD Squared 2026":[22,25], "WILSON Defyer 98 Pro":[23,27], "WILSON Defyer 100":[23,27]
@@ -2814,7 +2904,9 @@ const SPECDB = {
 };
 /* alias -> canonical, so common shorthand and misnamings still resolve */
 const SPECALIAS = {
-  "tecnifibre fire 305s":"TECNIFIBRE T-Fight 305S",   // Tecnifibre's model is the T-Fight; "Fire" is not a frame line
+  /* "Fire is not a frame line" — true until 2026, when Tecnifibre launched an actual
+     Fire series (replacing TF-X1). The Fire frames live on the bench now, so the old
+     fire→T-Fight redirect is gone; a "fire" search hits the bench rows directly. */
   "tfight 305s":"TECNIFIBRE T-Fight 305S",
   "t fight 305s":"TECNIFIBRE T-Fight 305S",
   "tecnifibre tf40 305":"TECNIFIBRE TF40 305 18x20",
@@ -4342,7 +4434,147 @@ const rk = [
   {n:"Radical Pro", b:"HEAD", o:null, g:"bench", s:[7,7,7,6,8,8,6,7,7,8,7], d:6, p:230, sp:["310g","98","16x19","~63 RA","~322","~315","20/23/21"]},
   {n:"Pure Aero 98", b:"BABOLAT", o:null, g:"bench", s:[7,7,9,8,6,7,7,8,8,6,7], d:4, p:230, sp:["305g","98","16x20","~66 RA","~320","~315","23"]},
   {n:"TFight 305S", b:"TECNIFIBRE", o:null, g:"bench", s:[8,8,7,6,8,7,7,7,7,9,7], d:6, p:220, sp:["305g","98","18x19","63 RA","325","320","22.5"], est:true},
-  {n:"Speed Pro", b:"HEAD", o:null, g:"bench", s:[8,9,6,6,8,8,7,8,8,8,7], d:6, p:250, sp:["310g","100","18x20","62 RA","~322","~315","23"]}
+  {n:"Speed Pro", b:"HEAD", o:null, g:"bench", s:[8,9,6,6,8,8,7,8,8,8,7], d:6, p:250, sp:["310g","100","18x20","62 RA","~322","~315","23"]},
+  // ---- current Head lines — Speed 2026 · Radical 2025 · Extreme 2026 · Gravity 2025 · Prestige 2023 · Boom 2026 ----
+  {n:"Speed Pro (2026)", b:"HEAD", o:null, g:"bench", s:[9,9,6,9,8,9,4,8,8,9,9], d:8, p:280, sp:["310g","100","18x20","63 RA","~328","~310","23"], est:true},
+  {n:"Speed Tour (2026)", b:"HEAD", o:null, g:"bench", s:[7,7,8,8,8,9,4,8,8,6,8], d:8, p:270, sp:["305g","97","16x19","63 RA","~325","~315","23"], est:true},
+  {n:"Speed MP (2026)", b:"HEAD", o:null, g:"bench", s:[6,6,9,8,7,6,7,8,6,6,7], d:5, p:250, sp:["300g","100","16x19","63 RA","~320","~320","23"], est:true},
+  {n:"Speed MP L (2026)", b:"HEAD", o:null, g:"bench", s:[7,6,9,7,9,4,9,8,5,7,5], d:2, p:230, sp:["280g","100","16x19","62 RA","~305","~325","23"], est:true},
+  {n:"Radical MP (2025)", b:"HEAD", o:null, g:"bench", s:[6,7,8,6,8,6,7,7,6,7,6], d:5, p:220, sp:["300g","98","16x19","63 RA","~315","~320","20/23/21"], est:true},
+  {n:"Extreme MP (2026)", b:"HEAD", o:null, g:"bench", s:[6,6,9,8,7,6,7,8,6,6,7], d:5, p:250, sp:["300g","100","16x19","64 RA","~320","~320","23/26/21"], est:true},
+  {n:"Extreme Pro (2026)", b:"HEAD", o:null, g:"bench", s:[6,7,8,7,9,9,4,8,8,7,8], d:7, p:260, sp:["305g","98","16x19","64 RA","~325","~315","22/23/21"], est:true},
+  {n:"Extreme MP L (2026)", b:"HEAD", o:null, g:"bench", s:[6,6,9,8,7,4,9,8,5,6,5], d:2, p:230, sp:["280g","100","16x19","63 RA","~305","~325","23/26/21"], est:true},
+  {n:"Extreme MP XL (2026)", b:"HEAD", o:null, g:"bench", s:[6,6,9,9,8,9,4,9,8,6,9], d:8, p:260, sp:["300g","100","16x19","64 RA","~330","~320","23/26/21"], est:true},
+  {n:"Gravity Pro (2025)", b:"HEAD", o:null, g:"bench", s:[9,9,6,7,9,9,4,8,8,9,9], d:9, p:250, sp:["315g","100","18x20","59 RA","~329","~320","20"], est:true},
+  {n:"Gravity Tour (2025)", b:"HEAD", o:null, g:"bench", s:[7,7,8,6,9,9,3,8,8,8,8], d:8, p:240, sp:["305g","98","16x19","59 RA","~328","~330","22"], est:true},
+  {n:"Gravity MP (2025)", b:"HEAD", o:null, g:"bench", s:[9,9,7,6,9,6,6,7,6,9,7], d:8, p:230, sp:["295g","100","16x20","57 RA","~323","~335","22"], est:true},
+  {n:"Prestige MP (2023)", b:"HEAD", o:null, g:"bench", s:[9,9,5,6,9,9,4,7,8,9,8], d:8, p:240, sp:["310g","98","18x20","62 RA","~325","~310","21"], est:true},
+  {n:"Prestige MP L (2023)", b:"HEAD", o:null, g:"bench", s:[7,7,8,5,9,6,7,7,6,8,6], d:5, p:230, sp:["300g","98","16x19","62 RA","~315","~315","21"], est:true},
+  {n:"Prestige Pro (2023)", b:"HEAD", o:null, g:"bench", s:[9,9,5,6,9,9,4,7,8,9,8], d:10, p:250, sp:["320g","95","18x20","62 RA","~330","~310","21.5"], est:true},
+  {n:"Prestige Tour (2023)", b:"HEAD", o:null, g:"bench", s:[9,9,5,6,9,9,4,7,8,9,8], d:9, p:240, sp:["315g","99","18x20","61 RA","~325","~315","21.5"], est:true},
+  {n:"Boom MP (2026)", b:"HEAD", o:null, g:"bench", s:[7,6,9,7,9,6,7,8,6,7,7], d:6, p:250, sp:["295g","100","16x19","61 RA","~316","~325","23/24/22"], est:true},
+  {n:"Boom Pro (2026)", b:"HEAD", o:null, g:"bench", s:[6,7,8,7,9,9,4,8,8,7,8], d:7, p:270, sp:["310g","98","16x19","64 RA","~325","~320","22/22/21.5"], est:true},
+  {n:"Boom Team (2024)", b:"HEAD", o:null, g:"bench", s:[6,5,9,7,9,4,9,8,5,7,5], d:2, p:180, sp:["275g","102","16x19","62 RA","~300","~335","23"], est:true},
+  // ---- current Wilson lines — Blade v10 (+v9 light variants) · Pro Staff v14/v15 · RF 01 · Ultra v5/Pro v4 · Clash v3 · Shift · Burn v5 ----
+  {n:"Blade 98 16x19 v10", b:"WILSON", o:null, g:"bench", s:[7,7,8,5,9,6,7,7,6,8,6], d:7, p:280, sp:["305g","98","16x19","62 RA","~322","~320","21.5"], est:true},
+  {n:"Blade 98 18x20 v10", b:"WILSON", o:null, g:"bench", s:[9,9,5,5,9,6,7,6,6,9,6], d:7, p:280, sp:["305g","98","18x20","61 RA","~320","~320","21.5"], est:true},
+  {n:"Blade 100 v10", b:"WILSON", o:null, g:"bench", s:[6,7,9,7,8,6,7,8,6,7,7], d:5, p:270, sp:["300g","100","16x19","63 RA","~318","~320","22"], est:true},
+  {n:"Blade 100L v9", b:"WILSON", o:null, g:"bench", s:[6,7,9,7,8,4,9,8,5,7,5], d:2, p:230, sp:["285g","100","16x19","64 RA","~305","~330","22"], est:true},
+  {n:"Blade Team v9", b:"WILSON", o:null, g:"bench", s:[6,7,9,7,8,4,9,8,5,7,5], d:2, p:210, sp:["285g","100","16x19","66 RA","~305","~330","22"], est:true},
+  {n:"Blade 104 v9", b:"WILSON", o:null, g:"bench", s:[5,6,9,7,8,6,6,8,6,7,7], d:2, p:250, sp:["290g","104","16x19","64 RA","~315","~330","22"], est:true},
+  {n:"Pro Staff 97L v14", b:"WILSON", o:null, g:"bench", s:[7,8,8,6,8,4,9,7,5,7,4], d:3, p:230, sp:["290g","97","16x19","66 RA","~305","~327","21.5"], est:true},
+  {n:"Pro Staff 97 Classic v15", b:"WILSON", o:null, g:"bench", s:[7,8,8,7,9,9,4,8,8,7,8], d:8, p:290, sp:["315g","97","16x19","65 RA","~325","~310","21.5"], est:true},
+  {n:"RF 01", b:"WILSON", o:null, g:"bench", s:[7,8,8,7,9,9,4,8,8,7,8], d:8, p:300, sp:["315g","97","16x19","65 RA","~326","~315","21.5"], est:true},
+  {n:"Ultra 100 v5", b:"WILSON", o:null, g:"bench", s:[6,6,9,9,6,7,6,8,6,6,7], d:7, p:250, sp:["300g","100","16x19","67 RA","~322","~330","26.5"], est:true},
+  {n:"Ultra 100L v5", b:"WILSON", o:null, g:"bench", s:[6,6,9,9,7,7,6,8,6,6,7], d:4, p:220, sp:["277g","100","16x19","64 RA","~310","~330","26.5"], est:true},
+  {n:"Ultra Team v5", b:"WILSON", o:null, g:"bench", s:[6,6,9,9,7,7,6,8,6,6,7], d:4, p:200, sp:["277g","100","16x19","64 RA","~312","~335","26"], est:true},
+  {n:"Ultra 99 Pro v5", b:"WILSON", o:null, g:"bench", s:[6,6,8,8,7,9,3,8,8,6,8], d:8, p:260, sp:["305g","99","16x18","69 RA","~330","~333","23.5"], est:true},
+  {n:"Ultra Pro 16x19 v4", b:"WILSON", o:null, g:"bench", s:[8,8,8,5,9,6,7,7,6,8,6], d:6, p:230, sp:["305g","97","16x19","62 RA","~317","~324","20.6"], est:true},
+  {n:"Ultra Pro 18x20 v4", b:"WILSON", o:null, g:"bench", s:[9,9,5,5,9,6,7,6,6,9,6], d:7, p:230, sp:["305g","97","18x20","62 RA","~319","~324","20.6"], est:true},
+  {n:"Clash 100 v3", b:"WILSON", o:null, g:"bench", s:[7,6,9,7,9,6,7,8,6,7,7], d:6, p:270, sp:["295g","100","16x19","57 RA","~313","~325","24"], est:true},
+  {n:"Clash 100 Pro v3", b:"WILSON", o:null, g:"bench", s:[7,6,9,8,9,9,4,9,8,7,9], d:8, p:280, sp:["310g","100","16x19","59 RA","~325","~320","24.5"], est:true},
+  {n:"Clash 98 v3", b:"WILSON", o:null, g:"bench", s:[9,8,6,6,9,6,7,6,6,9,6], d:6, p:280, sp:["305g","98","16x20","58 RA","~318","~315","23.5"], est:true},
+  {n:"Clash 100L v3", b:"WILSON", o:null, g:"bench", s:[7,6,9,7,9,4,9,8,5,7,5], d:3, p:230, sp:["280g","100","16x19","55 RA","~305","~330","24"], est:true},
+  {n:"Shift 99", b:"WILSON", o:null, g:"bench", s:[9,8,6,6,9,6,7,6,6,9,6], d:6, p:250, sp:["300g","99","16x20","57 RA","~315","~325","23"], est:true},
+  {n:"Shift 99 Pro", b:"WILSON", o:null, g:"bench", s:[9,8,6,7,9,9,4,7,8,9,8], d:8, p:260, sp:["315g","99","16x20","57 RA","~328","~320","23"], est:true},
+  {n:"Burn 100 v5", b:"WILSON", o:null, g:"bench", s:[5,5,9,9,4,6,7,9,6,5,7], d:7, p:200, sp:["300g","100","16x19","71 RA","~322","~320","23/25/23"], est:true},
+  {n:"Burn 100LS v5", b:"WILSON", o:null, g:"bench", s:[5,5,9,9,4,4,9,9,5,5,5], d:2, p:180, sp:["280g","100","18x16","70 RA","~300","~330","23/25/23"], est:true},
+  // ---- current Yonex lines — EZONE 2025 · VCORE 2026 · Percept 2023 ----
+  {n:"EZONE 98 (2025)", b:"YONEX", o:null, g:"bench", s:[6,6,8,7,7,6,7,7,6,6,6], d:5, p:270, sp:["305g","98","16x19","64 RA","~320","~320","23/24/19"], est:true},
+  {n:"EZONE 98 Tour (2025)", b:"YONEX", o:null, g:"bench", s:[7,7,8,6,9,9,4,8,8,8,8], d:8, p:270, sp:["320g","98","16x19","62 RA","~330","~310","22/23/19"], est:true},
+  {n:"EZONE 100 (2025)", b:"YONEX", o:null, g:"bench", s:[6,6,9,8,7,6,7,8,6,6,7], d:5, p:270, sp:["300g","100","16x19","66 RA","~320","~320","23/26/22"], est:true},
+  {n:"EZONE 100L (2025)", b:"YONEX", o:null, g:"bench", s:[6,6,9,8,7,4,9,8,5,6,5], d:2, p:240, sp:["285g","100","16x19","66 RA","~305","~330","23/26/22"], est:true},
+  {n:"EZONE 98L (2025)", b:"YONEX", o:null, g:"bench", s:[6,6,8,7,7,4,9,7,5,6,4], d:2, p:250, sp:["285g","98","16x19","64 RA","~305","~325","23/24/19"], est:true},
+  {n:"VCORE 95 (2026)", b:"YONEX", o:null, g:"bench", s:[9,9,6,6,8,6,7,6,6,9,6], d:6, p:260, sp:["310g","95","16x20","63 RA","~320","~310","21.5"], est:true},
+  {n:"VCORE 98 (2026)", b:"YONEX", o:null, g:"bench", s:[6,6,8,7,7,6,7,7,6,6,6], d:5, p:260, sp:["305g","98","16x19","63 RA","~318","~315","23/23.5/22"], est:true},
+  {n:"VCORE 98 Tour (2026)", b:"YONEX", o:null, g:"bench", s:[7,6,8,7,9,9,4,8,8,7,8], d:7, p:270, sp:["315g","98","16x19","62 RA","~325","~310","23/23.5/22"], est:true},
+  {n:"VCORE 100 (2026)", b:"YONEX", o:null, g:"bench", s:[6,6,9,9,8,9,4,9,8,6,9], d:7, p:260, sp:["300g","100","16x19","65 RA","~325","~320","24/26/23"], est:true},
+  {n:"VCORE 100D (2026)", b:"YONEX", o:null, g:"bench", s:[8,8,7,8,7,6,7,7,6,8,7], d:5, p:260, sp:["305g","100","16x20","64 RA","~320","~315","24/26/23"], est:true},
+  {n:"VCORE 100L (2026)", b:"YONEX", o:null, g:"bench", s:[6,6,9,8,7,4,9,8,5,6,5], d:2, p:230, sp:["285g","100","16x19","64 RA","~305","~330","24/26/23"], est:true},
+  {n:"Percept 97", b:"YONEX", o:null, g:"bench", s:[7,8,8,6,8,6,7,7,6,7,6], d:6, p:250, sp:["310g","97","16x19","63 RA","~320","~320","21/22/21"], est:true},
+  {n:"Percept 97H", b:"YONEX", o:null, g:"bench", s:[8,8,8,6,9,9,4,8,8,8,8], d:10, p:250, sp:["330g","97","16x19","61 RA","~330","~310","21"], est:true},
+  {n:"Percept 100D", b:"YONEX", o:null, g:"bench", s:[8,9,7,7,8,6,7,7,6,9,7], d:5, p:260, sp:["305g","100","18x19","63 RA","~320","~320","22/23/22"], est:true},
+  {n:"Percept 97L", b:"YONEX", o:null, g:"bench", s:[8,8,8,5,9,4,9,7,5,8,4], d:3, p:230, sp:["290g","97","16x19","62 RA","~305","~325","21"], est:true},
+  // ---- current Babolat lines — Pure Aero Gen9 2026 (+2023 variants) · Pure Drive 2025 · Pure Strike Gen4 ----
+  {n:"Pure Aero (2026)", b:"BABOLAT", o:null, g:"bench", s:[6,6,9,8,6,6,7,8,6,6,7], d:5, p:280, sp:["300g","100","16x19","69 RA","~320","~320","23/26/23"], est:true},
+  {n:"Pure Aero 98 (2026)", b:"BABOLAT", o:null, g:"bench", s:[8,9,6,6,8,6,7,6,6,9,6], d:7, p:280, sp:["305g","98","16x20","66 RA","~322","~315","21/23/21"], est:true},
+  {n:"Pure Aero Plus (2023)", b:"BABOLAT", o:null, g:"bench", s:[6,6,9,9,7,9,4,9,8,6,9], d:7, p:240, sp:["300g","100","16x19","67 RA","~328","~325","23/26/23"], est:true},
+  {n:"Pure Aero Team (2023)", b:"BABOLAT", o:null, g:"bench", s:[6,6,9,8,6,4,9,8,5,6,5], d:2, p:230, sp:["285g","100","16x19","67 RA","~305","~330","23/26/23"], est:true},
+  {n:"Pure Aero Lite (2023)", b:"BABOLAT", o:null, g:"bench", s:[6,6,9,8,7,4,9,8,5,6,5], d:2, p:210, sp:["270g","100","16x19","66 RA","~290","~335","23/26/23"], est:true},
+  {n:"Pure Aero Rafa (2023)", b:"BABOLAT", o:null, g:"bench", s:[6,6,9,9,7,9,3,9,8,6,9], d:8, p:260, sp:["315g","100","16x19","67 RA","~334","~330","23/26/23"], est:true},
+  {n:"Pure Drive (2025)", b:"BABOLAT", o:null, g:"bench", s:[5,5,9,9,4,6,7,9,6,5,7], d:5, p:260, sp:["300g","100","16x19","71 RA","~320","~320","23/26/23"], est:true},
+  {n:"Pure Drive Plus (2025)", b:"BABOLAT", o:null, g:"bench", s:[5,5,9,9,5,9,4,9,8,5,9], d:7, p:260, sp:["300g","100","16x19","71 RA","~326","~325","23/26/23"], est:true},
+  {n:"Pure Drive Team (2025)", b:"BABOLAT", o:null, g:"bench", s:[5,5,9,9,4,4,9,9,5,5,5], d:2, p:230, sp:["285g","100","16x19","70 RA","~305","~330","23/26/23"], est:true},
+  {n:"Pure Drive Lite (2025)", b:"BABOLAT", o:null, g:"bench", s:[6,6,9,8,6,4,9,8,5,6,5], d:2, p:210, sp:["270g","100","16x19","69 RA","~292","~335","23/26/23"], est:true},
+  {n:"Pure Drive 107 (2025)", b:"BABOLAT", o:null, g:"bench", s:[4,4,9,9,4,6,5,9,6,5,7], d:2, p:260, sp:["285g","107","16x19","70 RA","~318","~335","24/26/23"], est:true},
+  {n:"Pure Drive 98 (2025)", b:"BABOLAT", o:null, g:"bench", s:[5,6,8,8,5,6,7,8,6,6,6], d:5, p:260, sp:["305g","98","16x19","70 RA","~317","~315","21/23/21"], est:true},
+  {n:"Pure Strike 97 (Gen4)", b:"BABOLAT", o:null, g:"bench", s:[9,9,6,6,8,6,7,6,6,9,6], d:6, p:280, sp:["310g","97","16x20","66 RA","~318","~310","21"], est:true},
+  {n:"Pure Strike 98 16x19 (Gen4)", b:"BABOLAT", o:null, g:"bench", s:[6,7,8,6,8,6,7,7,6,7,6], d:5, p:270, sp:["305g","98","16x19","66 RA","~320","~315","21/23/21"], est:true},
+  {n:"Pure Strike Team (Gen4)", b:"BABOLAT", o:null, g:"bench", s:[6,7,9,7,8,4,9,8,5,7,5], d:2, p:250, sp:["285g","100","16x19","66 RA","~305","~330","21/23/21"], est:true},
+  // ---- current Dunlop lines — CX 2024 · SX 2025 · FX 2026 ----
+  {n:"CX 200 Tour 18x20", b:"DUNLOP", o:null, g:"bench", s:[9,9,5,7,9,9,4,7,8,9,8], d:9, p:230, sp:["315g","95","18x20","63 RA","~325","~310","20.5"], est:true},
+  {n:"CX 200 Tour 16x19", b:"DUNLOP", o:null, g:"bench", s:[7,8,8,7,9,9,4,8,8,7,8], d:8, p:230, sp:["315g","95","16x19","63 RA","~325","~310","20.5"], est:true},
+  {n:"CX 200", b:"DUNLOP", o:null, g:"bench", s:[6,7,8,6,8,6,7,7,6,7,6], d:5, p:220, sp:["305g","98","16x19","64 RA","~318","~320","21.5"], est:true},
+  {n:"CX 200 LS", b:"DUNLOP", o:null, g:"bench", s:[6,7,8,6,8,4,9,7,5,7,4], d:2, p:200, sp:["290g","98","16x19","65 RA","~305","~325","21.5"], est:true},
+  {n:"CX 200 OS", b:"DUNLOP", o:null, g:"bench", s:[5,6,9,7,8,6,5,8,6,7,7], d:3, p:210, sp:["295g","105","16x19","65 RA","~315","~330","22"], est:true},
+  {n:"CX 400 Tour", b:"DUNLOP", o:null, g:"bench", s:[6,6,9,8,7,6,7,8,6,6,7], d:5, p:210, sp:["300g","100","16x19","65 RA","~315","~325","23"], est:true},
+  {n:"CX 400", b:"DUNLOP", o:null, g:"bench", s:[6,6,9,8,7,4,9,8,5,6,5], d:2, p:190, sp:["285g","100","16x19","66 RA","~305","~335","23.5"], est:true},
+  {n:"SX 300 Tour (2025)", b:"DUNLOP", o:null, g:"bench", s:[6,6,9,9,7,9,4,9,8,6,9], d:7, p:220, sp:["305g","100","16x19","68 RA","~325","~315","23/26/23"], est:true},
+  {n:"SX 300 (2025)", b:"DUNLOP", o:null, g:"bench", s:[6,6,9,8,6,6,7,8,6,6,7], d:7, p:210, sp:["300g","100","16x19","69 RA","~322","~320","23/26/23"], est:true},
+  {n:"SX 300 LS (2025)", b:"DUNLOP", o:null, g:"bench", s:[6,6,9,8,6,4,9,8,5,6,5], d:2, p:190, sp:["285g","100","16x19","68 RA","~305","~330","23/26/23"], est:true},
+  {n:"FX 500 Tour (2026)", b:"DUNLOP", o:null, g:"bench", s:[5,5,8,9,4,6,7,8,6,5,6], d:7, p:230, sp:["305g","98","16x19","70 RA","~322","~315","23/26/23"], est:true},
+  {n:"FX 500 (2026)", b:"DUNLOP", o:null, g:"bench", s:[6,6,9,8,6,6,7,8,6,6,7], d:5, p:220, sp:["300g","100","16x19","69 RA","~321","~320","23/26/23"], est:true},
+  {n:"FX 500 LS (2026)", b:"DUNLOP", o:null, g:"bench", s:[6,6,9,8,6,4,9,8,5,6,5], d:2, p:200, sp:["285g","100","16x19","69 RA","~305","~330","23/26/23"], est:true},
+  // ---- current Tecnifibre lines — T-Fight 2025 · TF40 · Fire 2026 (replaces TF-X1) · Tempo ----
+  {n:"T-Fight 300S (2025)", b:"TECNIFIBRE", o:null, g:"bench", s:[6,6,8,6,7,6,7,7,6,6,6], d:7, p:250, sp:["300g","98","16x19","66 RA","~322","~320","22.5"], est:true},
+  {n:"T-Fight 315S (2025)", b:"TECNIFIBRE", o:null, g:"bench", s:[6,6,8,7,8,9,4,8,8,6,8], d:8, p:260, sp:["315g","98","16x19","65 RA","~330","~310","22.5"], est:true},
+  {n:"T-Fight 300 (2025)", b:"TECNIFIBRE", o:null, g:"bench", s:[6,6,9,8,7,6,7,8,6,6,7], d:5, p:230, sp:["300g","100","16x19","65 RA","~315","~325","23.5"], est:true},
+  {n:"TF40 290", b:"TECNIFIBRE", o:null, g:"bench", s:[6,7,8,6,8,6,7,7,6,7,6], d:4, p:230, sp:["290g","98","16x19","65 RA","~308","~325","21.5"], est:true},
+  {n:"TF40 305 16x19", b:"TECNIFIBRE", o:null, g:"bench", s:[6,7,8,6,8,6,7,7,6,7,6], d:7, p:240, sp:["305g","98","16x19","64 RA","~322","~318","21.5"], est:true},
+  {n:"TF40 315 16x19", b:"TECNIFIBRE", o:null, g:"bench", s:[6,7,8,7,9,9,4,8,8,7,8], d:7, p:250, sp:["315g","98","16x19","64 RA","~328","~312","21.5"], est:true},
+  {n:"TF40 315 18x20", b:"TECNIFIBRE", o:null, g:"bench", s:[9,9,5,7,9,9,4,7,8,9,8], d:8, p:250, sp:["315g","98","18x20","63 RA","~328","~312","21.5"], est:true},
+  {n:"Fire 305", b:"TECNIFIBRE", o:null, g:"bench", s:[6,6,8,7,6,6,7,7,6,6,6], d:5, p:240, sp:["305g","98","16x19","67 RA","~320","~315","23"], est:true},
+  {n:"Fire 300", b:"TECNIFIBRE", o:null, g:"bench", s:[6,6,9,8,6,6,7,8,6,6,7], d:5, p:230, sp:["300g","100","16x19","67 RA","~318","~320","24"], est:true},
+  {n:"Fire 285", b:"TECNIFIBRE", o:null, g:"bench", s:[6,6,9,8,7,6,6,8,6,6,7], d:4, p:210, sp:["285g","100","16x19","66 RA","~308","~330","24.5"], est:true},
+  {n:"Fire 275", b:"TECNIFIBRE", o:null, g:"bench", s:[5,5,9,8,7,4,8,8,5,6,5], d:1, p:200, sp:["275g","105","16x19","66 RA","~300","~330","25"], est:true},
+  {n:"Tempo 285", b:"TECNIFIBRE", o:null, g:"bench", s:[6,6,9,8,7,4,9,8,5,6,5], d:2, p:210, sp:["285g","100","16x19","66 RA","~302","~330","23"], est:true},
+  // ---- current Diadem lines — Elevate v3 · Nova v3 ----
+  {n:"Elevate 98 v3", b:"DIADEM", o:null, g:"bench", s:[8,9,6,6,8,6,7,6,6,9,6], d:7, p:240, sp:["305g","98","16x20","65 RA","~322","~320","22"], est:true},
+  {n:"Elevate Tour 98 v3", b:"DIADEM", o:null, g:"bench", s:[8,9,6,7,9,9,4,7,8,9,8], d:8, p:250, sp:["315g","98","16x20","64 RA","~330","~315","22"], est:true},
+  {n:"Nova 100 v3", b:"DIADEM", o:null, g:"bench", s:[6,6,9,8,6,6,7,8,6,6,7], d:5, p:230, sp:["300g","100","16x19","68 RA","~320","~320","23/26/23"], est:true},
+  {n:"Nova Tour 100 v3", b:"DIADEM", o:null, g:"bench", s:[6,6,9,9,7,9,4,9,8,6,9], d:8, p:240, sp:["315g","100","16x19","68 RA","~330","~315","23/26/23"], est:true},
+  {n:"Nova Plus 100 v3", b:"DIADEM", o:null, g:"bench", s:[6,6,9,9,7,9,4,9,8,6,9], d:7, p:240, sp:["300g","100","16x19","68 RA","~326","~325","23/26/23"], est:true},
+  {n:"Nova Team 100 v3", b:"DIADEM", o:null, g:"bench", s:[6,6,9,8,6,4,9,8,5,6,5], d:2, p:210, sp:["285g","100","16x19","67 RA","~305","~330","23/26/23"], est:true},
+  // ---- current Prince lines — Tour 2026 · Phantom · Ripstick ----
+  {n:"Tour 98 (2026)", b:"PRINCE", o:null, g:"bench", s:[6,7,8,6,8,6,7,7,6,7,6], d:5, p:250, sp:["305g","98","16x19","63 RA","~320","~315","20/22/20"], est:true},
+  {n:"Tour 100P (2026)", b:"PRINCE", o:null, g:"bench", s:[9,9,6,8,9,9,4,8,8,9,9], d:8, p:250, sp:["305g","100","18x20","62 RA","~325","~315","23"], est:true},
+  {n:"Tour 100 310g (2026)", b:"PRINCE", o:null, g:"bench", s:[7,6,9,8,9,9,4,9,8,7,9], d:8, p:250, sp:["310g","100","16x18","62 RA","~330","~310","23"], est:true},
+  {n:"Tour 100 290g (2026)", b:"PRINCE", o:null, g:"bench", s:[6,6,9,8,7,6,7,8,6,6,7], d:4, p:230, sp:["290g","100","16x18","63 RA","~310","~325","23"], est:true},
+  {n:"Phantom 100X 305g", b:"PRINCE", o:null, g:"bench", s:[7,7,9,6,9,6,7,8,6,8,7], d:6, p:210, sp:["305g","100","16x18","59 RA","~320","~315","20"], est:true},
+  {n:"Phantom 100X 290g", b:"PRINCE", o:null, g:"bench", s:[7,7,9,6,9,6,7,8,6,8,7], d:5, p:200, sp:["290g","100","16x18","60 RA","~308","~325","20"], est:true},
+  {n:"Phantom 100X 18x20", b:"PRINCE", o:null, g:"bench", s:[9,9,6,6,9,6,7,7,6,9,7], d:7, p:200, sp:["310g","100","18x20","60 RA","~320","~315","20"], est:true},
+  {n:"Phantom 107G", b:"PRINCE", o:null, g:"bench", s:[6,6,9,6,9,6,5,8,6,8,7], d:3, p:200, sp:["285g","107","16x19","61 RA","~315","~330","20"], est:true},
+  {n:"Ripstick 98", b:"PRINCE", o:null, g:"bench", s:[6,6,8,7,7,6,7,7,6,6,6], d:7, p:230, sp:["305g","98","16x18","64 RA","~322","~315","24"], est:true},
+  {n:"Ripstick 100 300g", b:"PRINCE", o:null, g:"bench", s:[6,6,9,9,7,7,7,8,6,6,7], d:7, p:220, sp:["300g","100","16x18","66 RA","~322","~320","26"], est:true},
+  {n:"Ripstick 100 280g", b:"PRINCE", o:null, g:"bench", s:[6,6,9,9,7,5,9,8,5,6,5], d:2, p:200, sp:["280g","100","16x18","66 RA","~305","~330","26"], est:true},
+  // ---- current Solinco lines — Whiteout V2 2025 · Blackout ----
+  {n:"Whiteout V2 305", b:"SOLINCO", o:null, g:"bench", s:[6,7,8,7,9,9,4,8,8,7,8], d:7, p:230, sp:["305g","98","16x19","64 RA","~325","~315","22"], est:true},
+  {n:"Whiteout V2 290", b:"SOLINCO", o:null, g:"bench", s:[6,7,8,6,8,6,7,7,6,7,6], d:4, p:230, sp:["290g","98","16x19","64 RA","~312","~325","22"], est:true},
+  {n:"Whiteout V2 305 XTD", b:"SOLINCO", o:null, g:"bench", s:[6,7,8,7,9,9,4,8,8,7,8], d:8, p:240, sp:["305g","98","16x19","64 RA","~332","~320","22"], est:true},
+  {n:"Blackout 100", b:"SOLINCO", o:null, g:"bench", s:[6,6,9,8,7,6,7,8,6,6,7], d:5, p:220, sp:["300g","100","16x19","65 RA","~320","~320","24"], est:true},
+  {n:"Blackout 100 XTD", b:"SOLINCO", o:null, g:"bench", s:[6,6,9,9,8,9,4,9,8,6,9], d:7, p:230, sp:["300g","100","16x19","65 RA","~328","~325","24"], est:true},
+  // ---- current Lacoste line — L23 (built with Tecnifibre) ----
+  {n:"L23", b:"LACOSTE", o:null, g:"bench", s:[6,6,9,8,6,6,7,8,6,6,7], d:5, p:260, sp:["295g","100","16x19","69 RA","~318","~320","23/25/23"], est:true},
+  {n:"L23L", b:"LACOSTE", o:null, g:"bench", s:[6,6,9,8,6,4,9,8,5,6,5], d:2, p:230, sp:["275g","100","16x19","68 RA","~300","~330","23/25/23"], est:true},
+  // ---- current Pro Kennex lines — Ki Q+ · Black Ace (kinetic mass, the arm-friendly specialists) ----
+  {n:"Ki Q+ Tour", b:"PRO KENNEX", o:null, g:"bench", s:[6,7,8,6,8,6,7,7,6,7,6], d:5, p:230, sp:["305g","98","16x19","63 RA","~320","~315","22"], est:true},
+  {n:"Ki Q+ Tour Pro", b:"PRO KENNEX", o:null, g:"bench", s:[9,9,5,6,9,9,4,7,8,9,8], d:8, p:230, sp:["305g","98","18x20","62 RA","~326","~310","21"], est:true},
+  {n:"Ki Q+ 5", b:"PRO KENNEX", o:null, g:"bench", s:[8,8,7,7,7,6,7,7,6,8,7], d:5, p:230, sp:["300g","100","16x20","63 RA","~318","~320","22.5"], est:true},
+  {n:"Ki Q+ 5 Pro", b:"PRO KENNEX", o:null, g:"bench", s:[8,8,7,8,8,9,4,8,8,8,9], d:7, p:230, sp:["310g","100","16x20","63 RA","~326","~315","22.5"], est:true},
+  {n:"Ki Q+ 15", b:"PRO KENNEX", o:null, g:"bench", s:[6,5,9,7,9,6,5,8,6,7,7], d:2, p:245, sp:["285g","105","16x19","62 RA","~312","~330","24"], est:true},
+  {n:"Black Ace 300", b:"PRO KENNEX", o:null, g:"bench", s:[6,7,9,7,8,6,7,8,6,7,7], d:5, p:200, sp:["300g","100","16x19","65 RA","~318","~320","22"], est:true},
+  {n:"Black Ace 315", b:"PRO KENNEX", o:null, g:"bench", s:[6,7,9,8,9,9,4,9,8,7,9], d:7, p:175, sp:["315g","100","16x19","65 RA","~326","~313","22"], est:true},
+  {n:"Black Ace Pro", b:"PRO KENNEX", o:null, g:"bench", s:[7,8,8,6,8,6,7,7,6,7,6], d:8, p:220, sp:["305g","97","16x19","64 RA","~322","~315","21.5"], est:true}
 ];
 rk.forEach((r,i)=>{ r.no = i+1; });
 // ---------- performance curve: a smooth spline across every axis, area-filled ----------
@@ -4381,8 +4613,11 @@ window.rkGroupToggle = (g) => { RK_GCOLL.has(g) ? RK_GCOLL.delete(g) : RK_GCOLL.
 /* row limit: buildGrid slices to SRFLIM.racket and appends the bar; mobileCards
    receives the already-sliced array, so both views stay in step automatically */
 window.rkLimSet = (v) => { window.SRFLIM.racket = v; buildGrid(); };
-window.rankLimSet = (v) => { window.SRFLIM.rank = v; render(); };
+/* repaints the ranked list alone — a full render() would recompute crowns, winners and
+   the four setups just to show five more bars, and would drop focus from the filter bar */
+window.rankLimSet = (v) => { window.SRFLIM.rank = v; rankPaint(); };
 window.hsRLimSet  = (v) => { window.SRFLIM.hsR  = v; buildSpecs(); };
+window.hsRSearch  = (v) => { hsRRaw = String(v).trim(); hsRQ = normalize(hsRRaw); buildSpecs(); };
 window.rkGroupOnly = (g) => {
   const all = [...document.querySelectorAll("#grid .ghead")].map(e => e.dataset.g);
   const solo = all.every(k => k === g ? !RK_GCOLL.has(k) : RK_GCOLL.has(k));
@@ -5190,6 +5425,25 @@ function render(){
     note = `<div class="rank_note"><b>${top.ghost ? top.f.b + " " + top.f.n : top.b + " " + top.n}</b> holds the top weighted score (${top.sc.toFixed(1)}/10) but is not your gold pick` +
       `${tb ? ` — it is <b>${tb.txt}</b>` : ""}. Crowns follow your suggestions above; the bars stay the pure math.</div>`;
   }
+  mobileCards(null);
+  /* the ranked list paints through rankPaint() so the filter bar above it can
+     repaint rows without recomputing crowns, winners or setups per keystroke */
+  RANK_CTX = { disp, note, meds, budgetNo, bandFor, EURO, tw };
+  rankPaint();
+  seedGridMedals(scored, meds, budgetNo);
+  paintWinners(scored);
+  if (window.paintSetups4) paintSetups4();   // the four finished setups follow the sliders live
+  if (window.srfSeedFlags) srfSeedFlags();
+}
+/* ---------- weighted-ranking filter (racket department) ----------
+   The little bar above the ranking. It lives OUTSIDE #rank so a repaint never
+   steals focus mid-word, and it repaints ONLY the ranked list — crowns, winners
+   and the four setups stay untouched while you type. Same typo-tolerant engine
+   as every other search in this file (folds, slips, joined tokens). */
+let RANK_CTX = null, rankQ = "", rankRaw = "";
+function rankPaint(){
+  if (!RANK_CTX) return;
+  const { disp, note, meds, budgetNo, bandFor, EURO, tw } = RANK_CTX;
   const ghostRow = g =>
     `<div style="display:flex;align-items:center;gap:8px;margin:3px 0;font-size:12px;opacity:.82;">
       <span style="width:196px;color:var(--fg);line-height:1.2;" title="your suggestion from the wider market — not on this bench; the strip above has the buy button">${g.mi >= 0 ? `<span class="medal ${["mG","mS","mB"][g.mi]}" title="your #${g.mi + 1} suggestion — lives on the wider market">${g.mi + 1}</span> ` : EURO + " "}<b style="font-weight:600;">${g.f.b}</b> ${g.f.n}${typeof MK_BADGE !== "undefined" ? MK_BADGE : ""}</span>
@@ -5198,24 +5452,30 @@ function render(){
       </div>
       <span style="width:32px;text-align:right;color:var(--bright);font-weight:500;">${g.sc.toFixed(1)}</span>
     </div>`;
-  mobileCards(null);
-  const rankTotal = disp.length;
-  disp = window.srfCut(disp, "rank");
-  document.getElementById("rank").innerHTML = note +
-    (window.srfNarrow() ? window.srfLimitBar("rank", rankTotal, "rankLimSet") : "") +
-    disp.map((r,n) => r.ghost ? ghostRow(r) :
+  let rows = rankQ ? disp.filter(r => r.ghost ? srfMatch(rankQ, r.f.b + " " + r.f.n) : matches(r, rankQ)) : disp;
+  const rankTotal = rows.length;
+  const nEl = document.getElementById("rank_n");
+  if (nEl) nEl.innerHTML = rankQ ? `<b>${rankTotal}</b> of ${disp.length}` : `${disp.length} frames`;
+  if (rankQ && !rankTotal){
+    document.getElementById("rank").innerHTML =
+      `<div style="padding:14px 4px;color:var(--muted);font-size:12px;">No frame in this ranking matches “${esc(rankRaw)}”. The amber search above the bench digs deeper — it also reads specs, owners and numbers.</div>`;
+    return;
+  }
+  /* the row limit counts what is ACTUALLY in front of you: filter first, then cut, so
+     "showing 5 of 12" during a search means five of the twelve matches — not five of 155 */
+  rows = rows.slice(0, window.SRFLIM.rank || 5);
+  document.getElementById("rank").innerHTML = (rankQ ? "" : note) +
+    rows.map((r,n) => r.ghost ? ghostRow(r) :
     `<div style="display:flex;align-items:center;gap:8px;margin:3px 0;font-size:12px;${r.est===true?"opacity:.62;":""}">
       <span style="width:196px;color:var(--fg);line-height:1.2;">${meds.indexOf(r.no)>=0?`<span class="medal ${["mG","mS","mB"][meds.indexOf(r.no)]}" title="your #${meds.indexOf(r.no)+1} suggestion — same as the strip above">${meds.indexOf(r.no)+1}</span> `:""}${r.no === budgetNo ? EURO + " " : ""}<b style="font-weight:600;">${r.b}</b> ${r.n}${tag(r)}${(x => x ? `<span class="lvlflag ${x.cls}" title="why this row is not your suggestion">${x.txt}</span>` : "")(bandFor(r))}${rowActs(r, true)}${(x => x ? ` <span class="stcknote" title="the untouched stock read under the same weights">stock \u2300 ${x}</span>` : "")(stockAvg(r, w, tw))}</span>
       <div style="flex:1;background:color-mix(in srgb, var(--fg) 10%, transparent);border-radius:3px;height:13px;">
         <div style="width:${(r.sc/10*100).toFixed(1)}%;background:${G[r.g][0]};height:13px;border-radius:3px;"></div>
       </div>
       <span style="width:32px;text-align:right;color:var(--bright);font-weight:500;">${r.sc.toFixed(1)}</span>
-    </div>`).join("");
-  seedGridMedals(scored, meds, budgetNo);
-  paintWinners(scored);
-  if (window.paintSetups4) paintSetups4();   // the four finished setups follow the sliders live
-  if (window.srfSeedFlags) srfSeedFlags();
+    </div>`).join("") +
+    window.srfLimitBar("rank", rankTotal, "rankLimSet");
 }
+window.rankSearch = (v) => { rankRaw = String(v).trim(); rankQ = normalize(rankRaw); rankPaint(); };
 window.srfRerank = () => { try { render(); } catch(e){} };
 // podium medals live in the grid too — patched in place so slider drags stay cheap,
 // and callable after a grid rebuild without touching the mobile cards' own ordering
@@ -5443,6 +5703,7 @@ window.W = (i,v) => { w[i]=Math.max(0, parseFloat(v)||0); document.getElementByI
 render();
 const specLabels = ["weight","head","pattern","stiffness","swingweight","balance","beam"];
 let specSort = null;   // null = original order
+let hsRQ = "", hsRRaw = "";   // the spec table's own filter bar
 // specs are display strings ("335g custom", "16x20", "~67 RA") -> comparable numbers
 function specVal(r, i){
   const v = String(r.sp[i]);
@@ -5463,8 +5724,24 @@ function buildSpecs(){
     return bv-av;
   });
   if (typeof searchQ!=="undefined" && searchQ) rows = rows.filter(r=>matches(r, searchQ));
+  /* this table's own filter stacks ON TOP of the amber bench search rather than replacing
+     it: the amber bar is the department-wide query (and can go online), this one just
+     narrows the table in front of you. Both run the same typo-tolerant matcher. */
+  if (hsRQ) rows = rows.filter(r => matches(r, hsRQ));
   const hsTotal = rows.length;
-  rows = window.srfCut(rows, "hsR");
+  /* the count reads "N of 155" whenever ANY filter is narrowing the table — the amber
+     bench search counts too, otherwise searching "wilson" upstairs left this header
+     cheerfully claiming 155 frames while five Wilsons sat under it */
+  const hsN = document.getElementById("hsR_n");
+  if (hsN) hsN.innerHTML = hsTotal !== rk.length ? `<b>${hsTotal}</b> of ${rk.length}` : `${rk.length} frames`;
+  if (hsRQ && !hsTotal){
+    document.getElementById("specs").innerHTML =
+      `<div style="padding:14px 4px;color:var(--muted);font-size:12px;">No frame on the bench matches “${esc(hsRRaw)}”.</div>`;
+    document.getElementById("specState").textContent =
+      specSort===null ? "original order" : "sorted by " + specLabels[specSort];
+    return;
+  }
+  rows = rows.slice(0, window.SRFLIM.hsR || 5);
   rows.forEach(r => {
     sh += `<div style="color:${G[r.g][0]};padding:3px 4px;font-weight:500;"><span style="color:var(--muted);font-weight:400;">No. ${r.no}</span> ${r.b} ${r.n}${tag(r,10)}` +
       (r.cust ? `<button type="button" class="infobtn custi" aria-label="what this customization did" ` +
@@ -5472,7 +5749,7 @@ function buildSpecs(){
       r.sp.map((v,i)=>`<div style="color:${specSort===i?"var(--cyan)":"var(--fg)"};padding:3px 4px;">${v}</div>`).join("");
   });
   sh += `</div>`;
-  if (window.srfNarrow()) sh += window.srfLimitBar("hsR", hsTotal, "hsRLimSet");
+  sh += window.srfLimitBar("hsR", hsTotal, "hsRLimSet");
   document.getElementById("specs").innerHTML = sh;
   document.getElementById("specState").textContent =
     specSort===null ? "original order" : "sorted by " + specLabels[specSort];
@@ -5928,6 +6205,7 @@ function sbDiffCell(d,active){
 // ---------- hard specs table for the string beds ----------
 const SBSPEC=["mains","mains kg","crosses","cross kg","material","stiffness","€ / set","demand"];
 let sbSpecSort=null;
+let hsSQ = "", hsSRaw = "";   // the bed spec table's own filter bar
 function bedMat(b){
   let cat=[]; try{ cat=NERD; }catch(e){ return ["—","—"]; }
   /* longest name wins: plain .find() matched "LUXILON 4G Soft" against the "4G" row
@@ -5960,8 +6238,17 @@ function buildSbSpecs(){
   });
   let h=`<div style="display:grid;grid-template-columns:196px 74px 176px 74px 124px 76px 70px 66px;gap:2px;background:var(--page);min-width:1180px;">`+
     SBSPEC.map((c,i)=>`<div class="sbhdr${sbSpecSort===i?" on":""}" data-label="${c}" onclick="sbSpecS(${i})" style="--d:${(i*0.18).toFixed(2)}s;animation-delay:${(i*0.18).toFixed(2)}s;text-align:left;padding:3px 5px;">${c}</div>`).join("");
+  if (hsSQ) rows = rows.filter(b => sbMatches(b, hsSQ));
   const sbHsTotal = rows.length;
-  rows = window.srfCut(rows, "hsS");
+  const hsSN = document.getElementById("hsS_n");
+  if (hsSN) hsSN.innerHTML = sbHsTotal !== beds.length ? `<b>${sbHsTotal}</b> of ${beds.length}` : `${beds.length} beds`;
+  if (hsSQ && !sbHsTotal){
+    document.getElementById("sb_specs").innerHTML =
+      `<div style="padding:14px 4px;color:var(--muted);font-size:12px;">No bed on the bench matches “${esc(hsSRaw)}”.</div>`;
+    document.getElementById("sb_specState").textContent = sbSpecSort===null?"original order":"sorted by "+SBSPEC[sbSpecSort];
+    return;
+  }
+  rows = rows.slice(0, window.SRFLIM.hsS || 5);
   rows.forEach(b=>{
     const [mat,st]=bedMat(b), pr=bedPrice(b);
     h+=`<div style="color:${rowColor(b)};padding:4px 5px;font-weight:500;"><span style="color:var(--muted);font-weight:400;">No. ${b.no}</span> ${b.m}</div>`+
@@ -5974,7 +6261,7 @@ function buildSbSpecs(){
        `<div style="color:var(--magenta-fg,var(--magenta));padding:4px 5px;font-weight:600;">${bedDemand(b)}</div>`;
   });
   h+=`</div>`;
-  if (window.srfNarrow()) h += window.srfLimitBar("hsS", sbHsTotal, "hsSLimSet");
+  h += window.srfLimitBar("hsS", sbHsTotal, "hsSLimSet");
   document.getElementById("sb_specs").innerHTML=h;
   document.getElementById("sb_specState").textContent = sbSpecSort===null?"original order":"sorted by "+SBSPEC[sbSpecSort];
 }
@@ -6588,6 +6875,7 @@ const SB_GCOLL = new Set();
 window.sbGroupToggle = (g) => { SB_GCOLL.has(g) ? SB_GCOLL.delete(g) : SB_GCOLL.add(g); buildGrid(); };
 window.sbLimSet = (v) => { window.SRFLIM.string = v; buildGrid(); };
 window.hsSLimSet = (v) => { window.SRFLIM.hsS = v; buildSbSpecs(); };
+window.hsSSearch = (v) => { hsSRaw = String(v).trim(); hsSQ = sbNorm(hsSRaw); buildSbSpecs(); };
 window.sbGroupOnly = (g) => {
   const all = [...document.querySelectorAll("#sb_grid .ghead")].map(e => e.dataset.g);
   const solo = all.every(k => k === g ? !SB_GCOLL.has(k) : SB_GCOLL.has(k));
@@ -6607,6 +6895,7 @@ function buildGrid(){
   else scored.sort((a,b)=>SBDIR*(a.s[sortIdx]-b.s[sortIdx]));
   if(typeof sbQ!=="undefined" && sbQ) scored=scored.filter(b=>sbMatches(b,sbQ));
   const sbTotal = scored.length;
+  const sbAllBeds = scored.slice();   // full list — the ranking filter reaches ALL beds, not the grid's slice
   scored = scored.slice(0, window.SRFLIM.string || 5);
   if(!scored.length){
     document.getElementById("sb_grid").innerHTML=`<div style="padding:22px 6px;color:var(--muted);font-size:12px;">No bed matches \u201c${document.getElementById("sb_specSearch").value.trim()}\u201d. Use the amber <b style="color:var(--amber);">search</b> button to look it up online, or <b style="color:var(--bronze);">transfer specs</b> to add it.</div>`;
@@ -6679,8 +6968,8 @@ function buildGrid(){
   // The ranking answers "what is best for my weights", so it must sort purely by
   // weighted score. `scored` has already been ordered for the GRID, which groups
   // by benchmark/tested/queued first — reusing it made the bars look random when
-  // the sliders moved, because a strong bed in a later group still sat low.
-  const ranked = scored.slice().sort((a,b) => b.idx - a.idx || String(a.m).localeCompare(String(b.m)));   // deterministic on ties
+  // the sliders moved, because a strong bed in a later group still sat low. It is
+  // also already sliced to the grid's own row limit, so the ranking sorts sbAllBeds.
   /* podium slots and the budget pick that live on the market join the list as ghost
      rows at their true score position — no crown silently disappears */
   const sbScOf = bed => { const row = SBL && SBL.rows.find(x => x.bed === bed);
@@ -6691,19 +6980,40 @@ function buildGrid(){
     SBL.meds.forEach((bed, n) => { if (!(bed.i >= 0)) sbGhosts.push({ ghost: true, bed, mi: n, sc: sbScOf(bed) }); });
     if (sbBudget && sbBudgetI == null) sbGhosts.push({ ghost: true, bed: sbBudget.bed, mi: -1, sc: sbBudget.sc });
   }
-  const sbDisp = ranked.slice();
-  sbGhosts.sort((a, b) => b.sc - a.sc).forEach(g => {
-    let i = sbDisp.findIndex(r => r.idx < g.sc);
-    if (i < 0) i = sbDisp.length;
-    sbDisp.splice(i, 0, g);
-  });
+  const sbSplice = arr => {
+    sbGhosts.sort((a, b) => b.sc - a.sc).forEach(g => {
+      let i = arr.findIndex(r => r.idx < g.sc);
+      if (i < 0) i = arr.length;
+      arr.splice(i, 0, g);
+    });
+    return arr;
+  };
+  /* the ranking is its OWN list now: every bed the bench holds, ordered by weighted
+     index, with its own top 5 / 10 / all bar. It used to inherit whatever slice the
+     grid happened to be showing, which is why it sat at six rows while the bench held
+     thirty-nine — a ranking you cannot see past is not a ranking. */
+  const sbDispFull = sbSplice(sbAllBeds.slice().sort((a,b) => b.idx - a.idx || String(a.m).localeCompare(String(b.m))));
   let sbNote = "";
-  const sbGoldTop = sbDisp.length && (sbDisp[0].ghost ? sbDisp[0].mi === 0 : (sbTop[0] != null && sbDisp[0].i === sbTop[0]));
-  if (sbDisp.length && !sbGoldTop && (sbTop[0] != null || (SBL && SBL.meds[0]))){
-    const top = sbDisp[0], tb = top.ghost ? null : sbBandOf(top);
+  const sbGoldTop = sbDispFull.length && (sbDispFull[0].ghost ? sbDispFull[0].mi === 0 : (sbTop[0] != null && sbDispFull[0].i === sbTop[0]));
+  if (sbDispFull.length && !sbGoldTop && (sbTop[0] != null || (SBL && SBL.meds[0]))){
+    const top = sbDispFull[0], tb = top.ghost ? null : sbBandOf(top);
     sbNote = `<div class="rank_note"><b>${top.ghost ? top.bed.m : top.m}</b> holds the top weighted score (${(top.ghost ? top.sc : top.idx).toFixed(1)}/10) but is not your gold pick` +
       `${tb ? ` — it is <b>${tb.txt}</b>` : ""}. Crowns follow your suggestions; the bars stay the pure math.</div>`;
   }
+  /* painted via sbRankPaint() so the ranking filter repaints the list alone */
+  SB_RANK_CTX = { sbDispFull, sbNote, sbTop, sbBudgetI, sbBandOf, SB_EURO };
+  sbRankPaint();
+  document.getElementById("sb_sortState").textContent = SBSEL.size
+    ? "ranked by "+[...SBSEL].map(([i,d])=>AX[i]+(d===-1?" \u25B2":" \u25BC")).join(" + ")+(SBSEL.size>1?` (${SBSEL.size} combined)`:"")
+    : (sortIdx===null ? "original order" : (sortIdx==="idx"?"ranked by index":sortIdx==="p"?"ranked by price":sortIdx==="d"?"ranked by demand":"original order")+(sortIdx===null?"":(SBDIR===-1?" — highest first":" — lowest first")));
+}
+
+/* ---------- weighted-ranking filter (string department) ----------
+   Mirror of the racket ranking's bar — one behaviour, both departments. */
+let SB_RANK_CTX = null, sbRankQ = "", sbRankRaw = "";
+function sbRankPaint(){
+  if (!SB_RANK_CTX) return;
+  const { sbDispFull, sbNote, sbTop, sbBudgetI, sbBandOf, SB_EURO } = SB_RANK_CTX;
   const sbGhostRow = g =>
     `<div style="display:flex;align-items:center;gap:8px;margin:3px 0;font-size:12px;opacity:.82;">
        <span style="width:214px;color:var(--fg);line-height:1.2;" title="your suggestion from the wider market — not on this bench">${g.mi >= 0 ? `<span class="medal ${["mG","mS","mB"][g.mi]}" title="your #${g.mi + 1} suggestion — lives on the wider market">${g.mi + 1}</span> ` : SB_EURO + " "}${g.bed.m}${g.bed.x && !/full bed/i.test(String(g.bed.x)) ? ` <span style="color:var(--muted);">× ${g.bed.x}</span>` : ""}${typeof MK_BADGE !== "undefined" ? (g.bed.src === "combo" ? CB_BADGE : MK_BADGE) : ""}${g.bed.deal && typeof DEAL_BADGE !== "undefined" ? DEAL_BADGE : ""}</span>
@@ -6712,16 +7022,28 @@ function buildGrid(){
        </div>
        <span style="width:32px;text-align:right;color:var(--bright);font-weight:500;">${g.sc.toFixed(1)}</span>
      </div>`;
-  document.getElementById("sb_rank").innerHTML = sbNote + sbDisp.map((b,n)=> b.ghost ? sbGhostRow(b) :
+  const hits = sbRankQ ? sbDispFull.filter(b => sbMatches(b.ghost ? b.bed : b, sbRankQ)) : sbDispFull;
+  const sbRankTotal = hits.length;
+  const nEl = document.getElementById("sbrank_n");
+  if (nEl) nEl.innerHTML = sbRankQ ? `<b>${sbRankTotal}</b> of ${sbDispFull.length}` : `${sbDispFull.length} beds`;
+  if (sbRankQ && !sbRankTotal){
+    document.getElementById("sb_rank").innerHTML =
+      `<div style="padding:14px 4px;color:var(--muted);font-size:12px;">No bed in this ranking matches “${esc(sbRankRaw)}”. The string search above the bench also reads materials, gauges and tensions.</div>`;
+    return;
+  }
+  // filter first, then cut — same rule as the racket ranking
+  const rows = hits.slice(0, window.SRFLIM.sbrank || 5);
+  document.getElementById("sb_rank").innerHTML = (sbRankQ ? "" : sbNote) + rows.map((b,n)=> b.ghost ? sbGhostRow(b) :
     `<div style="display:flex;align-items:center;gap:8px;margin:3px 0;font-size:12px;">
        <span style="width:214px;color:var(--fg);line-height:1.2;">${sbTop.indexOf(b.i)>=0?`<span class="medal ${["mG","mS","mB"][sbTop.indexOf(b.i)]}" title="your #${sbTop.indexOf(b.i)+1} suggestion — same ranking as intermediate mode">${sbTop.indexOf(b.i)+1}</span> `:""}${b.i === sbBudgetI ? SB_EURO + " " : ""}${b.m} <span style="color:var(--muted);">× ${b.x}</span>${(x => x ? `<span class="lvlflag ${x.cls}" title="why this bed is not your suggestion">${x.txt}</span>` : "")(sbBandOf(b))}</span>
        <div style="flex:1;background:color-mix(in srgb, var(--fg) 10%, transparent);border-radius:3px;height:13px;">
          <div style="width:${(b.idx/10*100).toFixed(1)}%;background:${rowColor(b)};height:13px;border-radius:3px;"></div></div>
-       <span style="width:32px;text-align:right;color:var(--bright);font-weight:500;">${b.idx.toFixed(1)}</span></div>`).join("");
-  document.getElementById("sb_sortState").textContent = SBSEL.size
-    ? "ranked by "+[...SBSEL].map(([i,d])=>AX[i]+(d===-1?" \u25B2":" \u25BC")).join(" + ")+(SBSEL.size>1?` (${SBSEL.size} combined)`:"")
-    : (sortIdx===null ? "original order" : (sortIdx==="idx"?"ranked by index":sortIdx==="p"?"ranked by price":sortIdx==="d"?"ranked by demand":"original order")+(sortIdx===null?"":(SBDIR===-1?" — highest first":" — lowest first")));
+       <span style="width:32px;text-align:right;color:var(--bright);font-weight:500;">${b.idx.toFixed(1)}</span></div>`).join("") +
+    window.srfLimitBar("sbrank", sbRankTotal, "sbRankLimSet");
 }
+window.sbRankSearch = (v) => { sbRankRaw = String(v).trim(); sbRankQ = sbNorm(sbRankRaw); sbRankPaint(); };
+/* repaints the ranked bed list alone — buildGrid() would rebuild the whole heatmap */
+window.sbRankLimSet = (v) => { window.SRFLIM.sbrank = v; sbRankPaint(); };
 
 window.setViewS = (v) => {
   document.body.classList.toggle("tablemodeS", v === "table");
@@ -7043,12 +7365,31 @@ window.sbFileLabRow = (brand, name, mat, shape, gauge, price) => {
   return true;
 };
 
+/* the stiffness table gets the same filter bar and row limit as every other table here.
+   A row is [string, brand, material, profile, gauges, stiffness, loss, return, price,
+   lifespan, derivedFlag] — the filter reads the four text columns, so "poly", "luxilon"
+   and "alu" all land, and the numeric columns stay out of it (searching "23" for a
+   tension should not match a lifespan of 23 h). */
+let nerdQ = "", nerdRaw = "";
+window.nerdSearch  = (v) => { nerdRaw = String(v).trim(); nerdQ = window.srfFold(nerdRaw); buildNerd(); };
+window.nerdLimSet  = (v) => { window.SRFLIM.nerd = v; buildNerd(); };
 function buildNerd(){
-  const rows=NERD.concat(NERDX).sort((a,b)=>{
+  let rows=NERD.concat(NERDX).sort((a,b)=>{
     const x=a[nerdSort], y=b[nerdSort];
     if(typeof x==="number"&&typeof y==="number") return nerdDesc? y-x : x-y;
     return nerdDesc? String(y).localeCompare(String(x)) : String(x).localeCompare(String(y));
   });
+  if (nerdQ) rows = rows.filter(r => window.srfMatch(nerdQ, `${r[0]} ${r[1]} ${r[2]} ${r[3]}`));
+  const nerdTotal = rows.length;
+  const nerdN = document.getElementById("nerd_n");
+  if (nerdN) nerdN.innerHTML = nerdQ
+    ? `<b>${nerdTotal}</b> of ${NERD.length + NERDX.length}` : `${NERD.length + NERDX.length} strings`;
+  if (nerdQ && !nerdTotal){
+    document.getElementById("sb_nerd").innerHTML =
+      `<div style="padding:14px 4px;color:var(--muted);font-size:12px;">No string in the lab table matches “${esc(nerdRaw)}”.</div>`;
+    return;
+  }
+  rows = rows.slice(0, window.SRFLIM.nerd || 5);
   let h=`<div style="display:grid;grid-template-columns:130px 92px 128px 92px 132px 70px 108px 78px 76px 74px;gap:2px;background:var(--page);min-width:1180px;">`+
     NHEAD.map((c,i)=>`<div class="sbhdr${nerdSort===i?" on":""}" data-label="${c.replace(/<br>/g," ")}" onclick="sbNerdSort(${i})" style="--d:${(i*0.18).toFixed(2)}s;animation-delay:${(i*0.18).toFixed(2)}s;font-size:10px;">${c}</div>`).join("");
   rows.forEach(r=>{
@@ -7068,6 +7409,7 @@ function buildNerd(){
        `<div style="color:var(--muted);padding:6px 5px;font-size:10px;">${r[9]}</div>`;
   });
   h+=`</div>`;
+  h += window.srfLimitBar("nerd", nerdTotal, "nerdLimSet");
   document.getElementById("sb_nerd").innerHTML=h;
   document.getElementById("sb_nerdState").textContent="by "+NHEAD[nerdSort].replace(/<br>/g," ")+(nerdDesc?" ↓":" ↑");
 }
@@ -8542,45 +8884,20 @@ function ezPod(cls, label, medal, name, spec, why, buyFn, buyLabel){
    So easy mode now ranks the bench PLUS a curated catalogue of frames and beds
    that are widely available, drawn from Tennis Warehouse / Tennisnerd / Perfect
    Tennis buying guides and manufacturer spec sheets.
+   Since Aug 2026 the bench itself carries the full current lines of eleven brands
+   (Head, Wilson, Yonex, Dunlop, Diadem, Tecnifibre, Babolat, Prince, Solinco,
+   Lacoste, Pro Kennex), so the frame catalogue below shrank to what the bench
+   does NOT hold: other brands, discontinued molds, and the previous-generation
+   deal entries that feed the budget slot.
    Nothing here carries invented axis scores: every catalogue entry is scored by
    the bench's own estimators (SRF.estimateScores / estimateDifficulty / sbEstimate)
    from its published specs, so a catalogue frame and a bench frame are ranked by
    one identical rule. Weights are UNSTRUNG grams, matching the bench convention. */
 const MK_FRAMES = [
-  // --- pro / heavy tour frames: the demanding, heavy end the bench was missing ---
-  {b:"HEAD",       n:"Prestige Pro (2023)",     sp:["320g","95","18x20","62 RA","330","310","21.5"], p:250, tier:"pro"},
-  {b:"YONEX",      n:"Percept 97H",             sp:["330g","97","16x19","61 RA","330","310","21"],   p:250, tier:"pro"},
+  // --- frames the bench does not carry: other brands and molds still worth ranking ---
   {b:"VÖLKL",      n:"C10 Pro",                 sp:["330g","98","16x19","58 RA","330","305","21"],   p:230, tier:"pro"},
-  {b:"HEAD",       n:"Prestige Tour (2023)",    sp:["315g","99","18x20","61 RA","325","315","21.5"], p:240, tier:"pro"},
-  {b:"WILSON",     n:"Blade 98 18x20 v9",       sp:["305g","98","18x20","62 RA","327","320","21"],   p:250, tier:"pro"},
-  {b:"DUNLOP",     n:"CX 200 Tour 18x20",       sp:["315g","95","18x20","63 RA","325","310","20.5"], p:220, tier:"pro"},
-  {b:"YONEX",      n:"EZONE 98 Tour",           sp:["320g","98","16x19","63 RA","322","310","23"],   p:260, tier:"pro"},
-  {b:"HEAD",       n:"Gravity Pro (2025)",      sp:["315g","100","18x20","61 RA","325","310","20"],  p:250, tier:"pro"},
-  {b:"PRINCE",     n:"Phantom 100X 18x20",      sp:["310g","100","18x20","60 RA","320","315","20"],  p:200, tier:"pro"},
-  {b:"HEAD",       n:"Speed Pro (2024)",        sp:["310g","100","18x20","62 RA","322","315","23"],  p:250, tier:"pro"},
   {b:"BABOLAT",    n:"Pure Strike VS",          sp:["310g","98","18x20","66 RA","322","315","21"],   p:240, tier:"pro"},
-  {b:"TECNIFIBRE", n:"TFight 315",              sp:["315g","98","18x19","64 RA","325","312","22"],   p:230, tier:"pro"},
   {b:"SOLINCO",    n:"Whiteout 18x20",          sp:["305g","98","18x20","64 RA","322","320","22"],   p:200, tier:"pro"},
-  // --- advanced ---
-  {b:"YONEX",      n:"EZONE 98",                sp:["305g","98","16x19","65 RA","318","320","23"],   p:265, tier:"advanced"},
-  {b:"DUNLOP",     n:"CX 200",                  sp:["305g","98","16x19","65 RA","318","320","21.5"], p:200, tier:"advanced"},
-  {b:"PRINCE",     n:"ATS Tour 98",             sp:["305g","98","16x19","63 RA","318","320","21"],   p:190, tier:"advanced"},
-  {b:"HEAD",       n:"Radical MP (2025)",       sp:["300g","98","16x19","63 RA","315","320","22"],   p:220, tier:"advanced"},
-  {b:"YONEX",      n:"Percept 100D",            sp:["305g","100","18x19","66 RA","318","320","23"],  p:259, tier:"advanced"},
-  {b:"WILSON",     n:"Blade 100 v9",            sp:["300g","100","16x19","64 RA","315","320","22"],  p:240, tier:"advanced"},
-  // --- intermediate / tweener ---
-  {b:"BABOLAT",    n:"Pure Drive (2024)",       sp:["300g","100","16x19","71 RA","320","320","23"],  p:249, tier:"intermediate"},
-  {b:"YONEX",      n:"EZONE 100",               sp:["300g","100","16x19","67 RA","317","320","23.5"],p:265, tier:"intermediate"},
-  {b:"HEAD",       n:"Boom MP",                 sp:["295g","100","16x19","64 RA","318","325","23"],  p:249, tier:"intermediate"},
-  {b:"YONEX",      n:"VCORE 100",               sp:["300g","100","16x19","65 RA","322","320","23"],  p:259, tier:"intermediate"},
-  {b:"DUNLOP",     n:"FX 500",                  sp:["300g","100","16x19","69 RA","321","320","23"],  p:199, tier:"intermediate"},
-  {b:"HEAD",       n:"Speed MP (2024)",         sp:["300g","100","16x19","64 RA","318","320","23"],  p:240, tier:"intermediate"},
-  {b:"BABOLAT",    n:"Pure Aero (2025)",        sp:["300g","100","16x19","65 RA","322","320","23"],  p:259, tier:"intermediate"},
-  // --- easier frames that are still real rackets, not shop-window junk ---
-  {b:"WILSON",     n:"Clash 100 v3",            sp:["295g","100","16x19","57 RA","313","325","24"],  p:269, tier:"beginner"},
-  {b:"WILSON",     n:"Clash 100L v3",           sp:["280g","100","16x19","55 RA","305","330","24"],  p:230, tier:"beginner"},
-  {b:"YONEX",      n:"EZONE 100L",              sp:["285g","100","16x19","66 RA","305","330","23.5"],p:230, tier:"beginner"},
-  {b:"HEAD",       n:"Boom Team",               sp:["275g","102","16x19","62 RA","300","335","23"],  p:180, tier:"beginner"},
   // --- previous-generation frames: structurally discounted vs launch (status checked Aug 2026;
   //     the card's button pulls TODAY'S offers, since a static file cannot watch prices live) ---
   {b:"WILSON",  n:"Blade 98 16x19 v8 (2021)", sp:["305g","98","16x19","60 RA","322","320","21"],   p:140, tier:"advanced", deal:true, dn:"superseded by v9 \u2014 typically ~45% under launch"},
@@ -8666,7 +8983,12 @@ let MK_F_CACHE = null, MK_B_CACHE = null;
 function mkFrames(){
   if (MK_F_CACHE) return MK_F_CACHE;
   if (!(window.SRF && SRF.estimateScores)) return [];
-  MK_F_CACHE = MK_FRAMES.map((f, k) => {
+  /* the bench now carries the CURRENT LINES of eleven brands, so a market entry that
+     matches a bench frame by brand+name would rank the same racket twice in easy mode.
+     One frame, one row — the bench copy wins, the market copy is skipped. */
+  const mkNorm = s => String(s).toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  const onBench = new Set((SRF.frames ? SRF.frames() : []).map(f => mkNorm(f.label)));
+  MK_F_CACHE = MK_FRAMES.filter(f => !onBench.has(mkNorm(f.b + " " + f.n))).map((f, k) => {
     const extra = { sw:f.sp[4], bal:f.sp[5], beam:f.sp[6] };
     return { no: -(k+1), b:f.b, n:f.n, sp:f.sp, p:f.p, g:"market", src:"market", tier:f.tier,
              deal: !!f.deal, dn: f.dn || "",
