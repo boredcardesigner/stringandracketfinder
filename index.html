@@ -819,11 +819,18 @@
   /* pro-mode invitation at the end of intermediate. House rules apply: ONE thin border,
      calm at rest, the pro identity colour (magenta) answers on hover — never shouts idle.
      Same ladder logic as easy -> intermediate, one rung up. */
-  .mid_proinv{ margin-top:18px; border:1px solid color-mix(in srgb, var(--fg) 16%, transparent);
+  /* .stepinv is the shared card; .mid_proinv is its original name, kept so the
+     intermediate markup and any saved layout still match. Easy mode uses .stepinv. */
+  .mid_proinv, .stepinv{ margin-top:18px; border:1px solid color-mix(in srgb, var(--fg) 16%, transparent);
                border-radius:10px; padding:15px 16px; background:var(--card2);
                transition:border-color .25s ease, box-shadow .25s ease; }
   .mid_proinv:hover{ border-color:color-mix(in srgb, var(--magenta) 55%, transparent);
                box-shadow:0 0 16px color-mix(in srgb, var(--magenta) 14%, transparent); }
+  /* the easy-mode twin of the same card points one level lower, so it wears amber —
+     intermediate's identity colour — everywhere the pro invite wears magenta */
+  #ez_midinv:hover{ border-color:color-mix(in srgb, var(--amber) 55%, transparent);
+               box-shadow:0 0 16px color-mix(in srgb, var(--amber) 14%, transparent); }
+  #ez_midinv .mpi_title em{ color:var(--amber-fg,var(--amber)); font-style:normal; }
   .mpi_kick{ font-size:9.5px; letter-spacing:.12em; text-transform:uppercase;
              color:var(--magenta-fg,var(--magenta)); }
   .mpi_title{ font-size:14.5px; font-weight:600; color:var(--bright); margin:4px 0 5px; }
@@ -837,10 +844,62 @@
   .mpi_btn:hover{ background:var(--magenta); color:var(--card);
             box-shadow:0 0 14px color-mix(in srgb, var(--magenta) 45%, transparent); }
   .mpi_fine{ font-size:9.5px; color:var(--muted); font-style:italic; }
+  /* ---------- the two step-up CTAs: easy -> intermediate, intermediate -> pro ----------
+     These are the only two buttons in the file that move a reader FORWARD through the
+     three modes, so they get to be loud where everything else is quiet. Roughly double
+     the normal pill: 19px type against 11.5px, 16/34 padding against 8/16.
+     Each instance sets --cta to its TARGET mode's identity colour (amber = intermediate,
+     magenta = pro), so the glow always previews where the click leads.
+     Motion is a breathing halo on the ::before ring — the pill itself never scales, so
+     it is never a moving click target and never nudges the layout. A second ::after ring
+     ripples outward once per cycle. Both are decorative and both stop dead under
+     prefers-reduced-motion, where a solid halo carries the emphasis instead. */
+  /* the margin is not decoration: the ripple ring scales to 1.16, which on a 340px pill
+     reaches ~27px past each edge — without it the halo would wash over the fine print
+     sitting next to the button */
+  .bigcta{ position:relative; isolation:isolate; display:inline-flex; align-items:center; gap:10px;
+           background:transparent; border:2px solid var(--cta); color:var(--cta-fg, var(--cta));
+           border-radius:999px; padding:16px 34px; margin:8px 18px 8px 8px;
+           font-family:inherit; font-size:19px; white-space:nowrap;
+           font-weight:600; letter-spacing:.035em; cursor:pointer;
+           transition:background .18s ease, color .18s ease, transform .12s ease; }
+  .bigcta::before, .bigcta::after{ content:""; position:absolute; inset:-2px;
+           border-radius:999px; pointer-events:none; z-index:-1; }
+  .bigcta::before{ box-shadow:0 0 14px color-mix(in srgb, var(--cta) 45%, transparent),
+                              0 0 34px color-mix(in srgb, var(--cta) 16%, transparent);
+                   animation:ctaBreathe 2.6s ease-in-out infinite; }
+  .bigcta::after{ border:2px solid color-mix(in srgb, var(--cta) 55%, transparent); opacity:0;
+                   animation:ctaRipple 2.6s ease-out infinite; }
+  .bigcta:hover{ background:var(--cta); color:var(--card); }
+  .bigcta:active{ transform:scale(.98); }
+  .bigcta:focus-visible{ outline:2px solid var(--cta); outline-offset:4px; }
+  .bigcta .ctaArrow{ transition:transform .18s ease; }
+  .bigcta:hover .ctaArrow{ transform:translateX(4px); }
+  @keyframes ctaBreathe{
+    0%,100%{ box-shadow:0 0 14px color-mix(in srgb, var(--cta) 42%, transparent),
+                        0 0 30px color-mix(in srgb, var(--cta) 12%, transparent); }
+    50%    { box-shadow:0 0 26px color-mix(in srgb, var(--cta) 78%, transparent),
+                        0 0 56px color-mix(in srgb, var(--cta) 30%, transparent); }
+  }
+  @keyframes ctaRipple{
+    0%  { transform:scale(1);    opacity:.55; }
+    70% { transform:scale(1.16); opacity:0; }
+    100%{ transform:scale(1.16); opacity:0; }
+  }
+  @media (prefers-reduced-motion:reduce){
+    .bigcta::before{ animation:none;
+      box-shadow:0 0 20px color-mix(in srgb, var(--cta) 60%, transparent),
+                 0 0 44px color-mix(in srgb, var(--cta) 20%, transparent); }
+    .bigcta::after{ animation:none; opacity:0; }
+  }
   @media (max-width:760px){
     .mpi_row{ align-items:stretch; }
     .mpi_btn{ width:100%; text-align:center; padding:12px 16px; }
     .mpi_fine{ width:100%; }
+    /* 15.5px keeps "initiate nerd protocol →" on ONE line inside a 390px card — at 17px
+       it wrapped and stranded the arrow alone against the right edge */
+    .bigcta{ width:100%; justify-content:center; font-size:15.5px; padding:15px 14px;
+             margin:10px 0; box-sizing:border-box; }
   }
   /* ---------- mode-transition intro ----------
      A centred window shown when hopping between easy / intermediate / pro (any
@@ -1107,6 +1166,16 @@
        the devices it was meant to help. */
     #themeCtl{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; row-gap:6px; }
     *, *::before, *::after{ animation:none !important; will-change:auto !important; }
+  }
+  /* ONE carve-out from the still-image rule above: the two step-up CTAs keep breathing
+     on a phone. The blanket freeze is aimed at hover-driven glows that stick after a tap
+     (touch never un-hovers) and at dozens of headers pulsing at once — neither describes
+     a single button whose whole job is to invite the next tap, animating box-shadow and
+     one transform on one small element. Gated on no-preference so a reader who asked for
+     reduced motion still gets the static halo, whatever the screen width. */
+  @media (max-width:820px) and (prefers-reduced-motion: no-preference){
+    .bigcta::before{ animation:ctaBreathe 2.6s ease-in-out infinite !important; }
+    .bigcta::after{ animation:ctaRipple 2.6s ease-out infinite !important; }
   }
   /* ---- WebView rescue (any width) ----
      App-embedded WebViews (Android marks them "; wv)" in the UA) often sit inside a
@@ -1706,7 +1775,7 @@
 </head>
 <body>
 <div class="wrap">
-<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">String & Racket Finder v.8.0 beta_86 by Alexey Semenov von Rosenberg — two departments in one document. Racket department (v.09 beta): one hundred fifty-five numbered frames — the full current lines of Head, Wilson, Yonex, Dunlop, Diadem, Tecnifibre, Babolat, Prince, Solinco, Lacoste and Pro Kennex — rated across eleven axes with a difficulty column, an amber search bar that filters the bench or looks specs up online, and a bronze transfer-specs form that scores a researched frame from its specs. String department (Rev 05): thirty-eight string beds rated across eight axes including arm friendliness, with beds you have court-tested marked cyan and queued beds amber. Both departments have clickable column headers, weight sliders and reset buttons, and every list — the weighted rankings, both hard-spec tables and the string stiffness table — carries a typo-tolerant filter bar and top 5 / show 10 / show all row limits.</h2>
+<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">String & Racket Finder v.8.0 beta_86 by Alexey Semenov von Rosenberg — two departments in one document. Racket department (v.09 beta): one hundred fifty-five numbered frames — the full current lines of Head, Wilson, Yonex, Dunlop, Diadem, Tecnifibre, Babolat, Prince, Solinco, Lacoste and Pro Kennex — rated across eleven axes with a difficulty column, an amber search bar that filters the bench or looks specs up online, and a bronze transfer-specs form that scores a researched frame from its specs. String department (Rev 05): thirty-eight string beds rated across eight axes including arm friendliness, with beds you have court-tested marked cyan and queued beds amber. Both departments have clickable column headers, weight sliders and reset buttons, and every list — the weighted rankings, both hard-spec tables and the string stiffness table — carries a typo-tolerant filter bar and top 5 / show 10 / show all row limits. Both benches rest in recommended order — the gold, silver, bronze and budget picks lead, then everything else by weighted score — until a column is ranked, with grouped-by-shelf one click away. Easy mode ends with a glowing amber invitation to continue to intermediate, and intermediate ends with a magenta one to initiate the nerd protocol and open the pro workshop.</h2>
 
 <!-- ================= landing ================= -->
 <div id="landing">
@@ -1828,6 +1897,23 @@
   </div>
 
   <div id="ez_out"></div>
+
+  <!-- the step-up invitation, same grammar as intermediate's pro invite one level down.
+       Hidden until easyRun() has actually produced picks: inviting someone deeper before
+       they have seen a single answer is a sales pitch, after is a next step. -->
+  <div class="stepinv" id="ez_midinv" role="region" aria-label="invitation to intermediate mode" hidden>
+    <div class="mpi_kick" style="color:var(--amber);">// you have your picks — now argue with them</div>
+    <div class="mpi_title">Four taps got you a shortlist. Eleven sliders get you <em>your</em> shortlist.</div>
+    <div class="mpi_body">Intermediate keeps this page's simplicity but hands you the dials:
+      drag <b>what actually matters to you</b> &mdash; control over power, comfort over spin &mdash; and
+      every frame, every stringbed and every matched setup re-ranks <b>live</b> as you drag.
+      Same engine, same answers, nothing to re-enter: your four taps come with you and just
+      become the starting position instead of the whole story.</div>
+    <div class="mpi_row">
+      <button type="button" class="bigcta" style="--cta:var(--amber);--cta-fg:var(--amber-fg,var(--amber));" onclick="setMode('mid')">continue to intermediate <span class="ctaArrow" aria-hidden="true">&rarr;</span></button>
+      <span class="mpi_fine">takes about a minute &middot; you can come back any time, nothing is lost</span>
+    </div>
+  </div>
 </div>
 
 <!-- ================= intermediate mode: one page, live ================= -->
@@ -1923,7 +2009,7 @@
         sortable hard specs, and a <b>&dagger;</b> on every value nobody has court-tested yet.
         No medals without receipts.</div>
       <div class="mpi_row">
-        <button type="button" class="mpi_btn" onclick="setMode('pro')">initiate nerd protocol &rarr;</button>
+        <button type="button" class="bigcta" style="--cta:var(--magenta);--cta-fg:var(--magenta-fg,var(--magenta));" onclick="setMode('pro')">initiate nerd protocol <span class="ctaArrow" aria-hidden="true">&rarr;</span></button>
         <span class="mpi_fine">side effects may include opinions about gauge, string-savers discourse, and reading stiffness charts at 1 a.m.</span>
       </div>
     </div>
@@ -2175,7 +2261,8 @@
   </div>
 </div>
   <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;font-size:11px;flex-wrap:wrap;">
-  <span style="color:var(--muted);">click a column to rank · click it again to flip high/low · <span id="sortState" style="color:var(--cyan);">original order</span></span>
+  <span style="color:var(--muted);">click a column to rank · click it again to flip high/low · <span id="sortState" style="color:var(--cyan);">recommended order</span></span>
+  <button class="resetbtn" data-label="grouped by shelf" onclick="rkGroupView()" title="quiver, playtested, bench — the old grouped view">grouped by shelf</button>
   <button class="resetbtn" data-label="reset order" onclick="resetOrder()" style="margin-left:auto;">reset order</button>
 </div>
 <div id="winners" aria-label="current winners — gold, silver, bronze and budget pick with their best string setups"></div>
@@ -2235,7 +2322,7 @@
   </div>
   <div class="boostbar" id="boost"></div>
   <div id="g_hint" style="display:none;font-size:11.5px;color:var(--muted);background:var(--card2);border:1px dashed color-mix(in srgb, var(--cyan) 30%, transparent);border-radius:8px;padding:9px 12px;margin-bottom:10px;">
-    Your bench starts empty — every frame sits in <b style="color:var(--muted);">bench</b> until you claim it. Click a racket's name to put it in your quiver, mark it playtested, or line it up to test next.
+    The bench rests in <b style="color:var(--cyan);">recommended order</b> — your gold, silver, bronze and budget picks lead, then every other frame by the same weighted score, so this table and the picks above never disagree about what comes first. Rank any column and that ordering is yours until you reset. Your bench starts empty — every frame sits in <b style="color:var(--muted);">bench</b> until you claim it. Click a racket's name to put it in your quiver, mark it playtested, or line it up to test next, then use <b style="color:var(--soft);">grouped by shelf</b> to see those shelves.
     <button class="mcap ghost" onclick="gAdoptDemo()" style="margin-left:8px;padding:3px 10px;">copy the demo layout</button>
   </div>
 
@@ -2394,7 +2481,8 @@
   </div>
 </div></span>
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;font-size:11px;flex-wrap:wrap;">
-    <span style="color:var(--muted);">click any column header to rank by it · <span id="sb_sortState" style="color:var(--cyan);">ranked by index</span></span>
+    <span style="color:var(--muted);">click any column header to rank by it · <span id="sb_sortState" style="color:var(--cyan);">recommended order</span></span>
+    <button class="sbbtn" data-label="grouped by shelf" onclick="sbGroupView()" title="benchmark, court-tested, queued — the old grouped view">grouped by shelf</button>
     <button class="sbbtn" data-label="reset order" onclick="sbResetOrder()" style="margin-left:auto;">reset order</button>
   </div>
   <div class="boostbar" id="sb_boost"></div>
@@ -4625,6 +4713,36 @@ window.rkGroupOnly = (g) => {
   if (!solo) all.forEach(k => { if (k !== g) RK_GCOLL.add(k); });
   buildGrid();
 };
+/* ---------- default bench order = the recommendation ----------
+   The bench used to open in AUTHORING order grouped by shelf, so bench row No. 1 was
+   whatever frame happened to be typed first and had nothing to do with the gold pick
+   two panels up. Two lists claiming to answer the same question in two different orders
+   is the confusing part, not the length. So the default is now: gold, silver, bronze,
+   budget, then everything else by the same weighted score the ranking uses.
+   The moment the reader ranks a CATEGORY (a column header, difficulty, price) that wins
+   — this is only the resting order. "grouped by shelf" is still one click away, and
+   reset order returns here rather than to authoring order. */
+function rkRecOrder(arr){
+  // buildGrid() runs once before `w` initialises (TDZ) — fall back to shelf order there
+  try { void w; } catch(e){ return arr.slice().sort((a,b)=> gRank(a.g) - gRank(b.g)); }
+  const tw = w.reduce((a,b)=>a+b,0) || 1;
+  const sc = r => r.s.reduce((a,v,i)=>a+v*w[i],0)/tw;
+  let meds = [], budgetNo = null;
+  try {
+    if (window.srfShortlist){
+      const S = srfShortlist("racket");
+      meds = S.meds.map(f => (f && f.no > 0) ? f.no : null);
+      if (S.budget && S.budget.f && S.budget.f.no > 0) budgetNo = S.budget.f.no;
+    }
+  } catch(e){}
+  // 0/1/2 = the podium in its own order, 3 = the budget pick, 4 = the rest by score
+  const slot = r => { const m = meds.indexOf(r.no);
+    return m >= 0 ? m : (r.no === budgetNo ? 3 : 4); };
+  return arr.slice().sort((a,b) =>
+    slot(a) - slot(b) || sc(b) - sc(a) || (a.b+a.n).localeCompare(b.b+b.n));
+}
+/* the shelf grouping is not deleted, just demoted to a view you ask for */
+window.rkGroupView = () => { sortIdx = (sortIdx === "g" ? null : "g"); SEL.clear(); buildGrid(); };
 function buildGrid(){
   const dirs = i => `<span class="dirs">`+
       `<button type="button" class="${SEL.get(i)===-1?"on":""}" aria-label="rank ${cats[i]} highest first" aria-pressed="${SEL.get(i)===-1}" onclick="event.stopPropagation();SD(${i},-1)">\u25B2</button>`+
@@ -4641,10 +4759,11 @@ function buildGrid(){
   if (SEL.size) rows = rk.slice().sort((a,b)=> selScore(b)-selScore(a));
   else if (sortIdx==="d") rows = rk.slice().sort((a,b)=> DIR*(a.d-b.d));
   else if (sortIdx==="p") rows = rk.slice().sort((a,b)=> DIR*((a.p||0)-(b.p||0)));
-  // "original order" shows groups researched-first: every rx_* group (built-in researched entry
-  // plus any group created via transfer-specs) leads, then the quiver and the rest. The sort is
-  // stable, so numbering and within-group order stay exactly as authored.
-  else rows = rk.slice().sort((a,b)=> gRank(a.g) - gRank(b.g));
+  // "grouped by shelf" shows groups researched-first: every rx_* group (built-in researched
+  // entry plus any group created via transfer-specs) leads, then the quiver and the rest. The
+  // sort is stable, so numbering and within-group order stay exactly as authored.
+  else if (sortIdx==="g") rows = rk.slice().sort((a,b)=> gRank(a.g) - gRank(b.g));
+  else rows = rkRecOrder(rk);   // the resting order: your picks first, then by weighted score
   const filtering = !!(typeof searchQ!=="undefined" && searchQ);
   if (filtering) rows = rows.filter(r=>matches(r, searchQ));
   const rowsTotal = rows.length;
@@ -4654,12 +4773,12 @@ function buildGrid(){
       `<div style="padding:22px 6px;color:var(--muted);font-size:12px;">No frame on the bench matches “${document.getElementById("specSearch").value.trim()}”. Use the amber <b style="color:var(--amber);">specs ↗</b> button to look it up online.</div>`;
     document.getElementById("sortState").textContent = SEL.size
     ? "ranked by " + [...SEL].map(i=>cats[i]).join(" + ") + (SEL.size>1?` (${SEL.size} categories)`:"")
-    : (sortIdx===null ? "original order" : (sortIdx==="d" ? "ranked by difficulty" : (sortIdx==="p" ? "ranked by average price" : "original order")));
+    : (sortIdx===null ? "recommended order" : sortIdx==="g" ? "grouped by shelf" : (sortIdx==="d" ? "ranked by difficulty" : (sortIdx==="p" ? "ranked by average price" : "recommended order")));
     return;
   }
   let lastG = "";
   rows.forEach(r => {
-    if (sortIdx===null && !SEL.size && !filtering && r.g !== lastG) {
+    if (sortIdx==="g" && !SEL.size && !filtering && r.g !== lastG) {
       lastG = r.g;
       const gc = rows.filter(x => x.g === r.g).length;
       const coll = RK_GCOLL.has(r.g);
@@ -4672,7 +4791,7 @@ function buildGrid(){
         `<span class="gcaret">${coll?"\u25B8":"\u25BE"}</span>${G[r.g][1]}<span class="gcount">${gc} frame${gc===1?"":"s"}</span>` +
         `<button type="button" class="gonly" onclick="event.stopPropagation();rkGroupOnly('${r.g}')" aria-label="show only ${G[r.g][1]}">${solo?"all groups":"only"}</button></div>`;
     }
-    if (sortIdx===null && !SEL.size && !filtering && RK_GCOLL.has(r.g)) return;   // folded: header stands, rows wait
+    if (sortIdx==="g" && !SEL.size && !filtering && RK_GCOLL.has(r.g)) return;   // folded: header stands, rows wait
     h += `<div role="cell" class="namecell" data-no="${r.no}" style="color:${G[r.g][0]};display:flex;flex-direction:column;justify-content:center;padding:3px 4px 3px 7px;line-height:1.25;border-left:3px ${gStyle(r.g)} color-mix(in srgb, ${G[r.g][0]} 62%, transparent);"><span style="font-weight:500;"><span style="color:var(--muted);font-weight:400;">No. ${r.no}</span> ${cmpBox("racket", r.no)}<span class="custname" role="button" tabindex="0" onclick="cOpen(${r.no})" onkeydown="if(event.key==='Enter'){cOpen(${r.no});}" onmouseenter="noteHoverIn(noteFrame,${r.no},event)" onmouseleave="noteHoverOut()" title="customize this frame — hover for play notes">${r.b} ${r.n}</span><button type="button" class="infobtn" aria-label="play notes for ${r.b} ${r.n}" onclick="event.stopPropagation();noteFrame(${r.no},event)">ⓘ</button>${r.feel?`<button type="button" class="custbtn feelbtn" aria-label="edit how ${r.b} ${r.n} feels for you" onclick="event.stopPropagation();fOpen(${r.feelOf})">edit feel</button>`:`<button type="button" class="custbtn" aria-label="customize ${r.b} ${r.n} — describe what you did to it" onclick="event.stopPropagation();cOpen(${r.no})">customize</button><button type="button" class="custbtn feelbtn" aria-label="re-score ${r.b} ${r.n} to your feel" onclick="event.stopPropagation();fOpen(${r.no})">my feel</button>`}${tag(r)}${r.cust?`<span class="custchip" title="${r.cust.text.replace(/"/g,'&quot;')}">customized</span>`:""}${r.feel?`<span class="custchip feelchip" title="your category read of the stock ${r.b} ${r.n} — the stock row is still on the bench">my feel</span>`:""}${window.buyBtn("racket",(r.b?r.b+" ":"")+String(r.n).replace(/ · my feel$/,""),true,"buy",true)}</span><span style="color:var(--muted);font-size:10px;font-weight:400;">${r.sp[0]} · ${r.sp[2]}</span></div>`;
     h += `<div role="cell" class="spdcell" style="display:flex;align-items:center;justify-content:center;">${spiderIcon("racket", r.no, r.s)}</div>`;
     h += priceCell(r.p, sortIdx==="p");
@@ -4692,7 +4811,9 @@ function buildGrid(){
   seedGridMedals();   // re-seed the podium into the freshly built name cells
   document.getElementById("sortState").textContent = SEL.size
     ? "ranked by " + [...SEL].map(([i,d])=>cats[i]+(d===-1?" \u25B2":" \u25BC")).join(" + ") + (SEL.size>1?` (${SEL.size} combined)`:"")
-    : (sortIdx===null ? "original order" : "ranked by " + (sortIdx==="d" ? "difficulty" : (sortIdx==="p" ? "average price" : cats[sortIdx])) + (DIR===-1?" — highest first":" — lowest first"));
+    : (sortIdx===null ? "recommended order \u2014 same as your picks above"
+       : sortIdx==="g" ? "grouped by shelf"
+       : "ranked by " + (sortIdx==="d" ? "difficulty" : (sortIdx==="p" ? "average price" : cats[sortIdx])) + (DIR===-1?" \u2014 highest first":" \u2014 lowest first"));
 }
 
 
@@ -5387,7 +5508,18 @@ document.querySelectorAll(".a3-slider:not(.sbsl)").forEach(el => {
     if (r) r.querySelectorAll(".slabel.gold, .wv.gold").forEach(n => n.classList.remove("gold"));
     if (window.midFill) midFill(el);
   })));
+let RK_REORDERING = false;
 function render(){
+  /* The bench's resting order IS the recommendation order, and the recommendation moves
+     when the sliders move — so a weight drag has to rebuild the GRID as well as these
+     bars, or the bench silently keeps yesterday's podium. Only in the resting state:
+     once the reader has ranked a category, that ordering is theirs and stays put.
+     Cheap in practice — the grid paints SRFLIM.racket rows (5 by default), and the
+     string bench has always rebuilt on every drag for the same reason. */
+  if (!RK_REORDERING && sortIdx === null && !SEL.size){
+    RK_REORDERING = true;
+    try { buildGrid(); } catch(e){} finally { RK_REORDERING = false; }
+  }
   const tw = w.reduce((a,b)=>a+b,0) || 1;
   const scored = rk.map(r => ({...r, sc: r.s.reduce((a,v,i)=>a+v*w[i],0)/tw})).sort((a,b)=> b.sc-a.sc || (a.b+a.n).localeCompare(b.b+b.n));   // name tiebreak: equal scores can never jitter
   /* the crowns are the SUGGESTIONS — the same gold/silver/bronze the strip above hands
@@ -6883,12 +7015,30 @@ window.sbGroupOnly = (g) => {
   if (!solo) all.forEach(k => { if (k !== g) SB_GCOLL.add(k); });
   buildGrid();
 };
+/* the string bench's half of the same rule — see rkRecOrder(): resting order is your
+   gold / silver / bronze / budget bed, then everything else by weighted index, so the
+   bench and the suggestions never disagree about what comes first. */
+function sbRecSort(scored){
+  let meds = [], budgetI = null;
+  try {
+    if (window.srfShortlist){
+      const S = srfShortlist("string");
+      meds = S.meds.map(b => (b && b.i >= 0) ? b.i : null);
+      if (S.budget && S.budget.bed && S.budget.bed.i >= 0) budgetI = S.budget.bed.i;
+    }
+  } catch(e){}
+  const slot = b => { const m = meds.indexOf(b.i);
+    return m >= 0 ? m : (b.i === budgetI ? 3 : 4); };
+  scored.sort((a,b)=> slot(a)-slot(b) || b.idx-a.idx || String(a.m).localeCompare(String(b.m)));
+}
+window.sbGroupView = () => { sortIdx = (sortIdx === "g" ? null : "g"); SBSEL.clear(); buildGrid(); };
 function buildGrid(){
   const tot=w.reduce((a,b)=>a+b,0)||1;
   beds.forEach((b,i)=>{ b.i=i; b.no=i+1; });
   let scored=beds.map(b=>({...b, idx:b.s.reduce((a,v,i)=>a+v*w[i],0)/tot}));
   if(SBSEL.size){ scored.sort((a,b)=> sbSelScore(b)-sbSelScore(a)); }
-  else if(sortIdx===null){ scored.sort((a,b)=> SBORDER.indexOf(gkey(a))-SBORDER.indexOf(gkey(b)) || b.idx-a.idx); }
+  else if(sortIdx==="g"){ scored.sort((a,b)=> SBORDER.indexOf(gkey(a))-SBORDER.indexOf(gkey(b)) || b.idx-a.idx); }
+  else if(sortIdx===null){ sbRecSort(scored); }
   else if(sortIdx==="idx") scored.sort((a,b)=>SBDIR*(a.idx-b.idx));
   else if(sortIdx==="p")  scored.sort((a,b)=>SBDIR*((bedPrice(a)?bedPrice(a).v:0)-(bedPrice(b)?bedPrice(b).v:0)));
   else if(sortIdx==="d")  scored.sort((a,b)=>SBDIR*(bedDemand(a)-bedDemand(b)));
@@ -6929,7 +7079,7 @@ function buildGrid(){
 
   let lastG="";
   scored.forEach(b=>{
-    if(sortIdx===null && !SBSEL.size && gkey(b)!==lastG){ lastG=gkey(b);
+    if(sortIdx==="g" && !SBSEL.size && gkey(b)!==lastG){ lastG=gkey(b);
       const gc = scored.filter(x => gkey(x) === lastG).length;
       const coll = SB_GCOLL.has(lastG);
       const allG = [...new Set(scored.map(gkey))];
@@ -6940,7 +7090,7 @@ function buildGrid(){
         style="grid-column:1/-1;padding:8px 4px 3px;color:${SBG[lastG][0]};font-size:11px;font-weight:500;letter-spacing:.04em;">` +
         `<span class="gcaret">${coll?"\u25B8":"\u25BE"}</span>${SBG[lastG][1]}<span class="gcount">${gc} bed${gc===1?"":"s"}</span>` +
         `<button type="button" class="gonly" onclick="event.stopPropagation();sbGroupOnly('${lastG}')" aria-label="show only ${SBG[lastG][1]}">${solo?"all groups":"only"}</button></div>`; }
-    if(sortIdx===null && !SBSEL.size && SB_GCOLL.has(gkey(b))) return;
+    if(sortIdx==="g" && !SBSEL.size && SB_GCOLL.has(gkey(b))) return;
     const col=rowColor(b);
     h+=`<div role="cell" class="namecell" data-bi="${b.i}" style="display:flex;flex-direction:column;justify-content:center;padding:5px 4px;line-height:1.25;border-left:3px solid color-mix(in srgb, ${col} 55%, transparent);">
           <span style="font-weight:500;"><span style="color:var(--muted);font-weight:400;font-size:10px;">No. ${b.no}</span> ${cmpBox("string", b.i)}<span class="custname" role="button" tabindex="0" onclick="sbOpen(${b.i})" onkeydown="if(event.key==='Enter'){sbOpen(${b.i});}" onmouseenter="noteHoverIn(noteBed,${b.i},event)" onmouseleave="noteHoverOut()" title="claim this bed — hover for play notes" style="color:var(--bright);">${b.m}</span><button type="button" class="infobtn" aria-label="play notes" onclick="event.stopPropagation();noteBed(${b.i},event)">ⓘ</button>${(sbTop.indexOf(b.i)>=0)?`<span class="medal ${["mG","mS","mB"][sbTop.indexOf(b.i)]}" title="your #${sbTop.indexOf(b.i)+1} suggestion — same as your suggestions">${sbTop.indexOf(b.i)+1}</span>`:""}${b.i === sbBudgetI ? SB_EURO : ""}${window.buyBtn("string", String(b.m).split(" \u00b7 ")[0], true, "buy", true)}</span>
@@ -7005,7 +7155,9 @@ function buildGrid(){
   sbRankPaint();
   document.getElementById("sb_sortState").textContent = SBSEL.size
     ? "ranked by "+[...SBSEL].map(([i,d])=>AX[i]+(d===-1?" \u25B2":" \u25BC")).join(" + ")+(SBSEL.size>1?` (${SBSEL.size} combined)`:"")
-    : (sortIdx===null ? "original order" : (sortIdx==="idx"?"ranked by index":sortIdx==="p"?"ranked by price":sortIdx==="d"?"ranked by demand":"original order")+(sortIdx===null?"":(SBDIR===-1?" — highest first":" — lowest first")));
+    : (sortIdx===null ? "recommended order — same as your picks"
+       : sortIdx==="g" ? "grouped by shelf"
+       : (sortIdx==="idx"?"ranked by index":sortIdx==="p"?"ranked by price":sortIdx==="d"?"ranked by demand":"recommended order")+(SBDIR===-1?" — highest first":" — lowest first"));
 }
 
 /* ---------- weighted-ranking filter (string department) ----------
@@ -8406,7 +8558,12 @@ document.addEventListener("DOMContentLoaded", () => {
       if (PREF.sw && PREF.sw.length && window.applyStringWeights) applyStringWeights(PREF.sw);
     });
   } catch(e){}
-  if (window.srfRerank) srfRerank();   // re-crown with the shared shortlist, which did not
+  /* Both benches need this second pass, and since the resting order became the
+     RECOMMENDATION order the racket GRID needs it too, not just the ranking: the podium
+     comes from srfShortlist(), which is defined further down this script than the grid's
+     first paint. Without the redraw the bench would open in pure-score order and only
+     snap onto the podium at the next interaction. */
+  if (window.SRF && SRF.redraw) SRF.redraw(); else if (window.srfRerank) srfRerank();
   if (window.sbRerank) sbRerank();     // exist yet when the benches first painted mid-script
   const tcB = document.getElementById("themeCtl");
   const cls = document.body.className;
@@ -9646,14 +9803,20 @@ window.easyRun = () => {
     `or a string that lives on permanent promo ` +
     `\u2014 status curated as of <b>Aug 2026</b>; a file on your disk cannot watch shop prices live, so every deal ` +
     `button opens a fresh search for today\u2019s offers instead of promising yesterday\u2019s.</span>` +
-    `<span>Next step up: keep these answers, then drag the priorities yourself and watch both ` +
-    `benches re-rank live.</span> ` +
-    `<button type="button" class="hybtn" onclick="setMode('mid')">continue to intermediate \u2192</button>` +
-    `<button type="button" class="hybtn ghost" onclick="easyRun()">re-run</button>` +
+    /* the "continue to intermediate" pill that used to sit here is gone: the big amber
+       CTA in the card below now carries that step, and two buttons with the same words
+       within one screen made the reader pick between identical doors. Re-run stays \u2014 it
+       is about THIS page, not the next one. */
+    `<button type="button" class="hybtn ghost" onclick="easyRun()">re-run these answers</button>` +
     `<span class="ez_skip">or <a href="#" onclick="setMode('pro');return false;">skip straight to pro mode</a> ` +
     `\u2014 every axis, live sliders, the lab table and the calibrator.</span></div></div>`;
 
   out.innerHTML = html;
+  /* the step-up invitation only exists once there are picks to step up FROM — revealed
+     here rather than at the top of easyRun(), which returns early when the level is
+     still unanswered and would otherwise leave the invite hanging under an error note */
+  const inv = document.getElementById("ez_midinv");
+  if (inv) inv.hidden = false;
   out.scrollIntoView({ behavior: "smooth", block: "start" });
 };
 (function easyInit(){ easyPaintWant(); })();
