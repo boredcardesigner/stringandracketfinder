@@ -1775,7 +1775,7 @@
 </head>
 <body>
 <div class="wrap">
-<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">String & Racket Finder v.8.0 beta_86 by Alexey Semenov von Rosenberg — two departments in one document. Racket department (v.09 beta): one hundred fifty-five numbered frames — the full current lines of Head, Wilson, Yonex, Dunlop, Diadem, Tecnifibre, Babolat, Prince, Solinco, Lacoste and Pro Kennex — rated across eleven axes with a difficulty column, an amber search bar that filters the bench or looks specs up online, and a bronze transfer-specs form that scores a researched frame from its specs. String department (Rev 05): thirty-eight string beds rated across eight axes including arm friendliness, with beds you have court-tested marked cyan and queued beds amber. Both departments have clickable column headers, weight sliders and reset buttons, and every list — the weighted rankings, both hard-spec tables and the string stiffness table — carries a typo-tolerant filter bar and top 5 / show 10 / show all row limits. Both benches rest in recommended order — the gold, silver, bronze and budget picks lead, then everything else by weighted score — until a column is ranked, with grouped-by-shelf one click away. Easy mode ends with a glowing amber invitation to continue to intermediate, and intermediate ends with a magenta one to initiate the nerd protocol and open the pro workshop.</h2>
+<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">String & Racket Finder v.8.0 beta_86 by Alexey Semenov von Rosenberg — two departments in one document. Racket department (v.09 beta): one hundred fifty-five numbered frames — the full current lines of Head, Wilson, Yonex, Dunlop, Diadem, Tecnifibre, Babolat, Prince, Solinco, Lacoste and Pro Kennex — rated across eleven axes with a difficulty column, an amber search bar that filters the bench or looks specs up online, and a bronze transfer-specs form that scores a researched frame from its specs. String department (Rev 05): two hundred twenty string beds — the market sweep of twenty-three string brands, from the majors (Luxilon, Babolat, Wilson, Yonex, Tecnifibre, Völkl, Gamma, Head, Solinco, Toroline, ReString) to the stringing-room specialists (Kirschbaum, MSV, Signum Pro, Weiss Cannon, Isospeed, Gosen, Diadem, Dunlop, Prince, Polyfibre, Tourna, Tier One) — rated across eight axes including arm friendliness, with beds you have court-tested marked cyan and queued beds amber. Both departments have clickable column headers, weight sliders and reset buttons, and every list — the weighted rankings, both hard-spec tables and the string stiffness table — carries a typo-tolerant filter bar and top 5 / show 10 / show all row limits. Both benches rest in recommended order — the gold, silver, bronze and budget picks lead, then everything else by weighted score — until a column is ranked, with grouped-by-shelf one click away. Easy mode ends with a glowing amber invitation to continue to intermediate, and intermediate ends with a magenta one to initiate the nerd protocol and open the pro workshop.</h2>
 
 <!-- ================= landing ================= -->
 <div id="landing">
@@ -1787,7 +1787,7 @@
       </div>
     </div>
     <h1 class="ld_title azonix">String &amp; Racket Finder <span style="color:var(--cyan);">v.8.0 beta_86</span></h1>
-    <p class="ld_lede">One hundred fifty-five frames &mdash; the current lines of eleven brands &mdash; and thirty-eight string beds, scored on the same axes and matched to each other
+    <p class="ld_lede">One hundred fifty-five frames and two hundred twenty string beds &mdash; the current market of eleven racket and twenty-three string brands &mdash; scored on the same axes and matched to each other
        by the physics of the pairing. Tell it how you play and it hands you a shortlist &mdash; or open the whole
        workshop and rank everything yourself.</p>
     <div class="ld_modes">
@@ -6277,6 +6277,212 @@ const beds = [
   {m:"GAMMA Moto 1.24",      x:"RESTRING Sync",       s:[9,5,8,8,7,7,8,6], mt:"25", ct:"23", tag:"ref", est:ALL},
   {m:"RESTRING Zero 1.24",   x:"LUXILON 4G",          s:[8,5,9,9,6,6,9,5], mt:"25", ct:"23", tag:"ref", est:ALL},
   {m:"SOLINCO Mach 10",      x:"LUXILON 4G",          s:[9,5,10,9,6,5,9,4], mt:"25", ct:"23", tag:"ref", est:ALL}
+,
+  // ---- LUXILON — full beds at reference tension, scored by the lab-aware estimator ----
+  {m:"LUXILON ALU Power Soft 1.25", x:"full bed", s:[8,6,8,8,5,6,7,5], mt:"23", tag:"ref", est:ALL},
+  {m:"LUXILON Element 1.25", x:"full bed", s:[8,8,6,7,7,6,7,8], mt:"23", tag:"ref", est:ALL},
+  {m:"LUXILON Eco Power 1.25", x:"full bed", s:[8,6,8,8,5,6,7,5], mt:"23", tag:"ref", est:ALL},
+  {m:"LUXILON Smart 1.25", x:"full bed", s:[8,7,7,8,6,6,7,6], mt:"23", tag:"ref", est:ALL},
+  {m:"LUXILON Savage 1.27", x:"full bed", s:[9,6,9,8,4,7,5,4], mt:"23", tag:"ref", est:ALL},
+  {m:"LUXILON Original 1.30", x:"full bed", s:[7,6,9,9,4,6,7,3], mt:"23", tag:"ref", est:ALL},
+  {m:"LUXILON Natural Gut 1.30", x:"full bed", s:[4,9,3,5,9,7,7,9], mt:"25", tag:"ref", est:ALL},
+  // ---- BABOLAT — full beds at reference tension, scored by the lab-aware estimator ----
+  {m:"BABOLAT RPM Blast Rough 1.25", x:"full bed", s:[9,5,9,9,4,7,5,4], mt:"23", tag:"ref", est:ALL},
+  {m:"BABOLAT RPM Power 1.25", x:"full bed", s:[8,6,8,8,5,6,7,5], mt:"23", tag:"ref", est:ALL},
+  {m:"BABOLAT RPM Soft 1.25", x:"full bed", s:[8,7,7,7,6,6,7,7], mt:"23", tag:"ref", est:ALL},
+  {m:"BABOLAT Pro Hurricane Tour 1.25", x:"full bed", s:[9,5,9,9,4,7,5,3], mt:"23", tag:"ref", est:ALL},
+  {m:"BABOLAT Pro Hurricane 1.25", x:"full bed", s:[9,5,9,9,4,7,5,3], mt:"23", tag:"ref", est:ALL},
+  {m:"BABOLAT Xcel 1.30", x:"full bed", s:[4,9,2,4,9,6,6,9], mt:"24", tag:"ref", est:ALL},
+  {m:"BABOLAT Addiction 1.30", x:"full bed", s:[4,9,4,5,9,6,6,9], mt:"24", tag:"ref", est:ALL},
+  {m:"BABOLAT Syn Gut 1.30", x:"full bed", s:[4,9,5,5,8,5,6,9], mt:"24", tag:"ref", est:ALL},
+  {m:"BABOLAT Touch Tonic 1.30", x:"full bed", s:[4,9,3,5,9,7,7,9], mt:"25", tag:"ref", est:ALL},
+  {m:"BABOLAT Origin 1.25", x:"full bed", s:[8,8,6,7,7,6,7,8], mt:"23", tag:"ref", est:ALL},
+  // ---- WILSON — full beds at reference tension, scored by the lab-aware estimator ----
+  {m:"WILSON Revolve 1.25", x:"full bed", s:[8,6,8,8,5,6,7,5], mt:"23", tag:"ref", est:ALL},
+  {m:"WILSON NXT 1.30", x:"full bed", s:[4,9,3,4,9,6,6,9], mt:"24", tag:"ref", est:ALL},
+  {m:"WILSON NXT Power 1.30", x:"full bed", s:[4,9,3,4,9,6,6,9], mt:"24", tag:"ref", est:ALL},
+  {m:"WILSON NXT Control 1.30", x:"full bed", s:[4,9,4,5,9,6,6,9], mt:"24", tag:"ref", est:ALL},
+  {m:"WILSON Sensation 1.30", x:"full bed", s:[4,9,3,4,9,6,6,9], mt:"24", tag:"ref", est:ALL},
+  {m:"WILSON Sensation Plus 1.28", x:"full bed", s:[5,9,4,5,9,6,5,9], mt:"24", tag:"ref", est:ALL},
+  {m:"WILSON Synthetic Gut Power 1.30", x:"full bed", s:[4,9,5,5,8,5,6,9], mt:"24", tag:"ref", est:ALL},
+  {m:"WILSON Natural Gut 1.30", x:"full bed", s:[4,9,3,5,9,7,7,9], mt:"25", tag:"ref", est:ALL},
+  // ---- YONEX — full beds at reference tension, scored by the lab-aware estimator ----
+  {m:"YONEX Poly Tour Pro 1.25", x:"full bed", s:[8,6,8,8,5,6,7,5], mt:"23", tag:"ref", est:ALL},
+  {m:"YONEX Poly Tour Strike 1.25", x:"full bed", s:[8,5,9,9,4,6,7,4], mt:"23", tag:"ref", est:ALL},
+  {m:"YONEX Poly Tour Rev 1.25", x:"full bed", s:[9,6,8,8,5,7,6,4], mt:"23", tag:"ref", est:ALL},
+  {m:"YONEX Poly Tour Air 1.25", x:"full bed", s:[8,8,7,7,7,6,7,7], mt:"23", tag:"ref", est:ALL},
+  {m:"YONEX Poly Tour Fire 1.25", x:"full bed", s:[8,6,9,8,4,6,6,4], mt:"23", tag:"ref", est:ALL},
+  {m:"YONEX Poly Tour Drive 1.25", x:"full bed", s:[8,5,9,9,4,6,6,3], mt:"23", tag:"ref", est:ALL},
+  {m:"YONEX Poly Tour Tough 1.25", x:"full bed", s:[8,5,9,9,3,6,7,2], mt:"23", tag:"ref", est:ALL},
+  {m:"YONEX Percept 1.25", x:"full bed", s:[8,6,8,8,5,6,7,4], mt:"23", tag:"ref", est:ALL},
+  {m:"YONEX Rexis Speed 1.30", x:"full bed", s:[4,9,3,4,9,6,6,9], mt:"24", tag:"ref", est:ALL},
+  {m:"YONEX Rexis Comfort 1.30", x:"full bed", s:[4,9,3,4,9,6,6,9], mt:"24", tag:"ref", est:ALL},
+  {m:"YONEX Multi-Sensa 1.30", x:"full bed", s:[4,9,3,4,9,6,6,9], mt:"24", tag:"ref", est:ALL},
+  {m:"YONEX Dynawire 1.25", x:"full bed", s:[5,9,4,5,9,6,5,9], mt:"24", tag:"ref", est:ALL},
+  // ---- TECNIFIBRE — full beds at reference tension, scored by the lab-aware estimator ----
+  {m:"TECNIFIBRE Razor Code 1.25", x:"full bed", s:[8,6,8,8,5,6,7,4], mt:"23", tag:"ref", est:ALL},
+  {m:"TECNIFIBRE Razor Code X 1.25", x:"full bed", s:[8,6,8,8,5,6,7,5], mt:"23", tag:"ref", est:ALL},
+  {m:"TECNIFIBRE Razor Soft 1.25", x:"full bed", s:[8,7,7,8,6,6,7,7], mt:"23", tag:"ref", est:ALL},
+  {m:"TECNIFIBRE Ice Code 1.25", x:"full bed", s:[8,6,9,8,4,6,7,4], mt:"23", tag:"ref", est:ALL},
+  {m:"TECNIFIBRE Black Code 1.24", x:"full bed", s:[9,6,8,8,5,7,6,5], mt:"23", tag:"ref", est:ALL},
+  {m:"TECNIFIBRE Black Code 4S 1.25", x:"full bed", s:[9,6,8,8,5,7,5,4], mt:"23", tag:"ref", est:ALL},
+  {m:"TECNIFIBRE Pro RedCode 1.25", x:"full bed", s:[8,5,9,9,4,6,7,4], mt:"23", tag:"ref", est:ALL},
+  {m:"TECNIFIBRE X-One Biphase 1.30", x:"full bed", s:[4,9,2,4,9,6,6,9], mt:"24", tag:"ref", est:ALL},
+  {m:"TECNIFIBRE NRG2 1.32", x:"full bed", s:[4,9,3,4,9,6,6,9], mt:"24", tag:"ref", est:ALL},
+  {m:"TECNIFIBRE Multifeel 1.30", x:"full bed", s:[4,9,3,4,9,6,6,9], mt:"24", tag:"ref", est:ALL},
+  {m:"TECNIFIBRE Triax 1.28", x:"full bed", s:[5,9,4,5,9,6,5,9], mt:"24", tag:"ref", est:ALL},
+  // ---- VÖLKL — full beds at reference tension, scored by the lab-aware estimator ----
+  {m:"VÖLKL Cyclone 1.25", x:"full bed", s:[9,6,9,8,4,7,5,4], mt:"23", tag:"ref", est:ALL},
+  {m:"VÖLKL Cyclone Tour 1.25", x:"full bed", s:[9,6,8,8,5,7,6,5], mt:"23", tag:"ref", est:ALL},
+  {m:"VÖLKL V-Torque 1.23", x:"full bed", s:[9,6,8,8,5,7,5,5], mt:"23", tag:"ref", est:ALL},
+  {m:"VÖLKL V-Torque Tour 1.23", x:"full bed", s:[8,6,8,8,6,6,7,6], mt:"23", tag:"ref", est:ALL},
+  {m:"VÖLKL V-Star 1.25", x:"full bed", s:[9,6,8,8,5,7,6,4], mt:"23", tag:"ref", est:ALL},
+  {m:"VÖLKL V-Pro 1.23", x:"full bed", s:[8,6,8,8,5,6,7,5], mt:"23", tag:"ref", est:ALL},
+  // ---- GAMMA — full beds at reference tension, scored by the lab-aware estimator ----
+  {m:"GAMMA Ocho 1.24", x:"full bed", s:[9,6,8,8,5,7,6,5], mt:"23", tag:"ref", est:ALL},
+  {m:"GAMMA iO 1.23", x:"full bed", s:[8,6,8,8,5,6,7,4], mt:"23", tag:"ref", est:ALL},
+  {m:"GAMMA Glide 1.20", x:"full bed", s:[9,7,7,7,8,6,6,7], mt:"23", tag:"ref", est:ALL},
+  {m:"GAMMA TNT2 1.27", x:"full bed", s:[5,9,4,5,9,5,5,9], mt:"24", tag:"ref", est:ALL},
+  {m:"GAMMA Live Wire 1.27", x:"full bed", s:[5,9,3,4,9,6,5,9], mt:"24", tag:"ref", est:ALL},
+  {m:"GAMMA Synthetic Gut WearGuard 1.30", x:"full bed", s:[4,9,5,5,8,5,6,9], mt:"24", tag:"ref", est:ALL},
+  // ---- HEAD — full beds at reference tension, scored by the lab-aware estimator ----
+  {m:"HEAD Lynx 1.25", x:"full bed", s:[8,6,8,8,5,6,7,5], mt:"23", tag:"ref", est:ALL},
+  {m:"HEAD Lynx Touch 1.25", x:"full bed", s:[8,7,7,8,6,6,7,7], mt:"23", tag:"ref", est:ALL},
+  {m:"HEAD Hawk 1.25", x:"full bed", s:[8,6,9,8,4,6,7,4], mt:"23", tag:"ref", est:ALL},
+  {m:"HEAD Hawk Touch 1.25", x:"full bed", s:[8,6,8,8,5,6,7,5], mt:"23", tag:"ref", est:ALL},
+  {m:"HEAD Hawk Power 1.25", x:"full bed", s:[8,5,9,9,4,6,6,3], mt:"23", tag:"ref", est:ALL},
+  {m:"HEAD Sonic Pro 1.25", x:"full bed", s:[8,7,7,8,6,6,7,6], mt:"23", tag:"ref", est:ALL},
+  {m:"HEAD Velocity MLT 1.30", x:"full bed", s:[4,9,3,4,9,6,6,9], mt:"24", tag:"ref", est:ALL},
+  {m:"HEAD RIP Control 1.30", x:"full bed", s:[4,9,4,5,9,6,6,9], mt:"24", tag:"ref", est:ALL},
+  // ---- SOLINCO — full beds at reference tension, scored by the lab-aware estimator ----
+  {m:"SOLINCO Hyper-G Soft 1.25", x:"full bed", s:[9,6,8,8,5,7,6,5], mt:"23", tag:"ref", est:ALL},
+  {m:"SOLINCO Tour Bite 1.25", x:"full bed", s:[9,5,9,9,3,7,5,2], mt:"23", tag:"ref", est:ALL},
+  {m:"SOLINCO Tour Bite Soft 1.25", x:"full bed", s:[9,6,8,8,5,7,6,4], mt:"23", tag:"ref", est:ALL},
+  {m:"SOLINCO Outlast 1.25", x:"full bed", s:[8,5,9,9,4,6,7,4], mt:"23", tag:"ref", est:ALL},
+  {m:"SOLINCO Revolution 1.25", x:"full bed", s:[9,6,8,8,5,7,6,4], mt:"23", tag:"ref", est:ALL},
+  {m:"SOLINCO Vanquish 1.30", x:"full bed", s:[4,9,3,4,9,6,6,9], mt:"24", tag:"ref", est:ALL},
+  // ---- TOROLINE — full beds at reference tension, scored by the lab-aware estimator ----
+  {m:"TOROLINE O-Toro Spin 1.23", x:"full bed", s:[9,7,7,8,6,7,6,6], mt:"23", tag:"ref", est:ALL},
+  {m:"TOROLINE O-Toro Tour 1.23", x:"full bed", s:[8,6,8,8,5,6,7,5], mt:"23", tag:"ref", est:ALL},
+  {m:"TOROLINE O-Toro Octa 1.25", x:"full bed", s:[9,7,7,8,6,7,6,6], mt:"23", tag:"ref", est:ALL},
+  {m:"TOROLINE O-Toro Snap 1.25", x:"full bed", s:[8,7,7,8,6,6,7,7], mt:"23", tag:"ref", est:ALL},
+  {m:"TOROLINE Cash 1.25", x:"full bed", s:[8,6,8,8,5,6,7,5], mt:"23", tag:"ref", est:ALL},
+  {m:"TOROLINE A5 1.25", x:"full bed", s:[9,6,8,8,5,7,6,5], mt:"23", tag:"ref", est:ALL},
+  {m:"TOROLINE Truffle X 1.30", x:"full bed", s:[4,9,3,4,9,6,6,9], mt:"24", tag:"ref", est:ALL},
+  {m:"TOROLINE Snapper 1.23", x:"full bed", s:[8,7,7,8,6,6,7,6], mt:"23", tag:"ref", est:ALL},
+  {m:"TOROLINE Absolute 1.20", x:"full bed", s:[9,6,8,8,7,6,6,6], mt:"23", tag:"ref", est:ALL},
+  {m:"TOROLINE Super Toro 1.23", x:"full bed", s:[8,7,7,7,6,6,7,7], mt:"23", tag:"ref", est:ALL},
+  // the gut that was already in the lab finally gets its own bench bed
+  {m:"BABOLAT Touch VS 1.30", x:"full bed", s:[4,9,3,4,9,7,7,9], mt:"25", tag:"ref", est:ALL},
+  // ---- KIRSCHBAUM ----
+  {m:"KIRSCHBAUM Pro Line Evolution 1.25", x:"full bed", s:[8,6,8,8,5,6,7,5], mt:"23", tag:"ref", est:ALL},
+  {m:"KIRSCHBAUM Pro Line Rough 1.25", x:"full bed", s:[9,6,9,8,4,7,6,4], mt:"23", tag:"ref", est:ALL},
+  {m:"KIRSCHBAUM Xplosive Speed 1.23", x:"full bed", s:[8,7,7,8,6,6,7,6], mt:"23", tag:"ref", est:ALL},
+  {m:"KIRSCHBAUM Max Power 1.25", x:"full bed", s:[8,6,8,8,5,6,7,5], mt:"23", tag:"ref", est:ALL},
+  {m:"KIRSCHBAUM Max Power Rough 1.25", x:"full bed", s:[9,6,8,8,5,7,6,4], mt:"23", tag:"ref", est:ALL},
+  {m:"KIRSCHBAUM Flash 1.25", x:"full bed", s:[8,6,8,8,5,6,7,5], mt:"23", tag:"ref", est:ALL},
+  {m:"KIRSCHBAUM Black Shark 1.30", x:"full bed", s:[9,7,9,8,4,7,6,4], mt:"23", tag:"ref", est:ALL},
+  {m:"KIRSCHBAUM Touch Turbo 1.30", x:"full bed", s:[4,9,3,4,9,6,6,9], mt:"24", tag:"ref", est:ALL},
+  // ---- MSV ----
+  {m:"MSV Focus Hex Soft 1.25", x:"full bed", s:[9,6,8,8,6,7,6,6], mt:"23", tag:"ref", est:ALL},
+  {m:"MSV Focus Hex +38 1.25", x:"full bed", s:[9,6,8,8,5,7,6,5], mt:"23", tag:"ref", est:ALL},
+  {m:"MSV Hepta-Twist 1.25", x:"full bed", s:[9,6,8,8,5,7,6,5], mt:"23", tag:"ref", est:ALL},
+  {m:"MSV Co-Focus 1.23", x:"full bed", s:[8,6,8,8,5,6,7,4], mt:"23", tag:"ref", est:ALL},
+  {m:"MSV Swift Comfort 1.25", x:"full bed", s:[8,8,7,7,7,6,7,8], mt:"23", tag:"ref", est:ALL},
+  {m:"MSV Go Soft 1.25", x:"full bed", s:[8,7,7,7,6,6,7,7], mt:"23", tag:"ref", est:ALL},
+  // ---- SIGNUM PRO ----
+  {m:"SIGNUM PRO Poly Plasma 1.23", x:"full bed", s:[8,6,8,8,5,6,7,5], mt:"23", tag:"ref", est:ALL},
+  {m:"SIGNUM PRO Poly Plasma Pure 1.28", x:"full bed", s:[8,6,8,8,5,6,7,5], mt:"23", tag:"ref", est:ALL},
+  {m:"SIGNUM PRO Hyperion 1.24", x:"full bed", s:[8,7,7,8,6,6,7,7], mt:"23", tag:"ref", est:ALL},
+  {m:"SIGNUM PRO Tornado 1.23", x:"full bed", s:[9,6,8,8,5,7,6,5], mt:"23", tag:"ref", est:ALL},
+  {m:"SIGNUM PRO Firestorm 1.25", x:"full bed", s:[9,6,8,8,5,7,6,4], mt:"23", tag:"ref", est:ALL},
+  {m:"SIGNUM PRO Plasma HEXtreme 1.25", x:"full bed", s:[9,6,8,8,5,7,6,4], mt:"23", tag:"ref", est:ALL},
+  {m:"SIGNUM PRO Poly Megaforce 1.19", x:"full bed", s:[9,6,9,8,5,6,5,4], mt:"23", tag:"ref", est:ALL},
+  {m:"SIGNUM PRO X-Perience 1.24", x:"full bed", s:[8,8,7,7,7,6,7,7], mt:"23", tag:"ref", est:ALL},
+  {m:"SIGNUM PRO Tornado Plus 1.24", x:"full bed", s:[5,9,4,5,9,6,5,9], mt:"24", tag:"ref", est:ALL},
+  // ---- WEISS CANNON ----
+  {m:"WEISS CANNON Silverstring 1.25", x:"full bed", s:[8,6,8,8,6,6,7,6], mt:"23", tag:"ref", est:ALL},
+  {m:"WEISS CANNON Ultra Cable 1.23", x:"full bed", s:[9,6,8,8,5,7,6,5], mt:"23", tag:"ref", est:ALL},
+  {m:"WEISS CANNON Black5Edge 1.24", x:"full bed", s:[9,6,8,8,5,7,6,5], mt:"23", tag:"ref", est:ALL},
+  {m:"WEISS CANNON Scorpion 1.28", x:"full bed", s:[9,6,8,8,5,7,6,4], mt:"23", tag:"ref", est:ALL},
+  {m:"WEISS CANNON TurboTwist 1.24", x:"full bed", s:[9,6,8,8,5,7,6,4], mt:"23", tag:"ref", est:ALL},
+  {m:"WEISS CANNON Mosquito Bite 1.16", x:"full bed", s:[9,6,8,8,6,6,6,5], mt:"23", tag:"ref", est:ALL},
+  {m:"WEISS CANNON Explosiv 1.22", x:"full bed", s:[9,8,7,7,7,6,6,7], mt:"23", tag:"ref", est:ALL},
+  {m:"WEISS CANNON Red Ghost 1.18", x:"full bed", s:[9,7,7,8,7,6,6,7], mt:"23", tag:"ref", est:ALL},
+  {m:"WEISS CANNON Fire Stroke 1.20", x:"full bed", s:[9,6,8,8,6,6,6,5], mt:"23", tag:"ref", est:ALL},
+  // ---- ISOSPEED ----
+  {m:"ISOSPEED Baseline Control 1.30", x:"full bed", s:[7,7,8,8,5,6,9,5], mt:"23", tag:"ref", est:ALL},
+  {m:"ISOSPEED Baseline Speed 1.25", x:"full bed", s:[8,6,8,8,6,6,8,6], mt:"23", tag:"ref", est:ALL},
+  {m:"ISOSPEED Baseline Spin 1.20", x:"full bed", s:[9,6,9,8,6,7,6,5], mt:"23", tag:"ref", est:ALL},
+  {m:"ISOSPEED Professional Classic 1.20", x:"full bed", s:[9,8,7,7,8,6,6,8], mt:"23", tag:"ref", est:ALL},
+  {m:"ISOSPEED Professional 1.20", x:"full bed", s:[9,8,6,7,8,6,6,8], mt:"23", tag:"ref", est:ALL},
+  {m:"ISOSPEED Control Classic 1.30", x:"full bed", s:[7,7,8,8,5,6,8,5], mt:"23", tag:"ref", est:ALL},
+  {m:"ISOSPEED Energetic 1.30", x:"full bed", s:[4,9,4,5,9,6,6,9], mt:"24", tag:"ref", est:ALL},
+  {m:"ISOSPEED Pyramid 1.30", x:"full bed", s:[8,7,8,8,5,7,7,5], mt:"23", tag:"ref", est:ALL},
+  {m:"ISOSPEED Black Fire 1.25", x:"full bed", s:[8,6,8,8,5,6,7,5], mt:"23", tag:"ref", est:ALL},
+  {m:"ISOSPEED Grey Fire 1.25", x:"full bed", s:[8,7,7,8,6,6,7,7], mt:"23", tag:"ref", est:ALL},
+  {m:"ISOSPEED AXON Multi 1.25", x:"full bed", s:[5,9,3,4,9,6,5,9], mt:"24", tag:"ref", est:ALL},
+  // ---- GOSEN ----
+  {m:"GOSEN Polylon 1.24", x:"full bed", s:[8,6,9,8,4,6,6,4], mt:"23", tag:"ref", est:ALL},
+  {m:"GOSEN G-Tour 1 1.25", x:"full bed", s:[8,6,8,8,5,6,7,5], mt:"23", tag:"ref", est:ALL},
+  {m:"GOSEN G-Tour 3 1.23", x:"full bed", s:[8,6,8,8,5,6,7,5], mt:"23", tag:"ref", est:ALL},
+  {m:"GOSEN G-Spin 3 1.23", x:"full bed", s:[9,6,8,8,5,7,6,5], mt:"23", tag:"ref", est:ALL},
+  {m:"GOSEN Sidewinder 1.22", x:"full bed", s:[9,6,8,8,6,7,5,4], mt:"23", tag:"ref", est:ALL},
+  {m:"GOSEN OG-Sheep Micro 1.29", x:"full bed", s:[5,8,5,5,8,5,5,9], mt:"24", tag:"ref", est:ALL},
+  {m:"GOSEN AK Pro CX 1.24", x:"full bed", s:[5,9,4,5,8,5,5,9], mt:"24", tag:"ref", est:ALL},
+  {m:"GOSEN AK Control 1.24", x:"full bed", s:[5,9,4,5,9,6,5,9], mt:"24", tag:"ref", est:ALL},
+  // ---- DIADEM ----
+  {m:"DIADEM Solstice Power 1.25", x:"full bed", s:[8,6,8,8,5,6,7,5], mt:"23", tag:"ref", est:ALL},
+  {m:"DIADEM Solstice Black 1.25", x:"full bed", s:[8,6,8,8,5,6,7,4], mt:"23", tag:"ref", est:ALL},
+  {m:"DIADEM Evolution 1.30", x:"full bed", s:[9,7,8,8,5,7,7,5], mt:"23", tag:"ref", est:ALL},
+  {m:"DIADEM Flash 1.20", x:"full bed", s:[9,6,8,8,6,6,6,5], mt:"23", tag:"ref", est:ALL},
+  {m:"DIADEM Impulse 1.25", x:"full bed", s:[8,8,7,7,6,6,7,7], mt:"23", tag:"ref", est:ALL},
+  {m:"DIADEM Pro X 1.25", x:"full bed", s:[9,6,8,8,5,7,6,4], mt:"23", tag:"ref", est:ALL},
+  {m:"DIADEM SG Ultra 1.30", x:"full bed", s:[4,9,5,5,8,5,6,9], mt:"24", tag:"ref", est:ALL},
+  // ---- DUNLOP ----
+  {m:"DUNLOP Black Widow 1.26", x:"full bed", s:[9,6,8,8,5,7,6,4], mt:"23", tag:"ref", est:ALL},
+  {m:"DUNLOP Explosive Bite 1.27", x:"full bed", s:[9,6,8,8,5,7,6,5], mt:"23", tag:"ref", est:ALL},
+  {m:"DUNLOP Explosive Tour 1.25", x:"full bed", s:[8,6,9,8,4,6,7,4], mt:"23", tag:"ref", est:ALL},
+  {m:"DUNLOP Explosive Speed 1.25", x:"full bed", s:[8,7,7,8,6,6,7,6], mt:"23", tag:"ref", est:ALL},
+  {m:"DUNLOP Iconic All 1.30", x:"full bed", s:[4,9,3,4,9,6,6,9], mt:"24", tag:"ref", est:ALL},
+  {m:"DUNLOP Iconic Speed 1.25", x:"full bed", s:[5,9,4,5,9,6,5,9], mt:"24", tag:"ref", est:ALL},
+  {m:"DUNLOP Iconic Touch 1.30", x:"full bed", s:[4,9,3,4,9,6,6,9], mt:"24", tag:"ref", est:ALL},
+  {m:"DUNLOP Silk 1.22", x:"full bed", s:[6,9,3,4,9,6,4,9], mt:"24", tag:"ref", est:ALL},
+  {m:"DUNLOP Synthetic S-Gut 1.25", x:"full bed", s:[5,8,5,5,8,5,5,9], mt:"24", tag:"ref", est:ALL},
+  // ---- PRINCE ----
+  {m:"PRINCE Vortex 1.25", x:"full bed", s:[8,6,8,8,5,6,7,5], mt:"23", tag:"ref", est:ALL},
+  {m:"PRINCE Vortex Triad 1.25", x:"full bed", s:[9,6,8,8,5,7,6,4], mt:"23", tag:"ref", est:ALL},
+  {m:"PRINCE Tour XP 1.25", x:"full bed", s:[8,6,8,8,5,6,7,5], mt:"23", tag:"ref", est:ALL},
+  {m:"PRINCE Tour XC 1.27", x:"full bed", s:[8,7,7,8,6,6,7,7], mt:"23", tag:"ref", est:ALL},
+  {m:"PRINCE Diablo Prism 1.25", x:"full bed", s:[8,6,8,8,5,6,7,5], mt:"23", tag:"ref", est:ALL},
+  {m:"PRINCE Premier Touch 1.30", x:"full bed", s:[4,9,2,4,9,6,6,9], mt:"24", tag:"ref", est:ALL},
+  {m:"PRINCE Premier Power 1.25", x:"full bed", s:[5,9,3,4,9,6,5,9], mt:"24", tag:"ref", est:ALL},
+  {m:"PRINCE Synthetic Gut Duraflex 1.30", x:"full bed", s:[4,9,5,5,8,5,6,9], mt:"24", tag:"ref", est:ALL},
+  {m:"PRINCE Lightning XX 1.30", x:"full bed", s:[4,9,5,5,7,5,6,9], mt:"24", tag:"ref", est:ALL},
+  // ---- POLYFIBRE ----
+  {m:"POLYFIBRE Black Venom 1.25", x:"full bed", s:[8,8,7,7,7,6,7,7], mt:"23", tag:"ref", est:ALL},
+  {m:"POLYFIBRE Black Venom Rough 1.25", x:"full bed", s:[9,7,7,7,6,7,6,7], mt:"23", tag:"ref", est:ALL},
+  {m:"POLYFIBRE Hightec Pro 1.25", x:"full bed", s:[8,6,8,8,5,6,7,5], mt:"23", tag:"ref", est:ALL},
+  {m:"POLYFIBRE Cobra 1.25", x:"full bed", s:[8,8,7,7,7,6,7,8], mt:"23", tag:"ref", est:ALL},
+  {m:"POLYFIBRE Viper 1.20", x:"full bed", s:[9,6,8,8,6,6,6,5], mt:"23", tag:"ref", est:ALL},
+  {m:"POLYFIBRE Poly Power 1.25", x:"full bed", s:[8,6,8,8,5,6,7,5], mt:"23", tag:"ref", est:ALL},
+  // ---- TOURNA ----
+  {m:"TOURNA Big Hitter Blue Rough 1.25", x:"full bed", s:[9,6,8,8,5,7,6,5], mt:"23", tag:"ref", est:ALL},
+  {m:"TOURNA Big Hitter Silver 7 1.25", x:"full bed", s:[9,6,8,8,5,7,6,5], mt:"23", tag:"ref", est:ALL},
+  {m:"TOURNA Big Hitter Silver 1.25", x:"full bed", s:[8,7,7,8,6,6,7,7], mt:"23", tag:"ref", est:ALL},
+  {m:"TOURNA Black Zone 1.23", x:"full bed", s:[8,6,8,8,5,6,7,4], mt:"23", tag:"ref", est:ALL},
+  {m:"TOURNA Premium Poly 1.25", x:"full bed", s:[8,6,9,8,4,6,6,4], mt:"23", tag:"ref", est:ALL},
+  {m:"TOURNA Quasi Gut Armor 1.30", x:"full bed", s:[4,9,4,5,9,6,6,9], mt:"24", tag:"ref", est:ALL},
+  // ---- TIER ONE ----
+  {m:"TIER ONE Black Knight 1.25", x:"full bed", s:[9,6,8,8,5,7,6,4], mt:"23", tag:"ref", est:ALL},
+  {m:"TIER ONE Ghostwire 1.25", x:"full bed", s:[8,8,6,7,7,6,7,8], mt:"23", tag:"ref", est:ALL},
+  {m:"TIER ONE Firewire 1.25", x:"full bed", s:[9,6,8,8,5,7,6,5], mt:"23", tag:"ref", est:ALL},
+  {m:"TIER ONE Pure Rush 1.25", x:"full bed", s:[9,7,7,8,6,7,6,6], mt:"23", tag:"ref", est:ALL},
+  {m:"TIER ONE Pure Rush R8ZOR 1.25", x:"full bed", s:[9,6,8,8,5,7,6,5], mt:"23", tag:"ref", est:ALL},
+  {m:"TIER ONE Atomos 1.25", x:"full bed", s:[9,7,7,8,6,7,6,7], mt:"23", tag:"ref", est:ALL},
+  {m:"TIER ONE Durafluxx 1.25", x:"full bed", s:[9,5,9,9,4,7,7,4], mt:"23", tag:"ref", est:ALL},
+  {m:"TIER ONE Tour Status 1.25", x:"full bed", s:[9,6,9,8,5,7,7,5], mt:"23", tag:"ref", est:ALL},
+  {m:"TIER ONE Lux Supreme 1.30", x:"full bed", s:[4,9,3,4,9,6,6,9], mt:"24", tag:"ref", est:ALL}
 ];
 const PRESETS = { spin:[10,8,6,6,5,2,2,3], dura:[5,5,7,7,3,2,10,5], arm:[5,5,6,6,5,2,3,10], flat:[5,5,5,5,5,5,5,5], touch:[3,5,6,6,10,7,4,7] };
 let w = PRESETS.spin.slice();
@@ -7450,6 +7656,209 @@ const NERD=[
      RPET hexagonal that the maker itself says "plays slightly firmer". */
   ["Slap","RESTRING","co-poly","hexagonal","1.23 / 1.28",195,"very low (notch-resistant)","low\u2013mid","15\u201318","12\u201316 h"],
   ["Vivo","RESTRING","co-poly (recycled)","hexagonal","1.23 / 1.28",212,"very low (maker-rated)","mid","14\u201317","10\u201314 h"],
+  // ---- LUXILON — market sweep, filed Aug 2026 (typical published figures) ----
+  ["ALU Power Soft","LUXILON","co-poly (softened)","round","1.25",200,"mid","low–mid","20–24","8–12 h"],
+  ["Element","LUXILON","co-poly (soft)","round","1.25 / 1.30",165,"low","mid–high","19–23","8–12 h"],
+  ["Eco Power","LUXILON","co-poly (recycled)","round","1.25",210,"mid","low–mid","18–22","8–12 h"],
+  ["Smart","LUXILON","co-poly (adaptive)","round","1.25 / 1.30",190,"low–mid","mid","19–23","10–14 h"],
+  ["Savage","LUXILON","co-poly","hexagonal","1.27",220,"mid–high","low","16–20","8–12 h"],
+  ["Original","LUXILON","co-poly","round","1.30",230,"high","low","18–22","8–12 h"],
+  ["Natural Gut","LUXILON","natural gut","round","1.25 / 1.30",108,"2–5% only","highest","38–48","20–40 h"],
+  // ---- BABOLAT — market sweep, filed Aug 2026 (typical published figures) ----
+  ["RPM Blast Rough","BABOLAT","co-poly","textured octagonal","1.25 / 1.30",225,"high","low","17–20","8–12 h"],
+  ["RPM Power","BABOLAT","co-poly (softened)","round","1.25 / 1.30",200,"mid","mid","17–20","8–12 h"],
+  ["RPM Soft","BABOLAT","co-poly (soft, recycled)","round","1.25 / 1.30",180,"low–mid","mid","15–18","8–12 h"],
+  ["Pro Hurricane Tour","BABOLAT","co-poly","octagonal","1.20 / 1.25 / 1.30",230,"high","low","12–15","8–12 h"],
+  ["Pro Hurricane","BABOLAT","polyester","octagonal","1.25 / 1.30",235,"high","low","9–12","8–12 h"],
+  ["Xcel","BABOLAT","multifilament","round","1.25 / 1.30",120,"moderate","high","14–18","10–16 h"],
+  ["Addiction","BABOLAT","multifilament (PU blend)","round","1.25 / 1.30",145,"moderate","mid–high","11–14","10–14 h"],
+  ["Syn Gut","BABOLAT","synthetic gut","round","1.25 / 1.30",170,"moderate","mid","6–9","10–14 h"],
+  ["Touch Tonic","BABOLAT","natural gut","round","1.30 / 1.35",105,"2–5% only","highest","34–42","20–40 h"],
+  ["Origin","BABOLAT","polyamide mono","round","1.25 / 1.30",160,"mid","high","14–17","8–12 h"],
+  // ---- WILSON — market sweep, filed Aug 2026 (typical published figures) ----
+  ["Revolve","WILSON","co-poly","round","1.25 / 1.30",205,"mid","low–mid","10–13","8–12 h"],
+  ["NXT","WILSON","multifilament","round","1.24 / 1.30",130,"moderate","high","15–18","10–16 h"],
+  ["NXT Power","WILSON","multifilament","round","1.26 / 1.30",140,"moderate","high","14–17","10–16 h"],
+  ["NXT Control","WILSON","multifilament (poly blend)","round","1.30",155,"moderate","mid","14–17","10–16 h"],
+  ["Sensation","WILSON","multifilament","round","1.25 / 1.30",140,"moderate","mid–high","9–12","8–14 h"],
+  ["Sensation Plus","WILSON","multifilament","round","1.28 / 1.34",145,"moderate","mid–high","10–13","10–14 h"],
+  ["Synthetic Gut Power","WILSON","synthetic gut","round","1.25 / 1.30",175,"moderate","mid","5–8","10–14 h"],
+  ["Natural Gut","WILSON","natural gut","round","1.25 / 1.30",108,"2–5% only","highest","38–48","20–40 h"],
+  // ---- YONEX — market sweep, filed Aug 2026 (typical published figures) ----
+  ["Poly Tour Pro","YONEX","co-poly (soft)","round","1.15 / 1.20 / 1.25 / 1.30",205,"low–mid","mid","12–15","8–12 h"],
+  ["Poly Tour Strike","YONEX","co-poly","round","1.20 / 1.25 / 1.30",225,"mid","low","14–17","8–12 h"],
+  ["Poly Tour Rev","YONEX","co-poly","pentagonal","1.20 / 1.25 / 1.30",215,"mid","low–mid","14–17","8–12 h"],
+  ["Poly Tour Air","YONEX","co-poly (soft)","round","1.25",175,"low","mid–high","13–16","8–12 h"],
+  ["Poly Tour Fire","YONEX","co-poly","round","1.20 / 1.25 / 1.30",220,"mid–high","low–mid","11–14","6–10 h"],
+  ["Poly Tour Drive","YONEX","co-poly","round","1.25",230,"mid–high","low","11–14","8–12 h"],
+  ["Poly Tour Tough","YONEX","co-poly","round","1.25",240,"low","low","13–16","12–18 h"],
+  ["Percept","YONEX","co-poly (control)","round","1.25 / 1.30",215,"low","low","15–18","10–14 h"],
+  ["Rexis Speed","YONEX","multifilament","round","1.25 / 1.30",140,"moderate","high","14–18","10–16 h"],
+  ["Rexis Comfort","YONEX","multifilament","round","1.25 / 1.30",125,"moderate","high","14–18","10–16 h"],
+  ["Multi-Sensa","YONEX","multifilament","round","1.25 / 1.30",135,"moderate","mid–high","12–15","10–14 h"],
+  ["Dynawire","YONEX","multifilament (metal wrap)","round","1.25 / 1.30",150,"moderate","high","12–15","10–14 h"],
+  // ---- TECNIFIBRE — market sweep, filed Aug 2026 (typical published figures) ----
+  ["Razor Code","TECNIFIBRE","co-poly (slick)","round","1.20 / 1.25 / 1.30",215,"low","low–mid","13–16","10–14 h"],
+  ["Razor Code X","TECNIFIBRE","co-poly","round","1.25 / 1.30",210,"low","low–mid","14–17","10–14 h"],
+  ["Razor Soft","TECNIFIBRE","co-poly (soft)","round","1.20 / 1.25 / 1.30",185,"low–mid","mid","14–17","8–12 h"],
+  ["Ice Code","TECNIFIBRE","co-poly","round","1.20 / 1.25 / 1.30",220,"mid","low","13–16","8–12 h"],
+  ["Black Code","TECNIFIBRE","co-poly","pentagonal","1.18 / 1.24 / 1.28",210,"mid","low–mid","12–15","8–12 h"],
+  ["Black Code 4S","TECNIFIBRE","co-poly","square","1.20 / 1.25 / 1.30",215,"mid–high","low","13–16","6–10 h"],
+  ["Pro RedCode","TECNIFIBRE","co-poly","round","1.20 / 1.25 / 1.30",225,"mid","low","10–13","8–12 h"],
+  ["X-One Biphase","TECNIFIBRE","multifilament","round","1.24 / 1.30",120,"moderate","highest of the multis","16–20","10–16 h"],
+  ["NRG2","TECNIFIBRE","multifilament","round","1.24 / 1.32",125,"moderate","high","15–19","10–16 h"],
+  ["Multifeel","TECNIFIBRE","multifilament","round","1.25 / 1.30",130,"moderate","mid–high","12–15","10–14 h"],
+  ["Triax","TECNIFIBRE","multifilament (poly blend)","round","1.28 / 1.33",155,"low–mid","mid","15–18","12–16 h"],
+  // ---- VÖLKL — market sweep, filed Aug 2026 (typical published figures) ----
+  ["Cyclone","VÖLKL","co-poly","octagonal","1.20 / 1.25 / 1.30",220,"mid–high","low","7–10","8–12 h"],
+  ["Cyclone Tour","VÖLKL","co-poly","octagonal","1.20 / 1.25 / 1.30",200,"mid","low–mid","8–11","8–12 h"],
+  ["V-Torque","VÖLKL","co-poly","twisted","1.18 / 1.23 / 1.28",210,"mid–high","low","9–12","6–10 h"],
+  ["V-Torque Tour","VÖLKL","co-poly (soft)","round","1.18 / 1.23 / 1.28",195,"mid","low–mid","10–13","8–12 h"],
+  ["V-Star","VÖLKL","co-poly","pentagonal","1.20 / 1.25 / 1.30",215,"mid","low","8–11","8–12 h"],
+  ["V-Pro","VÖLKL","co-poly","round","1.23 / 1.28",210,"mid","low–mid","9–12","8–12 h"],
+  // ---- GAMMA — market sweep, filed Aug 2026 (typical published figures) ----
+  ["Ocho","GAMMA","co-poly","octagonal","1.19 / 1.24 / 1.29",205,"low–mid","low–mid","8–11","8–12 h"],
+  ["iO","GAMMA","co-poly","round","1.18 / 1.23 / 1.28",215,"mid","low–mid","9–12","8–12 h"],
+  ["Glide","GAMMA","co-poly (slick cross)","round","1.15 / 1.20",175,"low","mid","10–13","10–14 h"],
+  ["TNT2","GAMMA","synthetic gut (PET core)","round","1.27 / 1.32",155,"moderate","mid–high","8–11","10–14 h"],
+  ["Live Wire","GAMMA","multifilament","round","1.27 / 1.32",130,"moderate","high","10–13","10–16 h"],
+  ["Synthetic Gut WearGuard","GAMMA","synthetic gut","round","1.25 / 1.30",175,"moderate","mid","5–8","10–14 h"],
+  // ---- HEAD — market sweep, filed Aug 2026 (typical published figures) ----
+  ["Lynx","HEAD","co-poly","round","1.20 / 1.25 / 1.30",210,"mid","low–mid","10–13","8–12 h"],
+  ["Lynx Touch","HEAD","co-poly (soft)","round","1.20 / 1.25 / 1.30",185,"low–mid","mid","12–15","8–12 h"],
+  ["Hawk","HEAD","co-poly","round","1.20 / 1.25 / 1.30",220,"mid","low","10–13","8–12 h"],
+  ["Hawk Touch","HEAD","co-poly","round","1.15 / 1.20 / 1.25 / 1.30",210,"low–mid","low–mid","12–15","10–14 h"],
+  ["Hawk Power","HEAD","co-poly","round","1.25 / 1.30",230,"mid–high","low","11–14","8–12 h"],
+  ["Sonic Pro","HEAD","co-poly (soft)","round","1.25 / 1.30",190,"mid","mid","8–11","8–12 h"],
+  ["Velocity MLT","HEAD","multifilament","round","1.25 / 1.30",135,"moderate","high","10–13","10–16 h"],
+  ["RIP Control","HEAD","multifilament (ribbon)","round","1.25 / 1.30",150,"moderate","mid","10–13","10–14 h"],
+  // ---- SOLINCO — market sweep, filed Aug 2026 (typical published figures) ----
+  ["Hyper-G Soft","SOLINCO","co-poly (softened)","square","1.15 / 1.20 / 1.25 / 1.30",200,"mid","low–mid","14–17","8–12 h"],
+  ["Tour Bite","SOLINCO","co-poly","square","1.15 / 1.20 / 1.25 / 1.30",245,"high","low","13–16","8–12 h"],
+  ["Tour Bite Soft","SOLINCO","co-poly (softened)","square","1.20 / 1.25 / 1.30",215,"mid","low–mid","13–16","8–12 h"],
+  ["Outlast","SOLINCO","co-poly","round","1.15 / 1.20 / 1.25 / 1.30",225,"low","low","12–15","12–18 h"],
+  ["Revolution","SOLINCO","co-poly","hexagonal","1.15 / 1.20 / 1.25 / 1.30",215,"mid","low–mid","12–15","8–12 h"],
+  ["Vanquish","SOLINCO","multifilament","round","1.25 / 1.30",130,"moderate","high","13–16","10–16 h"],
+  // ---- TOROLINE — market sweep, filed Aug 2026 (typical published figures) ----
+  ["O-Toro Spin","TOROLINE","co-poly (soft)","hexagonal","1.23",190,"low","mid","13–16","8–12 h"],
+  ["O-Toro Tour","TOROLINE","co-poly","round","1.20 / 1.23",200,"low","low–mid","13–16","10–14 h"],
+  ["O-Toro Octa","TOROLINE","co-poly (soft)","octagonal","1.25",190,"low","mid","13–16","8–12 h"],
+  ["O-Toro Snap","TOROLINE","co-poly (slick)","round","1.25",185,"low","mid","13–16","10–14 h"],
+  ["Cash","TOROLINE","co-poly","round","1.25",205,"low–mid","low–mid","15–18","10–14 h"],
+  ["A5","TOROLINE","co-poly","pentagonal","1.25",200,"low–mid","low–mid","15–18","8–12 h"],
+  ["Truffle X","TOROLINE","multifilament","round","1.30",135,"moderate","high","20–24","10–16 h"],
+  ["Snapper","TOROLINE","co-poly (slick)","round","1.23",190,"low","mid","10–13","10–14 h"],
+  ["Absolute","TOROLINE","co-poly","round","1.20",195,"low–mid","low–mid","10–13","10–14 h"],
+  ["Super Toro","TOROLINE","co-poly (soft)","round","1.23",180,"low","mid","10–13","8–12 h"],
+  // ---- KIRSCHBAUM ----
+  ["Pro Line Evolution","KIRSCHBAUM","co-poly","round","1.20 / 1.25 / 1.30",205,"low","low–mid","10–13","10–14 h"],
+  ["Pro Line Rough","KIRSCHBAUM","co-poly","textured","1.20 / 1.25 / 1.30",218,"mid","low","8–11","8–12 h"],
+  ["Xplosive Speed","KIRSCHBAUM","co-poly (soft)","round","1.20 / 1.23 / 1.28",190,"low–mid","mid","12–15","8–12 h"],
+  ["Max Power","KIRSCHBAUM","co-poly","round","1.20 / 1.25 / 1.30",210,"mid","low–mid","9–12","8–12 h"],
+  ["Max Power Rough","KIRSCHBAUM","co-poly","textured","1.20 / 1.25 / 1.30",215,"mid","low","9–12","6–10 h"],
+  ["Flash","KIRSCHBAUM","co-poly","round","1.25 / 1.30",200,"low–mid","mid","11–14","8–12 h"],
+  ["Black Shark","KIRSCHBAUM","co-poly","hexagonal","1.25 / 1.30",220,"mid–high","low","10–13","8–12 h"],
+  ["Touch Turbo","KIRSCHBAUM","multifilament","round","1.25 / 1.30",140,"moderate","high","12–15","10–16 h"],
+  // ---- MSV ----
+  ["Focus Hex Soft","MSV","co-poly (softened)","hexagonal","1.20 / 1.25",195,"low–mid","mid","8–11","8–12 h"],
+  ["Focus Hex +38","MSV","co-poly","hexagonal","1.20 / 1.25",205,"low","low–mid","10–13","10–14 h"],
+  ["Hepta-Twist","MSV","co-poly","heptagonal twisted","1.20 / 1.25",210,"mid","low","10–13","8–12 h"],
+  ["Co-Focus","MSV","co-poly","round","1.18 / 1.23 / 1.27",215,"mid","low–mid","8–11","8–12 h"],
+  ["Swift Comfort","MSV","co-poly (soft)","round","1.25 / 1.30",170,"low","mid–high","11–14","8–12 h"],
+  ["Go Soft","MSV","co-poly (soft)","round","1.25 / 1.30",180,"low–mid","mid","8–11","8–12 h"],
+  // ---- SIGNUM PRO ----
+  ["Poly Plasma","SIGNUM PRO","co-poly","round","1.18 / 1.23 / 1.28",210,"low","low–mid","7–10","10–14 h"],
+  ["Poly Plasma Pure","SIGNUM PRO","co-poly","round","1.23 / 1.28",200,"low","mid","7–10","10–14 h"],
+  ["Hyperion","SIGNUM PRO","co-poly (soft)","round","1.18 / 1.24 / 1.30",185,"low–mid","mid","11–14","8–12 h"],
+  ["Tornado","SIGNUM PRO","co-poly","twisted","1.17 / 1.23 / 1.29",205,"mid","low–mid","13–16","8–12 h"],
+  ["Firestorm","SIGNUM PRO","co-poly","pentagonal","1.25 / 1.30",215,"mid","low","13–16","8–12 h"],
+  ["Plasma HEXtreme","SIGNUM PRO","co-poly","hexagonal","1.18 / 1.23 / 1.28",212,"mid","low","10–13","8–12 h"],
+  ["Poly Megaforce","SIGNUM PRO","co-poly","round","1.19 / 1.24",220,"mid–high","low","7–10","6–10 h"],
+  ["X-Perience","SIGNUM PRO","co-poly (soft)","round","1.24 / 1.30",175,"low","mid–high","13–16","8–12 h"],
+  ["Tornado Plus","SIGNUM PRO","multifilament (poly blend)","round","1.24 / 1.30",160,"moderate","mid","12–15","10–14 h"],
+  // ---- WEISS CANNON ----
+  ["Silverstring","WEISS CANNON","co-poly","round","1.20 / 1.25",195,"low","mid","9–12","10–14 h"],
+  ["Ultra Cable","WEISS CANNON","co-poly","cabled","1.23 / 1.28",210,"low","low–mid","11–14","10–14 h"],
+  ["Black5Edge","WEISS CANNON","co-poly","pentagonal","1.18 / 1.24",205,"low–mid","low–mid","10–13","8–12 h"],
+  ["Scorpion","WEISS CANNON","co-poly","hexagonal","1.22 / 1.28 / 1.33",215,"mid","low","8–11","8–12 h"],
+  ["TurboTwist","WEISS CANNON","co-poly","twisted","1.18 / 1.24",212,"mid","low","11–14","8–12 h"],
+  ["Mosquito Bite","WEISS CANNON","co-poly","round","1.16 / 1.20",200,"low","mid","9–12","6–10 h"],
+  ["Explosiv","WEISS CANNON","co-poly (soft)","round","1.22 / 1.28",180,"low–mid","mid–high","9–12","8–12 h"],
+  ["Red Ghost","WEISS CANNON","co-poly (soft)","round","1.18 / 1.23",185,"low","mid","11–14","8–12 h"],
+  ["Fire Stroke","WEISS CANNON","co-poly","round","1.20 / 1.25",205,"low–mid","mid","10–13","8–12 h"],
+  // ---- ISOSPEED ----
+  ["Baseline Control","ISOSPEED","co-poly","round","1.25 / 1.30",200,"very low","low–mid","9–12","12–18 h"],
+  ["Baseline Speed","ISOSPEED","co-poly","round","1.25",195,"very low","mid","9–12","12–18 h"],
+  ["Baseline Spin","ISOSPEED","co-poly","textured","1.20 / 1.25",205,"very low","low–mid","9–12","10–14 h"],
+  ["Professional Classic","ISOSPEED","co-poly (soft)","round","1.20 / 1.25",170,"low","mid–high","9–12","10–14 h"],
+  ["Professional","ISOSPEED","co-poly (soft)","round","1.20 / 1.25",165,"low","high","10–13","10–14 h"],
+  ["Control Classic","ISOSPEED","co-poly","round","1.25 / 1.30",210,"low","low","9–12","10–14 h"],
+  ["Energetic","ISOSPEED","multifilament (hybrid core)","round","1.20 / 1.30",150,"moderate","high","8–11","10–14 h"],
+  ["Pyramid","ISOSPEED","co-poly","pyramid-faceted","1.25 / 1.30",200,"low–mid","mid","8–11","8–12 h"],
+  ["Black Fire","ISOSPEED","co-poly","round","1.25",205,"low–mid","low–mid","7–10","8–12 h"],
+  ["Grey Fire","ISOSPEED","co-poly (soft)","round","1.25",185,"low","mid","7–10","8–12 h"],
+  ["AXON Multi","ISOSPEED","multifilament","round","1.25 / 1.30",130,"moderate","high","11–14","10–16 h"],
+  // ---- GOSEN ----
+  ["Polylon","GOSEN","polyester","round","1.24 / 1.29",220,"mid–high","low","5–8","8–12 h"],
+  ["G-Tour 1","GOSEN","co-poly","round","1.25 / 1.30",210,"mid","low–mid","9–12","8–12 h"],
+  ["G-Tour 3","GOSEN","co-poly","round","1.18 / 1.23 / 1.28",200,"low–mid","mid","9–12","8–12 h"],
+  ["G-Spin 3","GOSEN","co-poly","triangular","1.23",205,"mid","low–mid","9–12","8–12 h"],
+  ["Sidewinder","GOSEN","co-poly","twisted","1.22 / 1.30",215,"mid","low","13–16","8–12 h"],
+  ["OG-Sheep Micro","GOSEN","synthetic gut","round","1.15 / 1.22 / 1.29",170,"moderate","mid","4–7","10–14 h"],
+  ["AK Pro CX","GOSEN","synthetic gut (multi core)","round","1.24",160,"moderate","mid–high","9–12","10–14 h"],
+  ["AK Control","GOSEN","multifilament","round","1.24",145,"moderate","mid–high","9–12","10–14 h"],
+  // ---- DIADEM ----
+  ["Solstice Power","DIADEM","co-poly","round","1.25 / 1.30",205,"low","mid","12–15","10–14 h"],
+  ["Solstice Black","DIADEM","co-poly","round","1.25 / 1.30",215,"low","low–mid","13–16","10–14 h"],
+  ["Evolution","DIADEM","co-poly","hexagonal","1.25 / 1.30",210,"mid","low","9–12","8–12 h"],
+  ["Flash","DIADEM","co-poly","round","1.20 / 1.25",200,"low–mid","mid","9–12","8–12 h"],
+  ["Impulse","DIADEM","co-poly (soft)","round","1.25",180,"low","mid–high","13–16","8–12 h"],
+  ["Pro X","DIADEM","co-poly","hexagonal","1.25",212,"mid","low","12–15","8–12 h"],
+  ["SG Ultra","DIADEM","synthetic gut","round","1.30",170,"moderate","mid","6–9","10–14 h"],
+  // ---- DUNLOP ----
+  ["Black Widow","DUNLOP","co-poly","hexagonal","1.21 / 1.26 / 1.31",215,"mid","low","10–13","8–12 h"],
+  ["Explosive Bite","DUNLOP","co-poly","hexagonal","1.27 / 1.32",210,"low–mid","low–mid","16–20","8–12 h"],
+  ["Explosive Tour","DUNLOP","co-poly","round","1.25 / 1.30",220,"low","low","16–20","10–14 h"],
+  ["Explosive Speed","DUNLOP","co-poly (soft)","round","1.25 / 1.30",190,"low–mid","mid–high","16–20","8–12 h"],
+  ["Iconic All","DUNLOP","multifilament","round","1.25 / 1.30",135,"moderate","high","17–21","10–16 h"],
+  ["Iconic Speed","DUNLOP","multifilament","round","1.25 / 1.30",150,"moderate","high","17–21","10–16 h"],
+  ["Iconic Touch","DUNLOP","multifilament","round","1.25 / 1.30",125,"moderate","high","17–21","10–16 h"],
+  ["Silk","DUNLOP","multifilament","round","1.22 / 1.32",130,"moderate","high","13–17","10–14 h"],
+  ["Synthetic S-Gut","DUNLOP","synthetic gut","round","1.19 / 1.25 / 1.32",175,"moderate","mid","5–8","10–14 h"],
+  // ---- PRINCE ----
+  ["Vortex","PRINCE","co-poly","round","1.20 / 1.25 / 1.30",210,"mid","low–mid","7–10","8–12 h"],
+  ["Vortex Triad","PRINCE","co-poly","triangular","1.25 / 1.30",215,"mid","low","9–12","8–12 h"],
+  ["Tour XP","PRINCE","co-poly","round","1.25 / 1.30",205,"low–mid","mid","8–11","8–12 h"],
+  ["Tour XC","PRINCE","co-poly (soft)","round","1.27",185,"low–mid","mid–high","7–10","8–12 h"],
+  ["Diablo Prism","PRINCE","co-poly","round","1.25 / 1.30",200,"mid","mid","9–12","8–12 h"],
+  ["Premier Touch","PRINCE","multifilament","round","1.30",120,"moderate","highest of the multis","13–16","10–16 h"],
+  ["Premier Power","PRINCE","multifilament","round","1.20 / 1.25 / 1.30",135,"moderate","high","13–16","10–16 h"],
+  ["Synthetic Gut Duraflex","PRINCE","synthetic gut","round","1.25 / 1.30 / 1.35",175,"moderate","mid","5–8","10–14 h"],
+  ["Lightning XX","PRINCE","synthetic gut","round","1.25 / 1.30",180,"moderate","mid","7–10","10–14 h"],
+  // ---- POLYFIBRE ----
+  ["Black Venom","POLYFIBRE","co-poly (soft)","round","1.15 / 1.20 / 1.25 / 1.30",175,"low","mid–high","9–12","8–12 h"],
+  ["Black Venom Rough","POLYFIBRE","co-poly (soft)","textured","1.20 / 1.25",180,"low","mid","9–12","8–12 h"],
+  ["Hightec Pro","POLYFIBRE","co-poly","round","1.20 / 1.25 / 1.30",205,"low–mid","low–mid","9–12","10–14 h"],
+  ["Cobra","POLYFIBRE","co-poly (soft)","round","1.20 / 1.25 / 1.30",170,"low","high","10–13","8–12 h"],
+  ["Viper","POLYFIBRE","co-poly","round","1.15 / 1.20 / 1.25",210,"mid","low–mid","10–13","8–12 h"],
+  ["Poly Power","POLYFIBRE","co-poly","round","1.25 / 1.30",200,"low–mid","mid","8–11","8–12 h"],
+  // ---- TOURNA ----
+  ["Big Hitter Blue Rough","TOURNA","co-poly","textured","1.25 / 1.30",210,"mid","low","8–11","8–12 h"],
+  ["Big Hitter Silver 7","TOURNA","co-poly","heptagonal","1.20 / 1.25",200,"low–mid","low–mid","9–12","8–12 h"],
+  ["Big Hitter Silver","TOURNA","co-poly (soft)","round","1.20 / 1.25 / 1.30",185,"low–mid","mid","8–11","8–12 h"],
+  ["Black Zone","TOURNA","co-poly","round","1.23 / 1.28",215,"mid","low","7–10","8–12 h"],
+  ["Premium Poly","TOURNA","polyester","round","1.25 / 1.30",220,"mid–high","low","5–8","8–12 h"],
+  ["Quasi Gut Armor","TOURNA","multifilament","round","1.30",145,"moderate","high","7–10","10–14 h"],
+  // ---- TIER ONE ----
+  ["Black Knight","TIER ONE","co-poly","hexagonal","1.20 / 1.25 / 1.30",215,"low","low","14–17","12–18 h"],
+  ["Ghostwire","TIER ONE","co-poly (soft)","round","1.15 / 1.20 / 1.25 / 1.30",165,"low","high","14–17","10–14 h"],
+  ["Firewire","TIER ONE","co-poly","triangular","1.20 / 1.25 / 1.30",210,"mid","low–mid","14–17","8–12 h"],
+  ["Pure Rush","TIER ONE","co-poly (soft)","hexagonal","1.20 / 1.25 / 1.30",190,"low","mid–high","15–18","10–14 h"],
+  ["Pure Rush R8ZOR","TIER ONE","co-poly","8-sided","1.20 / 1.25 / 1.30",200,"low","mid","15–18","10–14 h"],
+  ["Atomos","TIER ONE","co-poly (soft)","four-paddle","1.20 / 1.25 / 1.30",185,"low","mid–high","15–18","10–14 h"],
+  ["Durafluxx","TIER ONE","co-poly","hexagonal","1.20 / 1.25 / 1.30",225,"very low","low","14–17","14–20 h"],
+  ["Tour Status","TIER ONE","co-poly","octagonal","1.20 / 1.25 / 1.30",205,"very low","low–mid","14–17","12–18 h"],
+  ["Lux Supreme","TIER ONE","multifilament","round","1.25 / 1.30",130,"moderate","high","15–18","10–16 h"],
 ];
 const NHEAD=["string","brand","material","profile","gauges (mm)","stiffness<br>lb/in","tension<br>loss","energy<br>return","€ / set","lifespan"];
 let nerdSort=5, nerdDesc=false;   // default: softest first
@@ -9065,28 +9474,12 @@ const MK_FRAMES = [
   {b:"YONEX",   n:"VCORE Pro 97 (2021)",      sp:["310g","97","16x19","60 RA","322","310","20"],   p:160, tier:"pro",      deal:true, dn:"line renamed Percept \u2014 old stock discounted"},
 ];
 const MK_BEDS = [
-  // mains-only entries are full beds; x* fields make a hybrid. tension = filed kg.
-  {b:"LUXILON",    n:"ALU Power 1.25",     mat:"poly",  sh:"round",  g:"1.25", t:"24", p:22, st:231},
-  {b:"LUXILON",    n:"4G 1.25",            mat:"poly",  sh:"round",  g:"1.25", t:"24", p:20, st:250},
-  {b:"SOLINCO",    n:"Tour Bite 1.25",     mat:"poly",  sh:"shaped", g:"1.25", t:"23", p:14, st:245},
-  {b:"YONEX",      n:"Poly Tour Pro 1.25", mat:"poly",  sh:"round",  g:"1.25", t:"23", p:13, st:205},
-  {b:"YONEX",      n:"Poly Tour Air 1.25", mat:"poly",  sh:"round",  g:"1.25", t:"22", p:14, st:175},
-  {b:"TECNIFIBRE", n:"Razor Code 1.25",    mat:"poly",  sh:"shaped", g:"1.25", t:"23", p:13, st:215},
-  {b:"HEAD",       n:"Hawk Power 1.25",    mat:"poly",  sh:"round",  g:"1.25", t:"24", p:13, st:230},
-  {b:"MSV",        n:"Focus Hex 1.23",     mat:"poly",  sh:"shaped", g:"1.23", t:"23", p:8,  st:225},
+  /* Since Aug 2026 the BENCH carries the full market sweep of twenty-three string brands,
+     so this list is no longer "the strings the bench lacks" — it is what a bench row
+     cannot express: strings on permanent promo (the budget slot reads `deal`), and
+     hybrid pairings worth stringing as a pair. Plain full beds live on the bench now.
+     mains-only entries are full beds; x* fields make a hybrid. tension = filed kg. */
   {b:"VÖLKL",      n:"Cyclone 1.25",       mat:"poly",  sh:"shaped", g:"1.25", t:"23", p:8,  st:220, deal:true, dn:"perennial promo string \u2014 multi-packs go cheaper still"},
-  {b:"KIRSCHBAUM", n:"Pro Line II 1.25",   mat:"poly",  sh:"round",  g:"1.25", t:"23", p:9,  st:215},
-  {b:"ISOSPEED",   n:"Cream 1.25",         mat:"poly",  sh:"round",  g:"1.25", t:"23", p:14, st:180},
-  {b:"VÖLKL",      n:"Cyclone Tour 1.25",  mat:"poly",  sh:"shaped", g:"1.25", t:"22", p:9,  st:200},
-  // soft beds — the arm-friendly end the bench is thin on
-  {b:"HEAD",       n:"Velocity MLT 1.30",  mat:"multi", sh:"round",  g:"1.30", t:"24", p:12, st:135},
-  {b:"WILSON",     n:"NXT 1.30",           mat:"multi", sh:"round",  g:"1.30", t:"25", p:16, st:130},
-  {b:"TECNIFIBRE", n:"NRG2 1.32",          mat:"multi", sh:"round",  g:"1.32", t:"25", p:17, st:125},
-  {b:"BABOLAT",    n:"Xcel 1.30",          mat:"multi", sh:"round",  g:"1.30", t:"25", p:16, st:120},
-  {b:"YONEX",      n:"Rexis Speed 1.30",   mat:"multi", sh:"round",  g:"1.30", t:"24", p:16, st:140},
-  {b:"PRINCE",     n:"Premier Control 1.30",mat:"multi",sh:"round",  g:"1.30", t:"25", p:14, st:130},
-  {b:"BABOLAT",    n:"VS Touch gut 1.30",  mat:"gut",   sh:"round",  g:"1.30", t:"25", p:45, st:110},
-  {b:"WILSON",     n:"Natural Gut 1.30",   mat:"gut",   sh:"round",  g:"1.30", t:"25", p:40, st:108},
   // classic hybrids
   {b:"LUXILON", n:"Natural Gut 1.30", mat:"gut", sh:"round", g:"1.30", t:"25", p:35,
    xb:"LUXILON", xn:"ALU Power 1.25", xmat:"poly", xsh:"round", xg:"1.25", xt:"23", st:110, xst:231},
@@ -9095,9 +9488,6 @@ const MK_BEDS = [
   // --- budget heroes: strings whose FULL price is already a bargain \u2014 the budget slot
   //     prefers these, and its button searches today's promos on top ---
   {b:"GAMMA",     n:"Moto 1.24",              mat:"poly", sh:"shaped", g:"1.24", t:"23", st:195, p:6,  deal:true, dn:"a regular on Gamma's own sale page"},
-  {b:"DUNLOP",    n:"Explosive Spin 1.25",    mat:"poly", sh:"shaped", g:"1.25", t:"23", st:210, p:8},
-  {b:"POLYFIBRE", n:"TCS 1.25",               mat:"poly", sh:"round",  g:"1.25", t:"22", st:165, p:9},
-  {b:"TOURNA",    n:"Big Hitter Black7 1.25", mat:"poly", sh:"shaped", g:"1.25", t:"23", st:190, p:9},
   // ---- new combinations: hybrids that exist on no bench and in no shop bundle ----
   // mains × crosses joined from the market list and scored by the bench's own estimator;
   // each is a genuinely sensible pairing (soft-poly or spin mains over comfort crosses,
@@ -9156,7 +9546,16 @@ function mkFrames(){
 function mkBeds(){
   if (MK_B_CACHE) return MK_B_CACHE;
   if (!(window.SRF && SRF.sbEstimate)) return [];
-  MK_B_CACHE = MK_BEDS.map((b, k) => {
+  /* the bench now carries the market sweep of eleven string brands, so a plain full-bed
+     market entry that matches a bench bed by name would rank the same string twice in
+     easy mode. Deals are exempt — they carry the discount signal the budget slot reads —
+     and hybrids/combos are pairings the bench may not hold. */
+  const bNorm = s => String(s).toLowerCase().replace(/[^a-z0-9.]+/g, " ").trim();
+  const onBench = new Set((SRF.beds ? SRF.beds() : [])
+    .filter(x => /full bed/i.test(String(x.x))).map(x => bNorm(x.m)));
+  MK_B_CACHE = MK_BEDS.filter(b =>
+      b.combo || b.deal || b.xb || !onBench.has(bNorm(b.b + " " + b.n))
+    ).map((b, k) => {
     const s = SRF.sbEstimate(b.mat, b.sh, b.g, b.t, b.xmat, b.xsh, b.xg, b.xt);
     const stiffs = [b.st || MK_STIFF[b.mat] || 215].concat(b.xmat ? [b.xst || MK_STIFF[b.xmat] || 215] : []);
     return {
