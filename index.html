@@ -6823,7 +6823,28 @@ const beds = [
   {m:"TIER ONE Atomos 1.25", x:"full bed", s:[9,7,7,8,6,7,6,7], mt:"23", tag:"ref", est:ALL},
   {m:"TIER ONE Durafluxx 1.25", x:"full bed", s:[9,5,9,9,4,7,7,4], mt:"23", tag:"ref", est:ALL},
   {m:"TIER ONE Tour Status 1.25", x:"full bed", s:[9,6,9,8,5,7,7,5], mt:"23", tag:"ref", est:ALL},
-  {m:"TIER ONE Lux Supreme 1.30", x:"full bed", s:[4,9,3,4,9,6,6,9], mt:"24", tag:"ref", est:ALL}
+  {m:"TIER ONE Lux Supreme 1.30", x:"full bed", s:[4,9,3,4,9,6,6,9], mt:"24", tag:"ref", est:ALL},
+  /* ---- headline polys that the lab table already knew, but the bench could only
+     use as HYBRID components. ALU Power, 4G, Hyper-G, Mach 10, Lynx Tour and
+     Confidential are among the most-strung polyesters in the world; a reader asking
+     for a full bed could not be recommended any of them. Scores come from the app's
+     own sbEstimate() at the reference tension of 23 kg, so they sit on the same
+     scale as every bed above. ---- */
+  {m:"LUXILON ALU Power 1.25", x:"full bed", s:[8,5,9,9,4,6,6,4], mt:"23", tag:"ref", est:ALL},
+  {m:"LUXILON ALU Power Rough 1.25", x:"full bed", s:[9,5,9,9,4,7,5,3], mt:"23", tag:"ref", est:ALL},
+  {m:"LUXILON 4G 1.25", x:"full bed", s:[8,5,9,9,4,6,7,3], mt:"23", tag:"ref", est:ALL},
+  {m:"LUXILON 4G Soft 1.25", x:"full bed", s:[8,6,8,8,5,6,7,5], mt:"23", tag:"ref", est:ALL},
+  {m:"SOLINCO Mach 10 1.25", x:"full bed", s:[9,6,9,8,4,7,5,4], mt:"23", tag:"ref", est:ALL},
+  {m:"SOLINCO Hyper-G 1.25", x:"full bed", s:[9,5,9,9,4,7,5,4], mt:"23", tag:"ref", est:ALL},
+  {m:"SOLINCO Confidential 1.25", x:"full bed", s:[8,6,8,8,5,6,7,4], mt:"23", tag:"ref", est:ALL},
+  {m:"SOLINCO Confidential Soft 1.25", x:"full bed", s:[8,6,8,8,6,6,7,6], mt:"23", tag:"ref", est:ALL},
+  {m:"HEAD Lynx Tour 1.25", x:"full bed", s:[9,6,8,8,5,7,6,5], mt:"23", tag:"ref", est:ALL},
+  {m:"RESTRING Sync 1.24", x:"full bed", s:[8,6,8,8,5,6,7,5], mt:"23", tag:"ref", est:ALL},
+  {m:"TOROLINE Wasabi 1.20", x:"full bed", s:[9,7,7,8,7,7,5,6], mt:"23", tag:"ref", est:ALL},
+  {m:"TOROLINE Wasabi X 1.20", x:"full bed", s:[9,6,8,8,7,6,6,6], mt:"23", tag:"ref", est:ALL},
+  {m:"TOROLINE Caviar 1.25", x:"full bed", s:[9,6,8,8,5,7,6,5], mt:"23", tag:"ref", est:ALL},
+  {m:"TOROLINE Enso Pro 1.25", x:"full bed", s:[8,8,7,7,7,6,7,7], mt:"23", tag:"ref", est:ALL},
+  {m:"GAMMA Moto 1.24", x:"full bed", s:[9,6,8,8,6,7,6,6], mt:"23", tag:"ref", est:ALL},
 ];
 const PRESETS = { spin:[10,8,6,6,5,2,2,3], dura:[5,5,7,7,3,2,10,5], arm:[5,5,6,6,5,2,3,10], flat:[5,5,5,5,5,5,5,5], touch:[3,5,6,6,10,7,4,7] };
 let w = PRESETS.spin.slice();
@@ -7539,6 +7560,12 @@ window.sbRevert = () => {
   if(sbOnChange) sbOnChange(window.SRF.sbLayout());
 };
 window.SRF = window.SRF || {};
+/* The frame module exports its estimator (SRF.estimateScores) so the market catalogue
+   is judged by the bench's own rule instead of hand-written numbers. The string module
+   had no equivalent, which meant any bed added from outside had to guess its axes. It
+   does now — same physics, same lab adjustment, one source of truth. */
+window.SRF.sbEstimate = (...a) => sbEstimate(...a);
+window.SRF.sbLabRowFor = (q) => sbLabRowFor(q);
 window.SRF.sbLayout = () => beds.map(b=>({tag:b.tag||"", mt:b.mt||"", ct:b.ct||"", note:b.note||"", paid:b.paid||""}));
 window.SRF.sbApply = (arr) => {
   beds.forEach((b,i)=>{
