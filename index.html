@@ -5,6 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- no external font requests: Azonix is embedded in the stylesheet below -->
 <title>String &amp; Racket Finder v.8.0 beta_86</title>
+
+<!-- Privacy-friendly analytics by Plausible -->
+<script async src="https://plausible.io/js/pa-2PZ3dvuEUkVWfxD8JdPia.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+<!-- The queue shim above is why buy clicks are never lost: srfTrackClick() fires
+     plausible("buy_click", …) as soon as a reader clicks, and anything sent before the
+     async script finishes downloading waits in plausible.q instead of vanishing.
+     Cookie-free and no cross-site profiling, so no consent banner is needed for it
+     under § 25 TDDDG — that is why this tool was chosen over Google Analytics. -->
 <style>
   /* ---------- interface type: system UI, pinned ----------
      The face is unchanged — system-ui still leads, so this renders exactly as before on
@@ -787,6 +799,21 @@
   .ld_mdesc{ font-size:11.5px; line-height:1.6; color:var(--soft); }
   .ld_mgo{ font-size:11px; color:var(--cyan); margin-top:5px; }
   .ld_mode.pro .ld_mgo{ color:var(--magenta-fg,var(--magenta)); }
+  .ld_legal{ margin-top:9px; font-size:11px; letter-spacing:.03em; }
+  .ld_legal a{ color:var(--muted); text-decoration:none; border-bottom:1px solid transparent; }
+  .ld_legal a:hover{ color:var(--cyan); border-bottom-color:currentColor; }
+  /* An Impressum has to be reachable from EVERY view in one click, not just the landing
+     page — the three modes are wrappers inside one document, so one footer at the end of
+     body serves all of them without duplicating markup. */
+  .srflegal{ width:100%; margin:26px 0 0; padding:12px 4px 2px; font-size:11px;
+             color:var(--muted); text-align:center; letter-spacing:.03em;
+             border-top:0.5px solid color-mix(in srgb, var(--fg) 12%, transparent); }
+  /* Belt and braces: should this ever end up as a direct child of the flex body again
+     (a future refactor, a cached build), these two lines stop it from being stretched
+     into a full-height column instead of merely sitting in the wrong place. */
+  body > .srflegal{ align-self:flex-end; flex:0 0 100%; max-width:1220px; }
+  .srflegal a{ color:var(--muted); text-decoration:none; }
+  .srflegal a:hover{ color:var(--cyan); text-decoration:underline; }
   .ld_foot{ display:flex; gap:22px; align-items:flex-end; flex-wrap:wrap;
             border-top:1px solid color-mix(in srgb, var(--fg) 12%, transparent); padding-top:19px; }
   .ld_agentur{ flex:1; min-width:250px; margin-left:auto; text-align:right; }
@@ -1373,6 +1400,10 @@
      dense heatmap rows onto a second line. */
   .buybtn.ad::after{ content:"AD"; font-size:7.5px; font-weight:700; letter-spacing:.06em;
            vertical-align:super; margin-left:5px; opacity:.72; }
+  /* the same marker for affiliate ANCHORS. Those also carry rel="sponsored nofollow",
+     which a <button> cannot, because a button is not a link Google can follow. */
+  .adtag{ font-size:7.5px; font-weight:700; letter-spacing:.06em; vertical-align:super;
+          opacity:.72; }
   .affnote{ font-size:10.5px; color:var(--muted); line-height:1.6; margin-top:10px;
            padding-top:8px; border-top:0.5px dashed color-mix(in srgb, var(--fg) 18%, transparent); }
   .affnote b{ color:var(--soft); font-weight:600; }
@@ -1829,8 +1860,12 @@
         <div class="ld_aname azonix">A&sup3; Agentur</div>
         <div class="ld_aby">Alexey Semenov von Rosenberg</div>
         <div class="ld_atext">Design and build studio &mdash; brand systems, interfaces and tools like this one.
-           This finder is a house project: one self-contained file, no tracking, no server, your bench stays on your device.</div>
+           This finder is a house project: one self-contained file, no account, no server &mdash; your bench, your answers
+           and your sliders stay in your own browser and are never uploaded. Buy buttons marked <b>AD</b> are affiliate
+           links: buying through one pays this site a commission at no extra cost to you, and no commission moves any
+           score or ranking.</div>
         <a class="ld_alink" href="https://www.a3agentur.com" target="_blank" rel="noopener">www.a3agentur.com &#8599;</a>
+        <div class="ld_legal"><a href="/impressum.html">Impressum</a> &middot; <a href="/datenschutz.html">Datenschutz</a></div>
       </div>
     </div>
   </div>
@@ -5060,8 +5095,11 @@ function researchRow(kind, q){
        ["specs & reviews", sbRefURL(q)]];
   return `<span class="rsrch" style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:7px;">` +
     `<span style="color:var(--muted);font-size:10.5px;">research across:</span>` +
-    srcs.map(([n,u]) => `<a class="hybtn ghost" style="font-size:10.5px;padding:2px 9px;text-decoration:none;" ` +
-      `href="${u}" target="_blank" rel="noopener">${n} \u2197</a>`).join("") + `</span>`;
+    srcs.map(([n,u]) => n === "Shopping"
+      ? srfAffAnchor(kind, q, "Shopping \u2197", "hybtn ghost",
+                     "font-size:10.5px;padding:2px 9px;text-decoration:none;")
+      : `<a class="hybtn ghost" style="font-size:10.5px;padding:2px 9px;text-decoration:none;" ` +
+        `href="${u}" target="_blank" rel="noopener">${n} \u2197</a>`).join("") + `</span>`;
 }
 window.researchRow = researchRow;
 /* the engine must be reachable from the string department and both spec indexes,
@@ -5078,6 +5116,57 @@ function matches(b, q){
   // slips per word, understands joined tokens ("blade98") and short forms ("pd")
   return srfMatch(q, `${b.no} ${b.b} ${b.n} ${b.o?b.o[0]:""} ${b.sp.join(" ")}`);
 }
+/* ============================================================
+   ANALYTICS  —  one domain, no cookies, no banner
+   ------------------------------------------------------------
+   Both supported tools are cookie-free and do not build cross-site profiles, which is
+   why this page needs no consent banner for them under § 25 TDDDG. That is the whole
+   reason for choosing them over Google Analytics on a German site — not taste.
+
+   STATUS (Aug 2026): Plausible is LIVE and loaded from a script tag in <head>, using
+   Plausible's newer per-site snippet (pa-<id>.js, no data-domain attribute). This block
+   therefore loads nothing by default and exists for two reasons only:
+
+     1. the loader below is a guarded fallback — useful if the head tag is ever removed,
+        or if you switch to Umami;
+     2. it documents where analytics lives, so it is not hunted for later.
+
+   Both fields stay EMPTY on purpose. Filling plausibleDomain would not double-load —
+   the guard checks for an existing plausible() first — but it would be a second source
+   of truth for one decision, which is worse than a redundant line of config.
+
+     plausibleDomain — only for Plausible's OLDER data-domain snippet
+     umamiWebsiteId  — the UUID from Umami; set umamiSrc too if self-hosted
+   ============================================================ */
+const SRF_ANALYTICS = {
+  plausibleDomain: "",              // <-- e.g. "racketfinder.de"
+  plausibleSrc: "https://plausible.io/js/script.tagged-events.js",
+  umamiWebsiteId: "",               // <-- e.g. "b3c1…" (leave empty if using Plausible)
+  umamiSrc: "https://cloud.umami.is/script.js"
+};
+window.SRF_ANALYTICS = SRF_ANALYTICS;
+(function srfLoadAnalytics(){
+  try {
+    const add = (src, attrs) => {
+      const s = document.createElement("script");
+      s.async = true; s.defer = true; s.src = src;
+      Object.keys(attrs || {}).forEach(k => s.setAttribute(k, attrs[k]));
+      document.head.appendChild(s);
+    };
+    /* Do not load a second Plausible. The head tag already defined window.plausible, and
+       two trackers on one page double every pageview — the kind of error that quietly
+       ruins a month of numbers rather than throwing an exception. */
+    if (SRF_ANALYTICS.plausibleDomain && !window.plausible){
+      add(SRF_ANALYTICS.plausibleSrc, { "data-domain": SRF_ANALYTICS.plausibleDomain });
+      /* queue shim, same purpose as the one in <head>: an event fired before the script
+         finishes downloading waits here instead of being lost. */
+      window.plausible = window.plausible || function(){ (window.plausible.q = window.plausible.q || []).push(arguments); };
+    } else if (SRF_ANALYTICS.umamiWebsiteId && !window.umami){
+      add(SRF_ANALYTICS.umamiSrc, { "data-website-id": SRF_ANALYTICS.umamiWebsiteId });
+    }
+  } catch(e){}
+})();
+
 /* ============================================================
    AFFILIATE LINK ROUTER  —  the only place money is configured
    ------------------------------------------------------------
@@ -5162,6 +5251,28 @@ const SRF_AFF = {
     }
   },
 
+  /* ---- DEEP LINKS: product page instead of search results ----
+     A search-results link makes the reader shop again after they already decided; a
+     product page does not. That gap is the single biggest conversion lever here, and
+     it costs nothing per click — same commission, fewer people lost on the way.
+
+     Shape:  deepLinks[retailerKey]["normalised product name"] = "https://…/product"
+     The key is normalised the same way the app's own search normalises (lowercase,
+     punctuation to spaces), so "HEAD Speed Pro (2026)" and "head speed pro 2026"
+     both find the same entry. Anything missing falls back to search automatically,
+     so a partial map is useful immediately — you do not need all 375 to start.
+
+     Fill it from the Awin product feed with tools/feed_to_deeplinks.mjs, which prints
+     a ready-to-paste block. Awin's feed URL appears once Tennis-Point approves you. */
+  deepLinks: {
+    awin_tennispoint: {
+      // "head speed pro 2026": "https://www.tennis-point.com/head-speed-pro-2026-xyz.html",
+    },
+    amazon_de: {
+      // "head speed pro 2026": "https://www.amazon.de/dp/B0XXXXXXX",
+    }
+  },
+
   /* Where a click goes when NOTHING is configured yet, or no retailer matches the
      reader's region: the original Google Shopping search. Earns nothing, but the
      button still does what it promises, which matters more than the money. */
@@ -5182,16 +5293,34 @@ window.SRF_AFF = SRF_AFF;
 })();
 /* Build the outgoing URL for a search term. Returns { url, retailer, paid }.
    `paid` is what the ad-label reads — never guess it, always ask the router. */
+/* the callers append " tennis racket" / " tennis string" / " sale discount" to help a
+   SEARCH engine disambiguate. A deep-link lookup wants the bare product name, so those
+   suffixes come off first — otherwise every lookup misses and the map looks broken. */
+window.srfAffKey = function(name){
+  return String(name || "")
+    .replace(/\s+(tennis racket|tennis string)(\s+sale discount)?\s*$/i, "")
+    .replace(/\s+sale discount\s*$/i, "")
+    .toLowerCase().replace(/[^a-z0-9.]+/g, " ").trim();
+};
 window.srfAffURL = function(query){
   const q = encodeURIComponent(String(query || "").trim());
+  const key = window.srfAffKey(query);
   const reg = SRF_AFF.region || "any";
   const keys = SRF_AFF.order.concat(
     Object.keys(SRF_AFF.retailers).filter(k => !SRF_AFF.order.includes(k)));
-  for (const key of keys){
-    const r = SRF_AFF.retailers[key];
+  for (const key2 of keys){          // key2 = retailer key; `key` above = product key
+    const r = SRF_AFF.retailers[key2];
     if (!r || !r.id) continue;                                     // not configured yet
     if (r.regions && !r.regions.includes(reg) && !r.regions.includes("any")) continue;
-    const dest = r.dest.replace("{q}", q);
+    /* a mapped product page wins over the retailer's search page */
+    const deep = (SRF_AFF.deepLinks && SRF_AFF.deepLinks[key2] && SRF_AFF.deepLinks[key2][key]) || null;
+    const dest = deep || r.dest.replace("{q}", q);
+    if (deep && r.mode === "param"){
+      /* Amazon wants the tag on the product URL itself, not on a search query */
+      const sep0 = dest.includes("?") ? "&" : "?";
+      return { url: dest + sep0 + r.param + "=" + encodeURIComponent(r.id),
+               retailer: r.label, paid: true, deep: true };
+    }
     if (r.mode === "param"){
       const sep = dest.includes("?") ? "&" : "?";
       return { url: dest + sep + r.param + "=" + encodeURIComponent(r.id), retailer: r.label, paid: true };
@@ -5200,7 +5329,7 @@ window.srfAffURL = function(query){
       return { url: r.wrap.replace("{merchant}", encodeURIComponent(r.merchant || ""))
                           .replace("{id}", encodeURIComponent(r.id))
                           .replace("{dest}", encodeURIComponent(dest)),
-               retailer: r.label, paid: true };
+               retailer: r.label, paid: true, deep: !!deep };
     }
   }
   return { url: SRF_AFF.fallback.replace("{q}", q), retailer: "Google Shopping", paid: false };
@@ -5229,12 +5358,45 @@ window.srfAffNote = function(){
    German site) and pushes to a dataLayer if one exists. Knowing WHICH of 375
    products people click is the difference between guessing and steering. */
 window.srfTrackClick = function(kind, name, retailer){
-  const props = { kind: kind, product: String(name || "").slice(0, 90), retailer: retailer || "" };
+  const clean = String(name || "")
+    .replace(/\s+sale discount\s*$/i, "")
+    .replace(/\s+(tennis racket|tennis string)\s*$/i, "").trim();
+  const props = { kind: kind, product: clean.slice(0, 90), retailer: retailer || "" };
   try { if (window.plausible) window.plausible("buy_click", { props: props }); } catch(e){}
   try { if (window.umami && window.umami.track) window.umami.track("buy_click", props); } catch(e){}
   try { if (window.dataLayer) window.dataLayer.push(Object.assign({ event: "buy_click" }, props)); } catch(e){}
 };
 /* one opener for every buy click: route, record, open */
+/* Builds an affiliate <a>. It resolves the destination ITSELF rather than taking a
+   ready-made href, so three things can never drift apart: the URL, the "AD" marker,
+   and the retailer name that goes into analytics. Anchors can do something buttons
+   cannot \u2014 carry rel="sponsored nofollow", which is the signal Google requires for a
+   paid link \u2014 so they must. When no programme is configured the router falls back to
+   plain Google Shopping: hit.paid is false, no AD marker appears, rel stays "noopener".
+   Nothing has to be switched on by hand later; pasting an Awin id flips all of it. */
+window.srfAffAnchor = function(kind, query, text, cls, style){
+  const raw  = String(query || "").trim();
+  const full = raw + (kind === "string" ? " tennis string" : " tennis racket");
+  const hit  = window.srfAffURL(full);
+  const paid = !!hit.paid;
+  return "<a " + (cls ? 'class="' + esc(cls) + '" ' : "") + (style ? 'style="' + esc(style) + '" ' : "") +
+    'href="' + esc(hit.url) + '" target="_blank" ' +
+    'rel="' + (paid ? "sponsored nofollow noopener" : "noopener") + '" ' +
+    /* data-* instead of an inline onclick: the product name goes through ONE escaper
+       (HTML) instead of two nested ones (JS-in-HTML), where an apostrophe in a name
+       like "Head Speed MP L\u201926" would otherwise break the handler. */
+    'data-aff="' + esc(kind) + '" data-affq="' + esc(raw) + '" data-affr="' + esc(hit.retailer || "") + '"' +
+    (paid ? ' title="Werbelink \u2014 partner shop; if you buy there this site earns a commission, at no extra cost to you"' : "") +
+    ">" + text + (paid ? ' <span class="adtag">AD</span>' : "") + "</a>";
+};
+/* One delegated listener for every affiliate anchor, present and future. Capture phase,
+   so a handler that stops propagation cannot silently cost you the measurement. */
+document.addEventListener("click", function(ev){
+  try {
+    const a = ev.target && ev.target.closest && ev.target.closest("a[data-aff]");
+    if (a) window.srfTrackClick(a.getAttribute("data-aff"), a.getAttribute("data-affq"), a.getAttribute("data-affr"));
+  } catch(e){}
+}, true);
 window.srfGo = function(kind, query){
   const hit = window.srfAffURL(query);
   window.srfTrackClick(kind, query, hit.retailer);
@@ -5412,7 +5574,7 @@ function runSpecSearch(){
   }
   const metaEl = document.getElementById("searchMeta");
   if (metaEl) metaEl.insertAdjacentHTML("beforeend", researchRow("racket", found ? found.key : raw));
-  window.open(specSearchURL(found ? found.key : raw), "_blank", "noopener");
+  window.srfGo("racket", (found ? found.key : raw) + " tennis racket");
 }
 /* Every figure below feeds the estimator, which is why none of them is optional:
    swingweight drives manoeuvrability, stability and plough; RA drives feel, comfort
@@ -5558,12 +5720,14 @@ function updateMeta(){
   if(!raw){ el.innerHTML=""; return; }
   const hits = rk.filter(b=>matches(b, normalize(raw)));
   if(hits.length){
-    el.innerHTML = `<b>${hits.length}</b> on the bench &middot; or <a href="${specSearchURL(raw)}" target="_blank" rel="noopener">find “${raw}” specs online ↗</a>`;
+    el.innerHTML = `<b>${hits.length}</b> on the bench &middot; or ` +
+      srfAffAnchor("racket", raw, `find “${esc(raw)}” specs online ↗`);
   } else {
     const f = findSpecs(raw);
     el.innerHTML = f
       ? `Not on the bench — but <b style="color:var(--bronze);">full specs are on file</b> for ${esc(f.key)}. Hit <b style="color:var(--amber);">search</b> to pull them up.`
-      : `Not on the bench — <a href="${specSearchURL(raw)}" target="_blank" rel="noopener">find “${raw}” specs online ↗</a>`;
+      : `Not on the bench — ` +
+        srfAffAnchor("racket", raw, `find “${esc(raw)}” specs online ↗`);
   }
 }
 document.getElementById("specSearch").addEventListener("input", e=>{
@@ -7035,7 +7199,7 @@ function sbRunSpecSearch(){
   else meta.innerHTML = `<span style="color:var(--amber);">Not on file \u2014 opening a shopping ` +
     `search for \u201c${esc(raw)}\u201d. Add it with <b>transfer specs</b> once you have the figures.</span>`;
   meta.insertAdjacentHTML("beforeend", researchRow("string", found ? found.key : raw));
-  window.open(sbURL(found ? found.key : raw), "_blank", "noopener");
+  window.srfGo("string", (found ? found.key : raw) + " tennis string");
 }
 function sbUpdateMeta(){
   const el=document.getElementById("sb_searchMeta");
@@ -7043,8 +7207,10 @@ function sbUpdateMeta(){
   if(!raw){ el.innerHTML=""; return; }
   const hits=beds.filter(b=>sbMatches(b,sbNorm(raw)));
   el.innerHTML = hits.length
-    ? `<b>${hits.length}</b> on the bench &middot; or <a href="${sbURL(raw)}" target="_blank" rel="noopener">find \u201c${raw}\u201d specs online \u2197</a>`
-    : `Not on the bench \u2014 <a href="${sbURL(raw)}" target="_blank" rel="noopener">find \u201c${raw}\u201d specs online \u2197</a>`;
+    ? `<b>${hits.length}</b> on the bench &middot; or ` +
+      srfAffAnchor("string", raw, `find \u201c${esc(raw)}\u201d specs online \u2197`)
+    : `Not on the bench \u2014 ` +
+      srfAffAnchor("string", raw, `find \u201c${esc(raw)}\u201d specs online \u2197`);
 }
 // derive the 8 axes from what actually drives a stringbed:
 // material (poly hard/durable/spinny vs gut & multi soft/powerful), shape (texture = bite, less life),
@@ -7624,7 +7790,7 @@ window.sbHybridSearch = () => {
       `<b>${esc(hit.m)}</b> \u00d7 <b>${esc(hit.x)}</b>. Filtered to it.</span>` +
       (mF ? sbShowSpecCard(mq, mF, "mains") : "") +
       (xF ? sbShowSpecCard(xq, xF, "crosses") : "");
-    window.open(sbURL(mq + " " + xq), "_blank", "noopener");
+    window.srfGo("string", mq + " " + xq + " tennis string");
     return;
   }
   // not on the bench — present it as a bronze newcomer, with a full spec card for
@@ -9149,6 +9315,20 @@ document.addEventListener("DOMContentLoaded", () => {
      comes from srfShortlist(), which is defined further down this script than the grid's
      first paint. Without the redraw the bench would open in pure-score order and only
      snap onto the podium at the next interaction. */
+  try {
+    if (!document.getElementById("srf_legal")){
+      const lf = document.createElement("div");
+      lf.id = "srf_legal"; lf.className = "srflegal";
+      lf.innerHTML = '<a href="/impressum.html">Impressum</a> \u00b7 ' +
+                     '<a href="/datenschutz.html">Datenschutz</a> \u00b7 ' +
+                     '<span>Buy buttons marked <b>AD</b> are affiliate links \u2014 ' +
+                     'the price you pay is unchanged</span>';
+      /* .wrap, NOT body: body is a centring flex ROW, so a second child there is laid
+         out beside .wrap and stretched to its full height. Inside .wrap it is ordinary
+         block flow — last element, full content width, same in all three modes. */
+      (document.querySelector(".wrap") || document.body).appendChild(lf);
+    }
+  } catch(e){}
   /* the disclosure lives wherever buy buttons live: both pro benches and easy mode */
   try { ["aff_note_r","aff_note_s"].forEach(id => { const el = document.getElementById(id);
         if (el) el.innerHTML = window.srfAffNote ? srfAffNote() : ""; }); } catch(e){}
