@@ -1366,6 +1366,16 @@
   .buybtn:hover, .buybtn:focus-visible{
            filter:brightness(1.06); transform:translateY(-1px);
            animation:buyPulse 1.5s ease-in-out infinite; outline:none; }
+  /* Advertising has to be recognisable AS advertising — in Germany that is law, not
+     etiquette. The marker only appears once an affiliate id is actually configured
+     (.buybtn.ad), so the file never claims to earn a commission it does not earn.
+     A superscript "AD" rather than a full word: legible, and it does not push the
+     dense heatmap rows onto a second line. */
+  .buybtn.ad::after{ content:"AD"; font-size:7.5px; font-weight:700; letter-spacing:.06em;
+           vertical-align:super; margin-left:5px; opacity:.72; }
+  .affnote{ font-size:10.5px; color:var(--muted); line-height:1.6; margin-top:10px;
+           padding-top:8px; border-top:0.5px dashed color-mix(in srgb, var(--fg) 18%, transparent); }
+  .affnote b{ color:var(--soft); font-weight:600; }
   @keyframes buyPulse{
     0%,100%{ box-shadow:0 0 0 0 color-mix(in srgb, var(--cyan) 60%, transparent),
                         0 0 14px color-mix(in srgb, var(--cyan) 35%, transparent); }
@@ -2371,6 +2381,7 @@
     <span id="hsR_n" class="rankcount" aria-live="polite"></span>
     <button class="resetbtn" data-label="reset order" onclick="resetOrder()">reset order</button></div>
   <div id="specs" style="font-size:11px;"></div>
+  <div id="aff_note_r"></div>
 </div>
 </div>
 
@@ -2615,6 +2626,7 @@
       <button class="sbbtn" data-label="reset order" onclick="sbResetOrder()">reset order</button>
     </div>
     <div id="sb_specs" style="font-size:11px;overflow-x:auto;"></div>
+    <div id="aff_note_s"></div>
   </div>
 <hr class="deptrule">
 <div class="depthead azonix">frame &#8646; string calibrator <span style="color:var(--cyan);">v1</span></div>
@@ -5066,19 +5078,181 @@ function matches(b, q){
   // slips per word, understands joined tokens ("blade98") and short forms ("pd")
   return srfMatch(q, `${b.no} ${b.b} ${b.n} ${b.o?b.o[0]:""} ${b.sp.join(" ")}`);
 }
-/* Two different intents, two different searches. "search" is for buying — the
-   whole point of the bench is making a frame easy to find and purchase — so it
-   goes to Google Shopping. "cross-check" is for verifying a number, so it stays
-   on the web index where reviews and spec sheets live. */
+/* ============================================================
+   AFFILIATE LINK ROUTER  —  the only place money is configured
+   ------------------------------------------------------------
+   Every buy button in this file ends up here. Nothing else needs editing when a
+   programme is approved: paste the id below and all 155 frames and 220 beds start
+   earning at once.
+
+   TWO LINK SHAPES exist in affiliate marketing and this router speaks both:
+     mode "param"  — append your tag to the retailer's own search URL (Amazon)
+     mode "wrap"   — hand the destination URL to a network redirector (Awin)
+   A retailer with an empty id is treated as NOT CONFIGURED and is skipped, so the
+   file keeps working exactly as before until the first id arrives. That is
+   deliberate: a half-configured link that silently drops the tag looks like it
+   works and earns nothing, which is the failure mode that is hardest to notice.
+
+   CROSS-CHECK LINKS ARE NEVER AFFILIATE. specRefURL / sbRefURL send the reader to
+   reviews and spec sheets to verify a number. Monetising a "go check whether I am
+   telling the truth" link would corrupt the one thing this file sells: that the
+   numbers are honest. They stay plain web search on purpose.
+   ============================================================ */
+const SRF_AFF = {
+  /* PRIORITY, not a whitelist. The router tries these first and then every remaining
+     retailer, so adding one to `retailers` below is enough to make it live — leaving
+     it out of this list costs it priority, not existence. The first draft treated this
+     as a whitelist and amazon_uk was never reachable. */
+  order: ["awin_tennispoint", "amazon_de", "amazon_uk", "amazon_com"],
+
+  /* Your region — decides which storefront a reader is sent to. "de" | "uk" | "us"
+     | "any". Set from the browser at boot below; override here to force one. */
+  region: null,
+
+  retailers: {
+    /* ---- Awin (Tennis-Point and most European tennis retailers) ----
+       Awin gives you TWO numbers: awinaffid = YOUR publisher id (same for every
+       merchant) and awinmid = the MERCHANT id (different per shop). Both required.
+       Find them in Awin › Toolbox › Link Builder after the merchant approves you. */
+    awin_tennispoint: {
+      label: "Tennis-Point",
+      mode: "wrap",
+      id: "",                       // <-- awinaffid: your Awin publisher id
+      merchant: "10984",            // awinmid for tennis-point DE (CH/UK differ)
+      regions: ["de", "any"],
+      // where the reader actually lands; {q} is the search term, url-encoded
+      dest: "https://www.tennis-point.com/search?q={q}",
+      // the redirector that records the click; {dest} is the encoded dest above
+      wrap: "https://www.awin1.com/cread.php?awinmid={merchant}&awinaffid={id}&ued={dest}"
+    },
+
+    /* ---- Amazon PartnerNet ----
+       Easiest to get into, lowest rate on sporting goods, and the account expires
+       if it makes no sales — treat it as the stopgap while Awin reviews you.
+       id = your tracking tag, e.g. "srfinder-21" (the -21 suffix is amazon.de). */
+    amazon_de: {
+      label: "Amazon.de",
+      mode: "param",
+      id: "",                       // <-- your PartnerNet tag
+      /* NEVER "any": Amazon pays per storefront, so a UK or US reader arriving on a
+         .de tag lands in the wrong shop AND earns you nothing. One entry per country. */
+      regions: ["de"],
+      dest: "https://www.amazon.de/s?k={q}",
+      param: "tag"
+    },
+
+    /* ---- a second Amazon storefront, for readers outside DE ----
+       Amazon pays per-storefront: a UK reader on your .de tag earns nothing unless
+       you also join the UK programme (or use OneLink). */
+    amazon_uk: {
+      label: "Amazon.co.uk",
+      mode: "param",
+      id: "",
+      regions: ["uk"],
+      dest: "https://www.amazon.co.uk/s?k={q}",
+      param: "tag"
+    },
+    amazon_com: {
+      label: "Amazon.com",
+      mode: "param",
+      id: "",
+      regions: ["us"],
+      dest: "https://www.amazon.com/s?k={q}",
+      param: "tag"
+    }
+  },
+
+  /* Where a click goes when NOTHING is configured yet, or no retailer matches the
+     reader's region: the original Google Shopping search. Earns nothing, but the
+     button still does what it promises, which matters more than the money. */
+  fallback: "https://www.google.com/search?tbm=shop&q={q}"
+};
+/* Exposed on window deliberately. The config above sits inside this file's racket
+   closure, so without this line the only way to set an id would be to find and edit
+   this exact block. On window it can also be set from a one-line <script> in the head,
+   or injected at deploy time from a Vercel environment variable — which keeps your
+   affiliate ids out of the committed HTML if you'd rather not publish them. */
+window.SRF_AFF = SRF_AFF;
+/* guess the storefront from the browser once, at boot */
+(function srfAffRegion(){
+  if (SRF_AFF.region) return;                       // hand-set in the config: respect it
+  const l = ((navigator.languages && navigator.languages[0]) || navigator.language || "").toLowerCase();
+  SRF_AFF.region = /-gb|^en-gb/.test(l) ? "uk" : /-us|^en-us/.test(l) ? "us"
+                 : /^de|-de|-at|-ch/.test(l) ? "de" : "any";
+})();
+/* Build the outgoing URL for a search term. Returns { url, retailer, paid }.
+   `paid` is what the ad-label reads — never guess it, always ask the router. */
+window.srfAffURL = function(query){
+  const q = encodeURIComponent(String(query || "").trim());
+  const reg = SRF_AFF.region || "any";
+  const keys = SRF_AFF.order.concat(
+    Object.keys(SRF_AFF.retailers).filter(k => !SRF_AFF.order.includes(k)));
+  for (const key of keys){
+    const r = SRF_AFF.retailers[key];
+    if (!r || !r.id) continue;                                     // not configured yet
+    if (r.regions && !r.regions.includes(reg) && !r.regions.includes("any")) continue;
+    const dest = r.dest.replace("{q}", q);
+    if (r.mode === "param"){
+      const sep = dest.includes("?") ? "&" : "?";
+      return { url: dest + sep + r.param + "=" + encodeURIComponent(r.id), retailer: r.label, paid: true };
+    }
+    if (r.mode === "wrap"){
+      return { url: r.wrap.replace("{merchant}", encodeURIComponent(r.merchant || ""))
+                          .replace("{id}", encodeURIComponent(r.id))
+                          .replace("{dest}", encodeURIComponent(dest)),
+               retailer: r.label, paid: true };
+    }
+  }
+  return { url: SRF_AFF.fallback.replace("{q}", q), retailer: "Google Shopping", paid: false };
+};
+/* Is ANY retailer configured? The disclosure below only claims to earn commission
+   when that is actually true — a disclosure that lies in the other direction is
+   still a false statement about your business. */
+window.srfAffLive = () => Object.keys(SRF_AFF.retailers).some(k => SRF_AFF.retailers[k].id);
+/* The disclosure sentence, written once. Returns "" when nothing is configured, so
+   the page never announces a commercial relationship it does not have — and starts
+   announcing it automatically the moment one exists. Two duties in one line: say it
+   is advertising (legally required in DE), and say what it does NOT change (the
+   ranking), because a recommendation engine that earns per click has to answer that
+   question before the reader thinks to ask it. */
+window.srfAffNote = function(){
+  if (!window.srfAffLive()) return "";
+  return `<div class="affnote"><b>Werbelinks / affiliate</b> \u2014 the buy buttons marked
+    <b>AD</b> open a partner shop. If you buy there this site earns a commission; the price
+    you pay is unchanged. <b>No commission influences any score, ranking or medal</b> on
+    this page: every number is derived from published specs by the same estimator, and no
+    brand can pay to rank. Cross-check links stay deliberately unpaid.</div>`;
+};
+/* ---------- click tracking ----------
+   A no-op until an analytics tool is loaded, so it is safe to ship today. Works
+   with Plausible and Umami out of the box (both GDPR-friendlier than GA for a
+   German site) and pushes to a dataLayer if one exists. Knowing WHICH of 375
+   products people click is the difference between guessing and steering. */
+window.srfTrackClick = function(kind, name, retailer){
+  const props = { kind: kind, product: String(name || "").slice(0, 90), retailer: retailer || "" };
+  try { if (window.plausible) window.plausible("buy_click", { props: props }); } catch(e){}
+  try { if (window.umami && window.umami.track) window.umami.track("buy_click", props); } catch(e){}
+  try { if (window.dataLayer) window.dataLayer.push(Object.assign({ event: "buy_click" }, props)); } catch(e){}
+};
+/* one opener for every buy click: route, record, open */
+window.srfGo = function(kind, query){
+  const hit = window.srfAffURL(query);
+  window.srfTrackClick(kind, query, hit.retailer);
+  window.open(hit.url, "_blank", "noopener");
+};
+/* Two different intents, two different searches. "search" is for buying, so it goes
+   through the affiliate router above — to a real retailer once an id is configured,
+   and to Google Shopping until then. "cross-check" is for verifying a number, so it
+   stays on the plain web index AND stays unmonetised, deliberately. */
 function specSearchURL(raw){
-  return "https://www.google.com/search?tbm=shop&q=" + encodeURIComponent(raw.trim() + " tennis racket");
+  return window.srfAffURL(raw.trim() + " tennis racket").url;
 }
 function specRefURL(raw){
   return "https://www.google.com/search?q=" + encodeURIComponent(raw.trim() + " tennis racket specs review");
 }
 window.specSearchURL = specSearchURL;
 window.specRefURL = specRefURL;
-window.shopFor = (name) => window.open(specSearchURL(name), "_blank", "noopener");
+window.shopFor = (name) => window.srfGo("racket", String(name).trim() + " tennis racket");
 /* Every buy button in the app comes from here — winners, budget picks, heatmap rows,
    setup cards, both benches. One maker means one look, one behaviour, and one place
    to hang affiliate IDs on later. kind: "racket" | "string". */
@@ -5087,8 +5261,11 @@ window.buyBtn = (kind, name, mini, label, tiny) => {
   const fn = kind === "string" ? "shopString" : "shopFor";
   const safe = n.replace(/'/g, "\\'").replace(/"/g, "&quot;");
   if (tiny && !label) label = "buy";      // dense rows say just "buy"
-  return `<button type="button" class="buybtn${mini ? " mini" : ""}${tiny ? " tiny" : ""}" ` +
-    `title="find ${safe} to buy" aria-label="buy ${safe}" ` +
+  const ad = window.srfAffLive && window.srfAffLive();
+  return `<button type="button" class="buybtn${mini ? " mini" : ""}${tiny ? " tiny" : ""}${ad ? " ad" : ""}" ` +
+    `title="${ad ? "Werbelink \u2014 opens a partner shop; a purchase pays this site a commission at no extra cost to you"
+                 : "find " + safe + " to buy"}" ` +
+    `aria-label="buy ${safe}${ad ? " (Werbelink \u2014 affiliate)" : ""}" ` +
     `onclick="event.stopPropagation();${fn}('${safe}')">${label || "buy now"} \u2197</button>`;
 };
 
@@ -6631,10 +6808,10 @@ function sbMatches(b,q){
   if(!q) return true;
   return srfMatch(q, `${b.m} ${b.x} ${b.tag||""}`);   // same typo-tolerant engine as the frames
 }
-function sbURL(raw){ return "https://www.google.com/search?tbm=shop&q=" + encodeURIComponent(raw.trim()+" tennis string"); }
+function sbURL(raw){ return window.srfAffURL(raw.trim() + " tennis string").url; }
 function sbRefURL(raw){ return "https://www.google.com/search?q=" + encodeURIComponent(raw.trim()+" tennis string specs review"); }
 window.sbURL = sbURL; window.sbRefURL = sbRefURL;
-window.shopString = (name) => window.open(sbURL(name), "_blank", "noopener");
+window.shopString = (name) => window.srfGo("string", String(name).trim() + " tennis string");
 
 /* ---------- string spec lookup ----------
    The lab table already holds everything the racket SPECDB holds for frames —
@@ -8972,6 +9149,9 @@ document.addEventListener("DOMContentLoaded", () => {
      comes from srfShortlist(), which is defined further down this script than the grid's
      first paint. Without the redraw the bench would open in pure-score order and only
      snap onto the podium at the next interaction. */
+  /* the disclosure lives wherever buy buttons live: both pro benches and easy mode */
+  try { ["aff_note_r","aff_note_s"].forEach(id => { const el = document.getElementById(id);
+        if (el) el.innerHTML = window.srfAffNote ? srfAffNote() : ""; }); } catch(e){}
   if (window.SRF && SRF.redraw) SRF.redraw(); else if (window.srfRerank) srfRerank();
   if (window.sbRerank) sbRerank();     // exist yet when the benches first painted mid-script
   const tcB = document.getElementById("themeCtl");
@@ -9582,9 +9762,8 @@ const DEAL_BADGE = `<span style="font-size:8.5px;letter-spacing:.09em;text-trans
 const ezOldGen = f => !!f.deal || /\b(v8|v13|g3|2015|2016|2019|2020|2021|2022)\b/i.test(String(f.n));
 /* the "always search online" part, done honestly: a static file cannot watch prices, so
    deal STATUS is curated (checked Aug 2026) and this button pulls TODAY'S offers live */
-window.dealShop = (kind, name) => window.open("https://www.google.com/search?tbm=shop&q=" +
-  encodeURIComponent(name + (kind === "racket" ? " tennis racket" : " tennis string") + " sale discount"),
-  "_blank", "noopener");
+window.dealShop = (kind, name) => window.srfGo(kind,
+  name + (kind === "racket" ? " tennis racket" : " tennis string") + " sale discount");
 
 /* ---- level gate: playability before score ----
    Ranking purely by weighted score handed an intermediate the VCORE Pro 97H (9/10)
@@ -10202,6 +10381,7 @@ window.easyRun = () => {
     `or a string that lives on permanent promo ` +
     `\u2014 status curated as of <b>Aug 2026</b>; a file on your disk cannot watch shop prices live, so every deal ` +
     `button opens a fresh search for today\u2019s offers instead of promising yesterday\u2019s.</span>` +
+    window.srfAffNote() +
     /* the "continue to intermediate" pill that used to sit here is gone: the big amber
        CTA in the card below now carries that step, and two buttons with the same words
        within one screen made the reader pick between identical doors. Re-run stays \u2014 it
