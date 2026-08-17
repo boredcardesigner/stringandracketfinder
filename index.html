@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- no external font requests: Azonix is embedded in the stylesheet below -->
-<title>String &amp; Racket Finder v.8.0 beta_86</title>
+<title>String &amp; Racket Finder</title>
 
 <!-- Privacy-friendly analytics by Plausible -->
 <script async src="https://plausible.io/js/pa-2PZ3dvuEUkVWfxD8JdPia.js"></script>
@@ -805,6 +805,12 @@
   /* An Impressum has to be reachable from EVERY view in one click, not just the landing
      page — the three modes are wrappers inside one document, so one footer at the end of
      body serves all of them without duplicating markup. */
+  /* a <select> is as wide as its longest option; inside a flex row it needs BOTH
+     max-width and min-width:0 before it is allowed to shrink instead of overflowing */
+  #cal_pickF_l, #cal_pickS_l{ display:inline-flex; align-items:center; gap:6px;
+                              min-width:0; max-width:100%; }
+  #cal_pickF, #cal_pickS{ min-width:0; max-width:100%; flex:1 1 auto;
+                          text-overflow:ellipsis; }
   .srflegal{ width:100%; margin:26px 0 0; padding:12px 4px 2px; font-size:11px;
              color:var(--muted); text-align:center; letter-spacing:.03em;
              border-top:0.5px solid color-mix(in srgb, var(--fg) 12%, transparent); }
@@ -968,13 +974,23 @@
      Long benches used to dump 38 rows onto a phone screen before the first tap. */
   .limbar{ display:flex; align-items:center; gap:7px; flex-wrap:wrap;
            margin:9px 0 2px; padding-top:8px;
-           border-top:1px solid color-mix(in srgb, var(--fg) 12%, transparent); }
+           border-top:1px solid color-mix(in srgb, var(--fg) 12%, transparent);
+           /* Sticky to the LEFT edge, because three of these bars are rendered inside
+              horizontally scrollable tables (hard specs, string specs, the lab table).
+              Without this they ride off-screen the moment you scroll the columns — the
+              controls for a table are unreachable exactly when you are using it.
+              Where there is no sideways scrolling this behaves as static. */
+           position:sticky; left:0; z-index:3;
+           background:var(--card); }
   .limcount{ font-size:10.5px; color:var(--muted); margin-right:auto; letter-spacing:.03em; }
   .limbtn{ background:var(--field); color:var(--soft); cursor:pointer;
            border:1px solid color-mix(in srgb, var(--fg) 22%, transparent);
            border-radius:999px; padding:5px 11px; font-size:10.5px; letter-spacing:.03em;
            font-family:inherit; transition:color .15s ease, border-color .15s ease, background .15s ease; }
-  .limbtn:hover{ color:var(--bright); border-color:var(--cyan); }
+  /* a touch device applies :hover after a tap and keeps it until you tap elsewhere,
+     which left a button looking selected when it was not — the "on" class is the
+     only thing that should say which limit is live */
+  @media (hover:hover){ .limbtn:hover{ color:var(--bright); border-color:var(--cyan); } }
   .limbtn.on{ color:var(--card); background:var(--cyan); border-color:var(--cyan); }
   /* Slider row pitch on touch. Measured: rows sat 13px apart in intermediate and 17px
      in pro while the THUMB is 17px wide — adjacent thumbs overlapped vertically, so a
@@ -1015,7 +1031,11 @@
     .infobtn{ padding:6px 8px; }
   }
     .limcount{ width:100%; margin:0 0 3px; }
-    .limbtn{ flex:1; min-width:88px; text-align:center; padding:8px 6px; font-size:11px; }
+    /* 31px tall was the old size. Apple and Google both put the minimum tap target at
+       44px, and a missed tap on a row-limit button is silent — nothing moves, so it
+       reads as a dead control rather than a near miss. */
+    .limbtn{ flex:1; min-width:88px; min-height:44px; text-align:center;
+             padding:8px 6px; font-size:11px; }
   }
   .ez_socbox{ display:flex; align-items:center; gap:8px; }
   .ez_socbox .soc svg{ width:14px; height:14px; }
@@ -1402,6 +1422,44 @@
            vertical-align:super; margin-left:5px; opacity:.72; }
   /* the same marker for affiliate ANCHORS. Those also carry rel="sponsored nofollow",
      which a <button> cannot, because a button is not a link Google can follow. */
+  /* the recent-first band: loud enough to explain why a row jumped the queue,
+     quiet enough not to compete with the medals */
+  /* the shelf chip that opens the picker — a button, because it does something */
+  .grpchip{ font-size:9px; letter-spacing:.06em; text-transform:uppercase; font-weight:600;
+            background:color-mix(in srgb, var(--fg) 8%, transparent); border:0;
+            border-radius:3px; padding:1px 6px; margin-left:6px; cursor:pointer;
+            font-family:inherit; line-height:1.5; }
+  /* the six existing tag chips keep their own colours and just stop being inert text */
+  .tagbtn{ border:0; font-family:inherit; cursor:pointer; }
+  .tagbtn:hover, .tagbtn:focus-visible{ filter:brightness(1.35); }
+  .tagbtn::after{ content:" ▾"; opacity:.55; }
+  .grpchip:hover, .grpchip:focus-visible{ background:color-mix(in srgb, var(--fg) 18%, transparent); }
+  .grpchip::after{ content:" ▾"; opacity:.6; }
+  .grppop{ position:fixed; z-index:120; min-width:210px; max-width:min(300px, 92vw);
+           background:var(--card2, var(--card)); color:var(--fg); border-radius:9px;
+           border:1px solid color-mix(in srgb, var(--fg) 18%, transparent);
+           box-shadow:0 10px 34px rgba(0,0,0,.5); padding:5px; }
+  .grppop_h{ font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted);
+             padding:5px 8px 6px; }
+  .grppop_i{ display:flex; align-items:center; gap:8px; width:100%; text-align:left;
+             background:none; border:0; color:var(--fg); font:inherit; font-size:12px;
+             padding:6px 8px; border-radius:6px; cursor:pointer; }
+  .grppop_i:hover, .grppop_i:focus-visible{ background:color-mix(in srgb, var(--fg) 12%, transparent); }
+  .grppop_i.on{ color:var(--cyan); }
+  .grppop_i i{ width:9px; height:9px; border-radius:50%; flex:0 0 auto; }
+  .grppop_new{ display:flex; gap:5px; padding:6px 6px 3px; border-top:1px solid color-mix(in srgb, var(--fg) 12%, transparent); margin-top:4px; }
+  .grppop_new input{ flex:1; min-width:0; background:var(--page); color:var(--fg); font:inherit;
+                     font-size:12px; border:1px solid color-mix(in srgb, var(--fg) 18%, transparent);
+                     border-radius:6px; padding:4px 7px; }
+  .grppop_new button{ background:color-mix(in srgb, var(--cyan) 22%, transparent); color:var(--cyan);
+                      border:0; border-radius:6px; font:inherit; font-size:12px; padding:4px 10px; cursor:pointer; }
+  .recflag{ font-size:8px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+            background:color-mix(in srgb, var(--cyan) 22%, transparent); color:var(--cyan);
+            padding:1px 5px; border-radius:3px; margin-left:5px; vertical-align:1px; }
+  .recnote{ color:var(--cyan); }
+  .reclink{ background:none; border:0; padding:0 0 0 3px; font:inherit; color:var(--muted);
+            text-decoration:underline; cursor:pointer; }
+  .reclink:hover{ color:var(--cyan); }
   .adtag{ font-size:7.5px; font-weight:700; letter-spacing:.06em; vertical-align:super;
           opacity:.72; }
   .affnote{ font-size:10.5px; color:var(--muted); line-height:1.6; margin-top:10px;
@@ -1816,7 +1874,7 @@
 </head>
 <body>
 <div class="wrap">
-<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">String & Racket Finder v.8.0 beta_86 by Alexey Semenov von Rosenberg — two departments in one document. Racket department (v.09 beta): one hundred fifty-five numbered frames — the full current lines of Head, Wilson, Yonex, Dunlop, Diadem, Tecnifibre, Babolat, Prince, Solinco, Lacoste and Pro Kennex — rated across eleven axes with a difficulty column, an amber search bar that filters the bench or looks specs up online, and a bronze transfer-specs form that scores a researched frame from its specs. String department (Rev 05): two hundred twenty string beds — the market sweep of twenty-three string brands, from the majors (Luxilon, Babolat, Wilson, Yonex, Tecnifibre, Völkl, Gamma, Head, Solinco, Toroline, ReString) to the stringing-room specialists (Kirschbaum, MSV, Signum Pro, Weiss Cannon, Isospeed, Gosen, Diadem, Dunlop, Prince, Polyfibre, Tourna, Tier One) — rated across eight axes including arm friendliness, with beds you have court-tested marked cyan and queued beds amber. Both departments have clickable column headers, weight sliders and reset buttons, and every list — the weighted rankings, both hard-spec tables and the string stiffness table — carries a typo-tolerant filter bar and top 5 / show 10 / show all row limits. Both benches rest in recommended order — the gold, silver, bronze and budget picks lead, then everything else by weighted score — until a column is ranked, with grouped-by-shelf one click away. Easy mode ends with a glowing amber invitation to continue to intermediate, and intermediate ends with a magenta one to initiate the nerd protocol and open the pro workshop.</h2>
+<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">String & Racket Finder by Alexey Semenov von Rosenberg — two departments in one document. Racket department: <span id="sr_nf">155</span> numbered frames — the full current lines of Head, Wilson, Yonex, Dunlop, Diadem, Tecnifibre, Babolat, Prince, Solinco, Lacoste and Pro Kennex — rated across eleven axes with a difficulty column, an amber search bar that filters the bench or looks specs up online, and a bronze transfer-specs form that scores a researched frame from its specs. String department: <span id="sr_nb">235</span> string beds — the market sweep of twenty-three string brands, from the majors (Luxilon, Babolat, Wilson, Yonex, Tecnifibre, Völkl, Gamma, Head, Solinco, Toroline, ReString) to the stringing-room specialists (Kirschbaum, MSV, Signum Pro, Weiss Cannon, Isospeed, Gosen, Diadem, Dunlop, Prince, Polyfibre, Tourna, Tier One) — rated across eight axes including arm friendliness, with beds you have court-tested marked cyan and queued beds amber. Both departments have clickable column headers, weight sliders and reset buttons, and every list — the weighted rankings, both hard-spec tables and the string stiffness table — carries a typo-tolerant filter bar and top 5 / show 10 / show all row limits. Both benches rest in recommended order — the gold, silver, bronze and budget picks lead, then everything else by weighted score — until a column is ranked, with grouped-by-shelf one click away. Easy mode ends with a glowing amber invitation to continue to intermediate, and intermediate ends with a magenta one to initiate the nerd protocol and open the pro workshop.</h2>
 
 <!-- ================= landing ================= -->
 <div id="landing">
@@ -1827,8 +1885,8 @@
         <div class="ld_kicker azonix">A&sup3; Agentur edition</div>
       </div>
     </div>
-    <h1 class="ld_title azonix">String &amp; Racket Finder <span style="color:var(--cyan);">v.8.0 beta_86</span></h1>
-    <p class="ld_lede">One hundred fifty-five frames and two hundred twenty string beds &mdash; the current market of eleven racket and twenty-three string brands &mdash; scored on the same axes and matched to each other
+    <h1 class="ld_title azonix">String &amp; Racket Finder</h1>
+    <p class="ld_lede"><span id="ld_nf">155</span> frames and <span id="ld_nb">235</span> string beds &mdash; the current market of eleven racket and twenty-three string brands &mdash; scored on the same axes and matched to each other
        by the physics of the pairing. Tell it how you play and it hands you a shortlist &mdash; or open the whole
        workshop and rank everything yourself.</p>
     <div class="ld_modes">
@@ -1865,7 +1923,9 @@
            links: buying through one pays this site a commission at no extra cost to you, and no commission moves any
            score or ranking.</div>
         <a class="ld_alink" href="https://www.a3agentur.com" target="_blank" rel="noopener">www.a3agentur.com &#8599;</a>
-        <div class="ld_legal"><a href="/impressum.html">Impressum</a> &middot; <a href="/datenschutz.html">Datenschutz</a></div>
+        <!-- The Impressum/Datenschutz pair used to sit here as well. Since the global
+             #srf_legal footer now runs under EVERY view, the landing showed the same two
+             links twice, about eighty pixels apart. One source of truth, one place. -->
       </div>
     </div>
   </div>
@@ -1876,7 +1936,7 @@
   <div class="ez_top">
     <span class="ez_logo" id="ez_logo"></span>
     <div class="ez_head">
-      <div class="ez_title azonix">String &amp; Racket Finder <span style="color:var(--cyan);">v.8.0 beta_86</span></div>
+      <div class="ez_title azonix">String &amp; Racket Finder</div>
       <div class="ez_sub">easy mode &mdash; just tell me what to buy</div>
       <div class="ez_credit">
         <span class="azonix cred_ed">A³ Agentur edition</span>
@@ -1966,7 +2026,7 @@
   <div class="ez_top">
     <span class="ez_logo" id="mid_logo"></span>
     <div class="ez_head">
-      <div class="ez_title azonix">String &amp; Racket Finder <span style="color:var(--cyan);">v.8.0 beta_86</span></div>
+      <div class="ez_title azonix">String &amp; Racket Finder</div>
       <div class="ez_sub">intermediate &mdash; rank it with me</div>
       <div class="ez_credit">
         <span class="azonix cred_ed">A³ Agentur edition</span>
@@ -2070,7 +2130,7 @@
   <div class="ez_top">
     <span class="ez_logo"><img src="data:image/png;base64,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" alt="A³ Agentur logo" style="width:54px;height:54px;object-fit:contain;filter:drop-shadow(0 0 7px color-mix(in srgb, var(--magenta) 40%, transparent));"></span>
     <div class="ez_head">
-      <div class="ez_title azonix">String &amp; Racket Finder <span style="color:var(--cyan);">v.8.0 beta_86</span></div>
+      <div class="ez_title azonix">String &amp; Racket Finder</div>
       <div class="ez_sub">pro mode &mdash; the workshop &middot; friend's edition</div>
       <div class="ez_credit">
         <span class="azonix cred_ed">A&sup3; Agentur edition</span>
@@ -2195,7 +2255,7 @@
   <div class="mfoot">
     <button class="go2" id="m_submit" onclick="mSubmit()">create profile</button>
     <button class="mcap ghost" onclick="mClose()">cancel</button>
-    <span class="mnote">Stored on this device only for now — there is no server behind this yet, so nothing is sent anywhere. Real accounts need a backend; see the note in chat.</span>
+    <span class="mnote">Stored on this device only — there is no server behind this, so your profile never leaves your browser. The page itself counts anonymous visits; the Datenschutz link at the bottom says exactly what. Real accounts need a backend; see the note in chat.</span>
   </div>
 </div>
 <!-- quick intro: four answers tune both benches' weight sliders to the player -->
@@ -2371,7 +2431,7 @@
     <button class="mcap ghost" onclick="gAdoptDemo()" style="margin-left:8px;padding:3px 10px;">copy the demo layout</button>
   </div>
 
-  <div id="rk_dept"><section id="rk_dept">
+  <div id="rk_dept"><section>
   <div class="mobileonly">
     <div class="viewtog" role="tablist" aria-label="racket view">
       <button type="button" id="rv_cards" class="on" onclick="setView('cards')">cards</button>
@@ -2421,14 +2481,13 @@
 </div>
 
 <hr class="deptrule">
-<div class="depthead azonix">stringbed test bench <span style="color:var(--cyan);">Rev 05</span></div>
+<div class="depthead azonix">stringbed test bench</div>
 <div style="font-size:11px;color:var(--muted);letter-spacing:0.04em;margin-bottom:4px;">string department</div>
 <div class="deptsub">Same bench, the other half of the equation: what you put <em>in</em> the frame. Claim a bed to mark it court-tested or queue it up; <span class="est">†</span> marks a derived value.</div>
 
 <div style="background:var(--card);border-radius:12px;padding:1.25rem;color:var(--fg);">
 
-  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:14px;flex-wrap:wrap;">
-    <div class="azonix" style="font-size:15px;color:var(--bright);padding-top:4px;">stringbed test bench <span style="color:var(--cyan);">Rev 05</span></div>
+  <div style="display:flex;justify-content:flex-end;align-items:flex-start;gap:16px;margin-bottom:14px;flex-wrap:wrap;">
     <div style="display:flex;align-items:center;gap:11px;">
       <img src="data:image/png;base64,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" alt="A³ Agentur logo" style="width:54px;height:54px;object-fit:contain;filter:drop-shadow(0 0 7px color-mix(in srgb, var(--magenta) 40%, transparent));">
       <div style="line-height:1.4;">
@@ -2577,7 +2636,7 @@
     <div id="sb_sliders" style="display:grid;grid-template-columns:1fr;gap:4px 20px;"></div>
     <div style="font-size:10.5px;color:var(--muted);">string priorities sit at the top of the page now, beside the racket priorities — they re-rank this bench live from up there.</div>
   </div>
-  <div id="sb_dept"><section id="sb_dept">
+  <div id="sb_dept"><section>
   <div class="mobileonly">
     <div class="viewtog" role="tablist" aria-label="string view">
       <button type="button" id="sv_cards" class="on" onclick="setViewS('cards')">cards</button>
@@ -2780,14 +2839,194 @@ window.SRFLIM = { racket:5, string:5, midR:5, midS:5, rank:5, sbrank:5, hsR:5, h
    spec sheets, where a long table of numbers really is meant to be scanned. */
 window.srfNarrow = () => window.matchMedia("(max-width:820px)").matches;
 window.srfCut = (arr, key) => window.srfNarrow() ? arr.slice(0, window.SRFLIM[key] || 5) : arr;
-window.srfLimitBar = function(key, total, setter){
+/* ---------- recent-first ordering -------------------------------------------
+   Anything you ADD, or SEARCH for and already own, rises to the top of the
+   heatmap, the weighted ranking and the hard-spec table, so the thing you just
+   looked up is never buried behind 154 frames you did not ask about.
+
+   It clears itself: the moment you file the row into a shelf (racket) or give
+   the bed a tag (string), it stops being "recent" and drops back into the
+   normal recommended order. That makes the top band a TRIAGE QUEUE rather than
+   a second bench that grows forever — you find it, you categorise it, it goes
+   away. "clear" beside the sort state empties the whole band at once.
+
+   Keyed by name rather than row number on purpose: every add renumbers the
+   array, so a numeric key would silently point at a different frame. */
+const SRF_REC_KEY = "srf:recent";
+window.SRF_RECENT = (() => {
+  let st = { seq: 1, racket: {}, string: {} };
+  try {
+    const raw = JSON.parse(localStorage.getItem(SRF_REC_KEY) || "null");
+    if (raw && raw.racket && raw.string) st = raw;
+  } catch(e){}
+  return st;
+})();
+const srfRecSave = () => { try { localStorage.setItem(SRF_REC_KEY, JSON.stringify(window.SRF_RECENT)); } catch(e){} };
+const srfRecNorm = s => String(s == null ? "" : s).toLowerCase().replace(/[^a-z0-9.]+/g, " ").trim();
+/* a ghost row is a market suggestion, not a bench row — it has no identity to remember */
+window.srfRecKey = function(kind, o){
+  if (!o || o.ghost) return "";
+  return kind === "racket"
+    ? (o.b == null && o.n == null ? "" : srfRecNorm(o.b + " " + o.n))
+    : (o.m == null ? "" : srfRecNorm(o.m + " x " + (o.x || "")));
+};
+window.srfRecTouch = function(kind, o){
+  const k = window.srfRecKey(kind, o); if (!k) return;
+  window.SRF_RECENT[kind][k] = ++window.SRF_RECENT.seq;
+  srfRecSave();
+};
+/* filed into a shelf = triaged = no longer needs to sit on top */
+window.srfRecDone = function(kind, o){
+  const k = window.srfRecKey(kind, o); if (!k) return;
+  if (window.SRF_RECENT[kind][k]){ delete window.SRF_RECENT[kind][k]; srfRecSave(); }
+};
+window.srfRecRank = function(kind, o){
+  const k = window.srfRecKey(kind, o); if (!k) return 0;
+  return window.SRF_RECENT[kind][k] || 0;
+};
+window.srfRecCount = function(kind, list){
+  if (!list) return Object.keys(window.SRF_RECENT[kind] || {}).length;
+  return list.filter(o => window.srfRecRank(kind, o) > 0).length;
+};
+/* stable partition: recent rows keep their own newest-first order, everything
+   else keeps the order it already had (podium, weighted score, spec sort…) */
+window.srfRecFirst = function(kind, arr){
+  const hot = [], cold = [];
+  arr.forEach(o => (window.srfRecRank(kind, o) > 0 ? hot : cold).push(o));
+  if (!hot.length) return arr;
+  hot.sort((a, b) => window.srfRecRank(kind, b) - window.srfRecRank(kind, a));
+  return hot.concat(cold);
+};
+window.srfRecChip = function(kind, o){
+  return window.srfRecRank(kind, o) > 0
+    ? ' <span class="recflag" title="just added or searched \u2014 pinned to the top until you file it into a shelf">NEW</span>'
+    : "";
+};
+/* the note that appears beside the sort state, with the escape hatch */
+window.srfRecNote = function(kind, list){
+  const n = window.srfRecCount(kind, list);
+  if (!n) return "";
+  return ' \u00b7 <span class="recnote">' + n + ' just added or searched on top' +
+    ' <button type="button" class="reclink" onclick="srfRecClear(&quot;' + kind + '&quot;)">clear</button></span>';
+};
+window.srfRecClear = function(kind){
+  window.SRF_RECENT[kind] = {}; srfRecSave();
+  try { if (window.SRF && SRF.redraw) SRF.redraw(); } catch(e){}
+  try { if (window.srfRepaintAll) window.srfRepaintAll(); } catch(e){}
+};
+/* every list that can show the band repaints from here, so one clear updates all six */
+window.srfRepaintAll = function(){
+  ["rkRepaint", "sbRepaint"].forEach(fn => { try { if (window[fn]) window[fn](); } catch(e){} });
+};
+/* ---------- shelf picker ----------------------------------------------------
+   One popup, both benches. It asks the department for its options and hands the
+   choice back, so neither module has to know the other exists — and a shelf you
+   invent on the racket side shows up here without this code changing. */
+/* on window, not a module-scoped let: the picker is opened from an inline onclick and
+   read back from another one, and a state variable those two cannot both be proven to
+   see is a state variable that silently does nothing. */
+/* NOTE the names: srfGroupPick was ALREADY taken by the add panel's group dropdown
+   further down this file. Defining a second one silently replaced this menu's
+   handler with that one, so every click on a shelf chip did nothing at all. */
+window.SRF_SHELF = null;
+function srfShelfClose(){
+  const p = document.getElementById("srf_grppop");
+  if (p) p.hidden = true;
+  window.SRF_SHELF = null;
+}
+window.srfShelfPop = function(kind, id, ev){
+  if (ev){ ev.stopPropagation(); ev.preventDefault(); }
+  let pop = document.getElementById("srf_grppop");
+  if (!pop){
+    pop = document.createElement("div");
+    pop.id = "srf_grppop"; pop.className = "grppop"; pop.hidden = true;
+    pop.setAttribute("role", "menu");
+    document.body.appendChild(pop);
+  }
+  const opts = kind === "racket"
+    ? (window.rkGroupOptions ? rkGroupOptions() : [])
+    : (window.sbTagOptions ? sbTagOptions() : []);
+  const cur = kind === "racket"
+    ? (window.rkGroupOf ? rkGroupOf(id) : "")
+    : (window.sbTagOf ? sbTagOf(id) : "");
+  pop.innerHTML =
+    '<div class="grppop_h">move to shelf</div>' +
+    opts.map(o =>
+      '<button type="button" role="menuitemradio" aria-checked="' + (o.key === cur) + '"' +
+      ' class="grppop_i' + (o.key === cur ? " on" : "") + '"' +
+      ' onclick="srfShelfPick(\'' + o.key.replace(/\\/g,"\\\\").replace(/'/g,"\\'") + '\')">' +
+      '<i style="background:' + o.color + '"></i>' + esc(o.label) + '</button>').join("") +
+    (kind === "racket"
+      ? '<div class="grppop_new"><input id="srf_gpnew" type="text" placeholder="+ new shelf\u2026" ' +
+        'aria-label="name a new shelf" onkeydown="if(event.key===\'Enter\'){event.preventDefault();srfShelfPick(\'__new\');}">' +
+        '<button type="button" onclick="srfShelfPick(\'__new\')">add</button></div>'
+      : "");
+  window.SRF_SHELF = { kind, id };
+  pop.hidden = false;
+  /* position under the chip, then pull it back inside the viewport — on a phone
+     a menu anchored to a right-hand chip would otherwise hang off the screen */
+  const r = (ev && ev.currentTarget ? ev.currentTarget : ev && ev.target).getBoundingClientRect();
+  const w = pop.offsetWidth, hgt = pop.offsetHeight;
+  let left = Math.min(r.left, window.innerWidth - w - 8);
+  let top = r.bottom + 4;
+  if (top + hgt > window.innerHeight - 8) top = Math.max(8, r.top - hgt - 4);
+  pop.style.left = Math.max(8, left) + "px";
+  pop.style.top = top + "px";
+  /* preventScroll matters: the popup is position:fixed, so focusing it without this
+     makes the browser scroll the PAGE to the top and the row you were filing leaves
+     the screen — very visible on a phone. */
+  const first = pop.querySelector(".grppop_i"); if (first) first.focus({ preventScroll: true });
+};
+window.srfShelfPick = function(key){
+  if (!window.SRF_SHELF) return;
+  const { kind, id } = window.SRF_SHELF;
+  if (key === "__new"){
+    const inp = document.getElementById("srf_gpnew");
+    const name = inp ? inp.value.trim() : "";
+    if (!name){ if (inp) inp.focus(); return; }
+    key = name;                                       // the racket side registers it
+  }
+  srfShelfClose();
+  if (kind === "racket"){ if (window.rkSetGroup) rkSetGroup(id, key); }
+  else { if (window.sbSetTag) sbSetTag(id, key); }
+};
+document.addEventListener("click", e => {
+  const p = document.getElementById("srf_grppop");
+  if (p && !p.hidden && !p.contains(e.target)) srfShelfClose();
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape") srfShelfClose(); });
+/* Changing a row limit rebuilds the list, and for every bar that sits BELOW its list
+   that pushes the bar down by however many rows just appeared. On a desktop you see
+   the table grow. On a phone the viewport is one screen tall: the rows you were
+   looking at do not move, the buttons leave the screen, and the tap reads as a no-op.
+   So: note where the bar sat, let the list rebuild, then put the bar back on the same
+   line of the screen. The control stays under your thumb and the growth is visible. */
+window.srfLimTap = function(setter, v, el){
+  const bar = el && el.closest ? el.closest(".limbar") : null;
+  const host = bar ? bar.parentElement : null;
+  const before = bar ? bar.getBoundingClientRect().top : null;
+  try { window[setter](v); } catch(e){ return; }
+  if (before == null || !host) return;
+  requestAnimationFrame(() => {
+    const now = host.querySelector(".limbar");
+    if (!now) return;
+    const delta = now.getBoundingClientRect().top - before;
+    if (Math.abs(delta) > 2) window.scrollBy(0, delta);
+  });
+};
+window.srfLimitBar = function(key, total, setter, ghosts){
   const n = window.SRFLIM[key] || 5;
   if (total <= 5) return "";
   const shown = Math.min(n, total);
+  /* ghosts = rows spliced in from the wider market, so this total is legitimately
+     one or two higher than the bench count shown elsewhere on the page */
+  const ghostNote = ghosts > 0
+    ? ` <span style="opacity:.75;">\u00b7 incl. ${ghosts} suggested from the wider market</span>`
+    : "";
   const btn = (label, v) => `<button type="button" class="limbtn${n === v ? " on" : ""}" ` +
-      `onclick="${setter}(${v})" aria-pressed="${n === v}">${label}</button>`;
+      `onclick="srfLimTap('${setter}',${v},this)" aria-pressed="${n === v}">${label}</button>`;
   return `<div class="limbar">` +
-    `<span class="limcount">showing ${shown} of ${total}</span>` +
+    `<span class="limcount">showing ${shown} of ${total}${ghostNote}</span>` +
     btn("top 5", 5) +
     (total > 10 ? btn("show 10", 10) : "") +
     btn("show all (" + total + ")", 99999) +
@@ -3500,7 +3739,7 @@ window.rebuildAll = () => {
   if (window.SRF && SRF.redraw) SRF.redraw();
 };
 window.exportAll = async () => {
-  const bundle = { app:"String & Racket Finder", version:"v.8.0 beta_86", theme:THEME, exported:new Date().toISOString() };
+  const bundle = { app:"String & Racket Finder", version:"8.0", theme:THEME, exported:new Date().toISOString() };
   try{
     if (window.SRF){
       if (SRF.layout)   bundle.racketLayout = SRF.layout();
@@ -4122,9 +4361,12 @@ function spiderOverlay(items, hues, labels){
   }).join("");
   // width follows the container instead of a fixed pixel size, so it shrinks to
   // fit a phone rather than overflowing the card
-  return `<svg viewBox="0 0 ${size} ${size}" width="100%" height="auto" ` +
+/* height belongs in CSS here, not in an SVG attribute: SVG geometry attributes take
+   lengths, and height="auto" is rejected outright — the browser logs an error on every
+   repaint and falls back. The style below does what the attribute was meant to do. */
+  return `<svg viewBox="0 0 ${size} ${size}" width="100%" ` +
     `xmlns="http://www.w3.org/2000/svg" role="img" aria-label="profiles overlaid" ` +
-    `style="display:block;margin:0 auto;max-width:${size}px;">${web}${shapes}${lab}</svg>`;
+    `style="display:block;height:auto;margin:0 auto;max-width:${size}px;">${web}${shapes}${lab}</svg>`;
 }
 function cmpHue(n){
   return ["var(--cyan)","var(--signal)","var(--amber)","var(--bronze)","var(--magenta-fg,var(--magenta))"][n % 5];
@@ -4246,8 +4488,11 @@ function spiderSVG(vals, target, opts){
   const tgt = target && target.length === n
     ? `<polygon points="${poly(target)}" fill="none" stroke="${spiderPale()}" ` +
       `stroke-width="1.4" stroke-dasharray="3 3" stroke-opacity="0.95"/>` : "";
-  return `<svg viewBox="0 0 ${size} ${size}" width="100%" height="auto" ` +
-    `xmlns="http://www.w3.org/2000/svg" role="img" style="display:block;max-width:${size}px;margin:0 auto;" ` +
+/* height belongs in CSS here, not in an SVG attribute: SVG geometry attributes take
+   lengths, and height="auto" is rejected outright — the browser logs an error on every
+   repaint and falls back. The style below does what the attribute was meant to do. */
+  return `<svg viewBox="0 0 ${size} ${size}" width="100%" ` +
+    `xmlns="http://www.w3.org/2000/svg" role="img" style="display:block;height:auto;max-width:${size}px;margin:0 auto;" ` +
     `aria-label="profile across ${n} axes">` +
     `<defs><linearGradient id="${uid}" x1="0" y1="1" x2="0.7" y2="0">` +
       `<stop offset="0%" stop-color="${opts.mono ? opts.mono : spiderDiffColor()}"/>` +
@@ -4771,7 +5016,7 @@ window.rkGroupOnly = (g) => {
    reset order returns here rather than to authoring order. */
 function rkRecOrder(arr){
   // buildGrid() runs once before `w` initialises (TDZ) — fall back to shelf order there
-  try { void w; } catch(e){ return arr.slice().sort((a,b)=> gRank(a.g) - gRank(b.g)); }
+  try { void w; } catch(e){ return window.srfRecFirst("racket", arr.slice().sort((a,b)=> gRank(a.g) - gRank(b.g))); }
   const tw = w.reduce((a,b)=>a+b,0) || 1;
   const sc = r => r.s.reduce((a,v,i)=>a+v*w[i],0)/tw;
   let meds = [], budgetNo = null;
@@ -4785,8 +5030,9 @@ function rkRecOrder(arr){
   // 0/1/2 = the podium in its own order, 3 = the budget pick, 4 = the rest by score
   const slot = r => { const m = meds.indexOf(r.no);
     return m >= 0 ? m : (r.no === budgetNo ? 3 : 4); };
-  return arr.slice().sort((a,b) =>
-    slot(a) - slot(b) || sc(b) - sc(a) || (a.b+a.n).localeCompare(b.b+b.n));
+  /* recency sits ABOVE the podium: what you just looked up is what you came back for */
+  return window.srfRecFirst("racket", arr.slice().sort((a,b) =>
+    slot(a) - slot(b) || sc(b) - sc(a) || (a.b+a.n).localeCompare(b.b+b.n)));
 }
 /* the shelf grouping is not deleted, just demoted to a view you ask for */
 window.rkGroupView = () => { sortIdx = (sortIdx === "g" ? null : "g"); SEL.clear(); buildGrid(); };
@@ -4839,7 +5085,7 @@ function buildGrid(){
         `<button type="button" class="gonly" onclick="event.stopPropagation();rkGroupOnly('${r.g}')" aria-label="show only ${G[r.g][1]}">${solo?"all groups":"only"}</button></div>`;
     }
     if (sortIdx==="g" && !SEL.size && !filtering && RK_GCOLL.has(r.g)) return;   // folded: header stands, rows wait
-    h += `<div role="cell" class="namecell" data-no="${r.no}" style="color:${G[r.g][0]};display:flex;flex-direction:column;justify-content:center;padding:3px 4px 3px 7px;line-height:1.25;border-left:3px ${gStyle(r.g)} color-mix(in srgb, ${G[r.g][0]} 62%, transparent);"><span style="font-weight:500;"><span style="color:var(--muted);font-weight:400;">No. ${r.no}</span> ${cmpBox("racket", r.no)}<span class="custname" role="button" tabindex="0" onclick="cOpen(${r.no})" onkeydown="if(event.key==='Enter'){cOpen(${r.no});}" onmouseenter="noteHoverIn(noteFrame,${r.no},event)" onmouseleave="noteHoverOut()" title="customize this frame — hover for play notes">${r.b} ${r.n}</span><button type="button" class="infobtn" aria-label="play notes for ${r.b} ${r.n}" onclick="event.stopPropagation();noteFrame(${r.no},event)">ⓘ</button>${r.feel?`<button type="button" class="custbtn feelbtn" aria-label="edit how ${r.b} ${r.n} feels for you" onclick="event.stopPropagation();fOpen(${r.feelOf})">edit feel</button>`:`<button type="button" class="custbtn" aria-label="customize ${r.b} ${r.n} — describe what you did to it" onclick="event.stopPropagation();cOpen(${r.no})">customize</button><button type="button" class="custbtn feelbtn" aria-label="re-score ${r.b} ${r.n} to your feel" onclick="event.stopPropagation();fOpen(${r.no})">my feel</button>`}${tag(r)}${r.cust?`<span class="custchip" title="${r.cust.text.replace(/"/g,'&quot;')}">customized</span>`:""}${r.feel?`<span class="custchip feelchip" title="your category read of the stock ${r.b} ${r.n} — the stock row is still on the bench">my feel</span>`:""}${window.buyBtn("racket",(r.b?r.b+" ":"")+String(r.n).replace(/ · my feel$/,""),true,"buy",true)}</span><span style="color:var(--muted);font-size:10px;font-weight:400;">${r.sp[0]} · ${r.sp[2]}</span></div>`;
+    h += `<div role="cell" class="namecell" data-no="${r.no}" style="color:${G[r.g][0]};display:flex;flex-direction:column;justify-content:center;padding:3px 4px 3px 7px;line-height:1.25;border-left:3px ${gStyle(r.g)} color-mix(in srgb, ${G[r.g][0]} 62%, transparent);"><span style="font-weight:500;"><span style="color:var(--muted);font-weight:400;">No. ${r.no}</span> ${cmpBox("racket", r.no)}<span class="custname" role="button" tabindex="0" onclick="cOpen(${r.no})" onkeydown="if(event.key==='Enter'){cOpen(${r.no});}" onmouseenter="noteHoverIn(noteFrame,${r.no},event)" onmouseleave="noteHoverOut()" title="customize this frame — hover for play notes">${r.b} ${r.n}</span><button type="button" class="infobtn" aria-label="play notes for ${r.b} ${r.n}" onclick="event.stopPropagation();noteFrame(${r.no},event)">ⓘ</button>${r.feel?`<button type="button" class="custbtn feelbtn" aria-label="edit how ${r.b} ${r.n} feels for you" onclick="event.stopPropagation();fOpen(${r.feelOf})">edit feel</button>`:`<button type="button" class="custbtn" aria-label="customize ${r.b} ${r.n} — describe what you did to it" onclick="event.stopPropagation();cOpen(${r.no})">customize</button><button type="button" class="custbtn feelbtn" aria-label="re-score ${r.b} ${r.n} to your feel" onclick="event.stopPropagation();fOpen(${r.no})">my feel</button>`}${tag(r)}${window.srfRecChip("racket",r)}${r.cust?`<span class="custchip" title="${r.cust.text.replace(/"/g,'&quot;')}">customized</span>`:""}${r.feel?`<span class="custchip feelchip" title="your category read of the stock ${r.b} ${r.n} — the stock row is still on the bench">my feel</span>`:""}${window.buyBtn("racket",(r.b?r.b+" ":"")+String(r.n).replace(/ · my feel$/,""),true,"buy",true)}</span><span style="color:var(--muted);font-size:10px;font-weight:400;">${r.sp[0]} · ${r.sp[2]}<button type="button" class="grpchip" style="color:${G[r.g][0]};" title="on the ${String(G[r.g][1]).replace(/"/g,"&quot;")} shelf — click to move it" aria-label="shelf: ${String(G[r.g][1]).replace(/"/g,"&quot;")} — click to move this frame" onclick="event.stopPropagation();srfShelfPop('racket',${r.no},event)">${String(G[r.g][1]).split(" \u2014 ")[0]}</button></span></div>`;
     h += `<div role="cell" class="spdcell" style="display:flex;align-items:center;justify-content:center;">${spiderIcon("racket", r.no, r.s)}</div>`;
     h += priceCell(r.p, sortIdx==="p");
     h += `<div role="cell" class="curvecell" style="display:flex;align-items:center;justify-content:center;">${perfCurve(r.s,200,44)}</div>`;
@@ -4856,11 +5102,12 @@ function buildGrid(){
   document.getElementById("grid").innerHTML = h;
   critChips(); mobileCards(rows, rowsTotal); if(window.cmpPaintAll) cmpPaintAll();
   seedGridMedals();   // re-seed the podium into the freshly built name cells
-  document.getElementById("sortState").textContent = SEL.size
+  document.getElementById("sortState").innerHTML = (SEL.size
     ? "ranked by " + [...SEL].map(([i,d])=>cats[i]+(d===-1?" \u25B2":" \u25BC")).join(" + ") + (SEL.size>1?` (${SEL.size} combined)`:"")
     : (sortIdx===null ? "recommended order \u2014 same as your picks above"
        : sortIdx==="g" ? "grouped by shelf"
-       : "ranked by " + (sortIdx==="d" ? "difficulty" : (sortIdx==="p" ? "average price" : cats[sortIdx])) + (DIR===-1?" \u2014 highest first":" \u2014 lowest first"));
+       : "ranked by " + (sortIdx==="d" ? "difficulty" : (sortIdx==="p" ? "average price" : cats[sortIdx])) + (DIR===-1?" \u2014 highest first":" \u2014 lowest first")))
+    + window.srfRecNote("racket", rk);
 }
 
 
@@ -5018,6 +5265,7 @@ function addResearched(){
   const extra={ sw:g("af_sw"), bal:g("af_bal"), beam:g("af_beam") };
   const nb={ n:name, b:g("af_brand").toUpperCase(), o:null, g:gk, s:estimateScores(sp,extra), d:estimateDifficulty(sp,extra), p:(parseFloat(g("af_price"))||null), sp:sp, est:true };
   rk.push(nb);
+  window.srfRecTouch("racket", nb);                 // straight to the top of all three tables
   rk.forEach((r,i)=>{ r.no=i+1; });                 // renumber
   document.querySelectorAll(".addgrid input").forEach(i=>i.value="");
   document.getElementById("specSearch").value=""; if(typeof searchQ!=="undefined") searchQ="";
@@ -5560,6 +5808,15 @@ window.familySearch = () => {
 function runSpecSearch(){
   const raw = document.getElementById("specSearch").value.trim();
   if(!raw){ document.getElementById("specSearch").focus(); return; }
+  /* Searching for something you already own lifts it to the top too — that is how you
+     find it again to file it. Only the EXPLICIT search (this button, or Enter) counts;
+     doing it on every keystroke would reshuffle the table under your fingers. */
+  try {
+    rk.filter(r => matches(r, normalize(raw))).forEach(r => window.srfRecTouch("racket", r));
+    /* the ranking is painted from a context object built in render(), so touching alone
+       reorders the heatmap and the spec table but leaves the ranking on its old list */
+    buildGrid(); buildSpecs(); render();
+  } catch(e){}
   const found = findSpecs(raw);
   // The card and the outbound search are not alternatives. Returning early here
   // meant that for all 53 filed frames pressing "search" opened nothing at all —
@@ -5812,7 +6069,7 @@ const w = [10,5,5,5,5,5,5,5,5,5,5];
 document.getElementById("sliders").innerHTML = cats.map((c,i) =>
   `<div style="display:flex;align-items:center;gap:8px;font-size:11px;color:var(--soft);">
     <span class="slabel" id="lb${i}" style="width:92px;">${c}</span>
-    <span class="slwrap" style="flex:1;--d:${(i*0.21).toFixed(2)}s"><input class="a3-slider" id="sl${i}" type="range" min="1" max="10" step="1" value="${w[i]}" style="flex:1;animation-delay:${(i*0.21).toFixed(2)}s" oninput="W(${i},this.value)"></span>
+    <span class="slwrap" style="flex:1;--d:${(i*0.21).toFixed(2)}s"><input class="a3-slider" id="sl${i}" type="range" min="1" max="10" step="1" value="${w[i]}" aria-label="weight for ${c}" style="flex:1;animation-delay:${(i*0.21).toFixed(2)}s" oninput="W(${i},this.value)"></span>
     <span class="wv" id="wv${i}" style="width:26px;text-align:right;color:var(--bright);">${w[i]}</span>
   </div>`).join("");
 function fillTrack(el){
@@ -5884,6 +6141,10 @@ function render(){
     SLR.meds.forEach((f, n) => { if (!(f.no > 0)) ghosts.push({ ghost: true, f, mi: n, sc: scOf(f) }); });
     if (budgetF && !budgetNo) ghosts.push({ ghost: true, f: budgetF, mi: -1, sc: scOf(budgetF) });
   }
+  /* NOTE: the order below the recent band is still the pure weighted math — the best
+     raw score can sit at the top of it wearing no crown, and its flag says why. What
+     changed is that rows you just added or searched are lifted above that block until
+     you file them, because finding them again is the whole point. */
   let disp = scored.slice();
   ghosts.sort((a, b) => b.sc - a.sc).forEach(g => {
     let i = disp.findIndex(r => r.sc < g.sc);
@@ -5901,6 +6162,10 @@ function render(){
   mobileCards(null);
   /* the ranked list paints through rankPaint() so the filter bar above it can
      repaint rows without recomputing crowns, winners or setups per keystroke */
+  /* rankPaint() destructures this list with const, so the recency band has to be
+     applied HERE, where disp is still a let — and doing it once per render is also
+     cheaper than redoing it on every filter keystroke. */
+  disp = window.srfRecFirst("racket", disp);
   RANK_CTX = { disp, note, meds, budgetNo, bandFor, EURO, tw };
   rankPaint();
   seedGridMedals(scored, meds, budgetNo);
@@ -5927,8 +6192,13 @@ function rankPaint(){
     </div>`;
   let rows = rankQ ? disp.filter(r => r.ghost ? srfMatch(rankQ, r.f.b + " " + r.f.n) : matches(r, rankQ)) : disp;
   const rankTotal = rows.length;
+  /* how many of these rows are NOT on the bench — the market suggestions spliced in */
+  const rankGhosts = disp.filter(r => r.ghost).length;
   const nEl = document.getElementById("rank_n");
-  if (nEl) nEl.innerHTML = rankQ ? `<b>${rankTotal}</b> of ${disp.length}` : `${disp.length} frames`;
+  if (nEl) nEl.innerHTML = rankQ
+    ? `<b>${rankTotal}</b> of ${disp.length}`
+    : `${disp.length - rankGhosts} frames` +
+      (rankGhosts ? ` <span style="color:var(--muted);">+ ${rankGhosts} suggested</span>` : "");
   if (rankQ && !rankTotal){
     document.getElementById("rank").innerHTML =
       `<div style="padding:14px 4px;color:var(--muted);font-size:12px;">No frame in this ranking matches “${esc(rankRaw)}”. The amber search above the bench digs deeper — it also reads specs, owners and numbers.</div>`;
@@ -5940,13 +6210,13 @@ function rankPaint(){
   document.getElementById("rank").innerHTML = (rankQ ? "" : note) +
     rows.map((r,n) => r.ghost ? ghostRow(r) :
     `<div style="display:flex;align-items:center;gap:8px;margin:3px 0;font-size:12px;${r.est===true?"opacity:.62;":""}">
-      <span style="width:196px;color:var(--fg);line-height:1.2;">${meds.indexOf(r.no)>=0?`<span class="medal ${["mG","mS","mB"][meds.indexOf(r.no)]}" title="your #${meds.indexOf(r.no)+1} suggestion — same as the strip above">${meds.indexOf(r.no)+1}</span> `:""}${r.no === budgetNo ? EURO + " " : ""}<b style="font-weight:600;">${r.b}</b> ${r.n}${tag(r)}${(x => x ? `<span class="lvlflag ${x.cls}" title="why this row is not your suggestion">${x.txt}</span>` : "")(bandFor(r))}${rowActs(r, true)}${(x => x ? ` <span class="stcknote" title="the untouched stock read under the same weights">stock \u2300 ${x}</span>` : "")(stockAvg(r, w, tw))}</span>
+      <span style="width:196px;color:var(--fg);line-height:1.2;">${meds.indexOf(r.no)>=0?`<span class="medal ${["mG","mS","mB"][meds.indexOf(r.no)]}" title="your #${meds.indexOf(r.no)+1} suggestion — same as the strip above">${meds.indexOf(r.no)+1}</span> `:""}${r.no === budgetNo ? EURO + " " : ""}<b style="font-weight:600;">${r.b}</b> ${r.n}${tag(r)}${window.srfRecChip("racket",r)}${(x => x ? `<span class="lvlflag ${x.cls}" title="why this row is not your suggestion">${x.txt}</span>` : "")(bandFor(r))}${rowActs(r, true)}${(x => x ? ` <span class="stcknote" title="the untouched stock read under the same weights">stock \u2300 ${x}</span>` : "")(stockAvg(r, w, tw))}</span>
       <div style="flex:1;background:color-mix(in srgb, var(--fg) 10%, transparent);border-radius:3px;height:13px;">
         <div style="width:${(r.sc/10*100).toFixed(1)}%;background:${G[r.g][0]};height:13px;border-radius:3px;"></div>
       </div>
       <span style="width:32px;text-align:right;color:var(--bright);font-weight:500;">${r.sc.toFixed(1)}</span>
     </div>`).join("") +
-    window.srfLimitBar("rank", rankTotal, "rankLimSet");
+    window.srfLimitBar("rank", rankTotal, "rankLimSet", rankQ ? 0 : rankGhosts);
 }
 window.rankSearch = (v) => { rankRaw = String(v).trim(); rankQ = normalize(rankRaw); rankPaint(); };
 window.srfRerank = () => { try { render(); } catch(e){} };
@@ -6189,7 +6459,7 @@ function buildSpecs(){
   let sh = `<div style="display:grid;grid-template-columns:236px repeat(7,1fr);gap:2px;background:var(--page);">` +
     `<div></div>` +
     specLabels.map((x,i)=>`<div class="hdr sp${specSort===i?" on":""}" data-sp="${i}" data-label="${x}" onclick="SP(${i})" title="sort by ${x}" style="--d:${(i*0.21).toFixed(2)}s;animation-delay:${(i*0.21).toFixed(2)}s">${x}</div>`).join("");
-  let rows = specSort===null ? rk : rk.slice().sort((a,b)=>{
+  let rows = specSort===null ? window.srfRecFirst("racket", rk) : rk.slice().sort((a,b)=>{
     const av = specVal(a,specSort), bv = specVal(b,specSort);
     if (av===null && bv===null) return 0;
     if (av===null) return 1;
@@ -6397,6 +6667,8 @@ window.cSave = () => {
   const grp=document.getElementById("c_group").value;
   const own=document.getElementById("c_owner").value.trim();
   r.g=grp;
+  /* you have categorised it, so it no longer needs to sit at the top waiting for you */
+  window.srfRecDone("racket", r);
   r.o = (grp==="fr" && own) ? [own,"var(--magenta-fg,var(--magenta))"] : (grp==="own" ? r.o : null);
   r.pt = (grp==="tested") ? true : r.pt;
   if(!text){                       // regrouping alone is a valid edit — no description needed
@@ -6546,6 +6818,25 @@ window.gAdoptDemo = () => { window.SRF.applyLayout(window.SRF.demoLayout()); onL
 
 // read-only bridge for the member layer (the closures are otherwise sealed)
 window.SRF = window.SRF || {};
+/* the shelf picker asks for these three; keeping them here means the popup never
+   has to know how a shelf is stored, and a shelf invented through it is registered
+   exactly the way the transfer-specs panel registers one. */
+window.rkGroupOptions = () => Object.keys(G).map(k => ({ key:k, label:G[k][1], color:G[k][0] }));
+window.rkGroupOf = (no) => { const r = rk.find(x => x.no === no); return r ? r.g : ""; };
+window.rkSetGroup = (no, key) => {
+  const r = rk.find(x => x.no === no); if (!r) return;
+  let gk = key;
+  if (!G[gk]){                                        // a name typed into "+ new shelf"
+    const typed = String(key).toLowerCase();
+    gk = Object.keys(G).find(k => k.toLowerCase() === typed || String(G[k][1]).toLowerCase() === typed);
+    if (!gk){ gk = "rx_" + typed.replace(/[^a-z0-9]+/g, "_"); G[gk] = ["var(--bronze)", key, "double"]; }
+  }
+  r.g = gk;
+  window.srfRecDone("racket", r);                     // filed = triaged, leaves the top band
+  buildGrid(); buildSpecs(); render();
+  try { onLayoutChange(window.SRF.layout()); } catch(e){}
+};
+window.rkRepaint = () => { try { buildGrid(); buildSpecs(); render(); } catch(e){} };
 window.SRF.quiver = () => rk.filter(r=>r.g==="own").map(r=>({b:r.b, n:r.n}));
 window.SRF.frames = () => rk.map(r=>({no:r.no, label:r.b+" "+r.n, cust:!!r.cust,
   g:r.g, gcolor:(G[r.g]||G.bench)[0], glabel:(G[r.g]||G.bench)[1], est:!!r.est}));
@@ -6851,12 +7142,21 @@ let w = PRESETS.spin.slice();
 let sortIdx = null;   // null = ranked by weighted index
 
 function tagChip(b){
-  if (b.tag==="mine") return `<div style="margin-top:3px;"><span style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:color-mix(in srgb, var(--magenta) 18%, transparent);color:var(--magenta-fg,var(--magenta));padding:1px 6px;border-radius:3px;">my bed</span></div>`;
-  if (b.tag==="researched") return `<div style="margin-top:3px;"><span style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:color-mix(in srgb, var(--bronze) 18%, transparent);color:var(--bronze);padding:1px 6px;border-radius:3px;">researched</span></div>`;
-  if (b.tag==="benchmark")  return `<div style="margin-top:3px;"><span style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:color-mix(in srgb, var(--cyan) 24%, transparent);color:var(--cyan);padding:1px 6px;border-radius:3px;font-weight:600;">court-validated benchmark</span></div>`;
-  if (b.tag==="validated") return `<div style="margin-top:3px;"><span style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:color-mix(in srgb, var(--cyan) 16%, transparent);color:var(--cyan);padding:1px 6px;border-radius:3px;">court-validated</span></div>`;
-  if (b.tag==="tested")    return `<div style="margin-top:3px;"><span style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:color-mix(in srgb, var(--cyan) 16%, transparent);color:var(--cyan);padding:1px 6px;border-radius:3px;">court-tested</span></div>`;
-  if (b.tag==="queued")    return `<div style="margin-top:3px;"><span style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:color-mix(in srgb, var(--amber) 14%, transparent);color:var(--amber);padding:1px 6px;border-radius:3px;">in queue</span></div>`;
+  /* every bed gets a chip now — an untagged one is exactly the bed you want to be
+     able to put somewhere, and before this it was the only row with nothing to click */
+  /* "ref" is how the file stores "reference only" (see sbSave), so it has to land here
+     too — otherwise the ~200 reference beds, the ones you are most likely to want to
+     move onto a real shelf, are the only rows with nothing to click. */
+  if (!b.tag || b.tag === "ref") return `<div style="margin-top:3px;"><button type="button" class="grpchip" ` +
+    `style="color:var(--muted);" title="${b.tag === "ref" ? "reference only" : "not on a shelf yet"} — click to file this bed" ` +
+    `aria-label="shelf: ${b.tag === "ref" ? "reference only" : "none"} — click to move this bed" ` +
+    `onclick="event.stopPropagation();srfShelfPop('string',${b.i},event)">${b.tag === "ref" ? "reference" : "shelf"}</button></div>`;
+  if (b.tag==="mine") return `<div style="margin-top:3px;"><button type="button" class="tagbtn" title="click to move this bed to another shelf" aria-label="change this bed's shelf" onclick="event.stopPropagation();srfShelfPop('string',${b.i},event)" style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:color-mix(in srgb, var(--magenta) 18%, transparent);color:var(--magenta-fg,var(--magenta));padding:1px 6px;border-radius:3px;">my bed</button></div>`;
+  if (b.tag==="researched") return `<div style="margin-top:3px;"><button type="button" class="tagbtn" title="click to move this bed to another shelf" aria-label="change this bed's shelf" onclick="event.stopPropagation();srfShelfPop('string',${b.i},event)" style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:color-mix(in srgb, var(--bronze) 18%, transparent);color:var(--bronze);padding:1px 6px;border-radius:3px;">researched</button></div>`;
+  if (b.tag==="benchmark")  return `<div style="margin-top:3px;"><button type="button" class="tagbtn" title="click to move this bed to another shelf" aria-label="change this bed's shelf" onclick="event.stopPropagation();srfShelfPop('string',${b.i},event)" style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:color-mix(in srgb, var(--cyan) 24%, transparent);color:var(--cyan);padding:1px 6px;border-radius:3px;font-weight:600;">court-validated benchmark</button></div>`;
+  if (b.tag==="validated") return `<div style="margin-top:3px;"><button type="button" class="tagbtn" title="click to move this bed to another shelf" aria-label="change this bed's shelf" onclick="event.stopPropagation();srfShelfPop('string',${b.i},event)" style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:color-mix(in srgb, var(--cyan) 16%, transparent);color:var(--cyan);padding:1px 6px;border-radius:3px;">court-validated</button></div>`;
+  if (b.tag==="tested")    return `<div style="margin-top:3px;"><button type="button" class="tagbtn" title="click to move this bed to another shelf" aria-label="change this bed's shelf" onclick="event.stopPropagation();srfShelfPop('string',${b.i},event)" style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:color-mix(in srgb, var(--cyan) 16%, transparent);color:var(--cyan);padding:1px 6px;border-radius:3px;">court-tested</button></div>`;
+  if (b.tag==="queued")    return `<div style="margin-top:3px;"><button type="button" class="tagbtn" title="click to move this bed to another shelf" aria-label="change this bed's shelf" onclick="event.stopPropagation();srfShelfPop('string',${b.i},event)" style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:color-mix(in srgb, var(--amber) 14%, transparent);color:var(--amber);padding:1px 6px;border-radius:3px;">in queue</button></div>`;
   return "";
 }
 
@@ -6930,7 +7230,8 @@ function sbSpecVal(b,i){
 }
 function buildSbSpecs(){
   let rows=beds.slice();
-  if(sbSpecSort!==null) rows.sort((a,b)=>{
+  if(sbSpecSort===null) rows = window.srfRecFirst("string", rows);
+  else rows.sort((a,b)=>{
     const x=sbSpecVal(a,sbSpecSort), y=sbSpecVal(b,sbSpecSort);
     if(typeof x==="number"&&typeof y==="number") return y-x;
     if(x===null) return 1; if(y===null) return -1;
@@ -7214,6 +7515,11 @@ window.sbUseSpecs = (key) => {
 function sbRunSpecSearch(){
   const raw=document.getElementById("sb_specSearch").value.trim();
   if(!raw){ document.getElementById("sb_specSearch").focus(); return; }
+  /* same rule as the racket side — explicit search only */
+  try {
+    beds.filter(b => sbMatches(b, sbNorm(raw))).forEach(b => window.srfRecTouch("string", b));
+    buildGrid(); buildSbSpecs();      // string buildGrid() repaints the ranking too
+  } catch(e){}
   const meta = document.getElementById("sb_searchMeta");
   const found = sbFindSpecs(raw);
   if (found) meta.innerHTML = sbShowSpecCard(raw, found, null);
@@ -7410,8 +7716,11 @@ function sbAddResearched(){
   }
   document.querySelectorAll("#sb_addPanel input").forEach(i=>{ if(i.type!=="checkbox") i.value=""; });
   document.getElementById("sb_af_full").checked=true; sbSyncCross();
+  /* the bed you just researched goes straight to the top of the heatmap, the
+     ranking and the hard specs — the racket side has always done this. */
+  window.srfRecTouch("string", beds[beds.length - 1]);
   document.getElementById("sb_specSearch").value=""; sbQ="";
-  sbCloseAddPanel(); buildGrid(); sbUpdateMeta();
+  sbCloseAddPanel(); buildGrid(); buildSbSpecs(); sbUpdateMeta();
   if(sbOnChange) sbOnChange(window.SRF.sbLayout());
   if (document.body.classList.contains("mode-mid") && window.midPaint) midPaint(true);
   /* added from easy mode: re-run the recommendation so the new frame or bed is
@@ -7545,6 +7854,7 @@ window.sbSave = () => {
   const b=beds[sbNo]; if(!b) return;
   const g=document.getElementById("b_group").value;
   b.tag = g==="ref" ? "" : g;
+  window.srfRecDone("string", b);   // tagged = triaged, same rule as the racket shelves
   b.mt=document.getElementById("b_mt").value.trim();
   b.ct=document.getElementById("b_ct").value.trim();
   b.paid=document.getElementById("b_price").value.trim();
@@ -7564,6 +7874,23 @@ window.SRF = window.SRF || {};
    is judged by the bench's own rule instead of hand-written numbers. The string module
    had no equivalent, which meant any bed added from outside had to guess its axes. It
    does now — same physics, same lab adjustment, one source of truth. */
+/* the same three, for beds. "ref" is stored as an empty tag — that is the file's
+   existing convention (see sbSave), not a new one. */
+const SB_TAGOPTS = [["mine","my beds \u2014 currently strung"], ["benchmark","my benchmark"],
+                    ["validated","court-validated"], ["tested","court-tested"],
+                    ["queued","queued \u2014 string next"], ["researched","researched"],
+                    ["ref","reference only"]];
+window.sbTagOptions = () => SB_TAGOPTS.map(([k, label]) => ({
+  key: k, label, color: (SBG[k] && SBG[k][0]) || "var(--muted)" }));
+window.sbTagOf = (i) => { const b = beds[i]; return b ? (b.tag || "ref") : ""; };
+window.sbSetTag = (i, key) => {
+  const b = beds[i]; if (!b) return;
+  b.tag = key === "ref" ? "" : key;
+  window.srfRecDone("string", b);
+  buildGrid(); buildSbSpecs();
+  try { if (sbOnChange) sbOnChange(window.SRF.sbLayout()); } catch(e){}
+};
+window.sbRepaint = () => { try { buildGrid(); buildSbSpecs(); } catch(e){} };
 window.SRF.sbEstimate = (...a) => sbEstimate(...a);
 window.SRF.sbLabRowFor = (q) => sbLabRowFor(q);
 window.SRF.sbLayout = () => beds.map(b=>({tag:b.tag||"", mt:b.mt||"", ct:b.ct||"", note:b.note||"", paid:b.paid||""}));
@@ -7606,6 +7933,9 @@ function sbRecSort(scored){
   const slot = b => { const m = meds.indexOf(b.i);
     return m >= 0 ? m : (b.i === budgetI ? 3 : 4); };
   scored.sort((a,b)=> slot(a)-slot(b) || b.idx-a.idx || String(a.m).localeCompare(String(b.m)));
+  /* same rule as the racket bench: what you just added or searched leads */
+  const hot = window.srfRecFirst("string", scored);
+  if (hot !== scored) scored.splice(0, scored.length, ...hot);
 }
 window.sbGroupView = () => { sortIdx = (sortIdx === "g" ? null : "g"); SBSEL.clear(); buildGrid(); };
 function buildGrid(){
@@ -7670,7 +8000,7 @@ function buildGrid(){
     const col=rowColor(b);
     h+=`<div role="cell" class="namecell" data-bi="${b.i}" style="display:flex;flex-direction:column;justify-content:center;padding:5px 4px;line-height:1.25;border-left:3px solid color-mix(in srgb, ${col} 55%, transparent);">
           <span style="font-weight:500;"><span style="color:var(--muted);font-weight:400;font-size:10px;">No. ${b.no}</span> ${cmpBox("string", b.i)}<span class="custname" role="button" tabindex="0" onclick="sbOpen(${b.i})" onkeydown="if(event.key==='Enter'){sbOpen(${b.i});}" onmouseenter="noteHoverIn(noteBed,${b.i},event)" onmouseleave="noteHoverOut()" title="claim this bed — hover for play notes" style="color:var(--bright);">${b.m}</span><button type="button" class="infobtn" aria-label="play notes" onclick="event.stopPropagation();noteBed(${b.i},event)">ⓘ</button>${(sbTop.indexOf(b.i)>=0)?`<span class="medal ${["mG","mS","mB"][sbTop.indexOf(b.i)]}" title="your #${sbTop.indexOf(b.i)+1} suggestion — same as your suggestions">${sbTop.indexOf(b.i)+1}</span>`:""}${b.i === sbBudgetI ? SB_EURO : ""}${window.buyBtn("string", String(b.m).split(" \u00b7 ")[0], true, "buy", true)}</span>
-          <span style="color:var(--muted);font-size:10px;">× ${b.x}${b.mt?` · ${b.mt}${b.ct?"/"+b.ct:""} kg`:""}</span>${tagChip(b)}
+          <span style="color:var(--muted);font-size:10px;">× ${b.x}${b.mt?` · ${b.mt}${b.ct?"/"+b.ct:""} kg`:""}</span>${tagChip(b)}${window.srfRecChip("string",b)}
           ${b.note?`<span class="custchip" title="${String(b.note).replace(/"/g,'&quot;')}">noted</span>`:""}${b.twin?`<span class="custchip" style="color:var(--amber);background:color-mix(in srgb, var(--amber) 14%, transparent);" title="identical derived stats to ${String(b.twin).replace(/"/g,'&quot;')} \u2014 reopen transfer specs and add stiffness, shape or gauge to separate them">twin est.</span>`:""}</div>`;
     h+=`<div role="cell" class="spdcell" style="display:flex;align-items:center;justify-content:center;">${spiderIcon("string", b.i, b.s)}</div>`;
     const pr=bedPrice(b);
@@ -7718,7 +8048,8 @@ function buildGrid(){
      index, with its own top 5 / 10 / all bar. It used to inherit whatever slice the
      grid happened to be showing, which is why it sat at six rows while the bench held
      thirty-nine — a ranking you cannot see past is not a ranking. */
-  const sbDispFull = sbSplice(sbAllBeds.slice().sort((a,b) => b.idx - a.idx || String(a.m).localeCompare(String(b.m))));
+  const sbDispFull = window.srfRecFirst("string",
+    sbSplice(sbAllBeds.slice().sort((a,b) => b.idx - a.idx || String(a.m).localeCompare(String(b.m)))));
   let sbNote = "";
   const sbGoldTop = sbDispFull.length && (sbDispFull[0].ghost ? sbDispFull[0].mi === 0 : (sbTop[0] != null && sbDispFull[0].i === sbTop[0]));
   if (sbDispFull.length && !sbGoldTop && (sbTop[0] != null || (SBL && SBL.meds[0]))){
@@ -7729,11 +8060,12 @@ function buildGrid(){
   /* painted via sbRankPaint() so the ranking filter repaints the list alone */
   SB_RANK_CTX = { sbDispFull, sbNote, sbTop, sbBudgetI, sbBandOf, SB_EURO };
   sbRankPaint();
-  document.getElementById("sb_sortState").textContent = SBSEL.size
+  document.getElementById("sb_sortState").innerHTML = (SBSEL.size
     ? "ranked by "+[...SBSEL].map(([i,d])=>AX[i]+(d===-1?" \u25B2":" \u25BC")).join(" + ")+(SBSEL.size>1?` (${SBSEL.size} combined)`:"")
     : (sortIdx===null ? "recommended order — same as your picks"
        : sortIdx==="g" ? "grouped by shelf"
-       : (sortIdx==="idx"?"ranked by index":sortIdx==="p"?"ranked by price":sortIdx==="d"?"ranked by demand":"recommended order")+(SBDIR===-1?" — highest first":" — lowest first"));
+       : (sortIdx==="idx"?"ranked by index":sortIdx==="p"?"ranked by price":sortIdx==="d"?"ranked by demand":"recommended order")+(SBDIR===-1?" — highest first":" — lowest first")))
+    + window.srfRecNote("string", beds);
 }
 
 /* ---------- weighted-ranking filter (string department) ----------
@@ -7753,7 +8085,11 @@ function sbRankPaint(){
   const hits = sbRankQ ? sbDispFull.filter(b => sbMatches(b.ghost ? b.bed : b, sbRankQ)) : sbDispFull;
   const sbRankTotal = hits.length;
   const nEl = document.getElementById("sbrank_n");
-  if (nEl) nEl.innerHTML = sbRankQ ? `<b>${sbRankTotal}</b> of ${sbDispFull.length}` : `${sbDispFull.length} beds`;
+  const sbRankGhosts = sbDispFull.filter(b => b.ghost).length;
+  if (nEl) nEl.innerHTML = sbRankQ
+    ? `<b>${sbRankTotal}</b> of ${sbDispFull.length}`
+    : `${sbDispFull.length - sbRankGhosts} beds` +
+      (sbRankGhosts ? ` <span style="color:var(--muted);">+ ${sbRankGhosts} suggested</span>` : "");
   if (sbRankQ && !sbRankTotal){
     document.getElementById("sb_rank").innerHTML =
       `<div style="padding:14px 4px;color:var(--muted);font-size:12px;">No bed in this ranking matches “${esc(sbRankRaw)}”. The string search above the bench also reads materials, gauges and tensions.</div>`;
@@ -7763,11 +8099,11 @@ function sbRankPaint(){
   const rows = hits.slice(0, window.SRFLIM.sbrank || 5);
   document.getElementById("sb_rank").innerHTML = (sbRankQ ? "" : sbNote) + rows.map((b,n)=> b.ghost ? sbGhostRow(b) :
     `<div style="display:flex;align-items:center;gap:8px;margin:3px 0;font-size:12px;">
-       <span style="width:214px;color:var(--fg);line-height:1.2;">${sbTop.indexOf(b.i)>=0?`<span class="medal ${["mG","mS","mB"][sbTop.indexOf(b.i)]}" title="your #${sbTop.indexOf(b.i)+1} suggestion — same ranking as intermediate mode">${sbTop.indexOf(b.i)+1}</span> `:""}${b.i === sbBudgetI ? SB_EURO + " " : ""}${b.m} <span style="color:var(--muted);">× ${b.x}</span>${(x => x ? `<span class="lvlflag ${x.cls}" title="why this bed is not your suggestion">${x.txt}</span>` : "")(sbBandOf(b))}</span>
+       <span style="width:214px;color:var(--fg);line-height:1.2;">${sbTop.indexOf(b.i)>=0?`<span class="medal ${["mG","mS","mB"][sbTop.indexOf(b.i)]}" title="your #${sbTop.indexOf(b.i)+1} suggestion — same ranking as intermediate mode">${sbTop.indexOf(b.i)+1}</span> `:""}${b.i === sbBudgetI ? SB_EURO + " " : ""}${b.m} <span style="color:var(--muted);">× ${b.x}</span>${window.srfRecChip("string",b)}${(x => x ? `<span class="lvlflag ${x.cls}" title="why this bed is not your suggestion">${x.txt}</span>` : "")(sbBandOf(b))}</span>
        <div style="flex:1;background:color-mix(in srgb, var(--fg) 10%, transparent);border-radius:3px;height:13px;">
          <div style="width:${(b.idx/10*100).toFixed(1)}%;background:${rowColor(b)};height:13px;border-radius:3px;"></div></div>
        <span style="width:32px;text-align:right;color:var(--bright);font-weight:500;">${b.idx.toFixed(1)}</span></div>`).join("") +
-    window.srfLimitBar("sbrank", sbRankTotal, "sbRankLimSet");
+    window.srfLimitBar("sbrank", sbRankTotal, "sbRankLimSet", sbRankQ ? 0 : sbRankGhosts);
 }
 window.sbRankSearch = (v) => { sbRankRaw = String(v).trim(); sbRankQ = sbNorm(sbRankRaw); sbRankPaint(); };
 /* repaints the ranked bed list alone — buildGrid() would rebuild the whole heatmap */
@@ -7941,7 +8277,7 @@ document.getElementById("sb_sliders").innerHTML = AX.map((c,i)=>
   `<div style="display:flex;align-items:center;gap:8px;font-size:11px;color:var(--soft);">
      <span class="slabel" id="sb_lb${i}" style="width:106px;">${c}</span>
      <span class="slwrap" style="flex:1;--d:${(i*0.21).toFixed(2)}s">
-       <input class="a3-slider sbsl" id="sb_sl${i}" type="range" min="1" max="10" step="1" value="${w[i]}" style="flex:1;animation-delay:${(i*0.21).toFixed(2)}s" oninput="sbW(${i},this.value)">
+       <input class="a3-slider sbsl" id="sb_sl${i}" type="range" min="1" max="10" step="1" value="${w[i]}" aria-label="weight for ${c}" style="flex:1;animation-delay:${(i*0.21).toFixed(2)}s" oninput="sbW(${i},this.value)">
      </span>
      <span class="wv" id="sb_wv${i}" style="width:26px;text-align:right;color:var(--bright);">${w[i]}</span>
    </div>`).join("");
@@ -9793,9 +10129,13 @@ window.setMode = (m) => {
   /* the pro invitation quotes the bench sizes — read them live so the numbers can
      never go stale the way the hardcoded intro copy did */
   try {
-    const nf = document.getElementById("mpi_nf"), nb = document.getElementById("mpi_nb");
-    if (nf && window.SRF && SRF.frames) nf.textContent = SRF.frames().length;
-    if (nb && window.SRF && SRF.beds)   nb.textContent = SRF.beds().length;
+    const nF = (window.SRF && SRF.frames) ? SRF.frames().length : null;
+    const nB = (window.SRF && SRF.beds)   ? SRF.beds().length   : null;
+    /* every place the copy quotes a bench size, filled from the arrays themselves */
+    ["mpi_nf", "ld_nf", "sr_nf"].forEach(id => { const el = document.getElementById(id);
+      if (el && nF != null) el.textContent = nF; });
+    ["mpi_nb", "ld_nb", "sr_nb"].forEach(id => { const el = document.getElementById(id);
+      if (el && nB != null) el.textContent = nB; });
   } catch(e){}
   ["ld_socials","ez_socials","mid_socials"].forEach(id => {
     const box = document.getElementById(id); if (!box || box.firstChild) return;
