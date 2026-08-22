@@ -1425,6 +1425,21 @@
   /* the recent-first band: loud enough to explain why a row jumped the queue,
      quiet enough not to compete with the medals */
   /* the shelf chip that opens the picker — a button, because it does something */
+  /* a cell you overruled: magenta hairline, the house colour for "this is mine" */
+  .cell.mycell, .scell.mycell{ box-shadow:inset 0 0 0 1.5px var(--magenta-fg,var(--magenta)); }
+  .cell{ cursor:pointer; }
+  .scorepop{ position:fixed; z-index:130; background:var(--card2, var(--card)); color:var(--fg);
+             border:1px solid color-mix(in srgb, var(--fg) 18%, transparent); border-radius:10px;
+             box-shadow:0 10px 34px rgba(0,0,0,.5); padding:9px 11px 8px; min-width:172px; }
+  .scorepop_h{ font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted);
+               text-align:center; margin-bottom:6px; }
+  .scorepop_r{ display:flex; align-items:center; justify-content:center; gap:12px; }
+  .scorepop_v{ font-size:22px; font-weight:600; color:var(--bright); min-width:34px; text-align:center; }
+  .scorepop_b{ width:44px; height:44px; border-radius:50%; font-size:19px; font-family:inherit;
+               background:var(--field); color:var(--fg); cursor:pointer;
+               border:1px solid color-mix(in srgb, var(--fg) 22%, transparent); }
+  .scorepop_b:hover, .scorepop_b:focus-visible{ border-color:var(--cyan); color:var(--cyan); }
+  .scorepop_f{ font-size:10.5px; color:var(--muted); text-align:center; margin-top:7px; }
   .grpchip{ font-size:9px; letter-spacing:.06em; text-transform:uppercase; font-weight:600;
             background:color-mix(in srgb, var(--fg) 8%, transparent); border:0;
             border-radius:3px; padding:1px 6px; margin-left:6px; cursor:pointer;
@@ -2366,7 +2381,7 @@
   </div>
 </div>
   <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;font-size:11px;flex-wrap:wrap;">
-  <span style="color:var(--muted);">click a column to rank · click it again to flip high/low · <span id="sortState" style="color:var(--cyan);">recommended order</span></span>
+  <span style="color:var(--muted);">click a column to rank · twice to flip · <b style="color:var(--soft);font-weight:500;">click any score cell to set your own rating</b> · <span id="sortState" style="color:var(--cyan);">recommended order</span></span>
   <button class="resetbtn" data-label="grouped by shelf" onclick="rkGroupView()" title="quiver, playtested, bench — the old grouped view">grouped by shelf</button>
   <button class="resetbtn" data-label="reset order" onclick="resetOrder()" style="margin-left:auto;">reset order</button>
 </div>
@@ -2483,7 +2498,7 @@
 <hr class="deptrule">
 <div class="depthead azonix">stringbed test bench</div>
 <div style="font-size:11px;color:var(--muted);letter-spacing:0.04em;margin-bottom:4px;">string department</div>
-<div class="deptsub">Same bench, the other half of the equation: what you put <em>in</em> the frame. Claim a bed to mark it court-tested or queue it up; <span class="est">†</span> marks a derived value.</div>
+<div class="deptsub">Same bench, the other half of the equation: what you put <em>in</em> the frame. Claim a bed to mark it court-tested or queue it up; <span class="est">†</span> marks a derived value. Every score cell is editable — tap it to overwrite the estimate with your own rating.</div>
 
 <div style="background:var(--card);border-radius:12px;padding:1.25rem;color:var(--fg);">
 
@@ -2586,7 +2601,7 @@
   </div>
 </div></span>
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;font-size:11px;flex-wrap:wrap;">
-    <span style="color:var(--muted);">click any column header to rank by it · <span id="sb_sortState" style="color:var(--cyan);">recommended order</span></span>
+    <span style="color:var(--muted);">click any column header to rank by it · <b style="color:var(--soft);font-weight:500;">click any score cell to set your own rating</b> · <span id="sb_sortState" style="color:var(--cyan);">recommended order</span></span>
     <button class="sbbtn" data-label="grouped by shelf" onclick="sbGroupView()" title="benchmark, court-tested, queued — the old grouped view">grouped by shelf</button>
     <button class="sbbtn" data-label="reset order" onclick="sbResetOrder()" style="margin-left:auto;">reset order</button>
   </div>
@@ -2620,6 +2635,20 @@
       <button class="mcap ghost" onclick="sbClose()">cancel</button>
       <button class="mcap ghost" onclick="sbRevert()">revert to stock</button>
       <span class="mnote">Your beds are yours — every member keeps their own benchmark, queue and notes.</span>
+    </div>
+  </div>
+  <div class="cpanel" id="sb_f_panel">
+    <h4 id="sb_f_title">Adjust to my feel</h4>
+    <div class="sub">The bench scores are the house read. If a bed plays differently <em>for you</em> —
+      livelier, harsher, comfier — drag its categories to what your arm says. The stock read
+      stays on the bench untouched; your version joins it as a second row and gets ranked like any other bed.</div>
+    <div id="sb_f_rows" style="margin-top:9px;"></div>
+    <div class="merr" id="sb_f_err"></div>
+    <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+      <button class="go2" onclick="sbFSave()">save my feel</button>
+      <button class="ghost" id="sb_f_removeBtn" onclick="sbFRemove()" style="display:none;">remove my feel</button>
+      <button class="ghost" onclick="sbFClose()">cancel</button>
+      <span class="hint" style="font-size:10px;color:var(--muted);">stock numbers stay visible next to yours — cell corners and the ranking both keep them</span>
     </div>
   </div>
     <div style="margin:2px 0 14px;border-bottom:0.5px solid color-mix(in srgb, var(--fg) 15%, transparent);padding-bottom:12px;">
@@ -2965,7 +2994,12 @@ window.srfShelfPop = function(kind, id, ev){
   pop.hidden = false;
   /* position under the chip, then pull it back inside the viewport — on a phone
      a menu anchored to a right-hand chip would otherwise hang off the screen */
-  const r = (ev && ev.currentTarget ? ev.currentTarget : ev && ev.target).getBoundingClientRect();
+  /* anchor on the chip even if called with a detached event */
+  const anchor = ev && (ev.currentTarget instanceof Element
+    ? ev.currentTarget
+    : (ev.target && ev.target.closest && ev.target.closest(".grpchip,.tagbtn")) || ev.target);
+  if (!anchor || !anchor.getBoundingClientRect) return;
+  const r = anchor.getBoundingClientRect();
   const w = pop.offsetWidth, hgt = pop.offsetHeight;
   let left = Math.min(r.left, window.innerWidth - w - 8);
   let top = r.bottom + 4;
@@ -3001,6 +3035,135 @@ document.addEventListener("keydown", e => { if (e.key === "Escape") srfShelfClos
    looking at do not move, the buttons leave the screen, and the tap reads as a no-op.
    So: note where the bar sat, let the list rebuild, then put the bar back on the same
    line of the screen. The control stays under your thumb and the growth is visible. */
+/* ---------- my own ratings -------------------------------------------------
+   Keyed by NAME, like the recency band, because adding a frame renumbers the
+   array and a numeric key would end up pointing at a different racket. */
+const SRF_MY_KEY = "srf:myscore";
+window.SRF_MYSCORE = (() => {
+  let st = { racket: {}, string: {} };
+  try { const raw = JSON.parse(localStorage.getItem(SRF_MY_KEY) || "null");
+        if (raw && raw.racket && raw.string) st = raw; } catch(e){}
+  return st;
+})();
+const srfMySave = () => { try { localStorage.setItem(SRF_MY_KEY, JSON.stringify(window.SRF_MYSCORE)); } catch(e){} };
+window.srfMyGet = function(kind, o){
+  const k = window.srfRecKey(kind, o);
+  return k ? (window.SRF_MYSCORE[kind][k] || null) : null;
+};
+window.srfMyPut = function(kind, o, i, v){
+  const k = window.srfRecKey(kind, o); if (!k) return;
+  const m = window.SRF_MYSCORE[kind][k] || (window.SRF_MYSCORE[kind][k] = {});
+  if (v == null) delete m[i]; else m[i] = v;
+  if (!Object.keys(m).length) delete window.SRF_MYSCORE[kind][k];
+  srfMySave();
+};
+window.srfMyCount = function(kind){
+  return Object.values(window.SRF_MYSCORE[kind] || {}).reduce((a, m) => a + Object.keys(m).length, 0);
+};
+window.srfMyClearAll = function(kind){
+  window.SRF_MYSCORE[kind] = {}; srfMySave();
+  try { if (kind === "racket" && window.rkApplyMy){ rkApplyMy(true); rkRepaint(); } } catch(e){}
+  try { if (kind === "string" && window.sbApplyMy){ sbApplyMy(true); sbRepaint(); } } catch(e){}
+};
+/* Writes the stored overrides onto one row. baseS is the untouched estimate and
+   is created on the first override; when the last override goes, so does it. */
+window.srfMyApplyRow = function(kind, row){
+  if (!row || !Array.isArray(row.s)) return;
+  const m = window.srfMyGet(kind, row);
+  if (!m){
+    if (row.baseS){ row.s = row.baseS.slice(); delete row.baseS; }
+    return;
+  }
+  if (!row.baseS) row.baseS = row.s.slice();
+  row.s = row.baseS.slice();
+  Object.keys(m).forEach(i => { const n = +i; if (n >= 0 && n < row.s.length) row.s[n] = m[i]; });
+};
+/* ---------- the stepper ---------- */
+let SRF_SP = null;
+function srfScoreClose(){ const p = document.getElementById("srf_scorepop"); if (p) p.hidden = true; SRF_SP = null; }
+window.srfScorePop = function(kind, id, axis, ev){
+  if (ev){ ev.stopPropagation(); ev.preventDefault(); }
+  /* a shelf menu left open would sit under or over the stepper — one popup at a time */
+  try { srfShelfClose(); } catch(e){}
+  let pop = document.getElementById("srf_scorepop");
+  if (!pop){
+    pop = document.createElement("div"); pop.id = "srf_scorepop"; pop.className = "scorepop";
+    pop.hidden = true; document.body.appendChild(pop);
+  }
+  SRF_SP = { kind, id, axis };
+  srfScoreDraw();
+  pop.hidden = false;
+  /* Anchor on the CELL, however we were called. Through the inline handler
+     currentTarget IS the cell; through the capture-phase fallback it is document,
+     which cannot be measured — so resolve to the cell under the pointer instead. */
+  const anchor = ev && (ev.currentTarget instanceof Element
+    ? ev.currentTarget
+    : (ev.target && ev.target.closest && ev.target.closest(".cell,.scell")) || ev.target);
+  if (!anchor || !anchor.getBoundingClientRect) return;
+  const r = anchor.getBoundingClientRect();
+  const w = pop.offsetWidth, hh = pop.offsetHeight;
+  let left = Math.min(Math.max(8, r.left + r.width / 2 - w / 2), window.innerWidth - w - 8);
+  let top = r.bottom + 6;
+  if (top + hh > window.innerHeight - 8) top = Math.max(8, r.top - hh - 6);
+  pop.style.left = left + "px"; pop.style.top = top + "px";
+};
+function srfScoreDraw(){
+  const pop = document.getElementById("srf_scorepop"); if (!pop || !SRF_SP) return;
+  const { kind, id, axis } = SRF_SP;
+  const info = kind === "racket" ? (window.rkScoreInfo && rkScoreInfo(id, axis))
+                                 : (window.sbScoreInfo && sbScoreInfo(id, axis));
+  if (!info){ srfScoreClose(); return; }
+  pop.innerHTML =
+    '<div class="scorepop_h">' + esc(info.label) + '</div>' +
+    '<div class="scorepop_r">' +
+      '<button type="button" class="scorepop_b" aria-label="one lower" onclick="srfScoreStep(-1)">\u2212</button>' +
+      '<span class="scorepop_v" aria-live="polite">' + info.value + '</span>' +
+      '<button type="button" class="scorepop_b" aria-label="one higher" onclick="srfScoreStep(1)">+</button>' +
+    '</div>' +
+    '<div class="scorepop_f">' +
+      (info.base != null && info.base !== info.value
+        ? 'estimated <b>' + info.base + '</b> ' +
+          '<button type="button" class="reclink" onclick="srfScoreRevert()">put it back</button>'
+        : 'your own reading \u2014 it re-ranks everything') +
+    '</div>';
+}
+window.srfScoreStep = function(d){
+  if (!SRF_SP) return;
+  const { kind, id, axis } = SRF_SP;
+  const info = kind === "racket" ? rkScoreInfo(id, axis) : sbScoreInfo(id, axis);
+  if (!info) return;
+  const v = Math.max(1, Math.min(10, info.value + d));
+  if (v === info.value) return;
+  if (kind === "racket") rkSetScore(id, axis, v); else sbSetScore(id, axis, v);
+  srfScoreDraw();
+};
+window.srfScoreRevert = function(){
+  if (!SRF_SP) return;
+  const { kind, id, axis } = SRF_SP;
+  if (kind === "racket") rkSetScore(id, axis, null); else sbSetScore(id, axis, null);
+  srfScoreDraw();
+};
+document.addEventListener("click", e => {
+  const p = document.getElementById("srf_scorepop");
+  if (p && !p.hidden && !p.contains(e.target) && !(e.target.closest && e.target.closest(".cell,.scell"))) srfScoreClose();
+});
+document.addEventListener("keydown", e => {
+  if (!SRF_SP) return;
+  if (e.key === "Escape") srfScoreClose();
+  else if (e.key === "ArrowUp" || e.key === "ArrowRight"){ e.preventDefault(); srfScoreStep(1); }
+  else if (e.key === "ArrowDown" || e.key === "ArrowLeft"){ e.preventDefault(); srfScoreStep(-1); }
+});
+/* Belt and braces for the cells themselves. They carry inline handlers, but this
+   capture-phase router reads the same call out of the attribute and fires it, so
+   the stepper opens even in an environment that neuters inline handlers. It runs
+   BEFORE the inline one and stops propagation, so exactly one open happens either
+   way — and a racket cell and a string cell go through one identical path. */
+document.addEventListener("click", e => {
+  const c = e.target && e.target.closest && e.target.closest(".cell[onclick],.scell[onclick]");
+  if (!c) return;
+  const m = (c.getAttribute("onclick") || "").match(/srfScorePop\('(\w+)',(\d+),(\d+)/);
+  if (m) window.srfScorePop(m[1], +m[2], +m[3], e);
+}, true);
 window.srfLimTap = function(setter, v, el){
   const bar = el && el.closest ? el.closest(".limbar") : null;
   const host = bar ? bar.parentElement : null;
@@ -3742,6 +3905,7 @@ window.exportAll = async () => {
   const bundle = { app:"String & Racket Finder", version:"8.0", theme:THEME, exported:new Date().toISOString() };
   try{
     if (window.SRF){
+      bundle.myScores = window.SRF_MYSCORE;      // your own heatmap readings
       if (SRF.layout)   bundle.racketLayout = SRF.layout();
       if (SRF.sbLayout) bundle.stringLayout = SRF.sbLayout();
       if (SRF.member)   bundle.member = SRF.member();
@@ -3763,6 +3927,11 @@ window.importAll = (ev) => {
     try{
       const b = JSON.parse(fr.result);
       if (b.theme && THEMES[b.theme]){ applyTheme(b.theme); if (typeof renderThemeUI === "function") renderThemeUI(); }
+      if (b.myScores && b.myScores.racket && b.myScores.string){
+        window.SRF_MYSCORE = b.myScores;
+        try { localStorage.setItem("srf:myscore", JSON.stringify(b.myScores)); } catch(e){}
+        try { if (window.rkApplyMy) rkApplyMy(); if (window.sbApplyMy) sbApplyMy(); } catch(e){}
+      }
       if (b.racketLayout && window.SRF && SRF.applyLayout) SRF.applyLayout(b.racketLayout);
       if (b.stringLayout && window.SRF && SRF.sbApply)     SRF.sbApply(b.stringLayout);
       note("imported — bench restored from " + (b.exported||"file").slice(0,10));
@@ -5092,8 +5261,16 @@ function buildGrid(){
     r.s.forEach((v,i) => {
       const [bg, fg] = cellColor(v);
       const ring = SEL.has(i) ? `box-shadow:inset 0 0 0 1.5px ${SEL.get(i)===1?"var(--magenta)":"var(--cyan)"};` : "";
-      const gh=(r.feel&&r.stockS&&r.stockS[i]!==v)?r.stockS[i]:((r.cust&&r.stock&&r.stock.s[i]!==v)?r.stock.s[i]:null);
-      h += `<div role="cell" class="cell${v>=10?" tencell":""}"${v>=10?` data-v="${v}"`:""} data-cat="${cats[i]}" data-val="${v}" style="position:relative;background:${bg};color:${fg};${ring}text-align:center;padding:7px 2px;border-radius:3px;font-weight:500;font-size:12px;">${v}${gh!=null?`<i class="stckv" title="stock: ${gh}">${gh}</i>`:""}</div>`;
+      /* your own number wins the ghost slot: it is the more recent decision, and
+         seeing what you overruled matters more here than the stock reading */
+      const mine = r.baseS && r.baseS[i] !== v ? r.baseS[i] : null;
+      const gh = mine != null ? mine
+        : ((r.feel&&r.stockS&&r.stockS[i]!==v)?r.stockS[i]:((r.cust&&r.stock&&r.stock.s[i]!==v)?r.stock.s[i]:null));
+      h += `<div role="cell" tabindex="0" class="cell${v>=10?" tencell":""}${mine!=null?" mycell":""}"${v>=10?` data-v="${v}"`:""} data-cat="${cats[i]}" data-val="${v}" ` +
+        `title="${esc(cats[i])} ${v}/10 \u2014 click to set your own" ` +
+        `onclick="srfScorePop('racket',${r.no},${i},event)" ` +
+        `onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();srfScorePop('racket',${r.no},${i},event);}" ` +
+        `style="position:relative;background:${bg};color:${fg};${ring}text-align:center;padding:7px 2px;border-radius:3px;font-weight:500;font-size:12px;">${v}${gh!=null?`<i class="stckv" title="${mine!=null?"estimated":"stock"}: ${gh}">${gh}</i>`:""}</div>`;
     });
     h += diffCell(r.d, sortIdx==="d");
   });
@@ -6019,8 +6196,8 @@ function mobileCards(rows, total){
   let tot; try{ tot = w.reduce((a,b)=>a+b,0)||1; }catch(e){ return; }   // weights not up yet — render() calls back
   el.innerHTML = window.srfLimitBar("racket", total || rows.length, "rkLimSet") + rows.map((r,n)=>{
     const grid = r.s.map((v,i)=>{ const [bg,fg]=cellColor(v);
-      const gh=(r.feel&&r.stockS&&r.stockS[i]!==v)?r.stockS[i]:((r.cust&&r.stock&&r.stock.s[i]!==v)?r.stock.s[i]:null);
-      return `<div class="scell" style="position:relative;background:${bg};color:${fg};"><i>${catsShort[i]}</i><b>${v}</b>${gh!=null?`<i class="stckv" title="stock: ${gh}">${gh}</i>`:""}</div>`; }).join("")
+      const gh=(r.baseS&&r.baseS[i]!==v)?r.baseS[i]:((r.feel&&r.stockS&&r.stockS[i]!==v)?r.stockS[i]:((r.cust&&r.stock&&r.stock.s[i]!==v)?r.stock.s[i]:null));
+      return `<div class="scell${r.baseS&&r.baseS[i]!==v?" mycell":""}" role="button" tabindex="0"         title="${esc(cats[i])} ${v}/10 — tap to set your own"         onclick="srfScorePop('racket',${r.no},${i},event)"         style="position:relative;background:${bg};color:${fg};"><i>${catsShort[i]}</i><b>${v}</b>${gh!=null?`<i class="stckv" title="stock: ${gh}">${gh}</i>`:""}</div>`; }).join("")
       + `<div class="scell tri"><i>Diff</i>${diffCell(r.d,false).match(/<svg.*<\/svg>/s)[0]}</div>`;
     return `<article class="mcard">
       <header>
@@ -6821,6 +6998,23 @@ window.SRF = window.SRF || {};
 /* the shelf picker asks for these three; keeping them here means the popup never
    has to know how a shelf is stored, and a shelf invented through it is registered
    exactly the way the transfer-specs panel registers one. */
+/* what the stepper needs to draw itself, and the one writer that changes a score */
+window.rkScoreInfo = (no, i) => {
+  const r = rk.find(x => x.no === no); if (!r) return null;
+  return { label: cats[i], value: r.s[i], base: r.baseS ? r.baseS[i] : null };
+};
+window.rkSetScore = (no, i, v) => {
+  const r = rk.find(x => x.no === no); if (!r) return;
+  window.srfMyPut("racket", r, i, v);
+  window.srfMyApplyRow("racket", r);
+  /* a hand-set number is no longer an estimate: drop the bronze "est." flag once
+     nothing on the row is derived any more, so the badge never overstates. */
+  if (r.est === true && r.baseS && r.baseS.some((b, k) => b !== r.s[k])) r.est = "part";
+  if (!r.baseS && r.est === "part") r.est = true;
+  rkRepaint();
+  try { onLayoutChange(window.SRF.layout()); } catch(e){}
+};
+window.rkApplyMy = () => { rk.forEach(r => window.srfMyApplyRow("racket", r)); };
 window.rkGroupOptions = () => Object.keys(G).map(k => ({ key:k, label:G[k][1], color:G[k][0] }));
 window.rkGroupOf = (no) => { const r = rk.find(x => x.no === no); return r ? r.g : ""; };
 window.rkSetGroup = (no, key) => {
@@ -7880,6 +8074,28 @@ const SB_TAGOPTS = [["mine","my beds \u2014 currently strung"], ["benchmark","my
                     ["validated","court-validated"], ["tested","court-tested"],
                     ["queued","queued \u2014 string next"], ["researched","researched"],
                     ["ref","reference only"]];
+window.sbScoreInfo = (i, ax) => {
+  const b = beds[i]; if (!b) return null;
+  return { label: AX[ax], value: b.s[ax], base: b.baseS ? b.baseS[ax] : null };
+};
+window.sbSetScore = (i, ax, v) => {
+  const b = beds[i]; if (!b) return;
+  window.srfMyPut("string", b, ax, v);
+  window.srfMyApplyRow("string", b);
+  /* the dagger means "re-derived for this rebuild" — untrue of an axis you set
+     yourself, so it comes off that axis and comes back if you revert */
+  if (Array.isArray(b.est)){
+    const derived = !b.baseS || b.baseS[ax] === b.s[ax];
+    if (!derived) b.est = b.est.filter(x => x !== ax);
+    else if (!b.est.includes(ax) && Array.isArray(b.estBase) && b.estBase.includes(ax)) b.est = b.est.concat(ax).sort((x,y)=>x-y);
+  }
+  sbRepaint();
+  try { if (sbOnChange) sbOnChange(window.SRF.sbLayout()); } catch(e){}
+};
+window.sbApplyMy = () => { beds.forEach(b => {
+  if (Array.isArray(b.est) && !b.estBase) b.estBase = b.est.slice();   // remember which axes were derived
+  window.srfMyApplyRow("string", b);
+}); };
 window.sbTagOptions = () => SB_TAGOPTS.map(([k, label]) => ({
   key: k, label, color: (SBG[k] && SBG[k][0]) || "var(--muted)" }));
 window.sbTagOf = (i) => { const b = beds[i]; return b ? (b.tag || "ref") : ""; };
@@ -7890,6 +8106,79 @@ window.sbSetTag = (i, key) => {
   buildGrid(); buildSbSpecs();
   try { if (sbOnChange) sbOnChange(window.SRF.sbLayout()); } catch(e){}
 };
+/* ---------- "my feel" for beds — see the racket bench's FEEL_KEY block ----------
+   Same contract: the stock row is never touched, your read is a second row that
+   ranks like any other bed, and the cell corners keep the stock numbers. Keyed by
+   NAME (srfRecKey) rather than row number, because adding a bed renumbers the
+   array and an index key would drift onto a different bed. The tension suffix is
+   part of the name, so two builds of one string at different tensions keep
+   separate feels — which is exactly right: they play differently. */
+const SB_FEEL_KEY = "srf:sbfeel";
+let sbFKey = null;
+const sbFeelLoad = () => { try { return JSON.parse(localStorage.getItem(SB_FEEL_KEY) || "{}"); } catch(e){ return {}; } };
+const sbFeelPersist = (m) => { try { localStorage.setItem(SB_FEEL_KEY, JSON.stringify(m)); } catch(e){} };
+const sbFeelKeyOf = (b) => window.srfRecKey ? srfRecKey("string", b) : "";
+const sbFeelRowOf = (key) => beds.find(x => x.feelOf === key);
+const sbFeelName = (b) => b.m + (b.x && !/full bed/i.test(String(b.x)) ? " \u00d7 " + b.x : "");
+function sbMkFeelRow(base, vals){
+  const row = { m: base.m + " \u00b7 my feel", x: base.x,
+    s: vals.slice(), stockS: base.s.slice(), feel: true, feelOf: sbFeelKeyOf(base),
+    mt: base.mt, ct: base.ct, tag: base.tag || "", note: "",
+    est: [] };          // your reading is not derived — a feel row carries no daggers
+  beds.push(row);       // END of the array — append-only, like every other add
+  return row;
+}
+window.sbFOpen = (i) => {
+  const base = beds[i]; if (!base) return;
+  if (base.feel){                                  // "edit feel" pressed on the feel row itself
+    const orig = beds.find(x => !x.feel && sbFeelKeyOf(x) === base.feelOf);
+    if (orig) return window.sbFOpen(beds.indexOf(orig));
+    return;
+  }
+  sbFKey = sbFeelKeyOf(base);
+  const row = sbFeelRowOf(sbFKey);
+  const cur = row ? row.s : base.s;
+  document.getElementById("sb_f_title").textContent = "Adjust to my feel \u2014 " + sbFeelName(base);
+  document.getElementById("sb_f_removeBtn").style.display = row ? "" : "none";
+  document.getElementById("sb_f_err").textContent = "";
+  document.getElementById("sb_f_rows").innerHTML = AX.map((c, k) =>
+    `<div class="fp_row"><span class="slabel">${c}</span>` +
+    `<input class="a3-slider" type="range" min="1" max="10" step="0.5" value="${cur[k]}" data-fi="${k}" ` +
+      `oninput="fRowPaint(this)" aria-label="${c} \u2014 my feel">` +
+    `<span class="wv">${cur[k]}</span>` +
+    `<span class="fp_stock">stock ${base.s[k]}</span></div>`).join("");
+  document.querySelectorAll("#sb_f_rows .a3-slider").forEach(el => fRowPaint(el, true));
+  document.getElementById("sb_f_panel").classList.add("open");
+};
+window.sbFClose = () => { document.getElementById("sb_f_panel").classList.remove("open"); sbFKey = null; };
+window.sbFSave = () => {
+  const base = beds.find(x => !x.feel && sbFeelKeyOf(x) === sbFKey); if (!base) return;
+  const vals = [...document.querySelectorAll("#sb_f_rows .a3-slider")].map(el => parseFloat(el.value));
+  if (vals.length !== AX.length){ document.getElementById("sb_f_err").textContent = "Something went missing \u2014 reopen the panel."; return; }
+  let row = sbFeelRowOf(sbFKey);
+  if (row){ row.s = vals.slice(); row.stockS = base.s.slice(); }
+  else row = sbMkFeelRow(base, vals);
+  const store = sbFeelLoad(); store[sbFKey] = { s: vals, date: new Date().toISOString().slice(0,10) };
+  sbFeelPersist(store);
+  sbFClose(); buildGrid(); buildSbSpecs();
+  try { if (sbOnChange) sbOnChange(window.SRF.sbLayout()); } catch(e){}
+};
+window.sbFRemove = () => {
+  const row = sbFeelRowOf(sbFKey);
+  if (row){ const i = beds.indexOf(row); if (i >= 0) beds.splice(i, 1); }   // feel rows sit after every original, so no index shifts
+  const store = sbFeelLoad(); delete store[sbFKey]; sbFeelPersist(store);
+  sbFClose(); buildGrid(); buildSbSpecs();
+  try { if (sbOnChange) sbOnChange(window.SRF.sbLayout()); } catch(e){}
+};
+/* boot: rebuild saved feel rows exactly as the member left them */
+(function sbReapplyFeels(){
+  const store = sbFeelLoad();
+  Object.keys(store).forEach(k => {
+    const base = beds.find(b => !b.feel && sbFeelKeyOf(b) === k);
+    if (base && !sbFeelRowOf(k) && Array.isArray(store[k].s) && store[k].s.length === AX.length)
+      sbMkFeelRow(base, store[k].s);
+  });
+})();
 window.sbRepaint = () => { try { buildGrid(); buildSbSpecs(); } catch(e){} };
 window.SRF.sbEstimate = (...a) => sbEstimate(...a);
 window.SRF.sbLabRowFor = (q) => sbLabRowFor(q);
@@ -7999,7 +8288,7 @@ function buildGrid(){
     if(sortIdx==="g" && !SBSEL.size && SB_GCOLL.has(gkey(b))) return;
     const col=rowColor(b);
     h+=`<div role="cell" class="namecell" data-bi="${b.i}" style="display:flex;flex-direction:column;justify-content:center;padding:5px 4px;line-height:1.25;border-left:3px solid color-mix(in srgb, ${col} 55%, transparent);">
-          <span style="font-weight:500;"><span style="color:var(--muted);font-weight:400;font-size:10px;">No. ${b.no}</span> ${cmpBox("string", b.i)}<span class="custname" role="button" tabindex="0" onclick="sbOpen(${b.i})" onkeydown="if(event.key==='Enter'){sbOpen(${b.i});}" onmouseenter="noteHoverIn(noteBed,${b.i},event)" onmouseleave="noteHoverOut()" title="claim this bed — hover for play notes" style="color:var(--bright);">${b.m}</span><button type="button" class="infobtn" aria-label="play notes" onclick="event.stopPropagation();noteBed(${b.i},event)">ⓘ</button>${(sbTop.indexOf(b.i)>=0)?`<span class="medal ${["mG","mS","mB"][sbTop.indexOf(b.i)]}" title="your #${sbTop.indexOf(b.i)+1} suggestion — same as your suggestions">${sbTop.indexOf(b.i)+1}</span>`:""}${b.i === sbBudgetI ? SB_EURO : ""}${window.buyBtn("string", String(b.m).split(" \u00b7 ")[0], true, "buy", true)}</span>
+          <span style="font-weight:500;"><span style="color:var(--muted);font-weight:400;font-size:10px;">No. ${b.no}</span> ${cmpBox("string", b.i)}<span class="custname" role="button" tabindex="0" onclick="sbOpen(${b.i})" onkeydown="if(event.key==='Enter'){sbOpen(${b.i});}" onmouseenter="noteHoverIn(noteBed,${b.i},event)" onmouseleave="noteHoverOut()" title="claim this bed — hover for play notes" style="color:var(--bright);">${b.m}</span><button type="button" class="infobtn" aria-label="play notes" onclick="event.stopPropagation();noteBed(${b.i},event)">ⓘ</button><button type="button" class="custbtn feelbtn" aria-label="re-score this bed to your feel" onclick="event.stopPropagation();sbFOpen(${b.i})">${b.feel?"edit feel":"my feel"}</button>${b.feel?`<span class="custchip feelchip" title="your own read — the stock row is still on the bench">my feel</span>`:""}${(sbTop.indexOf(b.i)>=0)?`<span class="medal ${["mG","mS","mB"][sbTop.indexOf(b.i)]}" title="your #${sbTop.indexOf(b.i)+1} suggestion — same as your suggestions">${sbTop.indexOf(b.i)+1}</span>`:""}${b.i === sbBudgetI ? SB_EURO : ""}${window.buyBtn("string", String(b.m).split(" \u00b7 ")[0], true, "buy", true)}</span>
           <span style="color:var(--muted);font-size:10px;">× ${b.x}${b.mt?` · ${b.mt}${b.ct?"/"+b.ct:""} kg`:""}</span>${tagChip(b)}${window.srfRecChip("string",b)}
           ${b.note?`<span class="custchip" title="${String(b.note).replace(/"/g,'&quot;')}">noted</span>`:""}${b.twin?`<span class="custchip" style="color:var(--amber);background:color-mix(in srgb, var(--amber) 14%, transparent);" title="identical derived stats to ${String(b.twin).replace(/"/g,'&quot;')} \u2014 reopen transfer specs and add stiffness, shape or gauge to separate them">twin est.</span>`:""}</div>`;
     h+=`<div role="cell" class="spdcell" style="display:flex;align-items:center;justify-content:center;">${spiderIcon("string", b.i, b.s)}</div>`;
@@ -8010,7 +8299,14 @@ function buildGrid(){
       const [bg,fg]=cellColor(v);
       const ring = SBSEL.has(i) ? `box-shadow:inset 0 0 0 1.5px ${SBSEL.get(i)===1?"var(--magenta)":"var(--cyan)"};` : "";
       const est  = (b.est||[]).includes(i) ? `<span class="est" title="re-derived for this rebuild">†</span>` : "";
-      h+=`<div role="cell" class="cell${v>=10?" tencell":""}"${v>=10?` data-v="${v}"`:""} data-cat="${AX[i]}" data-val="${v}" style="background:${bg};color:${fg};${ring}text-align:center;padding:7px 2px;border-radius:3px;font-weight:500;font-size:12px;">${v}${est}</div>`;
+      const mine = b.baseS && b.baseS[i] !== v ? b.baseS[i] : null;
+      /* a feel row keeps the STOCK read in the corner, exactly like the racket bench */
+      const gstk = mine == null && b.feel && b.stockS && b.stockS[i] !== v ? b.stockS[i] : null;
+      h+=`<div role="cell" tabindex="0" class="cell${v>=10?" tencell":""}${mine!=null?" mycell":""}"${v>=10?` data-v="${v}"`:""} data-cat="${AX[i]}" data-val="${v}" ` +
+        `title="${esc(AX[i])} ${v}/10 \u2014 click to set your own" ` +
+        `onclick="srfScorePop('string',${b.i},${i},event)" ` +
+        `onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();srfScorePop('string',${b.i},${i},event);}" ` +
+        `style="position:relative;background:${bg};color:${fg};${ring}text-align:center;padding:7px 2px;border-radius:3px;font-weight:500;font-size:12px;">${v}${mine!=null?`<i class="stckv" title="estimated: ${mine}">${mine}</i>`:gstk!=null?`<i class="stckv" title="stock: ${gstk}">${gstk}</i>`:est}</div>`;
     });
     h+=sbDiffCell(bedDemand(b), sortIdx==='d');
     h+=`<div role="cell" style="display:flex;align-items:center;justify-content:center;color:var(--bright);font-weight:600;font-size:13px;">${b.idx.toFixed(1)}</div>`;
@@ -8230,13 +8526,13 @@ function sbMobileCards(rows, total){
   const el=document.getElementById("sb_gridM"); if(!el) return;
   el.innerHTML = window.srfLimitBar("string", total || rows.length, "sbLimSet") + rows.map((b,n)=>{
     const grid = b.s.map((v,i)=>{ const [bg,fg]=cellColor(v);
-      return `<div class="scell" style="background:${bg};color:${fg};"><i>${AXshort[i]}</i><b>${v}</b></div>`; }).join("")
+      return `<div class="scell${b.baseS&&b.baseS[i]!==v?" mycell":""}" role="button" tabindex="0"         title="${esc(AX[i])} ${v}/10 — tap to set your own"         onclick="srfScorePop('string',${b.i},${i},event)"         style="position:relative;background:${bg};color:${fg};"><i>${AXshort[i]}</i><b>${v}</b>        ${b.baseS&&b.baseS[i]!==v?`<i class="stckv" title="estimated: ${b.baseS[i]}">${b.baseS[i]}</i>`:b.feel&&b.stockS&&b.stockS[i]!==v?`<i class="stckv" title="stock: ${b.stockS[i]}">${b.stockS[i]}</i>`:""}</div>`; }).join("")
       + `<div class="scell tri"><i>Dem</i>${sbDiffCell(bedDemand(b),false).match(/<svg.*<\/svg>/s)[0]}</div>`;
     const pr=bedPrice(b);
     return `<article class="mcard">
       <header>
         <div class="who">
-          <div class="nm">${cmpBox("string", b.i)}${n+1}. ${esc(b.m)}${window.buyBtn("string", String(b.m).split(" \u00b7 ")[0], true)}${b.twin?`<span class="custchip" style="color:var(--amber);background:color-mix(in srgb, var(--amber) 14%, transparent);" title="identical derived stats to ${String(b.twin).replace(/"/g,'&quot;')}">twin est.</span>`:""}<button type="button" class="infobtn" aria-label="play notes" onclick="noteBed(${b.i},event)">ⓘ</button>${spiderIcon("string", b.i, b.s)}</div>
+          <div class="nm">${cmpBox("string", b.i)}${n+1}. ${esc(b.m)}${window.buyBtn("string", String(b.m).split(" \u00b7 ")[0], true)}${b.twin?`<span class="custchip" style="color:var(--amber);background:color-mix(in srgb, var(--amber) 14%, transparent);" title="identical derived stats to ${String(b.twin).replace(/"/g,'&quot;')}">twin est.</span>`:""}<button type="button" class="infobtn" aria-label="play notes" onclick="noteBed(${b.i},event)">ⓘ</button><button type="button" class="custbtn feelbtn" aria-label="re-score this bed to your feel" onclick="event.stopPropagation();sbFOpen(${b.i})">${b.feel?"edit feel":"my feel"}</button>${spiderIcon("string", b.i, b.s)}</div>
           <div class="sp">\u00d7 ${esc(b.x)}${b.mt?` \u00b7 ${b.mt}${b.ct?"/"+b.ct:""} kg`:""}</div>
         </div>
         <div class="pr">
@@ -9679,6 +9975,10 @@ document.addEventListener("DOMContentLoaded", () => {
      first paint. Without the redraw the bench would open in pure-score order and only
      snap onto the podium at the next interaction. */
   try {
+    /* re-apply saved ratings BEFORE the first repaint below, so the bench opens
+       showing your numbers rather than flashing the estimates first */
+    try { if (window.rkApplyMy) rkApplyMy(); } catch(e){}
+    try { if (window.sbApplyMy) sbApplyMy(); } catch(e){}
     if (!document.getElementById("srf_legal")){
       const lf = document.createElement("div");
       lf.id = "srf_legal"; lf.className = "srflegal";
