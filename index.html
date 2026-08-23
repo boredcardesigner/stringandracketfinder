@@ -1580,6 +1580,10 @@
   .axpop_c{ font-size:12px; line-height:1.55; color:var(--muted); margin-top:7px; }
   .axpop_f{ font-size:10.5px; color:var(--muted); margin-top:9px; padding-top:7px;
             border-top:1px dashed color-mix(in srgb, var(--fg) 18%, transparent); }
+  /* the intermediate card lists, docked into pro between priorities and chapters */
+  #pro_cards_home{ display:block; background:var(--card); border-radius:12px;
+                   padding:1.1rem 1.25rem; margin:0 0 14px; }
+  #pro_cards_home:empty{ display:none; padding:0; margin:0; }
   /* overall score on the mobile racket cards — mirrors the string cards' idx badge */
   .mcard .ovv{ font-size:11px; font-weight:700; color:var(--cyan);
                background:color-mix(in srgb, var(--cyan) 13%, transparent);
@@ -1914,7 +1918,7 @@
   /* the popup floats above the rows and never reflows them */
   #spiderpop{ position:fixed; inset:0; z-index:80; display:none; }
   #spiderpop.on{ display:block; }
-  #spiderpop .sp_card{ color:var(--fg); position:absolute; width:330px; max-width:calc(100vw - 20px);
+  #spiderpop .sp_card{ color:var(--fg); position:absolute; width:430px; max-width:calc(100vw - 20px);
     box-sizing:border-box; background:var(--card2);
     border:1px solid color-mix(in srgb, var(--cyan) 45%, transparent);
     border-radius:14px; padding:12px 14px 14px;
@@ -2284,17 +2288,19 @@
   </div>
 
   <div class="mid_card">
+    <span id="benchCardsHome" style="display:contents;"><div id="benchCards">
     <div id="mid_rsSlot"></div>
     <div class="mid_h" style="margin-top:0;">your rackets <small id="mid_rn"></small>
       <span class="modeseg" style="margin-left:auto;" role="group" aria-label="view">
         <button type="button" class="modebtn" aria-pressed="true">cards</button>
-        <button type="button" class="modebtn" onclick="setMode('pro')" title="the full table is the pro bench">full table &rarr;</button></span></div>
+        <button type="button" class="modebtn" onclick="srfFullTable()" title="the full table is the pro bench">full table &rarr;</button></span></div>
     <div id="mid_fr" class="mid_grid"></div>
     <div class="cmpbar" id="cmpbar2_racket" role="region" aria-label="frames selected to compare"></div>
     <div id="mid_ssSlot"></div>
     <div class="mid_h">your strings <small id="mid_sn"></small></div>
     <div id="mid_bd" class="mid_grid"></div>
     <div class="cmpbar" id="cmpbar2_string" role="region" aria-label="beds selected to compare"></div>
+    </div></span>
     <div class="mid_foot"><span id="mid_live" style="color:var(--cyan);"></span>
       Live with every drag &middot; one engine everywhere: your answers gate, arm-friendly guards the medals, the calibrator pairs. Nothing is scored twice.
       <span style="opacity:.7;">&middot; build mid-2</span></div>
@@ -2514,6 +2520,7 @@
       <div id="pro_sbslot"></div></div>
   </div>
 </div>
+<div id="pro_cards_home"></div>
 <div class="chapbar" data-chap="rk" role="button" tabindex="0" aria-expanded="false"
      onclick="srfChapToggle('rk')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();srfChapToggle('rk');}">
   <span class="chev">▸</span><span class="chapt azonix">racket test bench</span>
@@ -3445,6 +3452,21 @@ window.srfSearchDock = (m) => {
       const t = document.getElementById(SLOT[m] ? SLOT[m][i] : home);
       if (t && b.parentElement !== t) t.appendChild(b);
     });
+};
+/* The intermediate card lists ("your rackets" / "your strings" with medals and the
+   budget pick) are ONE component too: pro docks the very same nodes above its
+   chapters, so the two modes show the identical answer and cannot drift apart. */
+window.srfCardsDock = (m) => {
+  const b = document.getElementById("benchCards"); if (!b) return;
+  const t = document.getElementById(m === "pro" ? "pro_cards_home" : "benchCardsHome");
+  if (t && b.parentElement !== t) t.appendChild(b);
+};
+/* the "full table" toggle on the racket card header: in intermediate it jumps to
+   pro; inside pro it opens the racket chapter instead of reloading the mode */
+window.srfFullTable = () => {
+  if (document.body.classList.contains("mode-pro")){
+    if (window.srfNavGo) srfNavGo("rk", "chap");
+  } else setMode("pro");
 };
 /* Slider track colours, shared by all three benches.
    The filled half is the theme accent, but three palettes (obsidian x2, ultramarine
@@ -4682,7 +4704,7 @@ function cmpRender(kind, items, keepScroll){
       : "") +
     `<div class="cmp_dials">` + items.map((it,n) =>
       `<figure class="cmp_dial"><figcaption style="color:${CMP_HUES[n%5]};">${esc(it.name)}</figcaption>` +
-      spiderSVG(it.s.concat(it.diff), null, { size:230, labels:it.labelsShort, mono:CMP_HUES[n%5] }) +
+      spiderSVG(it.s.concat(it.diff), null, { size:320, pad:86, labelR:11.15, labelSize:8.5, labels:it.labelsShort, mono:CMP_HUES[n%5] }) +
       `</figure>`).join("") + `</div>`;
 
   const curves =
@@ -4716,7 +4738,9 @@ document.addEventListener("keydown", e => { if (e.key === "Escape") cmpClose(); 
 
 /* several profiles on one dial — each in its own flat colour, no fills competing */
 function spiderOverlay(items, hues, labels){
-  const size = 360, cx = size/2, cy = size/2, R = size/2 - 46;
+  /* full-word axis labels need a wide margin: the canvas grew and the labels sit
+     just outside the rim, so "Maneuverability" and "Arm friendliness" never clip */
+  const size = 500, cx = size/2, cy = size/2, R = size/2 - 108;
   const n = items[0].s.length + 1;
   const pt = (i,v) => { const a=-Math.PI/2 + i*2*Math.PI/n, r=R*(v/10);
                         return [cx+Math.cos(a)*r, cy+Math.sin(a)*r]; };
@@ -4728,10 +4752,10 @@ function spiderOverlay(items, hues, labels){
   for (let i=0;i<n;i++){ const [x,y]=pt(i,10);
     web += `<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" ` +
            `stroke="var(--fg)" stroke-opacity="0.09" stroke-width="0.7"/>`; }
-  const lab = (labels||[]).map((t,i)=>{ const [x,y]=pt(i,11.9);
+  const lab = (labels||[]).map((t,i)=>{ const [x,y]=pt(i,11.2);
     const anchor = Math.abs(x-cx)<6 ? "middle" : (x>cx?"start":"end");
     return `<text x="${x.toFixed(1)}" y="${(y+3).toFixed(1)}" text-anchor="${anchor}" ` +
-      `font-family="system-ui,sans-serif" font-size="9" fill="var(--fg)" opacity="0.6">${esc(t)}</text>`;
+      `font-family="system-ui,sans-serif" font-size="10" fill="var(--fg)" opacity="0.68">${esc(t)}</text>`;
   }).join("");
   const shapes = items.map((it,k) => {
     const vals = it.s.concat(it.diff);
@@ -4758,7 +4782,7 @@ function cmpItem(kind, id){
                          : ((window.SRF && SRF.frameFull) ? SRF.frameFull(id) : null);
     if (!r) return null;
     return { name:`${r.b} ${r.n}`, s:r.s.slice(), diff:r.d,
-      labelsShort:["Ctrl","Prec","Spin","Pwr","Feel","Stab","Man","Serve","Smsh","Slice","Ret","Diff"],
+      labelsShort:["Control","Precision","Spin","Power","Feel","Stability","Maneuverability","Serve","Smash","Slice","Return","Difficulty"],
       axes:(window.SRF.axisLabels ? SRF.axisLabels() : []),
       specs:[r.sp[0], r.sp[1], r.sp[2], r.sp[3], r.sp[4], r.sp[5], r.d, r.p ? "~"+r.p+"\u20ac" : ""],
       specLabels:["weight","head","pattern","stiffness","swingweight","balance","difficulty","\u00d8 price"] };
@@ -4767,7 +4791,7 @@ function cmpItem(kind, id){
   const b = xr ? xr.bed : ((window.SRF && SRF.bedFull) ? SRF.bedFull(id) : null);
   if (!b) return null;
   return { name:/full bed/i.test(b.x||"") ? b.m : `${b.m} \u00d7 ${b.x}`, s:b.s.slice(), diff:b.demand,
-    labelsShort:["Spin","Pwr","Ctrl","Prec","Feel","Sound","Long","Arm","Dem"],
+    labelsShort:["Spin","Power","Control","Precision","Feel","Sound","Longevity","Arm friendliness","Demand"],
     axes:b.axes || ["spin","power","control","precision","feel","sound","longevity","arm friendliness"],
     specs:[b.mt||"", b.ct||"", b.demand, b.idx != null ? b.idx.toFixed(1) : "",
            b.price || (xr && xr.tech && xr.tech.priceV != null ? "~" + xr.tech.priceV + "\u20ac" : "")],
@@ -4857,11 +4881,11 @@ function spiderSVG(vals, target, opts){
            `stroke="var(--fg)" stroke-opacity="0.10" stroke-width="0.7"/>`;
   }
   const labels = (opts.labels || []).map((t,i) => {
-    const [x,y] = pt(i, 11.9);
+    const [x,y] = pt(i, opts.labelR || 11.9);
     const anchor = Math.abs(x-cx) < 6 ? "middle" : (x > cx ? "start" : "end");
     const isLast = (i === n-1);
     return `<text x="${x.toFixed(1)}" y="${(y+3).toFixed(1)}" text-anchor="${anchor}" ` +
-      `font-family="system-ui,sans-serif" font-size="8.5" ` +
+      `font-family="system-ui,sans-serif" font-size="${opts.labelSize || 8.5}" ` +
       `fill="${isLast ? `color-mix(in srgb, ${spiderDiffColor()} 60%, var(--fg))` : "var(--fg)"}" ` +
       `opacity="${isLast?1:0.62}">${esc(t)}</text>`;
   }).join("");
@@ -4931,7 +4955,7 @@ window.spiderOpen = (kind, id, ev) => {
     `<div class="sp_card">` +
       `<div class="sp_head"><span class="sp_title">${esc(d.name)}</span>` +
         `<button type="button" class="pn_x" aria-label="close" onclick="spiderClose()">\u00d7</button></div>` +
-      spiderSVG(d.vals, d.target, { size: 300, labels: d.labels }) +
+      spiderSVG(d.vals, d.target, { size: 480, pad: 104, labelR: 11.2, labelSize: 10, labels: d.labels }) +
       `<div class="sp_key">` +
         `<span><i class="k_act"></i>this ${kind === "racket" ? "frame" : "bed"}</span>` +
         `<span><i class="k_tgt"></i>your slider setting</span>` +
@@ -4943,12 +4967,12 @@ window.spiderOpen = (kind, id, ev) => {
   if (ev && ev.currentTarget){
     const r = ev.currentTarget.getBoundingClientRect();
     const card = el.querySelector(".sp_card");
-    const w = 330;
+    const w = Math.min(430, window.innerWidth - 20);
     let left = r.right + 12;
     if (left + w > window.innerWidth - 10) left = Math.max(10, r.left - w - 12);
     card.style.left = left + "px";
     let top = r.top - 40;
-    top = Math.max(10, Math.min(top, window.innerHeight - 430));
+    top = Math.max(10, Math.min(top, window.innerHeight - 540));
     card.style.top = top + "px";
   }
 };
@@ -4962,18 +4986,18 @@ function spiderData(kind, id){
                          : ((window.SRF && SRF.frameFull) ? SRF.frameFull(id) : null);
     if (!r) return null;
     const ax = (window.SRF.axisLabels ? SRF.axisLabels() : []);
-    const short = ["Ctrl","Prec","Spin","Pwr","Feel","Stab","Man","Serve","Smsh","Slice","Ret"];
+    const short = ["Control","Precision","Spin","Power","Feel","Stability","Maneuverability","Serve","Smash","Slice","Return"];
     return { name:`${r.b} ${r.n}`, vals:[...r.s, r.d],
-             labels:[...short.slice(0, r.s.length), "Diff"],
+             labels:[...short.slice(0, r.s.length), "Difficulty"],
              target:(window.SRF.weights ? [...SRF.weights(), r.d] : null) };
   }
   const b = id >= 5000 ? ((midXget(id) || {}).bed || null)
                        : ((window.SRF && SRF.bedFull) ? SRF.bedFull(id) : null);
   if (!b) return null;
-  const short = ["Spin","Pwr","Ctrl","Prec","Feel","Sound","Long","Arm"];
+  const short = ["Spin","Power","Control","Precision","Feel","Sound","Longevity","Arm friendliness"];
   return { name:b.m + (/full bed/i.test(b.x||"") ? "" : ` \u00d7 ${b.x}`),
            vals:[...b.s, b.demand],
-           labels:[...short.slice(0, b.s.length), "Dem"],
+           labels:[...short.slice(0, b.s.length), "Demand"],
            target:(window.SRF.sbWeights ? [...SRF.sbWeights(), b.demand] : null) };
 }
 document.addEventListener("keydown", e => { if (e.key === "Escape") spiderClose(); });
@@ -6600,6 +6624,8 @@ function render(){
   seedGridMedals(scored, meds, budgetNo);
   paintWinners(scored);
   if (window.paintSetups4) paintSetups4();   // the four finished setups follow the sliders live
+  /* the docked card lists follow every drag in pro exactly as they do in intermediate */
+  if (document.body.classList.contains("mode-pro") && window.midPaint) midPaint();
   if (window.srfSeedFlags) srfSeedFlags();
 }
 /* ---------- weighted-ranking filter (racket department) ----------
@@ -6946,6 +6972,8 @@ buildSpecs();
 let cNo=null;
 function cFrame(){ return rk.find(r=>r.no===cNo); }
 const C_SHORT = ["Ctrl","Prec","Spin","Pwr","Feel","Stab","Man","Serve","Smsh","Slice","Ret","Diff"];
+/* the customize panel's dials write the words out too — same rule as every spider */
+const C_SHORT_FULL = ["Control","Precision","Spin","Power","Feel","Stability","Maneuverability","Serve","Smash","Slice","Return","Difficulty"];
 /* the values the panel OPENED with. Some bench scores are curated by hand, so re-running
    the estimator on identical numbers can shift a point or two — comparing against this
    baseline keeps the preview quiet until the player actually changes something. */
@@ -7039,8 +7067,8 @@ window.cPreview = () => {
   host.innerHTML =
     `<div class="c_ph">preview — the frame you have vs the frame you would own</div>` +
     `<div class="c_sprow">` +
-      `<div class="c_spcol"><div class="c_pt">before</div>${spiderSVG(bv, null, { size: 205, labels: C_SHORT })}${perfCurve(before.s, 200, 44)}</div>` +
-      `<div class="c_spcol"><div class="c_pt">${touched ? "after" : "after — describe the mod or type numbers"}</div>${spiderSVG(av, touched ? bv : null, { size: 205, labels: C_SHORT })}${perfCurve(after.s, 200, 44)}</div>` +
+      `<div class="c_spcol"><div class="c_pt">before</div>${spiderSVG(bv, null, { size: 300, pad: 82, labelR: 11.15, labelSize: 8.5, labels: C_SHORT_FULL })}${perfCurve(before.s, 200, 44)}</div>` +
+      `<div class="c_spcol"><div class="c_pt">${touched ? "after" : "after — describe the mod or type numbers"}</div>${spiderSVG(av, touched ? bv : null, { size: 300, pad: 82, labelR: 11.15, labelSize: 8.5, labels: C_SHORT_FULL })}${perfCurve(after.s, 200, 44)}</div>` +
     `</div>` + lbls + heat(bv, bv, "now") + heat(av, bv, "new");
   // ---- the verdict, in sentences: physics first, playability second, stats last
   if (badW){ prose.textContent = "The weight needs to be a plain number — 329, not " + wv + " — before the preview can score it."; return; }
@@ -8716,6 +8744,7 @@ function buildGrid(){
        : (sortIdx==="idx"?"ranked by index":sortIdx==="p"?"ranked by price":sortIdx==="d"?"ranked by demand":"recommended order")+(SBDIR===-1?" — highest first":" — lowest first")))
     + window.srfRecNote("string", beds);
   if (window.sbPaintLegend) sbPaintLegend();
+  if (document.body.classList.contains("mode-pro") && window.midPaint) midPaint();   // keep the docked string cards live
 }
 
 /* ---------- weighted-ranking filter (string department) ----------
@@ -10769,6 +10798,8 @@ window.setMode = (m) => {
   if (mode === "mid"){ introPaint(); if (window.midPaint) midPaint(); }
   if (mode === "pro" && typeof calRun === "function") calRun();
   if (mode === "pro" && window.paintSetups4) paintSetups4();   // calibrator fns exist by now
+  if (mode === "pro" && window.midPaint) midPaint();            // the docked card lists paint for pro too
+  if (window.srfCardsDock) srfCardsDock(mode);     // the shared card lists dock the same way
   if (window.srfSearchDock) srfSearchDock(mode);   // both search engines dock into whichever bench is open
   /* QW2: the mode intro modals are retired — each header's subtitle already says
      where you are, and a modal that must be clicked away is a toll booth, not help */
