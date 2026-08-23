@@ -399,8 +399,8 @@
   /* the tiny stock value riding on a re-scored cell — the stock stats stay visible
      right next to the revisited number, as asked */
   .stckv{ position:absolute; right:2px; bottom:1px; font-style:normal; font-weight:400;
-          font-size:7.5px; line-height:1; opacity:.75; }
-  .stcknote{ font-size:9px; color:var(--muted); letter-spacing:.03em; white-space:nowrap; }
+          font-size:9px; line-height:1; opacity:.8; }
+  .stcknote{ font-size:10px; color:var(--muted); letter-spacing:.03em; white-space:nowrap; }
   .fp_row{ display:flex; align-items:center; gap:8px; font-size:11px; color:var(--soft); margin:3px 0; }
   .fp_row .slabel{ width:118px; }
   .fp_row .wv{ width:24px; text-align:right; color:var(--bright); }
@@ -427,7 +427,7 @@
   .cph_t{ width:32px; font-size:9px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
   .cph{ width:30px; height:20px; border-radius:3px; display:inline-flex; align-items:center; justify-content:center;
         font-size:10px; font-weight:600; }
-  .cph_l{ width:30px; text-align:center; font-size:8px; color:var(--muted); }
+  .cph_l{ width:30px; text-align:center; font-size:10px; color:var(--muted); }
   .c_autohint{ font-size:10.5px; color:var(--cyan); line-height:1.55; margin:5px 2px 0; }
   .c_autohint b{ color:var(--bright); font-weight:600; }
   .c_prose{ font-size:11.5px; color:var(--fg); line-height:1.65; max-width:80ch; margin:2px 0 12px;
@@ -515,7 +515,7 @@
   .hdr, .sbhdr{ position:relative; }
   .dirs{ position:absolute; right:1px; top:50%; transform:translateY(-50%);
          display:flex; flex-direction:column; line-height:.62; z-index:4; }
-  .dirs b{ font-size:7px; cursor:pointer; opacity:.35; color:var(--fg); transition:opacity .15s ease, color .15s ease, transform .12s ease; }
+  .dirs b{ font-size:9px; cursor:pointer; opacity:.35; color:var(--fg); transition:opacity .15s ease, color .15s ease, transform .12s ease; }
   .dirs b:hover{ opacity:1; color:var(--cyan); transform:scale(1.35); }
   .dirs b.on{ opacity:1; color:var(--cyan); }
   .hdr.low .dirs b.on, .sbhdr.low .dirs b.on{ color:var(--magenta-fg,var(--magenta)); }
@@ -530,7 +530,7 @@
   @media (prefers-reduced-motion:reduce){ *::after{ animation:none !important; } }
 
   /* Keyboard: every interactive thing is reachable and shows where it is. */
-  .dirs button{ background:none; border:none; padding:0; font:inherit; font-size:7px; line-height:.62;
+  .dirs button{ background:none; border:none; padding:0; font:inherit; font-size:9px; line-height:.7;
                 cursor:pointer; opacity:.35; color:var(--fg); transition:opacity .15s ease,color .15s ease,transform .12s ease; }
   .dirs button:hover{ opacity:1; color:var(--cyan); transform:scale(1.35); }
   .dirs button.on{ opacity:1; color:var(--cyan); }
@@ -660,7 +660,7 @@
   @media (prefers-reduced-motion:reduce){ .adv_dot{ animation:none; } .rowflash{ animation:none; } }
 
   /* pro mode never hides a row — it labels the ones outside the player's declared band */
-  .lvlflag{ font-size:8.5px; letter-spacing:.07em; text-transform:uppercase; padding:1px 5px;
+  .lvlflag{ font-size:10px; letter-spacing:.07em; text-transform:uppercase; padding:1px 5px;
             border-radius:3px; margin-left:5px; white-space:nowrap; vertical-align:middle; }
   .lvlflag.over{ background:color-mix(in srgb, var(--signal) 20%, transparent); color:var(--signal-fg,var(--signal)); }
   .lvlflag.under{ background:color-mix(in srgb, var(--fg) 10%, transparent); color:var(--muted); }
@@ -757,7 +757,7 @@
   .mid_h small{ color:var(--muted); font-weight:400; }
   .mid_slwrap{ display:grid; grid-template-columns:1fr 1fr; gap:8px 26px; margin-top:12px; }
   .mid_slh{ font-size:10px; letter-spacing:.09em; text-transform:uppercase; color:var(--cyan); margin-bottom:4px; }
-  .custbtn{ font-size:8.5px; letter-spacing:.07em; text-transform:uppercase; cursor:pointer;
+  .custbtn{ font-size:10px; letter-spacing:.07em; text-transform:uppercase; cursor:pointer;
             border:1px solid color-mix(in srgb, var(--magenta) 45%, transparent); color:var(--magenta-fg,var(--magenta));
             background:transparent; border-radius:5px; padding:1px 6px; margin-left:5px; line-height:1.5; }
   .custbtn:hover{ background:color-mix(in srgb, var(--magenta) 18%, transparent); color:var(--bright); }
@@ -776,10 +776,10 @@
   .mid_pc .st b{ color:var(--cyan); font-weight:600; }
   .mid_su{ display:flex; gap:10px; align-items:center; background:var(--card2); border:1px solid color-mix(in srgb, var(--gold) 30%, transparent);
            border-radius:10px; padding:9px 12px; margin:6px 0; font-size:11.5px; }
-  .mid_su .rsn{ display:block; font-size:10px; color:var(--muted); }
+  .mid_su .rsn{ display:block; font-size:11px; color:var(--muted); }
   .mid_su .sc{ margin-left:auto; color:var(--gold); font-weight:700; white-space:nowrap; }
-  .mid_su .su_lbl{ display:block; font-size:8.5px; letter-spacing:.11em; text-transform:uppercase; color:var(--muted); }
-  .mid_su .sc .su_pr{ display:block; font-style:normal; font-size:9px; font-weight:400; color:var(--muted); text-align:right; }
+  .mid_su .su_lbl{ display:block; font-size:10px; letter-spacing:.11em; text-transform:uppercase; color:var(--muted); }
+  .mid_su .sc .su_pr{ display:block; font-style:normal; font-size:10px; font-weight:400; color:var(--muted); text-align:right; }
   .win_why{ font-size:9.5px; color:var(--muted); line-height:1.45; margin-top:4px; }
   .win_why b{ color:var(--soft); font-weight:600; }
   .rank_note{ font-size:10.5px; color:var(--muted); line-height:1.5; border-left:2px solid var(--cyan);
@@ -1168,7 +1168,7 @@
 
   .scell{ border-radius:8px; padding:7px 4px 6px; display:flex; flex-direction:column;
           align-items:center; justify-content:center; gap:2px; text-align:center; }
-  .scell i{ font-style:normal; font-size:9px; opacity:.85; letter-spacing:.02em; }
+  .scell i{ font-style:normal; font-size:10px; opacity:.85; letter-spacing:.02em; }
   .scell b{ font-size:14px; font-weight:700; }
   /* difficulty keeps the desktop triangle — no colour box, the fill opacity carries the value */
   .scell.tri{ background:transparent !important; padding-top:5px; }
@@ -1183,7 +1183,7 @@
     .sgrid4{ grid-template-columns:repeat(6,1fr); }
     .sgrid{ gap:5px; }
     .scell{ padding:4px 2px 3px; border-radius:6px; }
-    .scell i{ font-size:8px; }
+    .scell i{ font-size:10px; }
     .scell b{ font-size:12.5px; }
     .scell.tri .tri-svg{ width:24px; height:22px; }
     .mcard{ padding:11px; margin:0 0 10px; }
@@ -1425,14 +1425,18 @@
            letter-spacing:.05em; text-transform:uppercase; cursor:pointer; white-space:nowrap;
            transition:transform .18s ease, box-shadow .18s ease, filter .18s ease; }
   .buybtn:hover, .buybtn:focus-visible{
-           filter:brightness(1.06); transform:translateY(-1px);
-           animation:buyPulse 1.5s ease-in-out infinite; outline:none; }
+           filter:brightness(1.06); transform:translateY(-1px); outline:none; }
+  /* QW5: the pulse is reserved for the final setup cards — the answer may advertise,
+     the working-out stays calm */
+  .mid_su .buybtn:hover, .mid_su .buybtn:focus-visible,
+  #ez_answer .buybtn:hover, #ez_answer .buybtn:focus-visible{
+           animation:buyPulse 1.5s ease-in-out infinite; }
   /* Advertising has to be recognisable AS advertising — in Germany that is law, not
      etiquette. The marker only appears once an affiliate id is actually configured
      (.buybtn.ad), so the file never claims to earn a commission it does not earn.
      A superscript "AD" rather than a full word: legible, and it does not push the
      dense heatmap rows onto a second line. */
-  .buybtn.ad::after{ content:"AD"; font-size:7.5px; font-weight:700; letter-spacing:.06em;
+  .buybtn.ad::after{ content:"AD"; font-size:10px; font-weight:700; letter-spacing:.06em;
            vertical-align:super; margin-left:5px; opacity:.72; }
   /* the same marker for affiliate ANCHORS. Those also carry rel="sponsored nofollow",
      which a <button> cannot, because a button is not a link Google can follow. */
@@ -1454,7 +1458,7 @@
                border:1px solid color-mix(in srgb, var(--fg) 22%, transparent); }
   .scorepop_b:hover, .scorepop_b:focus-visible{ border-color:var(--cyan); color:var(--cyan); }
   .scorepop_f{ font-size:10.5px; color:var(--muted); text-align:center; margin-top:7px; }
-  .grpchip{ font-size:9px; letter-spacing:.06em; text-transform:uppercase; font-weight:600;
+  .grpchip{ font-size:10px; letter-spacing:.06em; text-transform:uppercase; font-weight:600;
             background:color-mix(in srgb, var(--fg) 8%, transparent); border:0;
             border-radius:3px; padding:1px 6px; margin-left:6px; cursor:pointer;
             font-family:inherit; line-height:1.5; }
@@ -1495,19 +1499,99 @@
             background:color-mix(in srgb, var(--cyan) 10%, transparent); }
   .gleg.dim{ opacity:.45; }
   .gleg.all{ color:var(--cyan); border-style:dashed; }
-  @media (pointer:coarse), (max-width:760px){ .gleg{ min-height:38px; padding:6px 13px; } }
+  /* an empty shelf stays selectable — dotted ring + faded swatch say "nothing here yet" */
+  .gleg.nil{ border-style:dotted; }
+  .gleg.nil i{ opacity:.35; }
+  /* the same chips repeated above the ranking and the spec table, a touch smaller */
+  .glegend.sub{ margin:2px 0 8px; }
+  .glegend.sub .gleg{ padding:3px 9px; }
+  @media (pointer:coarse), (max-width:760px){ .gleg{ min-height:38px; padding:6px 13px; }
+    .glegend.sub .gleg{ min-height:38px; padding:6px 13px; } }
+  /* ---- Direction A: the landing asks, every mode answers first ---- */
+  .ld_ask{ background:var(--card2); border:1px solid color-mix(in srgb, var(--cyan) 30%, transparent);
+           border-radius:12px; padding:16px 18px 13px; margin:18px 0 6px; }
+  .ld_ask .ez_step{ font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+                    color:var(--cyan); margin-bottom:9px; }
+  .ld_or{ font-size:11px; color:var(--muted); letter-spacing:.07em; text-transform:uppercase;
+          margin:18px 0 8px; }
+  /* the working-out folds into chapters; the bars are the table of contents */
+  .chapbar{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; cursor:pointer; user-select:none;
+            background:var(--card); border:1px solid color-mix(in srgb, var(--fg) 16%, transparent);
+            border-radius:12px; padding:13px 18px; margin:14px 0;
+            transition:border-color .15s ease; }
+  .chapbar:hover, .chapbar:focus-visible{ border-color:var(--cyan); }
+  .chapbar .chev{ color:var(--cyan); font-size:13px; width:14px; }
+  .chapbar .chapt{ font-size:14px; letter-spacing:.05em; color:var(--bright); }
+  .chapbar .chapsub{ font-size:11px; color:var(--muted); }
+  .chapbar .chapcount{ margin-left:auto; font-size:11px; color:var(--cyan); white-space:nowrap; }
+  .chapbar.open{ border-color:color-mix(in srgb, var(--cyan) 45%, transparent); }
+  .chapfold{ display:none !important; }
+  #pro_answer{ background:var(--card); border:1px solid color-mix(in srgb, var(--gold,var(--amber)) 26%, transparent);
+               border-radius:12px; padding:1.05rem 1.25rem .9rem; margin:0 0 14px; }
+  /* ---- QW4: the podium cards answer in one line; the rest is a disclosure ---- */
+  .ez_more{ margin-top:5px; }
+  .ez_more summary{ cursor:pointer; color:var(--cyan); font-size:11.5px; letter-spacing:.03em;
+                    list-style:none; user-select:none; }
+  .ez_more summary::-webkit-details-marker{ display:none; }
+  .ez_more summary::before{ content:"▸ "; }
+  .ez_more[open] summary::before{ content:"▾ "; }
+  .ez_more[open]{ padding-bottom:2px; }
+  /* ---- QW6: the gear menu ---- */
+  #gearbtn{ position:fixed; top:12px; right:12px; z-index:160; width:40px; height:40px; border-radius:50%;
+            background:color-mix(in srgb, var(--card) 90%, transparent); color:var(--soft);
+            border:1px solid color-mix(in srgb, var(--fg) 24%, transparent); font-size:17px; line-height:1;
+            cursor:pointer; backdrop-filter:blur(5px); -webkit-backdrop-filter:blur(5px); }
+  #gearbtn:hover, #gearbtn:focus-visible{ color:var(--cyan); border-color:var(--cyan); outline:none; }
+  #gearpop{ position:fixed; top:58px; right:12px; z-index:159; background:var(--card); color:var(--fg);
+            border:1px solid color-mix(in srgb, var(--fg) 20%, transparent); border-radius:12px;
+            padding:14px 16px; box-shadow:0 12px 40px rgba(0,0,0,.45);
+            display:flex; flex-direction:column; gap:10px; max-width:min(92vw, 360px); }
+  #gearpop[hidden]{ display:none; }
+  #gearpop .gear_h{ font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); }
+  #gearpop .gear_row{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  /* ---- QW10: sticky section navigation in the workshop ---- */
+  #pronav{ position:sticky; top:0; z-index:80; display:flex; gap:6px; overflow-x:auto;
+           padding:8px 46px 8px 2px; margin:0 0 6px;
+           background:color-mix(in srgb, var(--page) 86%, transparent);
+           backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); }
+  #pronav button{ flex:0 0 auto; background:none; border:1px solid color-mix(in srgb, var(--fg) 18%, transparent);
+           color:var(--soft); border-radius:999px; padding:6px 13px; font:inherit; font-size:11.5px;
+           letter-spacing:.04em; cursor:pointer; white-space:nowrap; }
+  #pronav button:hover, #pronav button:focus-visible{ border-color:var(--cyan); color:var(--bright); outline:none; }
+  @media (pointer:coarse){ #pronav button{ min-height:38px; padding:8px 14px; } }
+  body:not(.mode-pro) #pronav{ display:none; }
+  /* ---- the sliders explain themselves: clickable labels + one popover ---- */
+  .axq{ cursor:help; text-decoration:underline dotted color-mix(in srgb, var(--fg) 40%, transparent);
+        text-underline-offset:3px; border-radius:4px; }
+  .axq:hover, .axq:focus-visible{ color:var(--cyan); text-decoration-color:var(--cyan); outline:none; }
+  @media (pointer:coarse){ .slabel.axq{ padding:5px 0; } }
+  .axpop{ position:fixed; z-index:170; box-sizing:border-box; background:var(--card2, var(--card)); color:var(--fg);
+          border:1px solid color-mix(in srgb, var(--cyan) 35%, transparent); border-radius:12px;
+          box-shadow:0 14px 44px rgba(0,0,0,.55); padding:14px 16px 12px; }
+  .axpop[hidden]{ display:none; }
+  .axpop_x{ position:absolute; top:5px; right:7px; background:none; border:0; color:var(--muted);
+            font-size:17px; line-height:1; cursor:pointer; padding:5px 7px; border-radius:6px; }
+  .axpop_x:hover, .axpop_x:focus-visible{ color:var(--cyan); outline:none; }
+  .axpop_k{ font-size:9.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--muted); margin-bottom:2px; }
+  .axpop_t{ font-size:14px; font-weight:700; color:var(--cyan); margin:0 20px 6px 0; }
+  .axpop_d{ font-size:12.5px; line-height:1.55; color:var(--fg); }
+  .axpop_u{ font-size:12.5px; line-height:1.55; color:var(--soft); margin-top:7px; }
+  .axpop_u b, .axpop_c b{ color:var(--bright); font-weight:600; }
+  .axpop_c{ font-size:12px; line-height:1.55; color:var(--muted); margin-top:7px; }
+  .axpop_f{ font-size:10.5px; color:var(--muted); margin-top:9px; padding-top:7px;
+            border-top:1px dashed color-mix(in srgb, var(--fg) 18%, transparent); }
   /* overall score on the mobile racket cards — mirrors the string cards' idx badge */
   .mcard .ovv{ font-size:11px; font-weight:700; color:var(--cyan);
                background:color-mix(in srgb, var(--cyan) 13%, transparent);
                border-radius:6px; padding:2px 7px; letter-spacing:.02em; }
-  .recflag{ font-size:8px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  .recflag{ font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
             background:color-mix(in srgb, var(--cyan) 22%, transparent); color:var(--cyan);
             padding:1px 5px; border-radius:3px; margin-left:5px; vertical-align:1px; }
   .recnote{ color:var(--cyan); }
   .reclink{ background:none; border:0; padding:0 0 0 3px; font:inherit; color:var(--muted);
             text-decoration:underline; cursor:pointer; }
   .reclink:hover{ color:var(--cyan); }
-  .adtag{ font-size:7.5px; font-weight:700; letter-spacing:.06em; vertical-align:super;
+  .adtag{ font-size:10px; font-weight:700; letter-spacing:.06em; vertical-align:super;
           opacity:.72; }
   .affnote{ font-size:10.5px; color:var(--muted); line-height:1.6; margin-top:10px;
            padding-top:8px; border-top:0.5px dashed color-mix(in srgb, var(--fg) 18%, transparent); }
@@ -1532,10 +1616,10 @@
      ranking rows and the heatmap name cells — so the two cannot drift apart.
      align-self keeps it from stretching to the width of a column flex parent. */
   .buybtn.mini.tiny, .rowact.tinyact .buybtn.mini{
-        padding:0 7px; font-size:8px; letter-spacing:.05em; line-height:1.6;
+        padding:0 7px; font-size:10px; letter-spacing:.05em; line-height:1.6;
         text-transform:uppercase; align-self:flex-start; flex:none; }
   @media (pointer:coarse), (max-width:760px){
-    .buybtn.mini.tiny, .rowact.tinyact .buybtn.mini{ padding:2px 9px; font-size:9px; }
+    .buybtn.mini.tiny, .rowact.tinyact .buybtn.mini{ padding:2px 9px; font-size:10px; }
     .rowact.tinyact .custbtn{ padding:1px 5px; font-size:12px; min-width:22px; }
   }
   .su_buy{ display:inline-flex; gap:5px; margin-left:9px; flex-wrap:wrap; }
@@ -1920,6 +2004,33 @@
 </style>
 </head>
 <body>
+<!-- QW6: one quiet gear for the whole house — theme, export, import, intro -->
+<button type="button" id="gearbtn" aria-label="settings — theme, export, import" aria-haspopup="true"
+        aria-expanded="false" onclick="srfGearToggle(event)">⚙</button>
+<div id="gearpop" hidden>
+  <div class="gear_h">settings</div>
+  <span class="toolbit" id="themeCtl">theme
+    <span class="themepick" id="themePick">
+      <button type="button" class="thememain" id="themeBtn" aria-expanded="false" aria-controls="themeList"
+              aria-haspopup="listbox" title="choose a colour theme" onclick="themeToggle()">
+        <span id="themeBtnLabel"></span><span class="chev" aria-hidden="true">▼</span>
+      </button>
+      <div class="themelist" id="themeList" role="listbox" aria-label="colour theme"></div>
+      <span class="modeseg" role="group" aria-label="screen mode">
+        <button type="button" class="modebtn" id="modeDark" aria-pressed="true" onclick="setThemeMode('dark')">dark</button>
+        <button type="button" class="modebtn" id="modeBright" aria-pressed="false" onclick="setThemeMode('bright')">bright</button>
+      </span>
+    </span>
+  </span>
+  <div class="gear_row">
+    <button type="button" class="mcap ghost" onclick="exportAll()" title="download everything you've built as a JSON file">export</button>
+    <label class="mcap ghost" style="cursor:pointer;">import
+      <input type="file" id="importFile" accept="application/json" style="display:none;" onchange="importAll(event)">
+    </label>
+    <button type="button" class="mcap ghost" onclick="srfGearClose();introShow()" title="who plays? — retune both benches to your game">intro</button>
+  </div>
+  <span class="toolnote" id="ioNote"></span>
+</div>
 <div class="wrap">
 <h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">String & Racket Finder by Alexey Semenov von Rosenberg — two departments in one document. Racket department: <span id="sr_nf">155</span> numbered frames — the full current lines of Head, Wilson, Yonex, Dunlop, Diadem, Tecnifibre, Babolat, Prince, Solinco, Lacoste and Pro Kennex — rated across eleven axes with a difficulty column, an amber search bar that filters the bench or looks specs up online, and a bronze transfer-specs form that scores a researched frame from its specs. String department: <span id="sr_nb">235</span> string beds — the market sweep of twenty-three string brands, from the majors (Luxilon, Babolat, Wilson, Yonex, Tecnifibre, Völkl, Gamma, Head, Solinco, Toroline, ReString) to the stringing-room specialists (Kirschbaum, MSV, Signum Pro, Weiss Cannon, Isospeed, Gosen, Diadem, Dunlop, Prince, Polyfibre, Tourna, Tier One) — rated across eight axes including arm friendliness, with beds you have court-tested marked cyan and queued beds amber. Both departments have clickable column headers, weight sliders and reset buttons, and every list — the weighted rankings, both hard-spec tables and the string stiffness table — carries a typo-tolerant filter bar and top 5 / show 10 / show all row limits. Both benches rest in recommended order — the gold, silver, bronze and budget picks lead, then everything else by weighted score — until a column is ranked, with grouped-by-shelf one click away. Easy mode ends with a glowing amber invitation to continue to intermediate, and intermediate ends with a magenta one to initiate the nerd protocol and open the pro workshop.</h2>
 
@@ -1936,6 +2047,41 @@
     <p class="ld_lede"><span id="ld_nf">155</span> frames and <span id="ld_nb">235</span> string beds &mdash; the current market of eleven racket and twenty-three string brands &mdash; scored on the same axes and matched to each other
        by the physics of the pairing. Tell it how you play and it hands you a shortlist &mdash; or open the whole
        workshop and rank everything yourself.</p>
+    <div class="ld_ask" id="ldQ_card">
+      <div class="ez_step">tell it how you play &mdash; it answers with your setup</div>
+      <div id="ldQ">
+        <div class="in_row"><span class="in_lab">experience</span>
+          <span class="in_seg"><button type="button" class="ichip" data-q="level" data-v="beginner">beginner</button>
+          <button type="button" class="ichip" data-q="level" data-v="intermediate">intermediate</button>
+          <button type="button" class="ichip" data-q="level" data-v="advanced">advanced</button>
+          <button type="button" class="ichip" data-q="level" data-v="pro">pro</button></span></div>
+        <div class="in_row"><span class="in_lab">swing</span>
+          <span class="in_seg"><button type="button" class="ichip" data-q="swing" data-v="compact">compact</button>
+          <button type="button" class="ichip" data-q="swing" data-v="medium">medium</button>
+          <button type="button" class="ichip" data-q="swing" data-v="full">full &amp; fast</button></span>
+          <span class="in_seg"><button type="button" class="ichip" data-q="shape" data-v="flat">flat hitter</button>
+          <button type="button" class="ichip" data-q="shape" data-v="topspin">topspin-heavy</button>
+          <button type="button" class="ichip" data-q="shape" data-v="allround">all-round</button></span></div>
+        <div class="in_row"><span class="in_lab">I play</span>
+          <span class="in_seg"><button type="button" class="ichip" data-q="freq" data-v="rarely">rarely</button>
+          <button type="button" class="ichip" data-q="freq" data-v="1x">1&times;/week</button>
+          <button type="button" class="ichip" data-q="freq" data-v="23x">2&ndash;3&times;/week</button>
+          <button type="button" class="ichip" data-q="freq" data-v="4x">4+&times;/week</button></span></div>
+        <div class="in_row"><span class="in_lab">my arm</span>
+          <span class="in_seg"><button type="button" class="ichip" data-q="arm" data-v="yes">arm-friendly, please</button>
+          <span style="font-size:10px;color:var(--muted);align-self:center;">tap if elbow/shoulder comfort should outrank everything else</span></span></div>
+        <div class="in_row"><span class="in_lab">I am</span>
+          <span class="in_seg"><button type="button" class="ichip" data-q="sex" data-v="man">man</button>
+          <button type="button" class="ichip" data-q="sex" data-v="woman">woman</button>
+          <span style="font-size:10px;color:var(--muted);align-self:center;">optional — only sets the weight band frames are matched to</span></span></div>
+      </div>
+      <div class="in_row in_act">
+        <button type="button" class="go2 cta" onclick="ldGo()">find my gear</button>
+        <span class="in_note" id="ld_note"></span>
+        <span style="font-size:10px;color:var(--muted);">four taps &mdash; your answers follow you into every mode</span>
+      </div>
+    </div>
+    <div class="ld_or">or choose your depth yourself:</div>
     <div class="ld_modes">
       <button type="button" class="ld_mode" onclick="setMode('easy')">
         <span class="ld_mtag">easy mode</span>
@@ -2004,9 +2150,6 @@
   <div class="ez_card">
     <div class="ez_step">1 &middot; who plays?</div>
     <div id="easyQ">
-      <div class="in_row"><span class="in_lab">I am</span>
-        <span class="in_seg"><button type="button" class="ichip" data-q="sex" data-v="man">man</button>
-        <button type="button" class="ichip" data-q="sex" data-v="woman">woman</button></span></div>
       <div class="in_row"><span class="in_lab">experience</span>
         <span class="in_seg"><button type="button" class="ichip" data-q="level" data-v="beginner">beginner</button>
         <button type="button" class="ichip" data-q="level" data-v="intermediate">intermediate</button>
@@ -2027,6 +2170,10 @@
       <div class="in_row"><span class="in_lab">my arm</span>
         <span class="in_seg"><button type="button" class="ichip" data-q="arm" data-v="yes">arm-friendly, please</button>
         <span style="font-size:10px;color:var(--muted);align-self:center;">tap if elbow/shoulder comfort should outrank everything else</span></span></div>
+      <div class="in_row"><span class="in_lab">I am</span>
+        <span class="in_seg"><button type="button" class="ichip" data-q="sex" data-v="man">man</button>
+        <button type="button" class="ichip" data-q="sex" data-v="woman">woman</button>
+        <span style="font-size:10px;color:var(--muted);align-self:center;">optional — only sets the weight band frames are matched to</span></span></div>
     </div>
     <div class="ez_step" style="margin-top:14px;">2 &middot; what are you after?</div>
     <div class="in_row"><span class="in_lab">looking for</span>
@@ -2040,6 +2187,8 @@
     </div>
   </div>
 
+  <div id="ez_out"></div>
+
   <div class="ez_sec" id="ez_lookup">
     <div class="ez_sech">Already know what you're after?</div>
     <div class="ez_secs">Look up any racket or string by name &mdash; the same search the workshop uses.
@@ -2047,8 +2196,6 @@
     <div id="ez_rsSlot"></div>
     <div id="ez_ssSlot" style="margin-top:12px;"></div>
   </div>
-
-  <div id="ez_out"></div>
 
   <!-- the step-up invitation, same grammar as intermediate's pro invite one level down.
        Hidden until easyRun() has actually produced picks: inviting someone deeper before
@@ -2094,9 +2241,6 @@
   <div class="mid_card">
     <div class="mid_slh">about you &mdash; seeds the sliders, gates the shortlists</div>
     <div id="midQ">
-      <div class="in_row"><span class="in_lab">I am</span>
-        <span class="in_seg"><button type="button" class="ichip" data-q="sex" data-v="man">man</button>
-        <button type="button" class="ichip" data-q="sex" data-v="woman">woman</button></span></div>
       <div class="in_row"><span class="in_lab">experience</span>
         <span class="in_seg"><button type="button" class="ichip" data-q="level" data-v="beginner">beginner</button>
         <button type="button" class="ichip" data-q="level" data-v="intermediate">intermediate</button>
@@ -2117,11 +2261,17 @@
       <div class="in_row"><span class="in_lab">my arm</span>
         <span class="in_seg"><button type="button" class="ichip" data-q="arm" data-v="yes">arm-friendly, please</button>
         <span style="font-size:10px;color:var(--muted);align-self:center;">stiff gear loses its medals while this is on</span></span></div>
+      <div class="in_row"><span class="in_lab">I am</span>
+        <span class="in_seg"><button type="button" class="ichip" data-q="sex" data-v="man">man</button>
+        <button type="button" class="ichip" data-q="sex" data-v="woman">woman</button>
+        <span style="font-size:10px;color:var(--muted);align-self:center;">optional — only sets the weight band frames are matched to</span></span></div>
     </div>
     <div style="margin-top:10px;"><button type="button" class="go2 cta" onclick="introApply()">tune the sliders for me</button>
-      <span style="font-size:10px;color:var(--muted);margin-left:8px;">answers gate the lists &mdash; the sliders stay yours to drag</span>
+      <span style="font-size:10px;color:var(--muted);margin-left:8px;">answers gate the lists &mdash; the sliders stay yours to drag &middot; click any slider label for what it means</span>
       <span class="prefnote" style="font-size:10px;color:var(--cyan);margin-left:8px;"></span>
       <button type="button" class="hybtn ghost" style="margin-left:8px;font-size:10px;" onclick="prefReset()" title="forget the saved sliders and re-seed from your answers">reset saved sliders</button></div>
+    <div class="mid_h" style="margin-top:14px;">best setups <small>&mdash; the answer first: paired by the calibrator&rsquo;s physics, live with every answer and slider you change</small></div>
+    <div id="mid_su"></div>
     <div class="mid_slwrap">
       <div><div class="mid_slh">racket priorities</div><div id="mid_slR"></div></div>
       <div><div class="mid_slh">string priorities</div><div id="mid_slS"></div></div>
@@ -2145,8 +2295,6 @@
     <div class="mid_h">your strings <small id="mid_sn"></small></div>
     <div id="mid_bd" class="mid_grid"></div>
     <div class="cmpbar" id="cmpbar2_string" role="region" aria-label="beds selected to compare"></div>
-    <div class="mid_h">best setups <small>&mdash; paired by the calibrator&rsquo;s physics, not by adding scores</small></div>
-    <div id="mid_su"></div>
     <div class="mid_foot"><span id="mid_live" style="color:var(--cyan);"></span>
       Live with every drag &middot; one engine everywhere: your answers gate, arm-friendly guards the medals, the calibrator pairs. Nothing is scored twice.
       <span style="opacity:.7;">&middot; build mid-2</span></div>
@@ -2196,29 +2344,18 @@
     </span>
   </div>
 </div>
+<!-- QW10: sticky section navigation — the workshop's table of contents -->
+<nav id="pronav" aria-label="jump to a section">
+  <button type="button" onclick="srfNavGo('pro_answer')">setups</button>
+  <button type="button" onclick="srfNavGo('pro_slwrap')">priorities</button>
+  <button type="button" onclick="srfNavGo('rk','chap')">rackets</button>
+  <button type="button" onclick="srfNavGo('sb','chap')">strings</button>
+  <button type="button" onclick="srfNavGo('cal','chap')">calibrator</button>
+  <button type="button" onclick="srfNavGo('room','chap')">chatroom</button>
+</nav>
 <!-- the shelf legend is a CONTROL now: each chip filters the heatmap to that group -->
 <div class="glegend" id="rk_legend" role="group" aria-label="filter the bench by shelf"></div>
-<div class="toolrow">
-  <span id="themeSlotPro" style="display:contents;"></span><span class="toolbit" id="themeCtl">theme
-    <span class="themepick" id="themePick">
-      <button type="button" class="thememain" id="themeBtn" aria-expanded="false" aria-controls="themeList"
-              aria-haspopup="listbox" title="choose a colour theme" onclick="themeToggle()">
-        <span id="themeBtnLabel"></span><span class="chev" aria-hidden="true">▼</span>
-      </button>
-      <div class="themelist" id="themeList" role="listbox" aria-label="colour theme"></div>
-      <span class="modeseg" role="group" aria-label="screen mode">
-        <button type="button" class="modebtn" id="modeDark" aria-pressed="true" onclick="setThemeMode('dark')">dark</button>
-        <button type="button" class="modebtn" id="modeBright" aria-pressed="false" onclick="setThemeMode('bright')">bright</button>
-      </span>
-    </span>
-  </span>
-  <button type="button" class="mcap ghost" onclick="exportAll()" title="download everything you've built as a JSON file">export</button>
-  <label class="mcap ghost" style="cursor:pointer;">import
-    <input type="file" id="importFile" accept="application/json" style="display:none;" onchange="importAll(event)">
-  </label>
-  <button type="button" class="mcap ghost" onclick="introShow()" title="who plays? — retune both benches to your game">intro</button>
-  <span class="toolnote" id="ioNote"></span>
-</div>
+<!-- QW6: theme, export, import and intro moved into the fixed gear menu -->
 <div class="memberbar" id="m_bar"></div>
 <div class="mapwrap" id="m_map">
   <iframe id="m_mapframe" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Home club on the map"></iframe>
@@ -2308,11 +2445,6 @@
     <button type="button" class="in_x" aria-label="hide intro" onclick="introHide()">×</button>
   </div>
   <div class="in_rows" id="in_rows">
-    <div class="in_row"><span class="in_lab">I am</span>
-      <span class="in_seg" role="group" aria-label="I am">
-        <button type="button" class="ichip" data-q="sex" data-v="man">man</button>
-        <button type="button" class="ichip" data-q="sex" data-v="woman">woman</button>
-      </span></div>
     <div class="in_row"><span class="in_lab">experience</span>
       <span class="in_seg" role="group" aria-label="experience">
         <button type="button" class="ichip" data-q="level" data-v="beginner">beginner</button>
@@ -2341,12 +2473,52 @@
     <div class="in_row"><span class="in_lab">my arm</span>
       <span class="in_seg"><button type="button" class="ichip" data-q="arm" data-v="yes">arm-friendly, please</button>
       <span style="font-size:10px;color:var(--muted);align-self:center;">tap if elbow/shoulder comfort should outrank everything else</span></span></div>
+    <div class="in_row"><span class="in_lab">I am</span>
+      <span class="in_seg" role="group" aria-label="I am">
+        <button type="button" class="ichip" data-q="sex" data-v="man">man</button>
+        <button type="button" class="ichip" data-q="sex" data-v="woman">woman</button>
+      </span>
+      <span style="font-size:10px;color:var(--muted);align-self:center;">optional — only sets the weight band frames are matched to</span></div>
     <div class="in_row in_act">
       <button type="button" class="go2" onclick="introApply()">tune the bench for me</button>
       <span class="in_note" id="in_note"></span>
     </div>
   </div>
   <div class="in_summary" id="in_summary" style="display:none;"></div>
+</div>
+<!-- ============ Direction A: the answer first, the working-out in chapters ============ -->
+<div id="pro_answer">
+  <div class="depthead azonix" style="margin-top:2px;">your four setups <span style="color:var(--cyan);">live</span></div>
+  <div class="deptsub">The answer first: your gold, silver and bronze frames plus the budget pick, each completed
+    into a full frame&nbsp;+&nbsp;string setup by the calibrator's physics &mdash; re-searched on every slider you drag
+    and every answer you change. Everything below is the working-out: open a chapter when you want the receipts.</div>
+  <div id="pro_su" aria-live="polite"></div>
+</div>
+  <!-- priorities sit right under the answer: the sliders steer it live -->
+  <div style="margin:2px 0 14px;border-bottom:0.5px solid color-mix(in srgb, var(--fg) 15%, transparent);padding-bottom:12px;">
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap;">
+    <span style="font-size:12px;color:var(--muted);">priorities — drag to re-rank both benches live · <b style="color:var(--soft);font-weight:500;">click any label for what it means</b></span>
+    <span class="prefnote" style="font-size:10px;color:var(--cyan);margin-left:10px;"></span>
+    <span style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="sbbtn" data-label="spin-first"       data-rp="spin"  style="--d:.2s">spin-first</button>
+      <button class="sbbtn" data-label="durability-first" data-rp="dura"  style="--d:.5s">durability-first</button>
+      <button class="sbbtn" data-label="arm-first"        data-rp="arm"   style="--d:.8s">arm-first</button>
+      <button class="sbbtn" data-label="flat"             data-rp="flat"  style="--d:1.1s">flat</button>
+      <button class="sbbtn" data-label="touch-first"      data-rp="touch" style="--d:1.4s">touch-first</button>
+    </span>
+  </div>
+  <div class="mid_slwrap" id="pro_slwrap">
+    <div><div class="mid_slh">racket priorities</div>
+      <div id="sliders" style="display:grid;grid-template-columns:1fr;gap:4px 20px;"></div></div>
+    <div><div class="mid_slh">string priorities</div>
+      <div id="pro_sbslot"></div></div>
+  </div>
+</div>
+<div class="chapbar" data-chap="rk" role="button" tabindex="0" aria-expanded="false"
+     onclick="srfChapToggle('rk')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();srfChapToggle('rk');}">
+  <span class="chev">▸</span><span class="chapt azonix">racket test bench</span>
+  <span class="chapsub">heatmap · weighted ranking · hard specs · search &amp; transfer specs</span>
+  <span class="chapcount" id="chap_n_rk"></span>
 </div>
   <!-- the racket search engine (bar + transfer-specs panel + meta) lives in ONE dockable
        block: intermediate borrows the very same nodes, so the two modes cannot drift apart -->
@@ -2387,26 +2559,7 @@
   <div class="searchmeta" id="searchMeta"></div>
   </div></span>
 
-  <!-- priorities sit directly under the search bar, same order as intermediate -->
-  <div style="margin:2px 0 14px;border-bottom:0.5px solid color-mix(in srgb, var(--fg) 15%, transparent);padding-bottom:12px;">
-  <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap;">
-    <span style="font-size:12px;color:var(--muted);">priorities — drag to re-rank both benches live</span>
-    <span class="prefnote" style="font-size:10px;color:var(--cyan);margin-left:10px;"></span>
-    <span style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;">
-      <button class="sbbtn" data-label="spin-first"       data-rp="spin"  style="--d:.2s">spin-first</button>
-      <button class="sbbtn" data-label="durability-first" data-rp="dura"  style="--d:.5s">durability-first</button>
-      <button class="sbbtn" data-label="arm-first"        data-rp="arm"   style="--d:.8s">arm-first</button>
-      <button class="sbbtn" data-label="flat"             data-rp="flat"  style="--d:1.1s">flat</button>
-      <button class="sbbtn" data-label="touch-first"      data-rp="touch" style="--d:1.4s">touch-first</button>
-    </span>
-  </div>
-  <div class="mid_slwrap" id="pro_slwrap">
-    <div><div class="mid_slh">racket priorities</div>
-      <div id="sliders" style="display:grid;grid-template-columns:1fr;gap:4px 20px;"></div></div>
-    <div><div class="mid_slh">string priorities</div>
-      <div id="pro_sbslot"></div></div>
-  </div>
-</div>
+  <!-- the priorities block moved above the chapters, next to the answer (Direction A) -->
   <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;font-size:11px;flex-wrap:wrap;">
   <span style="color:var(--muted);">click a column to rank · twice to flip · <b style="color:var(--soft);font-weight:500;">click any score cell to set your own rating</b> · <span id="sortState" style="color:var(--cyan);">recommended order</span></span>
   <button class="resetbtn" data-label="grouped by shelf" onclick="rkGroupView()" title="quiver, playtested, bench — the old grouped view">grouped by shelf</button>
@@ -2501,6 +2654,7 @@
     </span>
     <span id="rank_n" class="rankcount" aria-live="polite"></span>
   </div>
+  <div class="glegend sub" id="rk_legend_rank" role="group" aria-label="filter the ranking by shelf"></div>
   <div id="rank"></div>
 </div>
 <div style="margin-top:16px;border-top:0.5px solid color-mix(in srgb, var(--fg) 15%, transparent);padding-top:12px;">
@@ -2517,11 +2671,18 @@
     </span>
     <span id="hsR_n" class="rankcount" aria-live="polite"></span>
     <button class="resetbtn" data-label="reset order" onclick="resetOrder()">reset order</button></div>
-  <div id="specs" style="font-size:11px;"></div>
+  <div class="glegend sub" id="rk_legend_hs" role="group" aria-label="filter the spec table by shelf"></div>
+  <div id="specs" style="font-size:12.5px;"></div>
   <div id="aff_note_r"></div>
 </div>
 </div>
 
+<div class="chapbar" data-chap="sb" role="button" tabindex="0" aria-expanded="false"
+     onclick="srfChapToggle('sb')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();srfChapToggle('sb');}">
+  <span class="chev">▸</span><span class="chapt azonix">stringbed test bench</span>
+  <span class="chapsub">heatmap · weighted ranking · lab table · hard specs</span>
+  <span class="chapcount" id="chap_n_sb"></span>
+</div>
 <hr class="deptrule">
 <div class="depthead azonix">stringbed test bench</div>
 <div style="font-size:11px;color:var(--muted);letter-spacing:0.04em;margin-bottom:4px;">string department</div>
@@ -2715,6 +2876,7 @@
       </span>
       <span id="sbrank_n" class="rankcount" aria-live="polite"></span>
     </div>
+    <div class="glegend sub" id="sb_legend_rank" role="group" aria-label="filter the ranking by shelf"></div>
     <div id="sb_rank"></div>
   </div>
 
@@ -2750,7 +2912,7 @@
       <span id="nerd_n" class="rankcount" aria-live="polite"></span>
       <button class="sbbtn" data-label="reset order" onclick="sbNerdReset()">reset order</button>
     </div>
-    <div id="sb_nerd" style="font-size:11px;overflow-x:auto;"></div>
+    <div id="sb_nerd" style="font-size:12.5px;overflow-x:auto;"></div>
   </div>
 </div>
   <div style="margin-top:16px;border-top:0.5px solid color-mix(in srgb, var(--fg) 15%, transparent);padding-top:12px;">
@@ -2770,9 +2932,15 @@
       <span id="hsS_n" class="rankcount" aria-live="polite"></span>
       <button class="sbbtn" data-label="reset order" onclick="sbResetOrder()">reset order</button>
     </div>
-    <div id="sb_specs" style="font-size:11px;overflow-x:auto;"></div>
+    <div class="glegend sub" id="sb_legend_hs" role="group" aria-label="filter the spec table by shelf"></div>
+    <div id="sb_specs" style="font-size:12.5px;overflow-x:auto;"></div>
     <div id="aff_note_s"></div>
   </div>
+<div class="chapbar" data-chap="cal" role="button" tabindex="0" aria-expanded="false"
+     onclick="srfChapToggle('cal')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();srfChapToggle('cal');}">
+  <span class="chev">▸</span><span class="chapt azonix">frame ⇆ string calibrator</span>
+  <span class="chapsub">which string belongs in which frame · the physics behind the setups above</span>
+</div>
 <hr class="deptrule">
 <div class="depthead azonix">frame &#8646; string calibrator <span style="color:var(--cyan);">v1</span></div>
 <div style="font-size:11px;color:var(--muted);letter-spacing:0.04em;margin-bottom:4px;">matchup department</div>
@@ -2799,12 +2967,11 @@
     <span style="opacity:.75;">Tensions are read as filed per bed; in a stiff-on-stiff system, dropping 1&ndash;2&nbsp;kg buys back comfort before any string change does.</span>
   </div>
 
-  <div class="depthead azonix" style="margin-top:18px;">your four setups <span style="color:var(--cyan);">live</span></div>
-  <div class="deptsub">The calibration, finished for you: your gold, silver and bronze frames plus the budget pick,
-    each completed into a full frame&nbsp;+&nbsp;string setup by the calibrator's physics &mdash; re-searched on every
-    slider you drag and every answer you change. The separate racket and string rankings above stay exactly as they
-    are; this is the combined answer.</div>
-  <div id="pro_su" aria-live="polite"></div>
+</div>
+<div class="chapbar" data-chap="room" role="button" tabindex="0" aria-expanded="false"
+     onclick="srfChapToggle('room')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();srfChapToggle('room');}">
+  <span class="chev">▸</span><span class="chapt azonix">the chatroom</span>
+  <span class="chapsub">post your setup · tag the frame · your customization joins the bench</span>
 </div>
   <div class="room" id="c_room">
     <div class="roomhead">THE CHATROOM</div>
@@ -2871,6 +3038,7 @@
     </div>
     <div id="p_feed"></div>
   </div>
+<div id="pro_end" hidden></div>
 
 </div><!-- /proWrap -->
 </div>
@@ -2968,6 +3136,28 @@ window.srfRecClear = function(kind){
 /* every list that can show the band repaints from here, so one clear updates all six */
 window.srfRepaintAll = function(){
   ["rkRepaint", "sbRepaint"].forEach(fn => { try { if (window[fn]) window[fn](); } catch(e){} });
+};
+/* ---------- shelf priority: YOUR shelves lead the resting order ----------
+   my quiver first, then test next, then court tested; the string bench adds
+   court-validated and the benchmark bed. Everything else keeps exactly the
+   order it already had - the partition is stable, so inside each tier the
+   podium picks and the weighted score still decide. A column sort overrides
+   this entirely; "reset order" returns here. */
+window.SRF_GPRIO = {
+  racket: { own:0, next:1, tested:2 },
+  string: { mine:0, queued:1, tested:2, validated:3, benchmark:4 }
+};
+window.srfGrpRank = function(kind, o){
+  if (!o || o.ghost) return 9;                       // market suggestions own no shelf
+  const p = window.SRF_GPRIO[kind] || {};
+  const k = kind === "racket" ? o.g : (o.tag || "");
+  return (k in p) ? p[k] : 9;
+};
+/* stable partition, same contract as srfRecFirst: never mutates, ties keep order */
+window.srfGrpFirst = function(kind, arr){
+  return arr.map((o, i) => [o, i])
+    .sort((A, B) => (window.srfGrpRank(kind, A[0]) - window.srfGrpRank(kind, B[0])) || (A[1] - B[1]))
+    .map(A => A[0]);
 };
 /* ---------- shelf picker ----------------------------------------------------
    One popup, both benches. It asks the department for its options and hands the
@@ -5207,7 +5397,8 @@ window.rkGroupOnly = (g) => {
    reset order returns here rather than to authoring order. */
 function rkRecOrder(arr){
   // buildGrid() runs once before `w` initialises (TDZ) — fall back to shelf order there
-  try { void w; } catch(e){ return window.srfRecFirst("racket", arr.slice().sort((a,b)=> gRank(a.g) - gRank(b.g))); }
+  try { void w; } catch(e){ return window.srfRecFirst("racket", arr.slice().sort((a,b)=>
+    (window.srfGrpRank("racket", a) - window.srfGrpRank("racket", b)) || (gRank(a.g) - gRank(b.g)))); }
   const tw = w.reduce((a,b)=>a+b,0) || 1;
   const sc = r => r.s.reduce((a,v,i)=>a+v*w[i],0)/tw;
   let meds = [], budgetNo = null;
@@ -5221,8 +5412,11 @@ function rkRecOrder(arr){
   // 0/1/2 = the podium in its own order, 3 = the budget pick, 4 = the rest by score
   const slot = r => { const m = meds.indexOf(r.no);
     return m >= 0 ? m : (r.no === budgetNo ? 3 : 4); };
-  /* recency sits ABOVE the podium: what you just looked up is what you came back for */
+  /* recency sits ABOVE the podium: what you just looked up is what you came back for.
+     Below the recent band, YOUR shelves lead - quiver, test next, court tested - and
+     only inside each tier do the podium slots and the weighted score order the rest. */
   return window.srfRecFirst("racket", arr.slice().sort((a,b) =>
+    (window.srfGrpRank("racket", a) - window.srfGrpRank("racket", b)) ||
     slot(a) - slot(b) || sc(b) - sc(a) || (a.b+a.n).localeCompare(b.b+b.n)));
 }
 /* the shelf grouping is not deleted, just demoted to a view you ask for */
@@ -5232,7 +5426,7 @@ function buildGrid(){
       `<button type="button" class="${SEL.get(i)===-1?"on":""}" aria-label="rank ${cats[i]} highest first" aria-pressed="${SEL.get(i)===-1}" onclick="event.stopPropagation();SD(${i},-1)">\u25B2</button>`+
       `<button type="button" class="${SEL.get(i)===1?"on":""}" aria-label="rank ${cats[i]} lowest first" aria-pressed="${SEL.get(i)===1}" onclick="event.stopPropagation();SD(${i},1)">\u25BC</button></span>`;
   const cols = cats.map((c,i)=>`<div role="columnheader" aria-sort="${SEL.has(i)?(SEL.get(i)===-1?"descending":"ascending"):"none"}" class="hdr${SEL.has(i)?" on":""}${SEL.get(i)===1?" low":""}" data-i="${i}" data-label="${c}" tabindex="0" onclick="S(${i})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();S(${i});}" title="rank by ${c} — Enter to toggle" style="--d:${(i*0.21).toFixed(2)}s;animation-delay:${(i*0.21).toFixed(2)}s">${c}${dirs(i)}</div>`).join("");
-  let h = `<div role="table" aria-label="racket bench — 11 axes, difficulty and price" style="display:grid;grid-template-columns:236px 34px 62px 208px repeat(11,1fr) 52px 58px;gap:2px;background:var(--page);font-size:11px;">` +
+  let h = `<div role="table" aria-label="racket bench — 11 axes, difficulty and price" style="display:grid;grid-template-columns:236px 34px 62px 208px repeat(11,1fr) 52px 58px;gap:2px;background:var(--page);font-size:12.5px;">` +
     `<div class="namecell"></div>` +
     `<div class="spdcell" aria-hidden="true"></div>` +
     `<div class="hdr price pricecell${sortIdx==="p"?" on":""}" data-i="p" data-label="Ø price" onclick="S('p')" title="rank by average price" style="--d:1.6s;animation-delay:1.6s">Ø price</div>` +
@@ -5262,17 +5456,22 @@ function buildGrid(){
   else rows = rkRecOrder(rk);   // the resting order: your picks first, then by weighted score
   const filtering = !!(typeof searchQ!=="undefined" && searchQ);
   if (filtering) rows = rows.filter(r=>matches(r, searchQ));
-  /* the legend chips: a heatmap view filter — the weighted ranking below still
-     reads the whole bench, so a filtered view never quietly changes the math */
+  /* the legend chips: ONE shelf selection for the whole department — heatmap,
+     hard specs and the weighted ranking all follow it (rkGSel repaints all three) */
   if (window.RK_GSEL && window.RK_GSEL.size) rows = rows.filter(r => window.RK_GSEL.has(r.g));
   const rowsTotal = rows.length;
   rows = rows.slice(0, window.SRFLIM.racket || 5);
   if (!rows.length){
-    document.getElementById("grid").innerHTML =
-      `<div style="padding:22px 6px;color:var(--muted);font-size:12px;">No frame on the bench matches “${document.getElementById("specSearch").value.trim()}”. Use the amber <b style="color:var(--amber);">specs ↗</b> button to look it up online.</div>`;
+    document.getElementById("grid").innerHTML = (window.RK_GSEL && window.RK_GSEL.size && !filtering)
+      ? `<div style="padding:22px 6px;color:var(--muted);font-size:12px;">Nothing on the selected shelves yet — file a frame there via the coloured shelf chip on any row, or click the legend chip again to show all.</div>`
+      : `<div style="padding:22px 6px;color:var(--muted);font-size:12px;">No frame on the bench matches “${document.getElementById("specSearch").value.trim()}”. Use the amber <b style="color:var(--amber);">specs ↗</b> button to look it up online.</div>`;
     document.getElementById("sortState").textContent = SEL.size
     ? "ranked by " + [...SEL].map(i=>cats[i]).join(" + ") + (SEL.size>1?` (${SEL.size} categories)`:"")
     : (sortIdx===null ? "recommended order" : sortIdx==="g" ? "grouped by shelf" : (sortIdx==="d" ? "ranked by difficulty" : sortIdx==="ov" ? "ranked by overall score" : (sortIdx==="p" ? "ranked by average price" : "recommended order")));
+    /* the empty path must repaint the chips too, or selecting an empty shelf
+       leaves no lit chip and no "show all" \u2014 a dead end instead of a filter */
+    if (window.rkPaintLegend) rkPaintLegend();
+    critChips(); mobileCards(rows, 0);
     return;
   }
   let lastG = "";
@@ -5291,7 +5490,7 @@ function buildGrid(){
         `<button type="button" class="gonly" onclick="event.stopPropagation();rkGroupOnly('${r.g}')" aria-label="show only ${G[r.g][1]}">${solo?"all groups":"only"}</button></div>`;
     }
     if (sortIdx==="g" && !SEL.size && !filtering && RK_GCOLL.has(r.g)) return;   // folded: header stands, rows wait
-    h += `<div role="cell" class="namecell" data-no="${r.no}" style="color:${G[r.g][0]};display:flex;flex-direction:column;justify-content:center;padding:3px 4px 3px 7px;line-height:1.25;border-left:3px ${gStyle(r.g)} color-mix(in srgb, ${G[r.g][0]} 62%, transparent);"><span style="font-weight:500;"><span style="color:var(--muted);font-weight:400;">No. ${r.no}</span> ${cmpBox("racket", r.no)}<span class="custname" role="button" tabindex="0" onclick="cOpen(${r.no})" onkeydown="if(event.key==='Enter'){cOpen(${r.no});}" onmouseenter="noteHoverIn(noteFrame,${r.no},event)" onmouseleave="noteHoverOut()" title="customize this frame — hover for play notes">${r.b} ${r.n}</span><button type="button" class="infobtn" aria-label="play notes for ${r.b} ${r.n}" onclick="event.stopPropagation();noteFrame(${r.no},event)">ⓘ</button>${r.feel?`<button type="button" class="custbtn feelbtn" aria-label="edit how ${r.b} ${r.n} feels for you" onclick="event.stopPropagation();fOpen(${r.feelOf})">edit feel</button>`:`<button type="button" class="custbtn" aria-label="customize ${r.b} ${r.n} — describe what you did to it" onclick="event.stopPropagation();cOpen(${r.no})">customize</button><button type="button" class="custbtn feelbtn" aria-label="re-score ${r.b} ${r.n} to your feel" onclick="event.stopPropagation();fOpen(${r.no})">my feel</button>`}${tag(r)}${window.srfRecChip("racket",r)}${r.cust?`<span class="custchip" title="${r.cust.text.replace(/"/g,'&quot;')}">customized</span>`:""}${r.feel?`<span class="custchip feelchip" title="your category read of the stock ${r.b} ${r.n} — the stock row is still on the bench">my feel</span>`:""}${window.buyBtn("racket",(r.b?r.b+" ":"")+String(r.n).replace(/ · my feel$/,""),true,"buy",true)}</span><span style="color:var(--muted);font-size:10px;font-weight:400;">${r.sp[0]} · ${r.sp[2]}<button type="button" class="grpchip" style="color:${G[r.g][0]};" title="on the ${String(G[r.g][1]).replace(/"/g,"&quot;")} shelf — click to move it" aria-label="shelf: ${String(G[r.g][1]).replace(/"/g,"&quot;")} — click to move this frame" onclick="event.stopPropagation();srfShelfPop('racket',${r.no},event)">${String(G[r.g][1]).split(" \u2014 ")[0]}</button></span></div>`;
+    h += `<div role="cell" class="namecell" data-no="${r.no}" style="color:${G[r.g][0]};display:flex;flex-direction:column;justify-content:center;padding:3px 4px 3px 7px;line-height:1.25;border-left:3px ${gStyle(r.g)} color-mix(in srgb, ${G[r.g][0]} 62%, transparent);"><span style="font-weight:500;"><span style="color:var(--muted);font-weight:400;">No. ${r.no}</span> ${cmpBox("racket", r.no)}<span class="custname" role="button" tabindex="0" onclick="cOpen(${r.no})" onkeydown="if(event.key==='Enter'){cOpen(${r.no});}" onmouseenter="noteHoverIn(noteFrame,${r.no},event)" onmouseleave="noteHoverOut()" title="customize this frame — hover for play notes">${r.b} ${r.n}</span><button type="button" class="infobtn" aria-label="play notes for ${r.b} ${r.n}" onclick="event.stopPropagation();noteFrame(${r.no},event)">ⓘ</button>${r.feel?`<button type="button" class="custbtn feelbtn" aria-label="edit how ${r.b} ${r.n} feels for you" onclick="event.stopPropagation();fOpen(${r.feelOf})">edit feel</button>`:`<button type="button" class="custbtn" aria-label="customize ${r.b} ${r.n} — describe what you did to it" onclick="event.stopPropagation();cOpen(${r.no})">customize</button><button type="button" class="custbtn feelbtn" aria-label="re-score ${r.b} ${r.n} to your feel" onclick="event.stopPropagation();fOpen(${r.no})">my feel</button>`}${tag(r)}${window.srfRecChip("racket",r)}${r.cust?`<span class="custchip" title="${r.cust.text.replace(/"/g,'&quot;')}">customized</span>`:""}${r.feel?`<span class="custchip feelchip" title="your category read of the stock ${r.b} ${r.n} — the stock row is still on the bench">my feel</span>`:""}${window.buyBtn("racket",(r.b?r.b+" ":"")+String(r.n).replace(/ · my feel$/,""),true,"buy",true)}</span><span style="color:var(--muted);font-size:10px;font-weight:400;">${r.sp[0]} · ${r.sp[2]}<button type="button" class="grpchip" style="color:${G[r.g][0]};" title="on the ${String(G[r.g][1]).replace(/"/g,"&quot;")} shelf — click to move it" aria-label="shelf: ${String(G[r.g][1]).replace(/"/g,"&quot;")} — click to move this frame" onclick="event.stopPropagation();srfShelfPop('racket',${r.no},event)">${r.g==="next"?"test next":r.g==="tested"?"court tested":String(G[r.g][1]).split(" \u2014 ")[0]}</button></span></div>`;
     h += `<div role="cell" class="spdcell" style="display:flex;align-items:center;justify-content:center;">${spiderIcon("racket", r.no, r.s)}</div>`;
     h += priceCell(r.p, sortIdx==="p");
     h += `<div role="cell" class="curvecell" style="display:flex;align-items:center;justify-content:center;">${perfCurve(r.s,200,44)}</div>`;
@@ -5307,7 +5506,7 @@ function buildGrid(){
         `title="${esc(cats[i])} ${v}/10 \u2014 click to set your own" ` +
         `onclick="srfScorePop('racket',${r.no},${i},event)" ` +
         `onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();srfScorePop('racket',${r.no},${i},event);}" ` +
-        `style="position:relative;background:${bg};color:${fg};${ring}text-align:center;padding:7px 2px;border-radius:3px;font-weight:500;font-size:12px;">${v}${gh!=null?`<i class="stckv" title="${mine!=null?"estimated":"stock"}: ${gh}">${gh}</i>`:""}</div>`;
+        `style="position:relative;background:${bg};color:${fg};${ring}text-align:center;padding:7px 2px;border-radius:3px;font-weight:500;font-size:13px;">${v}${gh!=null?`<i class="stckv" title="${mine!=null?"estimated":"stock"}: ${gh}">${gh}</i>`:""}</div>`;
     });
     h += diffCell(r.d, sortIdx==="d");
     h += `<div role="cell" class="ovcell" style="display:flex;align-items:center;justify-content:center;` +
@@ -5893,7 +6092,7 @@ window.buyBtn = (kind, name, mini, label, tiny) => {
     `title="${ad ? "Werbelink \u2014 opens a partner shop; a purchase pays this site a commission at no extra cost to you"
                  : "find " + safe + " to buy"}" ` +
     `aria-label="buy ${safe}${ad ? " (Werbelink \u2014 affiliate)" : ""}" ` +
-    `onclick="event.stopPropagation();${fn}('${safe}')">${label || "buy now"} \u2197</button>`;
+    `onclick="event.stopPropagation();${fn}('${safe}')">${label || "see offers"} \u2197</button>`;
 };
 
 /* ============================================================
@@ -6235,6 +6434,13 @@ function mobileCards(rows, total){
   if(rows){ lastRows = rows; lastTotal = total != null ? total : rows.length; } else rows = lastRows;
   if(!rows) return;
   total = lastTotal;
+  if(!rows.length){
+    el.innerHTML = `<div style="padding:18px 6px;color:var(--muted);font-size:12px;">` +
+      (window.RK_GSEL && window.RK_GSEL.size
+        ? "Nothing on the selected shelves yet \u2014 tap the shelf chip again to show all."
+        : "No frame matches this search.") + `</div>`;
+    return;
+  }
   let tot; try{ tot = w.reduce((a,b)=>a+b,0)||1; }catch(e){ return; }   // weights not up yet — render() calls back
   el.innerHTML = window.srfLimitBar("racket", total || rows.length, "rkLimSet") + rows.map((r,n)=>{
     const grid = r.s.map((v,i)=>{ const [bg,fg]=cellColor(v);
@@ -6250,7 +6456,6 @@ function mobileCards(rows, total){
         <div class="pr">
           ${r.p?`<span class="prv">~${r.p}\u20ac</span>`:`<span class="prv" style="opacity:.4;">\u2014</span>`}
           <span class="ovv" title="overall weighted score \u2014 follows your sliders">\u00d8 ${(r.s.reduce((a,v,i)=>a+v*w[i],0)/tot).toFixed(1)}</span>
-          <span class="ix">idx ${(r.s.reduce((a,v,i)=>a+v*w[i],0)/tot).toFixed(1)}</span>
         </div>
       </header>
       <div class="cv">${perfCurve(r.s,336,56)}</div>
@@ -6288,7 +6493,7 @@ buildGrid();
 const w = [10,5,5,5,5,5,5,5,5,5,5];
 document.getElementById("sliders").innerHTML = cats.map((c,i) =>
   `<div style="display:flex;align-items:center;gap:8px;font-size:11px;color:var(--soft);">
-    <span class="slabel" id="lb${i}" style="width:92px;">${c}</span>
+    <span class="slabel axq" id="lb${i}" style="width:92px;" role="button" tabindex="0" title="what is ${c}? — click for a plain-words explanation" onclick="srfAxPop('racket',${i},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();srfAxPop('racket',${i},event);}">${c}</span>
     <span class="slwrap" style="flex:1;--d:${(i*0.21).toFixed(2)}s"><input class="a3-slider" id="sl${i}" type="range" min="1" max="10" step="1" value="${w[i]}" aria-label="weight for ${c}" style="flex:1;animation-delay:${(i*0.21).toFixed(2)}s" oninput="W(${i},this.value)"></span>
     <span class="wv" id="wv${i}" style="width:26px;text-align:right;color:var(--bright);">${w[i]}</span>
   </div>`).join("");
@@ -6385,7 +6590,11 @@ function render(){
   /* rankPaint() destructures this list with const, so the recency band has to be
      applied HERE, where disp is still a let — and doing it once per render is also
      cheaper than redoing it on every filter keystroke. */
-  disp = window.srfRecFirst("racket", disp);
+  /* the shelf chips narrow this ranking too now — and with no chip active the
+     resting order pins your shelves first: my quiver, then test next, then court
+     tested. Market ghosts carry no shelf, so a filtered ranking shows bench rows only. */
+  if (window.RK_GSEL && window.RK_GSEL.size) disp = disp.filter(r => !r.ghost && window.RK_GSEL.has(r.g));
+  disp = window.srfRecFirst("racket", window.srfGrpFirst("racket", disp));
   RANK_CTX = { disp, note, meds, budgetNo, bandFor, EURO, tw };
   rankPaint();
   seedGridMedals(scored, meds, budgetNo);
@@ -6403,7 +6612,7 @@ function rankPaint(){
   if (!RANK_CTX) return;
   const { disp, note, meds, budgetNo, bandFor, EURO, tw } = RANK_CTX;
   const ghostRow = g =>
-    `<div style="display:flex;align-items:center;gap:8px;margin:3px 0;font-size:12px;opacity:.82;">
+    `<div style="display:flex;align-items:center;gap:8px;margin:3px 0;font-size:13px;opacity:.82;">
       <span style="width:196px;color:var(--fg);line-height:1.2;" title="your suggestion from the wider market — not on this bench; the strip above has the buy button">${g.mi >= 0 ? `<span class="medal ${["mG","mS","mB"][g.mi]}" title="your #${g.mi + 1} suggestion — lives on the wider market">${g.mi + 1}</span> ` : EURO + " "}<b style="font-weight:600;">${g.f.b}</b> ${g.f.n}${typeof MK_BADGE !== "undefined" ? MK_BADGE : ""}</span>
       <div style="flex:1;background:color-mix(in srgb, var(--fg) 6%, transparent);border:1px dashed color-mix(in srgb, var(--fg) 25%, transparent);border-radius:3px;height:13px;box-sizing:border-box;">
         <div style="width:${(g.sc / 10 * 100).toFixed(1)}%;background:color-mix(in srgb, var(--amber) 55%, transparent);height:11px;border-radius:3px;"></div>
@@ -6424,12 +6633,17 @@ function rankPaint(){
       `<div style="padding:14px 4px;color:var(--muted);font-size:12px;">No frame in this ranking matches “${esc(rankRaw)}”. The amber search above the bench digs deeper — it also reads specs, owners and numbers.</div>`;
     return;
   }
+  if (!rankTotal){   // a shelf filter is on and every selected shelf is empty
+    document.getElementById("rank").innerHTML =
+      `<div style="padding:14px 4px;color:var(--muted);font-size:12px;">Nothing on the selected shelves yet — click the shelf chip again to show all.</div>`;
+    return;
+  }
   /* the row limit counts what is ACTUALLY in front of you: filter first, then cut, so
      "showing 5 of 12" during a search means five of the twelve matches — not five of 155 */
   rows = rows.slice(0, window.SRFLIM.rank || 5);
-  document.getElementById("rank").innerHTML = (rankQ ? "" : note) +
+  document.getElementById("rank").innerHTML = (rankQ || (window.RK_GSEL && window.RK_GSEL.size) ? "" : note) +
     rows.map((r,n) => r.ghost ? ghostRow(r) :
-    `<div style="display:flex;align-items:center;gap:8px;margin:3px 0;font-size:12px;${r.est===true?"opacity:.62;":""}">
+    `<div style="display:flex;align-items:center;gap:8px;margin:3px 0;font-size:13px;${r.est===true?"opacity:.62;":""}">
       <span style="width:196px;color:var(--fg);line-height:1.2;">${meds.indexOf(r.no)>=0?`<span class="medal ${["mG","mS","mB"][meds.indexOf(r.no)]}" title="your #${meds.indexOf(r.no)+1} suggestion — same as the strip above">${meds.indexOf(r.no)+1}</span> `:""}${r.no === budgetNo ? EURO + " " : ""}<b style="font-weight:600;">${r.b}</b> ${r.n}${tag(r)}${window.srfRecChip("racket",r)}${(x => x ? `<span class="lvlflag ${x.cls}" title="why this row is not your suggestion">${x.txt}</span>` : "")(bandFor(r))}${rowActs(r, true)}${(x => x ? ` <span class="stcknote" title="the untouched stock read under the same weights">stock \u2300 ${x}</span>` : "")(stockAvg(r, w, tw))}</span>
       <div style="flex:1;background:color-mix(in srgb, var(--fg) 10%, transparent);border-radius:3px;height:13px;">
         <div style="width:${(r.sc/10*100).toFixed(1)}%;background:${G[r.g][0]};height:13px;border-radius:3px;"></div>
@@ -6531,7 +6745,7 @@ window.paintSetups4 = () => {
   if (!window.srfShortlist) return;
   let SL; try { SL = srfShortlist("racket"); } catch(e){ return; }
   const meds = (SL.meds || []).filter(Boolean);
-  if (!meds.length){ host.innerHTML = ""; return; }
+  if (!meds.length){ host.innerHTML = `<div style="font-size:12px;color:var(--muted);padding:6px 2px;">Answer the four questions above — your four finished setups appear here.</div>`; return; }
   let armAsk = false; try { armAsk = INTRO.arm === "yes"; } catch(e){}
   let cand = calBeds();
   if (armAsk){ const soft = cand.filter(x => !srfArmHarshBed(x.bed, calMatStiff(x.tech))); if (soft.length) cand = soft; }
@@ -6679,7 +6893,7 @@ function buildSpecs(){
   let sh = `<div style="display:grid;grid-template-columns:236px repeat(7,1fr);gap:2px;background:var(--page);">` +
     `<div></div>` +
     specLabels.map((x,i)=>`<div class="hdr sp${specSort===i?" on":""}" data-sp="${i}" data-label="${x}" onclick="SP(${i})" title="sort by ${x}" style="--d:${(i*0.21).toFixed(2)}s;animation-delay:${(i*0.21).toFixed(2)}s">${x}</div>`).join("");
-  let rows = specSort===null ? window.srfRecFirst("racket", rk) : rk.slice().sort((a,b)=>{
+  let rows = specSort===null ? window.srfRecFirst("racket", window.srfGrpFirst("racket", rk)) : rk.slice().sort((a,b)=>{
     const av = specVal(a,specSort), bv = specVal(b,specSort);
     if (av===null && bv===null) return 0;
     if (av===null) return 1;
@@ -6691,15 +6905,19 @@ function buildSpecs(){
      it: the amber bar is the department-wide query (and can go online), this one just
      narrows the table in front of you. Both run the same typo-tolerant matcher. */
   if (hsRQ) rows = rows.filter(r => matches(r, hsRQ));
+  /* the shelf chips narrow this table too — same selection as heatmap and ranking */
+  if (window.RK_GSEL && window.RK_GSEL.size) rows = rows.filter(r => window.RK_GSEL.has(r.g));
   const hsTotal = rows.length;
   /* the count reads "N of 155" whenever ANY filter is narrowing the table — the amber
      bench search counts too, otherwise searching "wilson" upstairs left this header
      cheerfully claiming 155 frames while five Wilsons sat under it */
   const hsN = document.getElementById("hsR_n");
   if (hsN) hsN.innerHTML = hsTotal !== rk.length ? `<b>${hsTotal}</b> of ${rk.length}` : `${rk.length} frames`;
-  if (hsRQ && !hsTotal){
+  if (!hsTotal && (hsRQ || (window.RK_GSEL && window.RK_GSEL.size))){
     document.getElementById("specs").innerHTML =
-      `<div style="padding:14px 4px;color:var(--muted);font-size:12px;">No frame on the bench matches “${esc(hsRRaw)}”.</div>`;
+      `<div style="padding:14px 4px;color:var(--muted);font-size:12px;">${hsRQ
+        ? `No frame on the bench matches “${esc(hsRRaw)}”.`
+        : `Nothing on the selected shelves yet — click the shelf chip again to show all.`}</div>`;
     document.getElementById("specState").textContent =
       specSort===null ? "original order" : "sorted by " + specLabels[specSort];
     return;
@@ -7079,25 +7297,36 @@ window.rkSetGroup = (no, key) => {
 window.RK_GSEL = window.RK_GSEL || new Set();
 window.rkGSel = (k) => {
   if (window.RK_GSEL.has(k)) window.RK_GSEL.delete(k); else window.RK_GSEL.add(k);
-  buildGrid();
+  buildGrid(); buildSpecs(); render();   // one selection, all three tables follow
 };
-window.rkGClear = () => { window.RK_GSEL.clear(); buildGrid(); };
+window.rkGClear = () => { window.RK_GSEL.clear(); buildGrid(); buildSpecs(); render(); };
 window.rkPaintLegend = function(){
-  const el = document.getElementById("rk_legend"); if (!el) return;
   const sel = window.RK_GSEL;
-  /* every shelf that holds at least one frame — including shelves invented via
-     transfer-specs or the shelf picker, which the old static legend never knew */
-  const keys = Object.keys(G).filter(k => rk.some(r => r.g === k) || sel.has(k));
-  el.innerHTML = keys.map(k => {
+  /* the shelves you file into are ALWAYS offered — a fresh bench used to collapse
+     the legend to a single "bench" chip, which read as "nothing to select". Empty
+     shelves stay clickable (dotted, count 0); shelves invented via transfer-specs
+     or the shelf picker still join the moment they hold a frame. */
+  const CANON = ["own", "next", "tested", "fr", "bench"];
+  const keys = CANON.concat(Object.keys(G).filter(k =>
+    CANON.indexOf(k) === -1 && (rk.some(r => r.g === k) || sel.has(k))));
+  /* chip labels in the player's own words — "playtested"/"selected" read as states,
+     not shelves */
+  const NICK = { own:"my quiver", next:"test next", tested:"court tested" };
+  const chips = keys.map(k => {
     const n = rk.filter(r => r.g === k).length;
     const on = sel.has(k);
-    return `<button type="button" class="gleg${on ? " on" : ""}${sel.size && !on ? " dim" : ""}" ` +
+    return `<button type="button" class="gleg${on ? " on" : ""}${sel.size && !on ? " dim" : ""}${n ? "" : " nil"}" ` +
       `aria-pressed="${on}" onclick="rkGSel('${k}')" ` +
-      `title="${on ? "showing this shelf \u2014 click to remove it from the filter" : "click to show only this shelf (click more to compare)"}">` +
-      `<i style="background:${G[k][0]}"></i>${esc(String(G[k][1]).split(" — ")[0])}<b>${n}</b></button>`;
+      `title="${on ? "showing this shelf \u2014 click to remove it from the filter" : (n ? "click to show only this shelf (click more to compare)" : "empty shelf \u2014 still selectable; file a frame here via the coloured shelf chip on any row")}">` +
+      `<i style="background:${G[k][0]}"></i>${esc(NICK[k] || String(G[k][1]).split(" — ")[0])}<b>${n}</b></button>`;
   }).join("") +
-  (sel.size ? `<button type="button" class="gleg all" onclick="rkGClear()">show all</button>` : "") +
-  `<span style="margin-left:auto;color:var(--muted);"><span style="color:var(--magenta-fg,var(--magenta));">\u25B2 = difficulty 1\u201310</span></span>`;
+  (sel.size ? `<button type="button" class="gleg all" onclick="rkGClear()">show all</button>` : "");
+  const tail = `<span style="margin-left:auto;color:var(--muted);"><span style="color:var(--magenta-fg,var(--magenta));">\u25B2 = difficulty 1\u201310</span></span>`;
+  /* the same chips live at the heatmap, the weighted ranking and the spec table */
+  ["rk_legend", "rk_legend_rank", "rk_legend_hs"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = chips + (id === "rk_legend" ? tail : "");
+  });
 };
 window.rkRepaint = () => { try { buildGrid(); buildSpecs(); render(); } catch(e){} };
 window.SRF.quiver = () => rk.filter(r=>r.g==="own").map(r=>({b:r.b, n:r.n}));
@@ -7414,12 +7643,12 @@ function tagChip(b){
     `style="color:var(--muted);" title="${b.tag === "ref" ? "reference only" : "not on a shelf yet"} — click to file this bed" ` +
     `aria-label="shelf: ${b.tag === "ref" ? "reference only" : "none"} — click to move this bed" ` +
     `onclick="event.stopPropagation();srfShelfPop('string',${b.i},event)">${b.tag === "ref" ? "reference" : "shelf"}</button></div>`;
-  if (b.tag==="mine") return `<div style="margin-top:3px;"><button type="button" class="tagbtn" title="click to move this bed to another shelf" aria-label="change this bed's shelf" onclick="event.stopPropagation();srfShelfPop('string',${b.i},event)" style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:color-mix(in srgb, var(--magenta) 18%, transparent);color:var(--magenta-fg,var(--magenta));padding:1px 6px;border-radius:3px;">my bed</button></div>`;
-  if (b.tag==="researched") return `<div style="margin-top:3px;"><button type="button" class="tagbtn" title="click to move this bed to another shelf" aria-label="change this bed's shelf" onclick="event.stopPropagation();srfShelfPop('string',${b.i},event)" style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:color-mix(in srgb, var(--bronze) 18%, transparent);color:var(--bronze);padding:1px 6px;border-radius:3px;">researched</button></div>`;
-  if (b.tag==="benchmark")  return `<div style="margin-top:3px;"><button type="button" class="tagbtn" title="click to move this bed to another shelf" aria-label="change this bed's shelf" onclick="event.stopPropagation();srfShelfPop('string',${b.i},event)" style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:color-mix(in srgb, var(--cyan) 24%, transparent);color:var(--cyan);padding:1px 6px;border-radius:3px;font-weight:600;">court-validated benchmark</button></div>`;
-  if (b.tag==="validated") return `<div style="margin-top:3px;"><button type="button" class="tagbtn" title="click to move this bed to another shelf" aria-label="change this bed's shelf" onclick="event.stopPropagation();srfShelfPop('string',${b.i},event)" style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:color-mix(in srgb, var(--cyan) 16%, transparent);color:var(--cyan);padding:1px 6px;border-radius:3px;">court-validated</button></div>`;
-  if (b.tag==="tested")    return `<div style="margin-top:3px;"><button type="button" class="tagbtn" title="click to move this bed to another shelf" aria-label="change this bed's shelf" onclick="event.stopPropagation();srfShelfPop('string',${b.i},event)" style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:color-mix(in srgb, var(--cyan) 16%, transparent);color:var(--cyan);padding:1px 6px;border-radius:3px;">court-tested</button></div>`;
-  if (b.tag==="queued")    return `<div style="margin-top:3px;"><button type="button" class="tagbtn" title="click to move this bed to another shelf" aria-label="change this bed's shelf" onclick="event.stopPropagation();srfShelfPop('string',${b.i},event)" style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:color-mix(in srgb, var(--amber) 14%, transparent);color:var(--amber);padding:1px 6px;border-radius:3px;">in queue</button></div>`;
+  if (b.tag==="mine") return `<div style="margin-top:3px;"><button type="button" class="tagbtn" title="click to move this bed to another shelf" aria-label="change this bed's shelf" onclick="event.stopPropagation();srfShelfPop('string',${b.i},event)" style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:color-mix(in srgb, var(--magenta) 18%, transparent);color:var(--magenta-fg,var(--magenta));padding:1px 6px;border-radius:3px;">my bed</button></div>`;
+  if (b.tag==="researched") return `<div style="margin-top:3px;"><button type="button" class="tagbtn" title="click to move this bed to another shelf" aria-label="change this bed's shelf" onclick="event.stopPropagation();srfShelfPop('string',${b.i},event)" style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:color-mix(in srgb, var(--bronze) 18%, transparent);color:var(--bronze);padding:1px 6px;border-radius:3px;">researched</button></div>`;
+  if (b.tag==="benchmark")  return `<div style="margin-top:3px;"><button type="button" class="tagbtn" title="click to move this bed to another shelf" aria-label="change this bed's shelf" onclick="event.stopPropagation();srfShelfPop('string',${b.i},event)" style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:color-mix(in srgb, var(--cyan) 24%, transparent);color:var(--cyan);padding:1px 6px;border-radius:3px;font-weight:600;">court-validated benchmark</button></div>`;
+  if (b.tag==="validated") return `<div style="margin-top:3px;"><button type="button" class="tagbtn" title="click to move this bed to another shelf" aria-label="change this bed's shelf" onclick="event.stopPropagation();srfShelfPop('string',${b.i},event)" style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:color-mix(in srgb, var(--cyan) 16%, transparent);color:var(--cyan);padding:1px 6px;border-radius:3px;">court-validated</button></div>`;
+  if (b.tag==="tested")    return `<div style="margin-top:3px;"><button type="button" class="tagbtn" title="click to move this bed to another shelf" aria-label="change this bed's shelf" onclick="event.stopPropagation();srfShelfPop('string',${b.i},event)" style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:color-mix(in srgb, var(--cyan) 16%, transparent);color:var(--cyan);padding:1px 6px;border-radius:3px;">court-tested</button></div>`;
+  if (b.tag==="queued")    return `<div style="margin-top:3px;"><button type="button" class="tagbtn" title="click to move this bed to another shelf" aria-label="change this bed's shelf" onclick="event.stopPropagation();srfShelfPop('string',${b.i},event)" style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:color-mix(in srgb, var(--amber) 14%, transparent);color:var(--amber);padding:1px 6px;border-radius:3px;">in queue</button></div>`;
   return "";
 }
 
@@ -7493,7 +7722,7 @@ function sbSpecVal(b,i){
 }
 function buildSbSpecs(){
   let rows=beds.slice();
-  if(sbSpecSort===null) rows = window.srfRecFirst("string", rows);
+  if(sbSpecSort===null) rows = window.srfRecFirst("string", window.srfGrpFirst("string", rows));
   else rows.sort((a,b)=>{
     const x=sbSpecVal(a,sbSpecSort), y=sbSpecVal(b,sbSpecSort);
     if(typeof x==="number"&&typeof y==="number") return y-x;
@@ -7503,12 +7732,16 @@ function buildSbSpecs(){
   let h=`<div style="display:grid;grid-template-columns:196px 74px 176px 74px 124px 76px 70px 66px;gap:2px;background:var(--page);min-width:1180px;">`+
     SBSPEC.map((c,i)=>`<div class="sbhdr${sbSpecSort===i?" on":""}" data-label="${c}" onclick="sbSpecS(${i})" style="--d:${(i*0.18).toFixed(2)}s;animation-delay:${(i*0.18).toFixed(2)}s;text-align:left;padding:3px 5px;">${c}</div>`).join("");
   if (hsSQ) rows = rows.filter(b => sbMatches(b, hsSQ));
+  /* the shelf chips narrow this table too — same selection as heatmap and ranking */
+  if (window.SB_GSEL && window.SB_GSEL.size) rows = rows.filter(b => window.SB_GSEL.has(gkey(b)));
   const sbHsTotal = rows.length;
   const hsSN = document.getElementById("hsS_n");
   if (hsSN) hsSN.innerHTML = sbHsTotal !== beds.length ? `<b>${sbHsTotal}</b> of ${beds.length}` : `${beds.length} beds`;
-  if (hsSQ && !sbHsTotal){
+  if (!sbHsTotal && (hsSQ || (window.SB_GSEL && window.SB_GSEL.size))){
     document.getElementById("sb_specs").innerHTML =
-      `<div style="padding:14px 4px;color:var(--muted);font-size:12px;">No bed on the bench matches “${esc(hsSRaw)}”.</div>`;
+      `<div style="padding:14px 4px;color:var(--muted);font-size:12px;">${hsSQ
+        ? `No bed on the bench matches “${esc(hsSRaw)}”.`
+        : `Nothing on the selected shelves yet — click the shelf chip again to show all.`}</div>`;
     document.getElementById("sb_specState").textContent = sbSpecSort===null?"original order":"sorted by "+SBSPEC[sbSpecSort];
     return;
   }
@@ -8256,19 +8489,26 @@ window.sbGSel = (k) => {
 };
 window.sbGClear = () => { window.SB_GSEL.clear(); buildGrid(); };
 window.sbPaintLegend = function(){
-  const el = document.getElementById("sb_legend"); if (!el) return;
   const sel = window.SB_GSEL;
-  const keys = SBORDER.filter(k => beds.some(b => gkey(b) === k) || sel.has(k));
-  el.innerHTML = keys.map(k => {
+  /* every shelf is ALWAYS offered, in priority order — an untagged bench used to
+     show only "reference", which read as "nothing to select". Empty shelves stay
+     clickable (dotted, count 0). */
+  const keys = ["mine", "queued", "tested", "validated", "benchmark", "researched", "ref"];
+  const chips = keys.map(k => {
     const n = beds.filter(b => gkey(b) === k).length;
     const on = sel.has(k);
-    return `<button type="button" class="gleg${on ? " on" : ""}${sel.size && !on ? " dim" : ""}" ` +
+    return `<button type="button" class="gleg${on ? " on" : ""}${sel.size && !on ? " dim" : ""}${n ? "" : " nil"}" ` +
       `aria-pressed="${on}" onclick="sbGSel('${k}')" ` +
-      `title="${on ? "showing this shelf \u2014 click to remove it from the filter" : "click to show only this shelf (click more to compare)"}">` +
+      `title="${on ? "showing this shelf \u2014 click to remove it from the filter" : (n ? "click to show only this shelf (click more to compare)" : "empty shelf \u2014 still selectable; claim a bed to file it here")}">` +
       `<i style="background:${SBG[k][0]}"></i>${esc(String(SBG[k][1]).split(" — ")[0])}<b>${n}</b></button>`;
   }).join("") +
-  (sel.size ? `<button type="button" class="gleg all" onclick="sbGClear()">show all</button>` : "") +
-  `<span style="margin-left:auto;color:var(--muted);"><span class="est">\u2020</span> re-derived</span>`;
+  (sel.size ? `<button type="button" class="gleg all" onclick="sbGClear()">show all</button>` : "");
+  const tail = `<span style="margin-left:auto;color:var(--muted);"><span class="est">\u2020</span> re-derived</span>`;
+  /* the same chips live at the heatmap, the weighted ranking and the spec table */
+  ["sb_legend", "sb_legend_rank", "sb_legend_hs"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = chips + (id === "sb_legend" ? tail : "");
+  });
 };
 window.sbRepaint = () => { try { buildGrid(); buildSbSpecs(); } catch(e){} };
 window.SRF.sbEstimate = (...a) => sbEstimate(...a);
@@ -8312,7 +8552,8 @@ function sbRecSort(scored){
   } catch(e){}
   const slot = b => { const m = meds.indexOf(b.i);
     return m >= 0 ? m : (b.i === budgetI ? 3 : 4); };
-  scored.sort((a,b)=> slot(a)-slot(b) || b.idx-a.idx || String(a.m).localeCompare(String(b.m)));
+  scored.sort((a,b)=> (window.srfGrpRank("string", a) - window.srfGrpRank("string", b)) ||
+    slot(a)-slot(b) || b.idx-a.idx || String(a.m).localeCompare(String(b.m)));
   /* same rule as the racket bench: what you just added or searched leads */
   const hot = window.srfRecFirst("string", scored);
   if (hot !== scored) scored.splice(0, scored.length, ...hot);
@@ -8330,15 +8571,25 @@ function buildGrid(){
   else if(sortIdx==="d")  scored.sort((a,b)=>SBDIR*(bedDemand(a)-bedDemand(b)));
   else scored.sort((a,b)=>SBDIR*(a.s[sortIdx]-b.s[sortIdx]));
   if(typeof sbQ!=="undefined" && sbQ) scored=scored.filter(b=>sbMatches(b,sbQ));
-  /* ranking list captured BEFORE the shelf chips narrow the view: the chips are a
-     heatmap filter, and the weighted ranking keeps reading the whole bench */
+  /* ranking list captured BEFORE the shelf chips narrow the view: the ranking
+     applies the same shelf selection itself further down, after the pure math */
   const sbAllBeds = scored.slice();
   if (window.SB_GSEL && window.SB_GSEL.size) scored = scored.filter(b => window.SB_GSEL.has(gkey(b)));
   const sbTotal = scored.length;
   scored = scored.slice(0, window.SRFLIM.string || 5);
   if(!scored.length){
-    document.getElementById("sb_grid").innerHTML=`<div style="padding:22px 6px;color:var(--muted);font-size:12px;">No bed matches \u201c${document.getElementById("sb_specSearch").value.trim()}\u201d. Use the amber <b style="color:var(--amber);">search</b> button to look it up online, or <b style="color:var(--bronze);">transfer specs</b> to add it.</div>`;
-    document.getElementById("sb_sortState").textContent="no bench match"; return;
+    document.getElementById("sb_grid").innerHTML = (window.SB_GSEL && window.SB_GSEL.size && !(typeof sbQ!=="undefined" && sbQ))
+      ? `<div style="padding:22px 6px;color:var(--muted);font-size:12px;">Nothing on the selected shelves yet \u2014 claim a bed to file it there, or click the legend chip again to show all.</div>`
+      : `<div style="padding:22px 6px;color:var(--muted);font-size:12px;">No bed matches \u201c${document.getElementById("sb_specSearch").value.trim()}\u201d. Use the amber <b style="color:var(--amber);">search</b> button to look it up online, or <b style="color:var(--bronze);">transfer specs</b> to add it.</div>`;
+    document.getElementById("sb_sortState").textContent="no bench match";
+    /* the empty path must still repaint everything the normal path repaints, or a
+       chip that empties the grid leaves ranking, specs, cards and legend stale */
+    sbCritChips(); sbMobileCards([], 0);
+    if(document.getElementById("sb_specs")) buildSbSpecs();
+    SB_RANK_CTX = { sbDispFull: [], sbNote: "", sbTop: [], sbBudgetI: null, sbBandOf: () => null, SB_EURO: "" };
+    sbRankPaint();
+    if (window.sbPaintLegend) sbPaintLegend();
+    return;
   }
 
   // podium rule shared with the racket bench: an explicit arm-friendly ask keeps harsh
@@ -8356,7 +8607,7 @@ function buildGrid(){
   const sbBudgetI = sbBudget && sbBudget.bed.i != null && sbBudget.bed.i >= 0 ? sbBudget.bed.i : null;
   const SB_EURO = `<span class="medal" style="background:linear-gradient(135deg,var(--amber),#8a6a28);" title="your budget pick — same as your suggestions">€</span>`;
   const sbBandOf = b => { try { return srfBandOf("string", b, b.i); } catch(e){ return null; } };
-  let h=`<div role="table" aria-label="string bench — 8 axes, demand and price" style="display:grid;grid-template-columns:236px 34px 62px 208px repeat(8,1fr) 52px 56px;gap:2px;background:var(--page);font-size:11px;">`+
+  let h=`<div role="table" aria-label="string bench — 8 axes, demand and price" style="display:grid;grid-template-columns:236px 34px 62px 208px repeat(8,1fr) 52px 56px;gap:2px;background:var(--page);font-size:12.5px;">`+
     `<div class="sbhdr namecell"></div>`+
     `<div class="spdcell" aria-hidden="true"></div>`+
     `<div class="sbhdr pricecell" data-i="p" data-label="Ø price" onclick="sbS('p')" title="rank by price per bed" style="--d:1.5s;animation-delay:1.5s;color:var(--amber);">Ø price</div>`+
@@ -8400,7 +8651,7 @@ function buildGrid(){
         `title="${esc(AX[i])} ${v}/10 \u2014 click to set your own" ` +
         `onclick="srfScorePop('string',${b.i},${i},event)" ` +
         `onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();srfScorePop('string',${b.i},${i},event);}" ` +
-        `style="position:relative;background:${bg};color:${fg};${ring}text-align:center;padding:7px 2px;border-radius:3px;font-weight:500;font-size:12px;">${v}${mine!=null?`<i class="stckv" title="estimated: ${mine}">${mine}</i>`:gstk!=null?`<i class="stckv" title="stock: ${gstk}">${gstk}</i>`:est}</div>`;
+        `style="position:relative;background:${bg};color:${fg};${ring}text-align:center;padding:7px 2px;border-radius:3px;font-weight:500;font-size:13px;">${v}${mine!=null?`<i class="stckv" title="estimated: ${mine}">${mine}</i>`:gstk!=null?`<i class="stckv" title="stock: ${gstk}">${gstk}</i>`:est}</div>`;
     });
     h+=sbDiffCell(bedDemand(b), sortIdx==='d');
     h+=`<div role="cell" style="display:flex;align-items:center;justify-content:center;color:var(--bright);font-weight:600;font-size:13px;">${b.idx.toFixed(1)}</div>`;
@@ -8438,12 +8689,20 @@ function buildGrid(){
      index, with its own top 5 / 10 / all bar. It used to inherit whatever slice the
      grid happened to be showing, which is why it sat at six rows while the bench held
      thirty-nine — a ranking you cannot see past is not a ranking. */
-  const sbDispFull = window.srfRecFirst("string",
-    sbSplice(sbAllBeds.slice().sort((a,b) => b.idx - a.idx || String(a.m).localeCompare(String(b.m)))));
+  /* the shelf chips narrow THIS list too now, and with no chip active the resting
+     order pins your shelves first: currently strung, string next, court-tested,
+     court-validated, benchmark. Inside each shelf the weighted index still decides.
+     Market ghosts carry no shelf, so a filtered ranking shows bench rows only. */
+  const sbGOn = !!(window.SB_GSEL && window.SB_GSEL.size);
+  let sbPure = sbAllBeds.slice().sort((a,b) => b.idx - a.idx || String(a.m).localeCompare(String(b.m)));
+  sbPure = sbGOn ? sbPure.filter(b => window.SB_GSEL.has(gkey(b))) : sbSplice(sbPure);
+  const sbDispFull = window.srfRecFirst("string", window.srfGrpFirst("string", sbPure));
   let sbNote = "";
-  const sbGoldTop = sbDispFull.length && (sbDispFull[0].ghost ? sbDispFull[0].mi === 0 : (sbTop[0] != null && sbDispFull[0].i === sbTop[0]));
-  if (sbDispFull.length && !sbGoldTop && (sbTop[0] != null || (SBL && SBL.meds[0]))){
-    const top = sbDispFull[0], tb = top.ghost ? null : sbBandOf(top);
+  /* the "top score is not your gold pick" note reads the PURE math order, never the
+     shelf-pinned display order — and stays quiet while a shelf filter narrows the list */
+  const sbGoldTop = sbPure.length && (sbPure[0].ghost ? sbPure[0].mi === 0 : (sbTop[0] != null && sbPure[0].i === sbTop[0]));
+  if (!sbGOn && sbPure.length && !sbGoldTop && (sbTop[0] != null || (SBL && SBL.meds[0]))){
+    const top = sbPure[0], tb = top.ghost ? null : sbBandOf(top);
     sbNote = `<div class="rank_note"><b>${top.ghost ? top.bed.m : top.m}</b> holds the top weighted score (${(top.ghost ? top.sc : top.idx).toFixed(1)}/10) but is not your gold pick` +
       `${tb ? ` — it is <b>${tb.txt}</b>` : ""}. Crowns follow your suggestions; the bars stay the pure math.</div>`;
   }
@@ -8466,7 +8725,7 @@ function sbRankPaint(){
   if (!SB_RANK_CTX) return;
   const { sbDispFull, sbNote, sbTop, sbBudgetI, sbBandOf, SB_EURO } = SB_RANK_CTX;
   const sbGhostRow = g =>
-    `<div style="display:flex;align-items:center;gap:8px;margin:3px 0;font-size:12px;opacity:.82;">
+    `<div style="display:flex;align-items:center;gap:8px;margin:3px 0;font-size:13px;opacity:.82;">
        <span style="width:214px;color:var(--fg);line-height:1.2;" title="your suggestion from the wider market — not on this bench">${g.mi >= 0 ? `<span class="medal ${["mG","mS","mB"][g.mi]}" title="your #${g.mi + 1} suggestion — lives on the wider market">${g.mi + 1}</span> ` : SB_EURO + " "}${g.bed.m}${g.bed.x && !/full bed/i.test(String(g.bed.x)) ? ` <span style="color:var(--muted);">× ${g.bed.x}</span>` : ""}${typeof MK_BADGE !== "undefined" ? (g.bed.src === "combo" ? CB_BADGE : MK_BADGE) : ""}${g.bed.deal && typeof DEAL_BADGE !== "undefined" ? DEAL_BADGE : ""}</span>
        <div style="flex:1;background:color-mix(in srgb, var(--fg) 6%, transparent);border:1px dashed color-mix(in srgb, var(--fg) 25%, transparent);border-radius:3px;height:13px;box-sizing:border-box;">
          <div style="width:${(g.sc / 10 * 100).toFixed(1)}%;background:color-mix(in srgb, var(--amber) 55%, transparent);height:11px;border-radius:3px;"></div>
@@ -8486,10 +8745,15 @@ function sbRankPaint(){
       `<div style="padding:14px 4px;color:var(--muted);font-size:12px;">No bed in this ranking matches “${esc(sbRankRaw)}”. The string search above the bench also reads materials, gauges and tensions.</div>`;
     return;
   }
+  if (!sbRankTotal){   // a shelf filter is on and every selected shelf is empty
+    document.getElementById("sb_rank").innerHTML =
+      `<div style="padding:14px 4px;color:var(--muted);font-size:12px;">Nothing on the selected shelves yet — click the shelf chip again to show all.</div>`;
+    return;
+  }
   // filter first, then cut — same rule as the racket ranking
   const rows = hits.slice(0, window.SRFLIM.sbrank || 5);
-  document.getElementById("sb_rank").innerHTML = (sbRankQ ? "" : sbNote) + rows.map((b,n)=> b.ghost ? sbGhostRow(b) :
-    `<div style="display:flex;align-items:center;gap:8px;margin:3px 0;font-size:12px;">
+  document.getElementById("sb_rank").innerHTML = (sbRankQ || (window.SB_GSEL && window.SB_GSEL.size) ? "" : sbNote) + rows.map((b,n)=> b.ghost ? sbGhostRow(b) :
+    `<div style="display:flex;align-items:center;gap:8px;margin:3px 0;font-size:13px;">
        <span style="width:214px;color:var(--fg);line-height:1.2;">${sbTop.indexOf(b.i)>=0?`<span class="medal ${["mG","mS","mB"][sbTop.indexOf(b.i)]}" title="your #${sbTop.indexOf(b.i)+1} suggestion — same ranking as intermediate mode">${sbTop.indexOf(b.i)+1}</span> `:""}${b.i === sbBudgetI ? SB_EURO + " " : ""}${b.m} <span style="color:var(--muted);">× ${b.x}</span>${window.srfRecChip("string",b)}${(x => x ? `<span class="lvlflag ${x.cls}" title="why this bed is not your suggestion">${x.txt}</span>` : "")(sbBandOf(b))}</span>
        <div style="flex:1;background:color-mix(in srgb, var(--fg) 10%, transparent);border-radius:3px;height:13px;">
          <div style="width:${(b.idx/10*100).toFixed(1)}%;background:${rowColor(b)};height:13px;border-radius:3px;"></div></div>
@@ -8619,6 +8883,13 @@ function sbCritChips(){
 }
 function sbMobileCards(rows, total){
   const el=document.getElementById("sb_gridM"); if(!el) return;
+  if(!rows.length){
+    el.innerHTML = `<div style="padding:18px 6px;color:var(--muted);font-size:12px;">` +
+      (window.SB_GSEL && window.SB_GSEL.size
+        ? "Nothing on the selected shelves yet \u2014 tap the shelf chip again to show all."
+        : "No bed matches this search.") + `</div>`;
+    return;
+  }
   el.innerHTML = window.srfLimitBar("string", total || rows.length, "sbLimSet") + rows.map((b,n)=>{
     const grid = b.s.map((v,i)=>{ const [bg,fg]=cellColor(v);
       return `<div class="scell${b.baseS&&b.baseS[i]!==v?" mycell":""}" role="button" tabindex="0"         title="${esc(AX[i])} ${v}/10 — tap to set your own"         onclick="srfScorePop('string',${b.i},${i},event)"         style="position:relative;background:${bg};color:${fg};"><i>${AXshort[i]}</i><b>${v}</b>        ${b.baseS&&b.baseS[i]!==v?`<i class="stckv" title="estimated: ${b.baseS[i]}">${b.baseS[i]}</i>`:b.feel&&b.stockS&&b.stockS[i]!==v?`<i class="stckv" title="stock: ${b.stockS[i]}">${b.stockS[i]}</i>`:""}</div>`; }).join("")
@@ -8666,7 +8937,7 @@ window.sbResetOrder = () => {
 
 document.getElementById("sb_sliders").innerHTML = AX.map((c,i)=>
   `<div style="display:flex;align-items:center;gap:8px;font-size:11px;color:var(--soft);">
-     <span class="slabel" id="sb_lb${i}" style="width:106px;">${c}</span>
+     <span class="slabel axq" id="sb_lb${i}" style="width:106px;" role="button" tabindex="0" title="what is ${c}? — click for a plain-words explanation" onclick="srfAxPop('string',${i},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();srfAxPop('string',${i},event);}">${c}</span>
      <span class="slwrap" style="flex:1;--d:${(i*0.21).toFixed(2)}s">
        <input class="a3-slider sbsl" id="sb_sl${i}" type="range" min="1" max="10" step="1" value="${w[i]}" aria-label="weight for ${c}" style="flex:1;animation-delay:${(i*0.21).toFixed(2)}s" oninput="sbW(${i},this.value)">
      </span>
@@ -9707,10 +9978,10 @@ function introPaint(){
   // copies of the chips paint and bind together and stay in sync by construction
   // easy mode asks the same four questions against the same INTRO object, so both
   // copies of the chips paint and bind together and stay in sync by construction
-  document.querySelectorAll("#introCard .ichip, #easyQ .ichip, #midQ .ichip").forEach(c =>
+  document.querySelectorAll("#introCard .ichip, #easyQ .ichip, #midQ .ichip, #ldQ .ichip").forEach(c =>
     c.classList.toggle("on", INTRO[c.dataset.q] === c.dataset.v));
 }
-document.querySelectorAll("#introCard .ichip, #easyQ .ichip, #midQ .ichip").forEach(c => c.addEventListener("click", () => {
+document.querySelectorAll("#introCard .ichip, #easyQ .ichip, #midQ .ichip, #ldQ .ichip").forEach(c => c.addEventListener("click", () => {
   const q = c.dataset.q;
   INTRO[q] = (INTRO[q] === c.dataset.v) ? "" : c.dataset.v;   // tap again to unset
   try { localStorage.setItem(INTRO_KEY, JSON.stringify(INTRO)); } catch(e){}
@@ -9863,6 +10134,7 @@ function advBeds(){
 const advMedal = n => `<span class="medal ${["mG","mS","mB"][n]}">${n+1}</span>`;
 const advDist = (a,b) => Math.sqrt(a.reduce((t,v,i) => t + (v - b[i]) * (v - b[i]), 0));
 window.advJump = (kind, id) => {
+  if (window.srfChapOpen) srfChapOpen(kind === "racket" ? "rk" : "sb");
   const cell = document.querySelector(kind === "racket"
     ? `#grid .namecell[data-no="${id}"]` : `#sb_grid .namecell[data-bi="${id}"]`);
   if (!cell) return;
@@ -10488,11 +10760,7 @@ window.setMode = (m) => {
   const mode = ["landing","easy","mid","pro"].includes(m) ? m : "landing";
   document.body.classList.remove("mode-landing","mode-easy","mode-mid","mode-pro");
   document.body.classList.add("mode-" + mode);
-  /* one theme control for the whole house: the same node travels into the header of
-     the open mode, so colour and dark/bright are reachable everywhere without a copy */
-  const tc = document.getElementById("themeCtl");
-  const ts = document.getElementById(mode === "easy" ? "themeSlotEz" : mode === "mid" ? "themeSlotMid" : "themeSlotPro");
-  if (tc && ts && tc.parentElement !== ts) ts.appendChild(tc);
+  /* QW6: the theme control lives in the fixed gear menu now — no per-mode docking */
   try { localStorage.setItem(MODE_KEY, mode); } catch(e){}
   window.scrollTo({ top: 0, behavior: "auto" });
   document.body.scrollTop = 0;   // the scroller in wvhost mode
@@ -10502,10 +10770,9 @@ window.setMode = (m) => {
   if (mode === "pro" && typeof calRun === "function") calRun();
   if (mode === "pro" && window.paintSetups4) paintSetups4();   // calibrator fns exist by now
   if (window.srfSearchDock) srfSearchDock(mode);   // both search engines dock into whichever bench is open
-  // intro only for hops between the three working modes, never on re-entering the
-  // mode you are already in and never when coming from (or going to) the landing
-  if (prev && prev !== mode && prev !== "landing" && mode !== "landing") srfIntroShow(mode);
-  else srfIntroDismiss();
+  /* QW2: the mode intro modals are retired — each header's subtitle already says
+     where you are, and a modal that must be clicked away is a toll booth, not help */
+  srfIntroDismiss();
 };
 (function modeInit(){
   /* Every fresh visit starts on the welcome page — deliberately. The last mode used to
@@ -10513,6 +10780,7 @@ window.setMode = (m) => {
      visitors skipped the landing entirely. MODE_KEY is still written on every switch
      (cheap, and other features may read it later), it is just no longer read here. */
   document.body.classList.add("mode-landing");
+  try { introPaint(); } catch(e){}   // the landing question card paints from the saved answers too
   // the landing and easy headers borrow the brand marks already embedded in pro mode
   // rather than carrying a second copy of a 30 KB base64 logo
   const logo = document.querySelector('#proWrap img[alt="A\u00b3 Agentur logo"]');
@@ -10542,6 +10810,142 @@ window.setMode = (m) => {
   });
 })();
 
+/* ---------- Direction A: the working-out folds into chapters ----------
+   Collapsed by default: pro opens on the answer (welcome → four setups →
+   priorities), and each department is one bar-click away. Ranges are the
+   sibling elements between one .chapbar and the next (or #pro_end), so no
+   department markup had to be rewrapped. State survives reloads. */
+const CHAP_KEY = "srf:chapters:v1";
+let CHAP_OPEN = new Set();
+try { const c0 = JSON.parse(localStorage.getItem(CHAP_KEY) || "[]");
+      if (Array.isArray(c0)) CHAP_OPEN = new Set(c0); } catch(e){}
+function chapSave(){ try { localStorage.setItem(CHAP_KEY, JSON.stringify([...CHAP_OPEN])); } catch(e){} }
+window.srfChapApply = function(){
+  document.querySelectorAll(".chapbar").forEach(bar => {
+    const open = CHAP_OPEN.has(bar.dataset.chap);
+    bar.classList.toggle("open", open);
+    bar.setAttribute("aria-expanded", String(open));
+    const ch = bar.querySelector(".chev"); if (ch) ch.textContent = open ? "▾" : "▸";
+    let el = bar.nextElementSibling;
+    while (el && !el.classList.contains("chapbar") && el.id !== "pro_end"){
+      el.classList.toggle("chapfold", !open);
+      el = el.nextElementSibling;
+    }
+  });
+  try {
+    const nf = document.getElementById("chap_n_rk");
+    if (nf && window.SRF && SRF.frames) nf.textContent = SRF.frames().length + " frames";
+    const nb = document.getElementById("chap_n_sb");
+    if (nb && window.SRF && SRF.beds) nb.textContent = SRF.beds().length + " beds";
+  } catch(e){}
+};
+window.srfChapToggle = function(k){
+  CHAP_OPEN.has(k) ? CHAP_OPEN.delete(k) : CHAP_OPEN.add(k);
+  chapSave(); srfChapApply();
+};
+window.srfChapOpen = function(k){
+  if (!CHAP_OPEN.has(k)){ CHAP_OPEN.add(k); chapSave(); srfChapApply(); }
+};
+srfChapApply();
+
+/* ---------- QW6: the gear menu (theme · export · import · intro) ---------- */
+window.srfGearToggle = function(ev){
+  if (ev) ev.stopPropagation();
+  const pop = document.getElementById("gearpop"), b = document.getElementById("gearbtn");
+  if (!pop) return;
+  pop.hidden = !pop.hidden;
+  if (b) b.setAttribute("aria-expanded", String(!pop.hidden));
+};
+window.srfGearClose = function(){
+  const pop = document.getElementById("gearpop"), b = document.getElementById("gearbtn");
+  if (pop) pop.hidden = true;
+  if (b) b.setAttribute("aria-expanded", "false");
+};
+document.addEventListener("click", e => {
+  const pop = document.getElementById("gearpop");
+  if (pop && !pop.hidden && !pop.contains(e.target) && e.target.id !== "gearbtn") srfGearClose();
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape") srfGearClose(); });
+
+/* ---------- QW10: the sticky section nav jumps AND opens ---------- */
+window.srfNavGo = function(id, kind){
+  let el;
+  if (kind === "chap"){
+    if (window.srfChapOpen) srfChapOpen(id);
+    el = document.querySelector('.chapbar[data-chap="' + id + '"]');
+  } else el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+};
+
+/* ---------- the sliders explain themselves ----------
+   Some players know exactly what they want from a frame; some have never been
+   asked. Every priorities label is clickable now and answers three questions in
+   plain words: what does this axis measure, when should I slide it up, and what
+   does raising it usually cost. One popover, both benches, all modes. */
+window.SRF_AXINFO = {
+  racket: [
+    ["Control (flat)", "How reliably your full, flat drives land inside the lines — a low, predictable launch instead of free depth.", "your balls tend to sail long, or you bring your own pace and want the frame to simply obey.", "High-control frames give back some free power — you supply the speed."],
+    ["Precision", "Directional accuracy — hitting the corner you aimed at, not just somewhere in.", "you play lines, angles and short targets on purpose.", "Usually comes from denser patterns and smaller heads, which forgive off-center hits less."],
+    ["Spin", "How much the frame helps the ball dip and kick — launch window, string movement, head speed.", "you live on heavy topspin and want net clearance with a ball that still drops in.", "Spin-first frames feel livelier and less point-and-shoot precise."],
+    ["Power", "Free depth the racket adds on its own, without you swinging harder.", "your shots land short, your swing is compact, or long rallies wear you down.", "The classic trade: more free power means less control on full cuts."],
+    ["Feel / comfort", "How clean contact feels in your hand — flex, dampening, feedback — and how gentle the frame is on your arm.", "you play with touch, or feel the first hints of elbow or shoulder trouble.", "Very plush frames can feel less crisp on full-blooded drives."],
+    ["Stability", "How solid the frame stays against heavy incoming pace and off-center hits — no twisting, no flutter.", "you face big hitters, return hard serves or block a lot at the net.", "Stability is mass — it arrives together with a higher swingweight."],
+    ["Maneuverability", "How quickly the racket whips through the air — reactions at net, late-contact saves, fast hands.", "the racket should feel light and quick, not like a hammer.", "The direct opposite of stability and plow-through — you are choosing a side."],
+    ["Serve", "Easy action and pace on the serve — whip on the way up, mass through contact.", "the serve is the shot you build your points on.", ""],
+    ["Smash & overhead", "Confidence overhead — quick setup, stable put-aways, no twisting on jump smashes.", "you finish points at the net, or play a lot of doubles.", ""],
+    ["Slice / touch", "Bite and float on slices, drop shots and volleys — feel plus a head that carves.", "you play an all-court game or a classic one-hander with a real slice.", ""],
+    ["Return / blocking", "Control when you redirect pace with a short swing — returns, blocks, counterpunching.", "you often play bigger hitters and win with placement, not power.", ""]
+  ],
+  string: [
+    ["Spin", "How hard the bed grips the ball and snaps back — the engine of topspin.", "you want the ball to dip, kick, and clear the net with margin.", "The spinniest beds are slick co-polys — firmer, and less arm-friendly than multis or gut."],
+    ["Power", "How much energy the bed gives back — softer, livelier strings launch the ball deeper.", "your shots land short. Slide it DOWN if they fly on you.", "More launch means less predictability on full swings."],
+    ["Control (flat)", "A firm, low-launch bed that keeps fast, flat swings inside the lines.", "you swing fast and want to do the aiming yourself.", "Control beds are stiffer — keep an eye on the arm-friendliness axis next to it."],
+    ["Precision", "Shot-to-shot consistency of direction and depth — a uniform, stable string bed.", "you play target tennis and disciplined patterns.", ""],
+    ["Feel", "How much information reaches your hand — crisp or plush, but honest.", "volleys, drop shots and touch decide your points.", ""],
+    ["Sound", "The pop at contact. Pure preference — but some players time the ball by ear.", "a dead-sounding bed throws your timing off.", ""],
+    ["Longevity", "How long the bed keeps playing like new — tension hold and break resistance.", "you break strings, or restring once a season instead of once a month.", "The most durable polys are also the stiffest — mind the arm."],
+    ["Arm friendliness", "How gentle the bed is on elbow and shoulder — dynamic stiffness is the driver.", "you feel ANY arm trouble — then this axis outranks everything else.", "Natural gut and multifilaments top this axis; stiff polys sit at the bottom."]
+  ]
+};
+window.srfAxPop = function(kind, i, ev){
+  if (ev){ ev.stopPropagation(); ev.preventDefault(); }
+  const info = (window.SRF_AXINFO[kind] || [])[i]; if (!info) return;
+  let pop = document.getElementById("srf_axpop");
+  if (!pop){
+    pop = document.createElement("div");
+    pop.id = "srf_axpop"; pop.className = "axpop"; pop.hidden = true;
+    pop.setAttribute("role", "dialog"); pop.setAttribute("aria-modal", "false");
+    document.body.appendChild(pop);
+  }
+  pop.innerHTML = `<button type="button" class="axpop_x" aria-label="close" onclick="srfAxClose()">×</button>` +
+    `<div class="axpop_k">${kind === "racket" ? "racket axis" : "string axis"}</div>` +
+    `<div class="axpop_t">${info[0]}</div>` +
+    `<div class="axpop_d">${info[1]}</div>` +
+    `<div class="axpop_u"><b>Slide it up if</b> ${info[2]}</div>` +
+    (info[3] ? `<div class="axpop_c"><b>The trade-off:</b> ${info[3]}</div>` : "") +
+    `<div class="axpop_f">The slider sets how much this axis counts in your ranking — 1 barely matters, 10 dominates.</div>`;
+  pop.hidden = false;
+  /* fixed-position card, clamped to the viewport, below the label if room, else above */
+  const a = ev && ev.currentTarget instanceof Element ? ev.currentTarget
+    : (ev && ev.target && ev.target.closest ? ev.target.closest(".axq") : null);
+  const r = a ? a.getBoundingClientRect() : { left: 40, top: 90, bottom: 120 };
+  const pw = Math.min(330, innerWidth - 20);
+  pop.style.width = pw + "px";
+  pop.style.left = "0px"; pop.style.top = "0px";
+  const ph = pop.offsetHeight;
+  const x = Math.min(Math.max(10, r.left), innerWidth - pw - 10);
+  let y = r.bottom + 8;
+  if (y + ph > innerHeight - 10) y = Math.max(10, r.top - ph - 8);
+  pop.style.left = x + "px"; pop.style.top = y + "px";
+  const xbtn = pop.querySelector(".axpop_x"); if (xbtn) xbtn.focus({ preventScroll: true });
+};
+window.srfAxClose = function(){ const p = document.getElementById("srf_axpop"); if (p) p.hidden = true; };
+document.addEventListener("click", e => {
+  const p = document.getElementById("srf_axpop");
+  if (p && !p.hidden && !p.contains(e.target) && !(e.target.closest && e.target.closest(".axq"))) srfAxClose();
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape") srfAxClose(); });
+
 /* ---- easy mode ---- */
 let EZ_WANT = (typeof PREF === "object" && PREF && PREF.want) ? PREF.want : "both";
 function easyPaintWant(){
@@ -10560,9 +10964,15 @@ function ezTopAxes(scores, weights, labels, n){
     .map(x => `${labels[x.i].toLowerCase()} ${x.v}/10`);
 }
 function ezPod(cls, label, medal, name, spec, why, buyFn, buyLabel){
+  /* QW4: the first sentence answers; the full reasoning waits behind a disclosure.
+     Split on the first sentence break — decimals ("7.6/10") carry no space after
+     the dot, so ". " is a safe cut. Short bodies stay whole. */
+  let first = String(why || ""), rest = "";
+  const cut = first.indexOf(". ");
+  if (cut > -1 && first.length - cut > 60){ rest = first.slice(cut + 2); first = first.slice(0, cut + 1); }
   return `<div class="ez_pod ${cls}"><div class="ez_prank">${medal}${label}</div>` +
     `<div class="ez_pname">${name}</div><div class="ez_pspec">${spec}</div>` +
-    `<div class="ez_pwhy">${why}</div>` +
+    `<div class="ez_pwhy">${first}${rest ? `<details class="ez_more"><summary>the full reasoning</summary>${rest}</details>` : ""}</div>` +
     `<div class="ez_pbuy"><button type="button" class="buybtn" style="margin-left:0;" onclick="${buyFn}">${buyLabel} \u2197</button></div></div>`;
 }
 
@@ -10690,13 +11100,13 @@ function mkBeds(){
   });
   return MK_B_CACHE;
 }
-const MK_BADGE = `<span style="font-size:8.5px;letter-spacing:.09em;text-transform:uppercase;` +
+const MK_BADGE = `<span style="font-size:10px;letter-spacing:.09em;text-transform:uppercase;` +
   `background:color-mix(in srgb, var(--bronze) 22%, transparent);color:var(--bronze);` +
   `padding:1px 6px;border-radius:3px;margin-left:6px;">market</span>`;
-const CB_BADGE = `<span style="font-size:8.5px;letter-spacing:.09em;text-transform:uppercase;` +
+const CB_BADGE = `<span style="font-size:10px;letter-spacing:.09em;text-transform:uppercase;` +
   `background:color-mix(in srgb, var(--signal) 20%, transparent);color:var(--signal-fg,var(--signal));` +
   `padding:1px 6px;border-radius:3px;margin-left:6px;">new combo</span>`;
-const DEAL_BADGE = `<span style="font-size:8.5px;letter-spacing:.09em;text-transform:uppercase;` +
+const DEAL_BADGE = `<span style="font-size:10px;letter-spacing:.09em;text-transform:uppercase;` +
   `background:color-mix(in srgb, var(--gold) 22%, transparent);color:var(--gold);` +
   `padding:1px 6px;border-radius:3px;margin-left:6px;">currently discounted</span>`;
 /* previous-generation detection: an explicit deal flag, or a model name that carries its
@@ -10885,7 +11295,7 @@ function midSliders(){
   const sw = midSW();
   const row = (l, i, v, fn, vid) =>
     `<div style="display:flex;align-items:center;gap:8px;font-size:11px;color:var(--soft);">` +
-      `<span class="slabel" style="width:100px;">${l}</span>` +
+      `<span class="slabel axq" style="width:100px;" role="button" tabindex="0" title="what is ${l}? — click for a plain-words explanation" onclick="srfAxPop('${fn === "midW" ? "racket" : "string"}',${i},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();srfAxPop('${fn === "midW" ? "racket" : "string"}',${i},event);}">${l}</span>` +
       `<span class="slwrap" style="flex:1;--d:${(i * 0.21).toFixed(2)}s"><input class="a3-slider" type="range" min="1" max="10" step="1" value="${v}" style="flex:1" oninput="${fn}(${i}, this.value, this)" aria-label="${l} weight"></span>` +
       `<span class="wv" id="${vid}${i}" style="width:20px;text-align:right;color:var(--bright);">${v}</span></div>`;
   if (!hostR.dataset.built){
@@ -11081,7 +11491,16 @@ window.midResearch = () => {
   const q = (document.getElementById("mid_q") || { value: "" }).value.trim();
   const inp = document.getElementById("specSearch");
   setMode("pro");
+  if (window.srfChapOpen) srfChapOpen("rk");   // the search lives in the racket chapter
   if (inp){ inp.value = q; if (q && typeof runSpecSearch === "function") runSpecSearch(); inp.focus(); }
+};
+/* Direction A: the landing asks the four questions itself and jumps straight to the answer */
+window.ldGo = () => {
+  const n = document.getElementById("ld_note");
+  if (!INTRO.level){ if (n) n.textContent = "pick at least your experience level — it drives everything else."; return; }
+  if (n) n.textContent = "";
+  setMode("easy");
+  easyRun();
 };
 window.easyRun = () => {
   window.EZ_RAN = true;
@@ -11183,7 +11602,7 @@ window.easyRun = () => {
         ezStory(x.f.s, rw, rlog, rLabels) +
         `At difficulty ${x.f.d}/10 it sits ${x.f.d >= G.fMax ? "at the top of" : "comfortably inside"} what ${G.art} ${G.name} should be swinging` +
         `${x.f.d<=3?" \u2014 forgiving, no swing tax":x.f.d>=7?" \u2014 rewards a committed, repeatable swing":""}.`,
-        `shopFor('${String(x.f.b+" "+x.f.n).replace(/'/g,"\\'")}')`, "find it to buy")).join("") +
+        `shopFor('${String(x.f.b+" "+x.f.n).replace(/'/g,"\\'")}')`, "see offers")).join("") +
       (fBudget ? ezPod("pBu", "budget pick", "<span class=\"medal\" style=\"background:linear-gradient(135deg,var(--amber),#8a6a28);\">\u20ac</span>",
         advEsc(fBudget.f.b + " " + fBudget.f.n) + (fBudget.f.src === "market" ? MK_BADGE : "") + (ezOldGen(fBudget.f) ? DEAL_BADGE : ""),
         `${advEsc(fBudget.f.sp[0])} \u00b7 ${advEsc(fBudget.f.sp[2])} \u00b7 ~${fBudget.f.p}\u20ac \u00b7 match ${fBudget.sc.toFixed(1)}/10 \u00b7 difficulty ${fBudget.f.d}/10`,
@@ -11274,7 +11693,7 @@ window.easyRun = () => {
         `${x.tech.stiff!=null ? (x.tech.stiff>=195?"A firm control bed \u2014 keep tension sensible.":x.tech.stiff<=140?"A soft, arm-friendly bed.":"Medium stiffness \u2014 broad fit.") : ""} ` +
         `At demand ${x.bed.demand.toFixed(0)}/10 it sits ${x.bed.demand >= G.bMax ? "at the top of" : x.bed.demand < G.bIdeal ? "below" : "inside"} ` +
         `the band ${G.art} ${G.name} should be stringing.`,
-        `shopString('${String(x.bed.m).split(" \u00b7 ")[0].replace(/'/g,"\\'")}')`, "find it to buy")).join("") +
+        `shopString('${String(x.bed.m).split(" \u00b7 ")[0].replace(/'/g,"\\'")}')`, "see offers")).join("") +
       (bBudget ? ezPod("pBu", "budget pick", "<span class=\"medal\" style=\"background:linear-gradient(135deg,var(--amber),#8a6a28);\">\u20ac</span>",
         bedName(bBudget.bed), `~${bBudget.tech.priceV}\u20ac a bed \u00b7 match ${bBudget.sc.toFixed(1)}/10 \u00b7 demand ${bBudget.bed.demand.toFixed(0)}/10`,
         (bBudget.bed.deal
@@ -11290,27 +11709,35 @@ window.easyRun = () => {
       `</div></div>`;
   }
 
-  // ---- the pairing, straight from the calibrator ----
-  if (EZ_WANT === "both" && fPod.length && beds.length){
-    const f = fPod[0].f;
-    // the pairing picks from the level-gated pool as well — a physically perfect
-    // match the player cannot handle is still the wrong recommendation
-    const best = bArm.pool.map(({bed,tech}) => ({ bed, tech, r: calibScore(f, bed, tech) }))
-                     .sort((a,b) => b.r.sc - a.r.sc)[0];
-    const inPodium = bPod.some(x => x.bed.i === best.bed.i);
-    html += `<div class="ez_sec"><div class="ez_sech">Put together</div>` +
-      `<div class="ez_secs">The frame above, strung by the physics of the pairing \u2014 not by taste.</div>` +
-      `<div class="ez_pair">In the <b>${advEsc(f.b + " " + f.n)}</b>, the calibrator puts ` +
-      `<b>${bedName(best.bed)}</b> first (${best.r.sc.toFixed(1)}/10 compatibility)` +
-      (inPodium ? ` \u2014 which is also one of your string picks above, so that is the easy call.`
-                : ` \u2014 note this is <em>not</em> your top string pick on its own; in this particular frame the pairing wins.`) +
-      `<br><span style="color:var(--muted);font-size:11px;">Why: ${best.r.why.slice(0,2).map(x => advEsc(x.t)).join("; ")}.</span>` +
-      // an honest caution: gating to a level can leave a small legal pool, and the best
-      // of a small pool is not automatically a good pairing. Say so rather than implying it is.
-      (best.r.sc < 5.5 ? `<br><span style="color:var(--amber);font-size:11px;">Worth knowing: at ${best.r.sc.toFixed(1)}/10 this is the best of the ` +
-        `${bArm.pool.length} beds ${G.art} ${G.name} should be playing, not a strong pairing in absolute terms \u2014 ` +
-        `the frame and the bed pull in different directions here. Dropping tension 1\u20132 kg helps more than swapping string.</span>` : "") +
-      `</div></div>`;
+  // ---- Direction A — the ANSWER first: each podium frame finished into a full setup.
+  //      Prepended to the html, so the results OPEN with the answer; racket and string
+  //      podiums below become the working-out. Replaces the old "Put together" section.
+  if (EZ_WANT === "both" && fPod.length && bArm.pool.length){
+    const ezPairFor = f => { let top = null;
+      bArm.pool.forEach(({bed,tech}) => { const r = calibScore(f, bed, tech);
+        if (!top || r.sc > top.r.sc) top = { bed, tech, r }; });
+      return top; };
+    const ezFour = fPod.map((x, n2) => ({ x, role: n2 }));
+    if (fBudget) ezFour.push({ x: fBudget, role: 3 });
+    const ezBadge4 = n2 => n2 < 3 ? EZ_MEDAL[n2]
+      : `<span class="medal" style="background:linear-gradient(135deg,var(--amber),#8a6a28);" title="budget pick">€</span>`;
+    const ezLbl4 = ["gold setup","silver setup","bronze setup","budget setup"];
+    const suRows = ezFour.map(o2 => {
+      const s2 = ezPairFor(o2.x.f); if (!s2) return "";
+      const why2 = (s2.r.why || []).filter(w2 => w2.d > 0).sort((a, b) => b.d - a.d)[0];
+      const pTot = (o2.x.f.p != null && s2.tech.priceV != null) ? Math.round(o2.x.f.p + s2.tech.priceV) : null;
+      return `<div class="mid_su">${ezBadge4(o2.role)}` +
+        `<span><span class="su_lbl">${ezLbl4[o2.role]}</span><b>${advEsc(o2.x.f.b + " " + o2.x.f.n)}${o2.x.f.src === "market" ? MK_BADGE : ""} + ${bedName(s2.bed)}</b>` +
+        `<span class="rsn">${why2 ? advEsc(why2.t) : "paired by the physics of frame and bed"}` +
+        `${s2.r.sc < 5.5 ? " · best of a small level-gated pool — dropping tension 1–2 kg helps more than swapping string" : ""}</span></span>` +
+        `<span class="sc">pairing ${s2.r.sc.toFixed(1)}/10${pTot != null ? `<i class="su_pr">~${pTot}€ all-in</i>` : ""}` +
+        `<span class="su_buy">${window.buyBtn("racket", (o2.x.f.b ? o2.x.f.b + " " : "") + o2.x.f.n, true, "buy frame")}` +
+        `${window.buyBtn("string", String(s2.bed.m).split(" · ")[0], true, "buy string")}</span></span></div>`;
+    }).join("");
+    if (suRows) html = `<div class="ez_sec" id="ez_answer"><div class="ez_sech">Your setup</div>` +
+      `<div class="ez_secs">The answer first: your podium frames, each strung with the bed the calibrator’s physics picks for that exact frame. ` +
+      `How each half earned its place — and the runners-up — follows below.</div>` +
+      suRows + `</div>` + html;
   }
 
   html += `<div class="ez_sec"><div class="ez_deep" style="display:block;line-height:1.75;">` +
