@@ -1468,6 +1468,28 @@
   .tagbtn::after{ content:" ▾"; opacity:.55; }
   .grpchip:hover, .grpchip:focus-visible{ background:color-mix(in srgb, var(--fg) 18%, transparent); }
   .grpchip::after{ content:" ▾"; opacity:.6; }
+  /* the unfiled state is an invitation, not a label — that is how you FIND groups */
+  .grpchip.unfiled{ border:1px dashed color-mix(in srgb, var(--fg) 38%, transparent);
+                    background:transparent; color:var(--soft); }
+  .grpchip.unfiled:hover, .grpchip.unfiled:focus-visible{
+    border-color:var(--amber); color:var(--amber-fg,var(--amber)); background:transparent; }
+  /* row drag: the handle is the only draggable part, so name-clicks stay clicks */
+  .draghandle{ cursor:grab; user-select:none; -webkit-user-select:none; color:var(--muted);
+               font-size:11px; letter-spacing:-1px; padding:0 5px 0 1px; display:inline-block; }
+  .draghandle:hover{ color:var(--bright); }
+  .draghandle:active{ cursor:grabbing; }
+  .row-dragging{ opacity:.45; }
+  .drop-above{ box-shadow: inset 0 3px 0 var(--cyan) !important; }
+  .drop-below{ box-shadow: inset 0 -3px 0 var(--cyan) !important; }
+  /* chapter subtitles are jump links: open the chapter, land on the section */
+  .secjump{ background:none; border:0; padding:0; margin:0; font:inherit; color:inherit;
+            cursor:pointer; text-decoration:underline dotted color-mix(in srgb, var(--fg) 45%, transparent);
+            text-underline-offset:3px; }
+  .secjump:hover, .secjump:focus-visible{ color:var(--bright); text-decoration-color:var(--cyan); }
+  .secname{ color:var(--bright); letter-spacing:.09em; text-transform:uppercase; font-size:11px; }
+  .secflash{ animation: srfSecFlash 1.8s ease; }
+  @keyframes srfSecFlash{ 0%{ box-shadow:0 0 0 3px var(--cyan); } 100%{ box-shadow:0 0 0 3px transparent; } }
+  #grid,#gridM,#rank,#specs,#winners,#sb_grid,#sb_gridM,#sb_rank,#sb_nerd,#sb_specs{ scroll-margin-top:64px; }
   .grppop{ position:fixed; z-index:120; min-width:210px; max-width:min(300px, 92vw);
            background:var(--card2, var(--card)); color:var(--fg); border-radius:9px;
            border:1px solid color-mix(in srgb, var(--fg) 18%, transparent);
@@ -2524,7 +2546,7 @@
 <div class="chapbar" data-chap="rk" role="button" tabindex="0" aria-expanded="false"
      onclick="srfChapToggle('rk')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();srfChapToggle('rk');}">
   <span class="chev">▸</span><span class="chapt azonix">racket test bench</span>
-  <span class="chapsub">heatmap · weighted ranking · hard specs · search &amp; transfer specs</span>
+  <span class="chapsub"><button type="button" class="secjump" onclick="event.stopPropagation();srfSecGo('rk','grid','gridM')">heatmap</button> · <button type="button" class="secjump" onclick="event.stopPropagation();srfSecGo('rk','rank')">weighted ranking</button> · <button type="button" class="secjump" onclick="event.stopPropagation();srfSecGo('rk','specs')">hard specs</button></span>
   <span class="chapcount" id="chap_n_rk"></span>
 </div>
   <!-- the racket search engine (bar + transfer-specs panel + meta) lives in ONE dockable
@@ -2568,7 +2590,7 @@
 
   <!-- the priorities block moved above the chapters, next to the answer (Direction A) -->
   <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;font-size:11px;flex-wrap:wrap;">
-  <span style="color:var(--muted);">click a column to rank · twice to flip · <b style="color:var(--soft);font-weight:500;">click any score cell to set your own rating</b> · <span id="sortState" style="color:var(--cyan);">recommended order</span></span>
+  <span style="color:var(--muted);"><b class="secname">heatmap</b> · click a column to rank · twice to flip · <b style="color:var(--soft);font-weight:500;">click any score cell to set your own rating</b> · <span id="sortState" style="color:var(--cyan);">recommended order</span></span>
   <button class="resetbtn" data-label="grouped by shelf" onclick="rkGroupView()" title="quiver, playtested, bench — the old grouped view">grouped by shelf</button>
   <button class="resetbtn" data-label="reset order" onclick="resetOrder()" style="margin-left:auto;">reset order</button>
 </div>
@@ -2629,7 +2651,7 @@
   </div>
   <div class="boostbar" id="boost"></div>
   <div id="g_hint" style="display:none;font-size:11.5px;color:var(--muted);background:var(--card2);border:1px dashed color-mix(in srgb, var(--cyan) 30%, transparent);border-radius:8px;padding:9px 12px;margin-bottom:10px;">
-    The bench rests in <b style="color:var(--cyan);">recommended order</b> — your gold, silver, bronze and budget picks lead, then every other frame by the same weighted score, so this table and the picks above never disagree about what comes first. Rank any column and that ordering is yours until you reset. Your bench starts empty — every frame sits in <b style="color:var(--muted);">bench</b> until you claim it. Click a racket's name to put it in your quiver, mark it playtested, or line it up to test next, then use <b style="color:var(--soft);">grouped by shelf</b> to see those shelves.
+    The bench rests in <b style="color:var(--cyan);">recommended order</b> — your gold, silver, bronze and budget picks lead, then every other frame by the same weighted score, so this table and the picks above never disagree about what comes first. Rank any column and that ordering is yours until you reset. Your bench starts empty — every frame sits in <b style="color:var(--muted);">bench</b> until you claim it. Every row carries a <b>+ group</b> button — it files the frame into your quiver, test next, court tested or a shelf of your own; use <b style="color:var(--soft);">grouped by shelf</b> to see those shelves, and drag the ⋮⋮ handle to arrange rows by hand.
     <button class="mcap ghost" onclick="gAdoptDemo()" style="margin-left:8px;padding:3px 10px;">copy the demo layout</button>
   </div>
 
@@ -2687,7 +2709,7 @@
 <div class="chapbar" data-chap="sb" role="button" tabindex="0" aria-expanded="false"
      onclick="srfChapToggle('sb')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();srfChapToggle('sb');}">
   <span class="chev">▸</span><span class="chapt azonix">stringbed test bench</span>
-  <span class="chapsub">heatmap · weighted ranking · lab table · hard specs</span>
+  <span class="chapsub"><button type="button" class="secjump" onclick="event.stopPropagation();srfSecGo('sb','sb_grid','sb_gridM')">heatmap</button> · <button type="button" class="secjump" onclick="event.stopPropagation();srfSecGo('sb','sb_rank')">weighted ranking</button> · <button type="button" class="secjump" onclick="event.stopPropagation();srfSecGo('sb','sb_nerd')">lab table</button> · <button type="button" class="secjump" onclick="event.stopPropagation();srfSecGo('sb','sb_specs')">hard specs</button></span>
   <span class="chapcount" id="chap_n_sb"></span>
 </div>
 <hr class="deptrule">
@@ -2791,7 +2813,7 @@
   </div>
 </div></span>
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;font-size:11px;flex-wrap:wrap;">
-    <span style="color:var(--muted);">click any column header to rank by it · <b style="color:var(--soft);font-weight:500;">click any score cell to set your own rating</b> · <span id="sb_sortState" style="color:var(--cyan);">recommended order</span></span>
+    <span style="color:var(--muted);"><b class="secname">heatmap</b> · click any column header to rank by it · <b style="color:var(--soft);font-weight:500;">click any score cell to set your own rating</b> · <span id="sb_sortState" style="color:var(--cyan);">recommended order</span></span>
     <button class="sbbtn" data-label="grouped by shelf" onclick="sbGroupView()" title="benchmark, court-tested, queued — the old grouped view">grouped by shelf</button>
     <button class="sbbtn" data-label="reset order" onclick="sbResetOrder()" style="margin-left:auto;">reset order</button>
   </div>
@@ -3442,10 +3464,11 @@ window.srfGroupPick = (prefix) => {
   if (isNew){ const f = document.getElementById(prefix === "af" ? "af_newg" : "sb_af_newg"); if (f) f.focus(); }
 };
 window.srfSearchDock = (m) => {
-  /* One set of engines, three homes. Pro keeps them in #rsHome/#ssHome; easy and
-     intermediate each have their own pair of slots and the REAL nodes move there —
-     listeners and ids travel along, so the three modes cannot drift apart. */
-  const SLOT = { easy: ["ez_rsSlot", "ez_ssSlot"], mid: ["mid_rsSlot", "mid_ssSlot"] };
+  /* One set of engines, three homes. Easy has its own slot pair; intermediate and
+     pro SHARE the card-list slots — the cards dock into pro too, so both searches
+     ride along and sit above the fold instead of hiding inside a folded chapter.
+     #rsHome/#ssHome inside the benches stay as the fallback home. */
+  const SLOT = { easy: ["ez_rsSlot", "ez_ssSlot"], mid: ["mid_rsSlot", "mid_ssSlot"], pro: ["mid_rsSlot", "mid_ssSlot"] };
   [["rsearchBlock", 0, "rsHome"], ["ssearchBlock", 1, "ssHome"]]
     .forEach(([blk, i, home]) => {
       const b = document.getElementById(blk); if (!b) return;
@@ -3460,6 +3483,19 @@ window.srfCardsDock = (m) => {
   const b = document.getElementById("benchCards"); if (!b) return;
   const t = document.getElementById(m === "pro" ? "pro_cards_home" : "benchCardsHome");
   if (t && b.parentElement !== t) t.appendChild(b);
+};
+/* chapter-bar subtitles are jump links now: open the chapter, land on the section,
+   glow it briefly. On a phone the desktop table swaps for its card list (altId). */
+window.srfSecGo = function(chap, id, altId){
+  if (window.srfChapOpen) srfChapOpen(chap);
+  setTimeout(() => {
+    let el = document.getElementById(id);
+    if ((!el || !el.offsetParent) && altId) el = document.getElementById(altId) || el;
+    if (!el) return;
+    el.scrollIntoView({ block: "start", behavior: "smooth" });
+    el.classList.remove("secflash"); void el.offsetWidth; el.classList.add("secflash");
+    setTimeout(() => el.classList.remove("secflash"), 1900);
+  }, 140);
 };
 /* the "full table" toggle on the racket card header: in intermediate it jumps to
    pro; inside pro it opens the racket chapter instead of reloading the mode */
@@ -5443,6 +5479,90 @@ function rkRecOrder(arr){
     (window.srfGrpRank("racket", a) - window.srfGrpRank("racket", b)) ||
     slot(a) - slot(b) || sc(b) - sc(a) || (a.b+a.n).localeCompare(b.b+b.n)));
 }
+/* ---------------- hand order: drag rows between each other ----------------
+   The ⋮⋮ handle on every heatmap and hard-specs row drags that frame to a new
+   position. The order is ONE list shared by both tables, survives reloads, sits
+   on top of the resting order, and "reset order" returns to recommended. */
+const MAN_KEY = "srf:manord:rk:v1";
+let RK_MAN = [];
+try { RK_MAN = JSON.parse(localStorage.getItem(MAN_KEY) || "[]"); } catch(e){}
+if (!Array.isArray(RK_MAN)) RK_MAN = [];
+function manApply(arr){
+  if (!RK_MAN.length) return arr;
+  const pos = new Map(RK_MAN.map((no, i) => [Number(no), i]));
+  return arr.map((r, i) => [r, pos.has(r.no) ? pos.get(r.no) : RK_MAN.length + i])
+            .sort((a, b) => a[1] - b[1]).map(x => x[0]);
+}
+window.srfManActive = () => !!RK_MAN.length;
+window.srfManClear = () => { RK_MAN = []; try { localStorage.removeItem(MAN_KEY); } catch(e){} };
+window.srfManDrop = function(from, to, after){
+  from = Number(from); to = Number(to);
+  if (!from || !to || from === to) return;
+  const base = manApply(rkRecOrder(rk)).map(r => r.no).filter(no => no !== from);
+  const at = base.indexOf(to); if (at < 0) return;
+  base.splice(at + (after ? 1 : 0), 0, from);
+  RK_MAN = base;
+  try { localStorage.setItem(MAN_KEY, JSON.stringify(RK_MAN)); } catch(e){}
+  sortIdx = null; SEL.clear(); specSort = null;   // the view snaps to your order
+  buildGrid(); buildSpecs();
+};
+/* one delegated wiring for both tables; score cells resolve to their row's name cell */
+(function manWire(){
+  let dragNo = null, marked = null;
+  const rowOf = t => {
+    if (!t || !t.closest) return null;
+    const d = t.closest("#grid .namecell[data-no], #specs [data-no]");
+    if (d) return d;
+    let c = t.closest("#grid [role=table] > *, #specs > div > *");
+    while (c && !(c.dataset && c.dataset.no)) c = c.previousElementSibling;
+    return (c && c.dataset && c.dataset.no) ? c : null;
+  };
+  const clearMark = () => { if (marked){ marked.classList.remove("drop-above", "drop-below"); marked = null; } };
+  document.addEventListener("dragstart", e => {
+    const h = e.target && e.target.closest ? e.target.closest(".draghandle[data-drag]") : null;
+    if (!h) return;
+    dragNo = h.dataset.drag;
+    try { e.dataTransfer.setData("text/plain", dragNo); e.dataTransfer.effectAllowed = "move"; } catch(err){}
+    const row = rowOf(h); if (row) row.classList.add("row-dragging");
+  });
+  document.addEventListener("dragover", e => {
+    if (!dragNo) return;
+    const row = rowOf(e.target);
+    if (!row || row.dataset.no === String(dragNo)){ clearMark(); return; }
+    e.preventDefault();
+    try { e.dataTransfer.dropEffect = "move"; } catch(err){}
+    const rct = row.getBoundingClientRect();
+    const below = e.clientY > rct.top + rct.height / 2;
+    if (marked !== row) clearMark();
+    marked = row;
+    row.classList.toggle("drop-above", !below);
+    row.classList.toggle("drop-below", below);
+  });
+  document.addEventListener("drop", e => {
+    if (!dragNo) return;
+    const row = rowOf(e.target);
+    if (row && row.dataset.no !== String(dragNo)){
+      e.preventDefault();
+      const rct = row.getBoundingClientRect();
+      srfManDrop(dragNo, row.dataset.no, e.clientY > rct.top + rct.height / 2);
+    }
+    clearMark(); dragNo = null;
+  });
+  document.addEventListener("dragend", () => { clearMark(); dragNo = null;
+    document.querySelectorAll(".row-dragging").forEach(x => x.classList.remove("row-dragging")); });
+})();
+/* THE group button. On the bench it reads "+ group" and invites; on a shelf it
+   names the shelf. Heatmap, hard specs and the mobile cards all render this one. */
+function grpBtn(r){
+  const un = r.g === "bench";
+  const gi = G[r.g] || G.bench;
+  const nm = r.g === "next" ? "test next" : r.g === "tested" ? "court tested" : String(gi[1]).split(" — ")[0];
+  return `<button type="button" class="grpchip${un ? " unfiled" : ""}" style="color:${un ? "" : gi[0]};" ` +
+    `title="${un ? "put this frame in a group — my quiver, test next, court tested or a shelf of your own" : `on the ${String(gi[1]).replace(/"/g, "&quot;")} shelf — click to move it`}" ` +
+    `aria-label="group for this frame" onclick="event.stopPropagation();srfShelfPop('racket',${r.no},event)">` +
+    `${un ? "+ group" : "▤ " + nm}</button>`;
+}
+window.srfGrpBtnR = grpBtn;   // the card lists render the same button
 /* the shelf grouping is not deleted, just demoted to a view you ask for */
 window.rkGroupView = () => { sortIdx = (sortIdx === "g" ? null : "g"); SEL.clear(); buildGrid(); };
 function buildGrid(){
@@ -5477,7 +5597,7 @@ function buildGrid(){
   // entry plus any group created via transfer-specs) leads, then the quiver and the rest. The
   // sort is stable, so numbering and within-group order stay exactly as authored.
   else if (sortIdx==="g") rows = rk.slice().sort((a,b)=> gRank(a.g) - gRank(b.g));
-  else rows = rkRecOrder(rk);   // the resting order: your picks first, then by weighted score
+  else rows = manApply(rkRecOrder(rk));   // resting order — with your hand order applied on top
   const filtering = !!(typeof searchQ!=="undefined" && searchQ);
   if (filtering) rows = rows.filter(r=>matches(r, searchQ));
   /* the legend chips: ONE shelf selection for the whole department — heatmap,
@@ -5487,7 +5607,7 @@ function buildGrid(){
   rows = rows.slice(0, window.SRFLIM.racket || 5);
   if (!rows.length){
     document.getElementById("grid").innerHTML = (window.RK_GSEL && window.RK_GSEL.size && !filtering)
-      ? `<div style="padding:22px 6px;color:var(--muted);font-size:12px;">Nothing on the selected shelves yet — file a frame there via the coloured shelf chip on any row, or click the legend chip again to show all.</div>`
+      ? `<div style="padding:22px 6px;color:var(--muted);font-size:12px;">Nothing on the selected shelves yet — file a frame there with the <b>+ group</b> button on any row or racket card, or click the legend chip again to show all.</div>`
       : `<div style="padding:22px 6px;color:var(--muted);font-size:12px;">No frame on the bench matches “${document.getElementById("specSearch").value.trim()}”. Use the amber <b style="color:var(--amber);">specs ↗</b> button to look it up online.</div>`;
     document.getElementById("sortState").textContent = SEL.size
     ? "ranked by " + [...SEL].map(i=>cats[i]).join(" + ") + (SEL.size>1?` (${SEL.size} categories)`:"")
@@ -5514,7 +5634,7 @@ function buildGrid(){
         `<button type="button" class="gonly" onclick="event.stopPropagation();rkGroupOnly('${r.g}')" aria-label="show only ${G[r.g][1]}">${solo?"all groups":"only"}</button></div>`;
     }
     if (sortIdx==="g" && !SEL.size && !filtering && RK_GCOLL.has(r.g)) return;   // folded: header stands, rows wait
-    h += `<div role="cell" class="namecell" data-no="${r.no}" style="color:${G[r.g][0]};display:flex;flex-direction:column;justify-content:center;padding:3px 4px 3px 7px;line-height:1.25;border-left:3px ${gStyle(r.g)} color-mix(in srgb, ${G[r.g][0]} 62%, transparent);"><span style="font-weight:500;"><span style="color:var(--muted);font-weight:400;">No. ${r.no}</span> ${cmpBox("racket", r.no)}<span class="custname" role="button" tabindex="0" onclick="cOpen(${r.no})" onkeydown="if(event.key==='Enter'){cOpen(${r.no});}" onmouseenter="noteHoverIn(noteFrame,${r.no},event)" onmouseleave="noteHoverOut()" title="customize this frame — hover for play notes">${r.b} ${r.n}</span><button type="button" class="infobtn" aria-label="play notes for ${r.b} ${r.n}" onclick="event.stopPropagation();noteFrame(${r.no},event)">ⓘ</button>${r.feel?`<button type="button" class="custbtn feelbtn" aria-label="edit how ${r.b} ${r.n} feels for you" onclick="event.stopPropagation();fOpen(${r.feelOf})">edit feel</button>`:`<button type="button" class="custbtn" aria-label="customize ${r.b} ${r.n} — describe what you did to it" onclick="event.stopPropagation();cOpen(${r.no})">customize</button><button type="button" class="custbtn feelbtn" aria-label="re-score ${r.b} ${r.n} to your feel" onclick="event.stopPropagation();fOpen(${r.no})">my feel</button>`}${tag(r)}${window.srfRecChip("racket",r)}${r.cust?`<span class="custchip" title="${r.cust.text.replace(/"/g,'&quot;')}">customized</span>`:""}${r.feel?`<span class="custchip feelchip" title="your category read of the stock ${r.b} ${r.n} — the stock row is still on the bench">my feel</span>`:""}${window.buyBtn("racket",(r.b?r.b+" ":"")+String(r.n).replace(/ · my feel$/,""),true,"buy",true)}</span><span style="color:var(--muted);font-size:10px;font-weight:400;">${r.sp[0]} · ${r.sp[2]}<button type="button" class="grpchip" style="color:${G[r.g][0]};" title="on the ${String(G[r.g][1]).replace(/"/g,"&quot;")} shelf — click to move it" aria-label="shelf: ${String(G[r.g][1]).replace(/"/g,"&quot;")} — click to move this frame" onclick="event.stopPropagation();srfShelfPop('racket',${r.no},event)">${r.g==="next"?"test next":r.g==="tested"?"court tested":String(G[r.g][1]).split(" \u2014 ")[0]}</button></span></div>`;
+    h += `<div role="cell" class="namecell" data-no="${r.no}" style="color:${G[r.g][0]};display:flex;flex-direction:column;justify-content:center;padding:3px 4px 3px 7px;line-height:1.25;border-left:3px ${gStyle(r.g)} color-mix(in srgb, ${G[r.g][0]} 62%, transparent);"><span style="font-weight:500;"><span class="draghandle" draggable="true" data-drag="${r.no}" title="drag to reorder — your order is shared with hard specs and sticks until reset order">⋮⋮</span><span style="color:var(--muted);font-weight:400;">No. ${r.no}</span> ${cmpBox("racket", r.no)}<span class="custname" role="button" tabindex="0" onclick="cOpen(${r.no})" onkeydown="if(event.key==='Enter'){cOpen(${r.no});}" onmouseenter="noteHoverIn(noteFrame,${r.no},event)" onmouseleave="noteHoverOut()" title="customize this frame — hover for play notes">${r.b} ${r.n}</span><button type="button" class="infobtn" aria-label="play notes for ${r.b} ${r.n}" onclick="event.stopPropagation();noteFrame(${r.no},event)">ⓘ</button>${r.feel?`<button type="button" class="custbtn feelbtn" aria-label="edit how ${r.b} ${r.n} feels for you" onclick="event.stopPropagation();fOpen(${r.feelOf})">edit feel</button>`:`<button type="button" class="custbtn" aria-label="customize ${r.b} ${r.n} — describe what you did to it" onclick="event.stopPropagation();cOpen(${r.no})">customize</button><button type="button" class="custbtn feelbtn" aria-label="re-score ${r.b} ${r.n} to your feel" onclick="event.stopPropagation();fOpen(${r.no})">my feel</button>`}${tag(r)}${window.srfRecChip("racket",r)}${r.cust?`<span class="custchip" title="${r.cust.text.replace(/"/g,'&quot;')}">customized</span>`:""}${r.feel?`<span class="custchip feelchip" title="your category read of the stock ${r.b} ${r.n} — the stock row is still on the bench">my feel</span>`:""}${window.buyBtn("racket",(r.b?r.b+" ":"")+String(r.n).replace(/ · my feel$/,""),true,"buy",true)}</span><span style="color:var(--muted);font-size:10px;font-weight:400;">${r.sp[0]} · ${r.sp[2]}${grpBtn(r)}</span></div>`;
     h += `<div role="cell" class="spdcell" style="display:flex;align-items:center;justify-content:center;">${spiderIcon("racket", r.no, r.s)}</div>`;
     h += priceCell(r.p, sortIdx==="p");
     h += `<div role="cell" class="curvecell" style="display:flex;align-items:center;justify-content:center;">${perfCurve(r.s,200,44)}</div>`;
@@ -5544,7 +5664,7 @@ function buildGrid(){
   seedGridMedals();   // re-seed the podium into the freshly built name cells
   document.getElementById("sortState").innerHTML = (SEL.size
     ? "ranked by " + [...SEL].map(([i,d])=>cats[i]+(d===-1?" \u25B2":" \u25BC")).join(" + ") + (SEL.size>1?` (${SEL.size} combined)`:"")
-    : (sortIdx===null ? "recommended order \u2014 same as your picks above"
+    : (sortIdx===null ? (window.srfManActive && srfManActive() ? "your hand order \u2014 dragged rows stay put; reset order returns to recommended" : "recommended order \u2014 same as your picks above")
        : sortIdx==="g" ? "grouped by shelf"
        : "ranked by " + (sortIdx==="d" ? "difficulty" : sortIdx==="ov" ? "overall score" : (sortIdx==="p" ? "average price" : cats[sortIdx])) + (DIR===-1?" \u2014 highest first":" \u2014 lowest first")))
     + window.srfRecNote("racket", rk);
@@ -6429,6 +6549,9 @@ function updateMeta(){
 }
 document.getElementById("specSearch").addEventListener("input", e=>{
   searchQ = normalize(e.target.value); buildGrid(); buildSpecs(); updateMeta();
+  /* the search sits with the card lists in pro; the filtered table lives in the
+     chapter below — typing opens it so the results are actually in view */
+  if (searchQ && document.body.classList.contains("mode-pro") && window.srfChapOpen) srfChapOpen("rk");
 });
 document.getElementById("specSearch").addEventListener("keydown", e=>{ if(e.key==="Enter") runSpecSearch(); });
 
@@ -6475,7 +6598,7 @@ function mobileCards(rows, total){
       <header>
         <div class="who">
           <div class="nm">${cmpBox("racket", r.no)}${n+1}. ${esc((r.b?r.b+" ":"")+r.n)}${r.feel?`<span class="custchip feelchip">my feel</span>`:""}<button type="button" class="infobtn" aria-label="play notes" onclick="noteFrame(${r.no},event)">ⓘ</button>${spiderIcon("racket", r.no, r.s)}${rowActs(r, true)}</div>
-          <div class="sp">${r.sp[0]} \u00b7 ${r.sp[1]} \u00b7 ${r.sp[2]}</div>
+          <div class="sp">${r.sp[0]} \u00b7 ${r.sp[1]} \u00b7 ${r.sp[2]} ${grpBtn(r)}</div>
         </div>
         <div class="pr">
           ${r.p?`<span class="prv">~${r.p}\u20ac</span>`:`<span class="prv" style="opacity:.4;">\u2014</span>`}
@@ -6508,6 +6631,7 @@ window.SD = (i, d) => {                     // the little chevrons: aim this axi
   sortIdx = null; buildGrid();
 };
 window.resetOrder = () => {
+  if (window.srfManClear) srfManClear();
   sortIdx = null; specSort = null; SEL.clear(); DIR = -1; buildGrid(); buildSpecs();
   document.querySelectorAll(".resetbtn").forEach(b => {
     b.classList.add("gold"); setTimeout(()=>b.classList.remove("gold"), 1100);
@@ -6919,7 +7043,7 @@ function buildSpecs(){
   let sh = `<div style="display:grid;grid-template-columns:236px repeat(7,1fr);gap:2px;background:var(--page);">` +
     `<div></div>` +
     specLabels.map((x,i)=>`<div class="hdr sp${specSort===i?" on":""}" data-sp="${i}" data-label="${x}" onclick="SP(${i})" title="sort by ${x}" style="--d:${(i*0.21).toFixed(2)}s;animation-delay:${(i*0.21).toFixed(2)}s">${x}</div>`).join("");
-  let rows = specSort===null ? window.srfRecFirst("racket", window.srfGrpFirst("racket", rk)) : rk.slice().sort((a,b)=>{
+  let rows = specSort===null ? manApply(window.srfRecFirst("racket", window.srfGrpFirst("racket", rk))) : rk.slice().sort((a,b)=>{
     const av = specVal(a,specSort), bv = specVal(b,specSort);
     if (av===null && bv===null) return 0;
     if (av===null) return 1;
@@ -6945,12 +7069,12 @@ function buildSpecs(){
         ? `No frame on the bench matches “${esc(hsRRaw)}”.`
         : `Nothing on the selected shelves yet — click the shelf chip again to show all.`}</div>`;
     document.getElementById("specState").textContent =
-      specSort===null ? "original order" : "sorted by " + specLabels[specSort];
+      specSort===null ? ((window.srfManActive && srfManActive()) ? "your hand order" : "original order") : "sorted by " + specLabels[specSort];
     return;
   }
   rows = rows.slice(0, window.SRFLIM.hsR || 5);
   rows.forEach(r => {
-    sh += `<div style="color:${G[r.g][0]};padding:3px 4px;font-weight:500;"><span style="color:var(--muted);font-weight:400;">No. ${r.no}</span> ${r.b} ${r.n}${tag(r,10)}` +
+    sh += `<div class="hs_name" data-no="${r.no}" style="color:${G[r.g][0]};padding:3px 4px;font-weight:500;"><span class="draghandle" draggable="true" data-drag="${r.no}" title="drag to reorder — your order is shared with the heatmap and sticks until reset order">⋮⋮</span><span style="color:var(--muted);font-weight:400;">No. ${r.no}</span> ${r.b} ${r.n}${tag(r,10)}${grpBtn(r)}` +
       (r.cust ? `<button type="button" class="infobtn custi" aria-label="what this customization did" ` +
         `title="what this customization did to the frame" onclick="custInfo(${r.no})">\u24d8</button>` : "") + `</div>` +
       r.sp.map((v,i)=>`<div style="color:${specSort===i?"var(--cyan)":"var(--fg)"};padding:3px 4px;">${v}</div>`).join("");
@@ -6959,7 +7083,7 @@ function buildSpecs(){
   sh += window.srfLimitBar("hsR", hsTotal, "hsRLimSet");
   document.getElementById("specs").innerHTML = sh;
   document.getElementById("specState").textContent =
-    specSort===null ? "original order" : "sorted by " + specLabels[specSort];
+    specSort===null ? ((window.srfManActive && srfManActive()) ? "your hand order" : "original order") : "sorted by " + specLabels[specSort];
 }
 window.SP = i => {
   specSort = i; buildSpecs();
@@ -7317,6 +7441,7 @@ window.rkSetGroup = (no, key) => {
   r.g = gk;
   window.srfRecDone("racket", r);                     // filed = triaged, leaves the top band
   buildGrid(); buildSpecs(); render();
+  if (window.midPaint) midPaint();                    // the your-rackets cards carry the button too
   try { onLayoutChange(window.SRF.layout()); } catch(e){}
 };
 /* ---------- shelf FILTER — the legend chips ----------
@@ -7345,7 +7470,7 @@ window.rkPaintLegend = function(){
     const on = sel.has(k);
     return `<button type="button" class="gleg${on ? " on" : ""}${sel.size && !on ? " dim" : ""}${n ? "" : " nil"}" ` +
       `aria-pressed="${on}" onclick="rkGSel('${k}')" ` +
-      `title="${on ? "showing this shelf \u2014 click to remove it from the filter" : (n ? "click to show only this shelf (click more to compare)" : "empty shelf \u2014 still selectable; file a frame here via the coloured shelf chip on any row")}">` +
+      `title="${on ? "showing this shelf \u2014 click to remove it from the filter" : (n ? "click to show only this shelf (click more to compare)" : "empty shelf \u2014 still selectable; the + group button on any row or racket card files a frame here")}">` +
       `<i style="background:${G[k][0]}"></i>${esc(NICK[k] || String(G[k][1]).split(" — ")[0])}<b>${n}</b></button>`;
   }).join("") +
   (sel.size ? `<button type="button" class="gleg all" onclick="rkGClear()">show all</button>` : "");
@@ -8263,7 +8388,8 @@ function sbAddResearched(){
      actually considered, otherwise the picks above would silently ignore it */
   if (document.body.classList.contains("mode-easy") && window.easyRun && window.EZ_RAN) easyRun();
 }
-document.getElementById("sb_specSearch").addEventListener("input", e=>{ sbQ=sbNorm(e.target.value); buildGrid(); sbUpdateMeta(); });
+document.getElementById("sb_specSearch").addEventListener("input", e=>{ sbQ=sbNorm(e.target.value); buildGrid(); sbUpdateMeta();
+  if (sbQ && document.body.classList.contains("mode-pro") && window.srfChapOpen) srfChapOpen("sb"); });
 document.getElementById("sb_specSearch").addEventListener("keydown", e=>{ if(e.key==="Enter") sbRunSpecSearch(); });
 window.sbRunSpecSearch=sbRunSpecSearch; window.sbOpenAddPanel=sbOpenAddPanel;
 window.sbCloseAddPanel=sbCloseAddPanel; window.sbAddResearched=sbAddResearched;
@@ -9584,7 +9710,7 @@ window.SRF.strings = () => NERD.map(r=>({ name:r[0], brand:r[1], label:r[1]+" "+
   };
   function quiverChips(){
     const q = (window.SRF && window.SRF.quiver) ? window.SRF.quiver() : [];
-    if(!q.length) return `<span class="meta">no frames in your quiver yet</span>`;
+    if(!q.length) return `<span class="meta">no frames in your quiver yet \u2014 the <b>+ group</b> button on any racket row or card files one</span>`;
     return q.map(r=>`<span style="background:color-mix(in srgb, var(--magenta) 14%, transparent);color:var(--magenta-fg,var(--magenta));border-radius:999px;padding:2px 9px;font-size:10.5px;font-weight:600;white-space:nowrap;">${r.b} ${r.n}</span>`).join(" ");
   }
 
@@ -11443,7 +11569,7 @@ window.midPaint = (skipSliderSync) => {
       (mi >= 0 ? `<span class="medal ${["mG","mS","mB"][mi]}">${mi + 1}</span> ` : "") +
       (mi === 0 ? `<span style="font-size:9px;color:var(--gold);letter-spacing:.08em;">BEST MATCH</span>` : "") +
       `<span class="pc_buy">${window.buyBtn("racket", (x.f.b ? x.f.b + " " : "") + x.f.n, true)}</span>` +
-      `<div class="nm" style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;">${cmpBox("racket", cid)}<span class="jump2"${jump}><b>${esc(x.f.b)}</b> ${esc(x.f.n)}</span>${x.f.src === "market" ? MK_BADGE : ""}` +
+      `<div class="nm" style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;">${cmpBox("racket", cid)}<span class="jump2"${jump}><b>${esc(x.f.b)}</b> ${esc(x.f.n)}</span>${x.f.src === "market" ? MK_BADGE : ""}${onBench && window.srfGrpBtnR ? srfGrpBtnR(x.f) : ""}` +
       (band ? `<span class="lvlflag ${band.cls}" title="from your answers">${band.txt}</span>` : "") +
       `<span style="margin-left:auto;">${spiderIcon("racket", cid, x.f.s)}</span></div>` +
       `<div class="sp">${esc(String(x.f.sp[0]))} \u00b7 ${esc(String(x.f.sp[2]))}${x.f.p != null ? ` \u00b7 ~${x.f.p}\u20ac` : ""} \u00b7 match ${x.sc.toFixed(1)}/10 \u00b7 difficulty ${x.f.d}/10</div>` +
