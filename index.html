@@ -2050,7 +2050,7 @@
 <button type="button" id="gearbtn" aria-label="settings — theme, export, import" aria-haspopup="true"
         aria-expanded="false" onclick="srfGearToggle(event)">⚙</button>
 <div id="gearpop" hidden>
-  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-08-27.2 · b86.2</span></div>
+  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-08-27.3 · b86.2</span></div>
   <span class="toolbit" id="themeCtl">theme
     <span class="themepick" id="themePick">
       <button type="button" class="thememain" id="themeBtn" aria-expanded="false" aria-controls="themeList"
@@ -7498,7 +7498,7 @@ function mkCustRow(base){
   const row = { no: Math.max(...rk.map(x => x.no)) + 1, custOf: base.no,
     b: base.b, n: base.n + " \u00b7 custom", g: base.g, o: base.o ? base.o.slice() : null,
     pt: base.pt, d: base.d, p: base.p, sp: base.sp.slice(), s: base.s.slice(),
-    est: base.est ? base.est.slice() : undefined,
+    est: Array.isArray(base.est) ? base.est.slice() : base.est,   // market frames carry est as a flag, not a list
     stock: { sp: base.sp.slice(), s: base.s.slice(), d: base.d } };
   rk.push(row);
   return row;
