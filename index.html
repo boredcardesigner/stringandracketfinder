@@ -1481,6 +1481,21 @@
   .row-dragging{ opacity:.45; }
   .drop-above{ box-shadow: inset 0 3px 0 var(--cyan) !important; }
   .drop-below{ box-shadow: inset 0 -3px 0 var(--cyan) !important; }
+  /* the touch counterpart of the desktop drag handle: same hand order, tap instead of drag */
+  .movewrap{ display:inline-flex; flex-direction:column; gap:3px; margin-left:8px; }
+  .movebtn{ background:color-mix(in srgb, var(--fg) 9%, transparent); border:0; color:var(--muted);
+            border-radius:3px; font-size:9px; line-height:1; padding:5px 7px; cursor:pointer;
+            font-family:inherit; }
+  .movebtn:active, .movebtn:focus-visible{ color:var(--bright);
+            background:color-mix(in srgb, var(--cyan) 22%, transparent); }
+  /* two-step delete: first tap arms it, second tap within 2.6s removes the row */
+  .delbtn{ background:none; border:1px solid color-mix(in srgb, var(--fg) 22%, transparent);
+           color:var(--muted); border-radius:3px; font-size:10px; line-height:1.4;
+           padding:1px 6px; margin-left:6px; cursor:pointer; font-family:inherit; }
+  .delbtn:hover{ color:var(--bright); border-color:color-mix(in srgb, var(--fg) 45%, transparent); }
+  .delbtn.armed{ color:#fff; background:#B3282D; border-color:#B3282D; font-weight:700; }
+  .benchsearch{ margin:0 0 8px; }
+  .benchsearch input{ flex:1; min-width:0; }
   /* chapter subtitles are jump links: open the chapter, land on the section */
   .secjump{ background:none; border:0; padding:0; margin:0; font:inherit; color:inherit;
             cursor:pointer; text-decoration:underline dotted color-mix(in srgb, var(--fg) 45%, transparent);
@@ -2589,10 +2604,12 @@
   </div></span>
 
   <!-- the priorities block moved above the chapters, next to the answer (Direction A) -->
+  <div class="searchbar benchsearch"><input id="benchSeekR" type="text" autocomplete="off" spellcheck="false" placeholder="Search a racket — filters this bench; the button searches online…" aria-label="search rackets on this bench" oninput="srfBenchSeek('racket')" onkeydown="if(event.key==='Enter'){event.preventDefault();srfBenchSeek('racket',1);}"><button class="go" type="button" onclick="srfBenchSeek('racket',1)">search</button></div>
   <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;font-size:11px;flex-wrap:wrap;">
   <span style="color:var(--muted);"><b class="secname">heatmap</b> · click a column to rank · twice to flip · <b style="color:var(--soft);font-weight:500;">click any score cell to set your own rating</b> · <span id="sortState" style="color:var(--cyan);">recommended order</span></span>
   <button class="resetbtn" data-label="grouped by shelf" onclick="rkGroupView()" title="quiver, playtested, bench — the old grouped view">grouped by shelf</button>
   <button class="resetbtn" data-label="reset order" onclick="resetOrder()" style="margin-left:auto;">reset order</button>
+  <button class="resetbtn" id="rk_trash" hidden onclick="srfRestore()" title="bring every deleted racket and string back"></button>
 </div>
 <div id="winners" aria-label="current winners — gold, silver, bronze and budget pick with their best string setups"></div>
 <div class="cpanel" id="c_panel">
@@ -2812,10 +2829,12 @@
     </div>
   </div>
 </div></span>
+    <div class="searchbar benchsearch"><input id="benchSeekS" type="text" autocomplete="off" spellcheck="false" placeholder="Search a string — filters this bench; the button searches online…" aria-label="search strings on this bench" oninput="srfBenchSeek('string')" onkeydown="if(event.key==='Enter'){event.preventDefault();srfBenchSeek('string',1);}"><button class="go" type="button" onclick="srfBenchSeek('string',1)">search</button></div>
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;font-size:11px;flex-wrap:wrap;">
     <span style="color:var(--muted);"><b class="secname">heatmap</b> · click any column header to rank by it · <b style="color:var(--soft);font-weight:500;">click any score cell to set your own rating</b> · <span id="sb_sortState" style="color:var(--cyan);">recommended order</span></span>
     <button class="sbbtn" data-label="grouped by shelf" onclick="sbGroupView()" title="benchmark, court-tested, queued — the old grouped view">grouped by shelf</button>
     <button class="sbbtn" data-label="reset order" onclick="sbResetOrder()" style="margin-left:auto;">reset order</button>
+    <button class="sbbtn" id="sb_trash" hidden onclick="srfRestore()" title="bring every deleted racket and string back"></button>
   </div>
   <div class="boostbar" id="sb_boost"></div>
   <div id="sb_hint" style="display:none;font-size:11.5px;color:var(--muted);background:var(--card2);border:1px dashed color-mix(in srgb, var(--cyan) 30%, transparent);border-radius:8px;padding:9px 12px;margin-bottom:10px;">
@@ -3483,6 +3502,75 @@ window.srfCardsDock = (m) => {
   const b = document.getElementById("benchCards"); if (!b) return;
   const t = document.getElementById(m === "pro" ? "pro_cards_home" : "benchCardsHome");
   if (t && b.parentElement !== t) t.appendChild(b);
+};
+/* ---------------- row deletion ----------------
+   Duplicates happen: transfer-specs re-adds, feel and custom copies pile up. Every
+   bench row is deletable now. Identity is the NAME (brand|model resp. mains|cross),
+   persisted in localStorage; the data arrays are never mutated, every render
+   pipeline just filters - so "restore all" is instant and nothing can corrupt. */
+const SRF_DELKEY = "srf:deleted:v2";
+window.SRF_DEL = (() => { try { const d = JSON.parse(localStorage.getItem(SRF_DELKEY) || "{}");
+  return { racket: new Set(d.racket || []), string: new Set(d.string || []) };
+} catch(e){ return { racket: new Set(), string: new Set() }; } })();
+function srfDelPersist(){ try { localStorage.setItem(SRF_DELKEY,
+  JSON.stringify({ racket: [...SRF_DEL.racket], string: [...SRF_DEL.string] })); } catch(e){} }
+window.srfDelKeyOf = (kind, it) => kind === "racket" ? (it.b + "|" + it.n) : (it.m + "|" + it.x);
+window.srfIsDel = (kind, it) => it && SRF_DEL[kind] && SRF_DEL[kind].has(srfDelKeyOf(kind, it));
+window.srfDelBtn = (kind, id) => `<button type="button" class="delbtn" aria-label="delete this row from the bench" ` +
+  `title="remove from the bench \u2014 restore all brings it back" onclick="event.stopPropagation();srfDelAsk('${kind}',${id},event)">\u00d7</button>`;
+window.srfDelAsk = function(kind, id, ev){
+  const b = ev && (ev.currentTarget instanceof Element ? ev.currentTarget :
+    (ev.target && ev.target.closest && ev.target.closest(".delbtn")));
+  if (!b) return;
+  if (!b.classList.contains("armed")){
+    b.classList.add("armed"); b.textContent = "sure?";
+    setTimeout(() => { b.classList.remove("armed"); b.textContent = "\u00d7"; }, 2600);
+    return;
+  }
+  srfDelete(kind, id);
+};
+window.srfDelete = function(kind, id){
+  const it = kind === "racket"
+    ? (window.SRF && SRF.frameFull ? SRF.frameFull(Number(id)) : null)
+    : (window.SRF && SRF.beds ? SRF.beds().find(x => x.i === Number(id)) : null);
+  if (!it) return;
+  SRF_DEL[kind].add(srfDelKeyOf(kind, it));
+  srfDelPersist();
+  const box = document.querySelector(`.cmpbox[data-kind="${kind}"][data-id="${id}"].on`);
+  if (box && window.cmpToggle) cmpToggle(kind, Number(id));
+  if (window.SRF && SRF.redraw) SRF.redraw();
+  if (window.sbRedraw) sbRedraw();
+  if (window.midPaint) midPaint();
+  srfTrashPaint();
+};
+window.srfRestore = function(){
+  SRF_DEL.racket.clear(); SRF_DEL.string.clear(); srfDelPersist();
+  if (window.SRF && SRF.redraw) SRF.redraw();
+  if (window.sbRedraw) sbRedraw();
+  if (window.midPaint) midPaint();
+  srfTrashPaint();
+};
+window.srfTrashPaint = function(){
+  const n = SRF_DEL.racket.size + SRF_DEL.string.size;
+  ["rk_trash", "sb_trash"].forEach(id => { const b = document.getElementById(id);
+    if (!b) return; b.hidden = !n; b.textContent = `restore ${n} deleted`; });
+};
+document.addEventListener("DOMContentLoaded", () => { try { srfTrashPaint(); } catch(e){} });
+/* "show all" used to leave you at the BOTTOM of the freshly grown list */
+window.srfLimSnap = function(){
+  const ids = [].slice.call(arguments);
+  setTimeout(() => { for (const id of ids){ const el = document.getElementById(id);
+    if (el && el.offsetParent){ el.scrollIntoView({ block: "start" }); return; } } }, 90);
+};
+/* the in-chapter bench search: a thin proxy that drives the ONE real engine */
+window.srfBenchSeek = function(kind, go){
+  const main = document.getElementById(kind === "racket" ? "specSearch" : "sb_specSearch");
+  const prox = document.getElementById(kind === "racket" ? "benchSeekR" : "benchSeekS");
+  if (!main || !prox) return;
+  main.value = prox.value;
+  main.dispatchEvent(new Event("input", { bubbles: true }));
+  if (go){ if (kind === "racket"){ if (window.runSpecSearch) runSpecSearch(); }
+           else if (window.sbSearchGo) sbSearchGo(); }
 };
 /* chapter-bar subtitles are jump links now: open the chapter, land on the section,
    glow it briefly. On a phone the desktop table swaps for its card list (altId). */
@@ -5433,11 +5521,11 @@ const RK_GCOLL = new Set();
 window.rkGroupToggle = (g) => { RK_GCOLL.has(g) ? RK_GCOLL.delete(g) : RK_GCOLL.add(g); buildGrid(); };
 /* row limit: buildGrid slices to SRFLIM.racket and appends the bar; mobileCards
    receives the already-sliced array, so both views stay in step automatically */
-window.rkLimSet = (v) => { window.SRFLIM.racket = v; buildGrid(); };
+window.rkLimSet = (v) => { window.SRFLIM.racket = v; buildGrid(); if (window.srfLimSnap) srfLimSnap("gridM", "grid"); };
 /* repaints the ranked list alone — a full render() would recompute crowns, winners and
    the four setups just to show five more bars, and would drop focus from the filter bar */
 window.rankLimSet = (v) => { window.SRFLIM.rank = v; rankPaint(); };
-window.hsRLimSet  = (v) => { window.SRFLIM.hsR  = v; buildSpecs(); };
+window.hsRLimSet  = (v) => { window.SRFLIM.hsR  = v; buildSpecs(); if (window.srfLimSnap) srfLimSnap("specs"); };
 window.hsRSearch  = (v) => { hsRRaw = String(v).trim(); hsRQ = normalize(hsRRaw); buildSpecs(); };
 window.rkGroupOnly = (g) => {
   const all = [...document.querySelectorAll("#grid .ghead")].map(e => e.dataset.g);
@@ -5505,6 +5593,23 @@ window.srfManDrop = function(from, to, after){
   try { localStorage.setItem(MAN_KEY, JSON.stringify(RK_MAN)); } catch(e){}
   sortIdx = null; SEL.clear(); specSort = null;   // the view snaps to your order
   buildGrid(); buildSpecs();
+};
+/* tap-to-move for touch screens: the mobile cards call this instead of dragging.
+   One step up or down, written through srfManDrop, so the hand order stays ONE
+   list shared with the desktop heatmap and the hard-specs table. */
+window.srfManMove = function(no, dir, ev){
+  if (ev){ ev.stopPropagation(); ev.preventDefault(); }
+  no = Number(no);
+  const view = [...document.querySelectorAll("#gridM .mcard[data-no]")].map(c => +c.dataset.no);
+  const at = view.indexOf(no);
+  let nb = at >= 0 ? view[at + (dir > 0 ? 1 : -1)] : null;
+  if (nb == null){   // edge of the loaded slice: step through the global order instead
+    const base = manApply(rkRecOrder(rk)).map(r => r.no);
+    const gi = base.indexOf(no);
+    nb = base[gi + (dir > 0 ? 1 : -1)];
+  }
+  if (nb == null) return;
+  srfManDrop(no, nb, dir > 0);
 };
 /* one delegated wiring for both tables; score cells resolve to their row's name cell */
 (function manWire(){
@@ -5598,6 +5703,7 @@ function buildGrid(){
   // sort is stable, so numbering and within-group order stay exactly as authored.
   else if (sortIdx==="g") rows = rk.slice().sort((a,b)=> gRank(a.g) - gRank(b.g));
   else rows = manApply(rkRecOrder(rk));   // resting order — with your hand order applied on top
+  rows = rows.filter(r => !window.srfIsDel || !srfIsDel("racket", r));   // deleted rows leave every list
   const filtering = !!(typeof searchQ!=="undefined" && searchQ);
   if (filtering) rows = rows.filter(r=>matches(r, searchQ));
   /* the legend chips: ONE shelf selection for the whole department — heatmap,
@@ -5634,7 +5740,7 @@ function buildGrid(){
         `<button type="button" class="gonly" onclick="event.stopPropagation();rkGroupOnly('${r.g}')" aria-label="show only ${G[r.g][1]}">${solo?"all groups":"only"}</button></div>`;
     }
     if (sortIdx==="g" && !SEL.size && !filtering && RK_GCOLL.has(r.g)) return;   // folded: header stands, rows wait
-    h += `<div role="cell" class="namecell" data-no="${r.no}" style="color:${G[r.g][0]};display:flex;flex-direction:column;justify-content:center;padding:3px 4px 3px 7px;line-height:1.25;border-left:3px ${gStyle(r.g)} color-mix(in srgb, ${G[r.g][0]} 62%, transparent);"><span style="font-weight:500;"><span class="draghandle" draggable="true" data-drag="${r.no}" title="drag to reorder — your order is shared with hard specs and sticks until reset order">⋮⋮</span><span style="color:var(--muted);font-weight:400;">No. ${r.no}</span> ${cmpBox("racket", r.no)}<span class="custname" role="button" tabindex="0" onclick="cOpen(${r.no})" onkeydown="if(event.key==='Enter'){cOpen(${r.no});}" onmouseenter="noteHoverIn(noteFrame,${r.no},event)" onmouseleave="noteHoverOut()" title="customize this frame — hover for play notes">${r.b} ${r.n}</span><button type="button" class="infobtn" aria-label="play notes for ${r.b} ${r.n}" onclick="event.stopPropagation();noteFrame(${r.no},event)">ⓘ</button>${r.feel?`<button type="button" class="custbtn feelbtn" aria-label="edit how ${r.b} ${r.n} feels for you" onclick="event.stopPropagation();fOpen(${r.feelOf})">edit feel</button>`:`<button type="button" class="custbtn" aria-label="customize ${r.b} ${r.n} — describe what you did to it" onclick="event.stopPropagation();cOpen(${r.no})">customize</button><button type="button" class="custbtn feelbtn" aria-label="re-score ${r.b} ${r.n} to your feel" onclick="event.stopPropagation();fOpen(${r.no})">my feel</button>`}${tag(r)}${window.srfRecChip("racket",r)}${r.cust?`<span class="custchip" title="${r.cust.text.replace(/"/g,'&quot;')}">customized</span>`:""}${r.feel?`<span class="custchip feelchip" title="your category read of the stock ${r.b} ${r.n} — the stock row is still on the bench">my feel</span>`:""}${window.buyBtn("racket",(r.b?r.b+" ":"")+String(r.n).replace(/ · my feel$/,""),true,"buy",true)}</span><span style="color:var(--muted);font-size:10px;font-weight:400;">${r.sp[0]} · ${r.sp[2]}${grpBtn(r)}</span></div>`;
+    h += `<div role="cell" class="namecell" data-no="${r.no}" style="color:${G[r.g][0]};display:flex;flex-direction:column;justify-content:center;padding:3px 4px 3px 7px;line-height:1.25;border-left:3px ${gStyle(r.g)} color-mix(in srgb, ${G[r.g][0]} 62%, transparent);"><span style="font-weight:500;"><span class="draghandle" draggable="true" data-drag="${r.no}" title="drag to reorder — your order is shared with hard specs and sticks until reset order">⋮⋮</span><span style="color:var(--muted);font-weight:400;">No. ${r.no}</span> ${cmpBox("racket", r.no)}<span class="custname" role="button" tabindex="0" onclick="cOpen(${r.no})" onkeydown="if(event.key==='Enter'){cOpen(${r.no});}" onmouseenter="noteHoverIn(noteFrame,${r.no},event)" onmouseleave="noteHoverOut()" title="customize this frame — hover for play notes">${r.b} ${r.n}</span><button type="button" class="infobtn" aria-label="play notes for ${r.b} ${r.n}" onclick="event.stopPropagation();noteFrame(${r.no},event)">ⓘ</button>${r.feel?`<button type="button" class="custbtn feelbtn" aria-label="edit how ${r.b} ${r.n} feels for you" onclick="event.stopPropagation();fOpen(${r.feelOf})">edit feel</button>`:`<button type="button" class="custbtn" aria-label="customize ${r.b} ${r.n} — describe what you did to it" onclick="event.stopPropagation();cOpen(${r.no})">customize</button><button type="button" class="custbtn feelbtn" aria-label="re-score ${r.b} ${r.n} to your feel" onclick="event.stopPropagation();fOpen(${r.no})">my feel</button>`}${tag(r)}${window.srfRecChip("racket",r)}${r.cust?`<span class="custchip" title="${r.cust.text.replace(/"/g,'&quot;')}">customized</span>`:""}${r.feel?`<span class="custchip feelchip" title="your category read of the stock ${r.b} ${r.n} — the stock row is still on the bench">my feel</span>`:""}${window.buyBtn("racket",(r.b?r.b+" ":"")+String(r.n).replace(/ · my feel$/,""),true,"buy",true)}</span><span style="color:var(--muted);font-size:10px;font-weight:400;">${r.sp[0]} · ${r.sp[2]}${grpBtn(r)}${window.srfDelBtn("racket", r.no)}</span></div>`;
     h += `<div role="cell" class="spdcell" style="display:flex;align-items:center;justify-content:center;">${spiderIcon("racket", r.no, r.s)}</div>`;
     h += priceCell(r.p, sortIdx==="p");
     h += `<div role="cell" class="curvecell" style="display:flex;align-items:center;justify-content:center;">${perfCurve(r.s,200,44)}</div>`;
@@ -6549,6 +6655,7 @@ function updateMeta(){
 }
 document.getElementById("specSearch").addEventListener("input", e=>{
   searchQ = normalize(e.target.value); buildGrid(); buildSpecs(); updateMeta();
+  const px = document.getElementById("benchSeekR"); if (px && px.value !== e.target.value) px.value = e.target.value;
   /* the search sits with the card lists in pro; the filtered table lives in the
      chapter below — typing opens it so the results are actually in view */
   if (searchQ && document.body.classList.contains("mode-pro") && window.srfChapOpen) srfChapOpen("rk");
@@ -6594,7 +6701,7 @@ function mobileCards(rows, total){
       const gh=(r.baseS&&r.baseS[i]!==v)?r.baseS[i]:((r.feel&&r.stockS&&r.stockS[i]!==v)?r.stockS[i]:((r.cust&&r.stock&&r.stock.s[i]!==v)?r.stock.s[i]:null));
       return `<div class="scell${r.baseS&&r.baseS[i]!==v?" mycell":""}" role="button" tabindex="0"         title="${esc(cats[i])} ${v}/10 — tap to set your own"         onclick="srfScorePop('racket',${r.no},${i},event)"         style="position:relative;background:${bg};color:${fg};"><i>${catsShort[i]}</i><b>${v}</b>${gh!=null?`<i class="stckv" title="stock: ${gh}">${gh}</i>`:""}</div>`; }).join("")
       + `<div class="scell tri"><i>Diff</i>${diffCell(r.d,false).match(/<svg.*<\/svg>/s)[0]}</div>`;
-    return `<article class="mcard">
+    return `<article class="mcard" data-no="${r.no}">
       <header>
         <div class="who">
           <div class="nm">${cmpBox("racket", r.no)}${n+1}. ${esc((r.b?r.b+" ":"")+r.n)}${r.feel?`<span class="custchip feelchip">my feel</span>`:""}<button type="button" class="infobtn" aria-label="play notes" onclick="noteFrame(${r.no},event)">ⓘ</button>${spiderIcon("racket", r.no, r.s)}${rowActs(r, true)}</div>
@@ -6603,6 +6710,7 @@ function mobileCards(rows, total){
         <div class="pr">
           ${r.p?`<span class="prv">~${r.p}\u20ac</span>`:`<span class="prv" style="opacity:.4;">\u2014</span>`}
           <span class="ovv" title="overall weighted score \u2014 follows your sliders">\u00d8 ${(r.s.reduce((a,v,i)=>a+v*w[i],0)/tot).toFixed(1)}</span>
+          <span class="movewrap"><button type="button" class="movebtn" aria-label="move this frame one position up" title="move up \u2014 your order sticks until reset" onclick="srfManMove(${r.no},-1,event)">\u25b2</button><button type="button" class="movebtn" aria-label="move this frame one position down" title="move down \u2014 your order sticks until reset" onclick="srfManMove(${r.no},1,event)">\u25bc</button></span>${window.srfDelBtn("racket", r.no)}
         </div>
       </header>
       <div class="cv">${perfCurve(r.s,336,56)}</div>
@@ -6724,6 +6832,10 @@ function render(){
     if (i < 0) i = disp.length;
     disp.splice(i, 0, g);
   });
+  /* deleted names leave the ranking too — including market ghosts wearing them —
+     and they leave BEFORE the note reads disp[0] as "the top weighted score" */
+  disp = disp.filter(r => { const t = r.ghost ? (r.f || r.frame || r) : r;
+    return !window.srfIsDel || !srfIsDel("racket", t); });
   const EURO = `<span class="medal" style="background:linear-gradient(135deg,var(--amber),#8a6a28);" title="your budget pick — same as the strip above">€</span>`;
   let note = "";
   const goldAtTop = disp.length && (disp[0].ghost ? disp[0].mi === 0 : (meds[0] != null && disp[0].no === meds[0]));
@@ -6903,7 +7015,7 @@ window.paintSetups4 = () => {
     cand.forEach(x => { const r = calibScore(f, x.bed, x.tech); if (!top || r.sc > top.r.sc) top = { x, r }; });
     return top; };
   const tw2 = w.reduce((a, b) => a + b, 0) || 1;
-  const rawTop = rk.map(r => ({ f: r, sc: r.s.reduce((a, v, i) => a + v * w[i], 0) / tw2 }))
+  const rawTop = rk.filter(r => !window.srfIsDel || !srfIsDel("racket", r)).map(r => ({ f: r, sc: r.s.reduce((a, v, i) => a + v * w[i], 0) / tw2 }))
                    .sort((a, b) => b.sc - a.sc || (a.f.b + a.f.n).localeCompare(b.f.b + b.f.n))[0] || null;
   const scOf = f => { const row = (SL.rows || []).find(x => x.f === f); return row ? row.sc : (f.__sc != null ? f.__sc : 0); };
   const four = meds.slice(0, 3).map((f, i) => ({ f, role: i }));
@@ -6976,7 +7088,7 @@ function paintWinners(scored){
     ` <span style="color:var(--muted);">× ${esc(x.bed.x)}</span>` : ` <span style="color:var(--muted);">· full bed</span>`);
   /* the raw-math top across the whole bench, for the gold card's why-line */
   const tw3 = w.reduce((a,b)=>a+b,0) || 1;
-  const pureTop = rk.map(x => ({ f:x, sc: x.s.reduce((a,v,i)=>a+v*w[i],0)/tw3 }))
+  const pureTop = rk.filter(x => !window.srfIsDel || !srfIsDel("racket", x)).map(x => ({ f:x, sc: x.s.reduce((a,v,i)=>a+v*w[i],0)/tw3 }))
                     .sort((a,b)=>b.sc-a.sc)[0] || null;
   const roleOf = (r) => r === meds[0] ? 0 : r === meds[1] ? 1 : r === meds[2] ? 2 : 3;
   const card = (r, badge, label, extra) => {
@@ -7050,6 +7162,7 @@ function buildSpecs(){
     if (bv===null) return -1;
     return bv-av;
   });
+  rows = rows.filter(r => !window.srfIsDel || !srfIsDel("racket", r));
   if (typeof searchQ!=="undefined" && searchQ) rows = rows.filter(r=>matches(r, searchQ));
   /* this table's own filter stacks ON TOP of the amber bench search rather than replacing
      it: the amber bar is the department-wide query (and can go online), this one just
@@ -7074,7 +7187,7 @@ function buildSpecs(){
   }
   rows = rows.slice(0, window.SRFLIM.hsR || 5);
   rows.forEach(r => {
-    sh += `<div class="hs_name" data-no="${r.no}" style="color:${G[r.g][0]};padding:3px 4px;font-weight:500;"><span class="draghandle" draggable="true" data-drag="${r.no}" title="drag to reorder — your order is shared with the heatmap and sticks until reset order">⋮⋮</span><span style="color:var(--muted);font-weight:400;">No. ${r.no}</span> ${r.b} ${r.n}${tag(r,10)}${grpBtn(r)}` +
+    sh += `<div class="hs_name" data-no="${r.no}" style="color:${G[r.g][0]};padding:3px 4px;font-weight:500;"><span class="draghandle" draggable="true" data-drag="${r.no}" title="drag to reorder — your order is shared with the heatmap and sticks until reset order">⋮⋮</span><span style="color:var(--muted);font-weight:400;">No. ${r.no}</span> ${r.b} ${r.n}${tag(r,10)}${grpBtn(r)}${window.srfDelBtn("racket", r.no)}` +
       (r.cust ? `<button type="button" class="infobtn custi" aria-label="what this customization did" ` +
         `title="what this customization did to the frame" onclick="custInfo(${r.no})">\u24d8</button>` : "") + `</div>` +
       r.sp.map((v,i)=>`<div style="color:${specSort===i?"var(--cyan)":"var(--fg)"};padding:3px 4px;">${v}</div>`).join("");
@@ -7228,6 +7341,9 @@ window.cPreview = () => {
   prose.textContent = t;
 };
 window.cOpen = (no) => {
+  /* a stock frame that already has a custom copy: edit the copy, never the stock */
+  const cl = rk.find(x => x.custOf === no);
+  if (cl) no = cl.no;
   cNo=no; const r=cFrame(); if(!r) return;
   document.getElementById("c_title").textContent = "Customize " + r.b + " " + r.n;
   document.getElementById("c_weight").value = (r.cust?r.cust.weight:"") || String(r.sp[0]).replace(/[^\d.]/g,"");
@@ -7267,20 +7383,23 @@ window.cSave = () => {
     return;
   }
   if(wv && isNaN(parseFloat(wv))){ err.textContent="Weight should be a number, e.g. 329."; return; }
-  if(!r.stock) r.stock={ sp:r.sp.slice(), s:r.s.slice(), d:r.d };     // keep the stock spec so it can be reverted
-  const sp=r.stock.sp.slice();
-  if(wv)  sp[0]=parseFloat(wv)+"g custom";
-  if(sw)  sp[4]=sw;
-  if(bal) sp[5]=bal;
-  r.sp=sp;
-  r.s=estimateScores(sp);
-  r.d=estimateDifficulty(sp);
-  r.cust={ text, weight:wv, sw, bal, date:new Date().toISOString().slice(0,10) };
+  const cust={ text, weight:wv, sw, bal, date:new Date().toISOString().slice(0,10) };
+  /* the stock frame NEVER leaves the bench: mods land on a separate "· custom" row
+     (the my-feel pattern), so before and after sit side by side in every list */
+  const target = r.custOf ? r : (rk.find(x => x.custOf === r.no) || mkCustRow(r));
+  reapplyCust(target, cust);
+  custStore2(target.custOf, cust);
   cClose(); buildGrid(); buildSpecs(); render();
   onLayoutChange(window.SRF.layout());
 };
 window.cRevert = () => {
   const r=cFrame(); if(!r) return;
+  if (r.custOf){   // a custom copy reverts by disappearing — the stock row was never touched
+    const i = rk.indexOf(r); if (i >= 0) rk.splice(i, 1);
+    custStore2(r.custOf, null);
+    cClose(); buildGrid(); buildSpecs(); render();
+    return;
+  }
   if(r.stock){ r.sp=r.stock.sp.slice(); r.s=r.stock.s.slice(); r.d=r.stock.d; }
   delete r.cust;
   cClose(); buildGrid(); buildSpecs(); render();
@@ -7359,6 +7478,35 @@ window.fRemove = () => {
       mkFeelRow(base, store[k].s);
   });
 })();
+/* ---------- "· custom" rows: customize's my-feel twin ----------
+   One custom copy per stock frame, appended like a feel row, persisted in its own
+   store and rebuilt on boot — the stock row is never rewritten again. */
+const CUST2_KEY = "srf:custrows:v1";
+const cust2Load = () => { try { return JSON.parse(localStorage.getItem(CUST2_KEY) || "{}"); } catch(e){ return {}; } };
+function custStore2(baseNo, cust){
+  const m = cust2Load();
+  if (cust) m[baseNo] = cust; else delete m[baseNo];
+  try { localStorage.setItem(CUST2_KEY, JSON.stringify(m)); } catch(e){}
+}
+function mkCustRow(base){
+  const row = { no: Math.max(...rk.map(x => x.no)) + 1, custOf: base.no,
+    b: base.b, n: base.n + " \u00b7 custom", g: base.g, o: base.o ? base.o.slice() : null,
+    pt: base.pt, d: base.d, p: base.p, sp: base.sp.slice(), s: base.s.slice(),
+    est: base.est ? base.est.slice() : undefined,
+    stock: { sp: base.sp.slice(), s: base.s.slice(), d: base.d } };
+  rk.push(row);
+  return row;
+}
+(function reapplyCustRows(){
+  const m = cust2Load();
+  Object.keys(m).forEach(k => {
+    const base = rk.find(x => x.no === +k && !x.custOf);
+    if (base && !rk.find(x => x.custOf === +k)){
+      const row = mkCustRow(base);
+      reapplyCust(row, m[k]);
+    }
+  });
+})();
 // Several parts of the app need to know when the layout or a customization
 // changes — the member layer saves it, the chatroom repaints its pickers. A
 // single callback meant whoever registered last silently displaced the other.
@@ -7385,7 +7533,9 @@ function applyMap(map){
   rk.forEach(r=>{
     const m = map ? map[r.no] : null;
     if(map){ r.g = m ? m.g : "bench"; r.o = (m && m.o) ? [m.o,"var(--magenta-fg,var(--magenta))"] : null; r.pt = !!(m && m.pt); }
-    if(map && m && m.cust && !r.cust) reapplyCust(r, m.cust);
+    if(map && m && m.cust && !r.cust && !r.custOf && !rk.find(x => x.custOf === r.no)){
+      const row = mkCustRow(r); reapplyCust(row, m.cust); custStore2(r.no, m.cust);   // imported mods land on a copy too
+    }
   });
   buildGrid(); buildSpecs(); render();
 }
@@ -7398,9 +7548,12 @@ window.SRF.applyLayout = (map) => {                    // null -> back to the bu
 // the customization travels with the layout — it is the member's own work and
 // was previously lost on reload because only group and owner were serialised
 window.SRF.layout = () => { const m={}; rk.forEach(r=>{
+  if (r.custOf) return;                                  // custom copies export under their stock frame
   m[r.no]={g:r.g, o:r.o?r.o[0]:null, pt:!!r.pt};
   if(r.cust) m[r.no].cust = r.cust;
-}); return m; };
+});
+rk.forEach(r=>{ if (r.custOf && m[r.custOf]) m[r.custOf].cust = r.cust; });
+return m; };
 window.SRF.demoLayout = () => { const m={}; DEMO.forEach(d=>{ m[d.no]={g:d.g,o:d.o?d.o[0]:null,pt:d.pt}; }); return m; };
 window.SRF.onLayout = (fn) => { if (typeof fn === "function") layoutSubs.push(fn); };
 window.SRF.redraw = () => { buildGrid(); buildSpecs(); render(); };
@@ -7466,7 +7619,7 @@ window.rkPaintLegend = function(){
      not shelves */
   const NICK = { own:"my quiver", next:"test next", tested:"court tested" };
   const chips = keys.map(k => {
-    const n = rk.filter(r => r.g === k).length;
+    const n = rk.filter(r => (!window.srfIsDel || !srfIsDel("racket", r)) && r.g === k).length;
     const on = sel.has(k);
     return `<button type="button" class="gleg${on ? " on" : ""}${sel.size && !on ? " dim" : ""}${n ? "" : " nil"}" ` +
       `aria-pressed="${on}" onclick="rkGSel('${k}')" ` +
@@ -7874,7 +8027,7 @@ function sbSpecVal(b,i){
   return bedDemand(b);
 }
 function buildSbSpecs(){
-  let rows=beds.slice();
+  let rows=beds.filter(b => !window.srfIsDel || !srfIsDel("string", b));
   if(sbSpecSort===null) rows = window.srfRecFirst("string", window.srfGrpFirst("string", rows));
   else rows.sort((a,b)=>{
     const x=sbSpecVal(a,sbSpecSort), y=sbSpecVal(b,sbSpecSort);
@@ -7901,7 +8054,7 @@ function buildSbSpecs(){
   rows = rows.slice(0, window.SRFLIM.hsS || 5);
   rows.forEach(b=>{
     const [mat,st]=bedMat(b), pr=bedPrice(b);
-    h+=`<div style="color:${rowColor(b)};padding:4px 5px;font-weight:500;"><span style="color:var(--muted);font-weight:400;">No. ${b.no}</span> ${b.m}</div>`+
+    h+=`<div style="color:${rowColor(b)};padding:4px 5px;font-weight:500;"><span style="color:var(--muted);font-weight:400;">No. ${b.no}</span> ${b.m}${window.srfDelBtn("string", b.i)}</div>`+
        `<div style="color:${b.mt?"var(--fg)":"var(--muted)"};padding:4px 5px;">${b.mt?b.mt+" kg":"—"}</div>`+
        `<div style="color:var(--soft);padding:4px 5px;">× ${b.x}</div>`+
        `<div style="color:${b.ct?"var(--fg)":"var(--muted)"};padding:4px 5px;">${b.ct?b.ct+" kg":(/full bed/i.test(b.x)&&b.mt?b.mt+" kg":"—")}</div>`+
@@ -8389,6 +8542,7 @@ function sbAddResearched(){
   if (document.body.classList.contains("mode-easy") && window.easyRun && window.EZ_RAN) easyRun();
 }
 document.getElementById("sb_specSearch").addEventListener("input", e=>{ sbQ=sbNorm(e.target.value); buildGrid(); sbUpdateMeta();
+  const px = document.getElementById("benchSeekS"); if (px && px.value !== e.target.value) px.value = e.target.value;
   if (sbQ && document.body.classList.contains("mode-pro") && window.srfChapOpen) srfChapOpen("sb"); });
 document.getElementById("sb_specSearch").addEventListener("keydown", e=>{ if(e.key==="Enter") sbRunSpecSearch(); });
 window.sbRunSpecSearch=sbRunSpecSearch; window.sbOpenAddPanel=sbOpenAddPanel;
@@ -8654,6 +8808,7 @@ window.sbGSel = (k) => {
   buildGrid();
 };
 window.sbGClear = () => { window.SB_GSEL.clear(); buildGrid(); };
+window.sbRedraw = () => { buildGrid(); try { buildSbSpecs(); } catch(e){} };
 window.sbPaintLegend = function(){
   const sel = window.SB_GSEL;
   /* every shelf is ALWAYS offered, in priority order — an untagged bench used to
@@ -8661,7 +8816,7 @@ window.sbPaintLegend = function(){
      clickable (dotted, count 0). */
   const keys = ["mine", "queued", "tested", "validated", "benchmark", "researched", "ref"];
   const chips = keys.map(k => {
-    const n = beds.filter(b => gkey(b) === k).length;
+    const n = beds.filter(b => (!window.srfIsDel || !srfIsDel("string", b)) && gkey(b) === k).length;
     const on = sel.has(k);
     return `<button type="button" class="gleg${on ? " on" : ""}${sel.size && !on ? " dim" : ""}${n ? "" : " nil"}" ` +
       `aria-pressed="${on}" onclick="sbGSel('${k}')" ` +
@@ -8694,8 +8849,8 @@ window.sbAdoptDemo = () => { window.SRF.sbApply(window.SRF.sbDemo()); if(sbOnCha
 
 const SB_GCOLL = new Set();
 window.sbGroupToggle = (g) => { SB_GCOLL.has(g) ? SB_GCOLL.delete(g) : SB_GCOLL.add(g); buildGrid(); };
-window.sbLimSet = (v) => { window.SRFLIM.string = v; buildGrid(); };
-window.hsSLimSet = (v) => { window.SRFLIM.hsS = v; buildSbSpecs(); };
+window.sbLimSet = (v) => { window.SRFLIM.string = v; buildGrid(); if (window.srfLimSnap) srfLimSnap("sb_gridM", "sb_grid"); };
+window.hsSLimSet = (v) => { window.SRFLIM.hsS = v; buildSbSpecs();  if (window.srfLimSnap) srfLimSnap("sb_specs"); };
 window.hsSSearch = (v) => { hsSRaw = String(v).trim(); hsSQ = sbNorm(hsSRaw); buildSbSpecs(); };
 window.sbGroupOnly = (g) => {
   const all = [...document.querySelectorAll("#sb_grid .ghead")].map(e => e.dataset.g);
@@ -8728,7 +8883,7 @@ window.sbGroupView = () => { sortIdx = (sortIdx === "g" ? null : "g"); SBSEL.cle
 function buildGrid(){
   const tot=w.reduce((a,b)=>a+b,0)||1;
   beds.forEach((b,i)=>{ b.i=i; b.no=i+1; });
-  let scored=beds.map(b=>({...b, idx:b.s.reduce((a,v,i)=>a+v*w[i],0)/tot}));
+  let scored=beds.filter(b => !window.srfIsDel || !srfIsDel("string", b)).map(b=>({...b, idx:b.s.reduce((a,v,i)=>a+v*w[i],0)/tot}));
   if(SBSEL.size){ scored.sort((a,b)=> sbSelScore(b)-sbSelScore(a)); }
   else if(sortIdx==="g"){ scored.sort((a,b)=> SBORDER.indexOf(gkey(a))-SBORDER.indexOf(gkey(b)) || b.idx-a.idx); }
   else if(sortIdx===null){ sbRecSort(scored); }
@@ -8800,7 +8955,7 @@ function buildGrid(){
     const col=rowColor(b);
     h+=`<div role="cell" class="namecell" data-bi="${b.i}" style="display:flex;flex-direction:column;justify-content:center;padding:5px 4px;line-height:1.25;border-left:3px solid color-mix(in srgb, ${col} 55%, transparent);">
           <span style="font-weight:500;"><span style="color:var(--muted);font-weight:400;font-size:10px;">No. ${b.no}</span> ${cmpBox("string", b.i)}<span class="custname" role="button" tabindex="0" onclick="sbOpen(${b.i})" onkeydown="if(event.key==='Enter'){sbOpen(${b.i});}" onmouseenter="noteHoverIn(noteBed,${b.i},event)" onmouseleave="noteHoverOut()" title="claim this bed — hover for play notes" style="color:var(--bright);">${b.m}</span><button type="button" class="infobtn" aria-label="play notes" onclick="event.stopPropagation();noteBed(${b.i},event)">ⓘ</button><button type="button" class="custbtn feelbtn" aria-label="re-score this bed to your feel" onclick="event.stopPropagation();sbFOpen(${b.i})">${b.feel?"edit feel":"my feel"}</button>${b.feel?`<span class="custchip feelchip" title="your own read — the stock row is still on the bench">my feel</span>`:""}${(sbTop.indexOf(b.i)>=0)?`<span class="medal ${["mG","mS","mB"][sbTop.indexOf(b.i)]}" title="your #${sbTop.indexOf(b.i)+1} suggestion — same as your suggestions">${sbTop.indexOf(b.i)+1}</span>`:""}${b.i === sbBudgetI ? SB_EURO : ""}${window.buyBtn("string", String(b.m).split(" \u00b7 ")[0], true, "buy", true)}</span>
-          <span style="color:var(--muted);font-size:10px;">× ${b.x}${b.mt?` · ${b.mt}${b.ct?"/"+b.ct:""} kg`:""}</span>${tagChip(b)}${window.srfRecChip("string",b)}
+          <span style="color:var(--muted);font-size:10px;">× ${b.x}${b.mt?` · ${b.mt}${b.ct?"/"+b.ct:""} kg`:""}</span>${tagChip(b)}${window.srfDelBtn("string", b.i)}${window.srfRecChip("string",b)}
           ${b.note?`<span class="custchip" title="${String(b.note).replace(/"/g,'&quot;')}">noted</span>`:""}${b.twin?`<span class="custchip" style="color:var(--amber);background:color-mix(in srgb, var(--amber) 14%, transparent);" title="identical derived stats to ${String(b.twin).replace(/"/g,'&quot;')} \u2014 reopen transfer specs and add stiffness, shape or gauge to separate them">twin est.</span>`:""}</div>`;
     h+=`<div role="cell" class="spdcell" style="display:flex;align-items:center;justify-content:center;">${spiderIcon("string", b.i, b.s)}</div>`;
     const pr=bedPrice(b);
@@ -8862,7 +9017,9 @@ function buildGrid(){
   const sbGOn = !!(window.SB_GSEL && window.SB_GSEL.size);
   let sbPure = sbAllBeds.slice().sort((a,b) => b.idx - a.idx || String(a.m).localeCompare(String(b.m)));
   sbPure = sbGOn ? sbPure.filter(b => window.SB_GSEL.has(gkey(b))) : sbSplice(sbPure);
-  const sbDispFull = window.srfRecFirst("string", window.srfGrpFirst("string", sbPure));
+  const sbDispFull = window.srfRecFirst("string", window.srfGrpFirst("string", sbPure))
+    .filter(b => { const t = b.ghost ? (b.bed || b) : b;
+      return !window.srfIsDel || !srfIsDel("string", t); });
   let sbNote = "";
   /* the "top score is not your gold pick" note reads the PURE math order, never the
      shelf-pinned display order — and stays quiet while a shelf filter narrows the list */
@@ -9067,8 +9224,9 @@ function sbMobileCards(rows, total){
     return `<article class="mcard">
       <header>
         <div class="who">
-          <div class="nm">${cmpBox("string", b.i)}${n+1}. ${esc(b.m)}${window.buyBtn("string", String(b.m).split(" \u00b7 ")[0], true)}${b.twin?`<span class="custchip" style="color:var(--amber);background:color-mix(in srgb, var(--amber) 14%, transparent);" title="identical derived stats to ${String(b.twin).replace(/"/g,'&quot;')}">twin est.</span>`:""}<button type="button" class="infobtn" aria-label="play notes" onclick="noteBed(${b.i},event)">ⓘ</button><button type="button" class="custbtn feelbtn" aria-label="re-score this bed to your feel" onclick="event.stopPropagation();sbFOpen(${b.i})">${b.feel?"edit feel":"my feel"}</button>${spiderIcon("string", b.i, b.s)}</div>
+          <div class="nm">${cmpBox("string", b.i)}${n+1}. ${esc(b.m)}${window.buyBtn("string", String(b.m).split(" \u00b7 ")[0], true)}${b.twin?`<span class="custchip" style="color:var(--amber);background:color-mix(in srgb, var(--amber) 14%, transparent);" title="identical derived stats to ${String(b.twin).replace(/"/g,'&quot;')}">twin est.</span>`:""}<button type="button" class="infobtn" aria-label="play notes" onclick="noteBed(${b.i},event)">ⓘ</button><button type="button" class="custbtn feelbtn" aria-label="re-score this bed to your feel" onclick="event.stopPropagation();sbFOpen(${b.i})">${b.feel?"edit feel":"my feel"}</button>${spiderIcon("string", b.i, b.s)}${window.srfDelBtn("string", b.i)}</div>
           <div class="sp">\u00d7 ${esc(b.x)}${b.mt?` \u00b7 ${b.mt}${b.ct?"/"+b.ct:""} kg`:""}</div>
+          ${tagChip(b)}
         </div>
         <div class="pr">
           ${pr?`<span class="prv">${pr.own?"":"~"}${pr.v}\u20ac</span>`:`<span class="prv" style="opacity:.4;">\u2014</span>`}
@@ -10564,6 +10722,7 @@ document.addEventListener("DOMContentLoaded", () => {
 /* the advisor is a recommendation surface, not the workshop floor, so it applies the
    same level ceiling, style floor and arm gate easy mode uses */
 function srfGatePool(kind, items){
+  items = items.filter(x => !window.srfIsDel || !srfIsDel(kind, x));   // deleted rows leave every pool
   const armAsk = INTRO.arm === "yes";
   if (!INTRO.level && !armAsk) return { pool: items, gated: false };
   let pool = items;
@@ -11446,7 +11605,7 @@ function midXid(kind, obj, tech){
 }
 /* the two mid lists expand independently; midPaint(true) skips the slider rebuild
    so expanding a list never resets a weight the user just dragged */
-window.midLimR = (v) => { window.SRFLIM.midR = v; midPaint(true); };
+window.midLimR = (v) => { window.SRFLIM.midR = v; midPaint(true); if (window.srfLimSnap) srfLimSnap("mid_fr"); };
 window.midLimS = (v) => { window.SRFLIM.midS = v; midPaint(true); };
 window.midW  = (i, v, el) => { const p = document.getElementById("sl" + i);    if (p) p.value = v; if (window.W)   W(i, v);   const b = document.getElementById("mid_rv" + i); if (b) b.textContent = v; if (el) midFill(el); midPaint(true); };
 window.midWS = (i, v, el) => { const p = document.getElementById("sb_sl" + i); if (p) p.value = v; if (window.sbW) sbW(i, v); const b = document.getElementById("mid_sv" + i); if (b) b.textContent = v; if (el) midFill(el); midPaint(true); };
