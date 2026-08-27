@@ -2050,7 +2050,7 @@
 <button type="button" id="gearbtn" aria-label="settings — theme, export, import" aria-haspopup="true"
         aria-expanded="false" onclick="srfGearToggle(event)">⚙</button>
 <div id="gearpop" hidden>
-  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-08-27 · b86.2</span></div>
+  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-08-27.2 · b86.2</span></div>
   <span class="toolbit" id="themeCtl">theme
     <span class="themepick" id="themePick">
       <button type="button" class="thememain" id="themeBtn" aria-expanded="false" aria-controls="themeList"
@@ -7538,7 +7538,11 @@ function reapplyCust(r, c){
 function applyMap(map){
   rk.forEach(r=>{
     const m = map ? map[r.no] : null;
-    if(map){ r.g = m ? m.g : "bench"; r.o = (m && m.o) ? [m.o,"var(--magenta-fg,var(--magenta))"] : null; r.pt = !!(m && m.pt); }
+    if(map && (r.custOf || r.feelOf)){
+      const bm = map[r.custOf || r.feelOf];
+      if (bm){ r.g = bm.g; }                       // derived rows follow their stock frame's shelf
+    }
+    else if(map){ r.g = m ? m.g : "bench"; r.o = (m && m.o) ? [m.o,"var(--magenta-fg,var(--magenta))"] : null; r.pt = !!(m && m.pt); }
     if(map && m && m.cust && !r.cust && !r.custOf && !rk.find(x => x.custOf === r.no)){
       const row = mkCustRow(r); reapplyCust(row, m.cust); custStore2(r.no, m.cust);   // imported mods land on a copy too
     }
@@ -9831,22 +9835,44 @@ window.SRF.strings = () => NERD.map(r=>({ name:r[0], brand:r[1], label:r[1]+" "+
   async function saveLayout(email, map){ await writeKey(layoutKey(email), map); }
   const sbKey = e => "srf:sblayout:"+String(e||"").toLowerCase();
   async function enterStringBench(){
-    if(!profile){ if(window.SRF.sbApply) window.SRF.sbApply(null); $("sb_hint").style.display="none"; return; }
+    /* NOBODY loses work on a reload any more: visitors without a profile write to
+       an anonymous slot (email ""), and a first login inherits that slot */
+    if(!profile){
+      const anon = await readKey(sbKey(""));
+      if(anon){ window.SRF.sbApply(anon); } else { window.SRF.sbApply(null); }
+      $("sb_hint").style.display="none";
+      if(window.SRF.sbOnChange) window.SRF.sbOnChange(async m=>{
+        await writeKey(sbKey(profile ? profile.email : ""), m);
+        $("sb_hint").style.display="none";
+      });
+      return;
+    }
     let saved = await readKey(sbKey(profile.email));
+    if(!saved){ const anon = await readKey(sbKey(""));
+      if(anon){ saved = anon; await writeKey(sbKey(profile.email), anon); } }
     if(saved){ window.SRF.sbApply(saved); $("sb_hint").style.display="none"; }
     else { window.SRF.sbApply(new Array(60).fill({tag:"",mt:"",ct:"",note:"",paid:""})); $("sb_hint").style.display=""; }
     if(window.SRF.sbOnChange) window.SRF.sbOnChange(async m=>{
-      await writeKey(sbKey(profile.email), m);
+      await writeKey(sbKey(profile ? profile.email : ""), m);
       $("sb_hint").style.display="none";
     });
   }
   async function enterBench(){
     await enterStringBench();
-    if(!profile){ if(window.SRF.applyLayout) window.SRF.applyLayout(null); $("g_hint").style.display="none"; return; }
-    const saved=await loadLayout(profile.email);
+    if(!profile){
+      const anon = await loadLayout("");
+      if(anon){ window.SRF.applyLayout(anon); }
+      else if(window.SRF.applyLayout){ window.SRF.applyLayout(null); }   // first visit keeps the demo showcase
+      $("g_hint").style.display="none";
+      if(window.SRF.onLayout) window.SRF.onLayout(m=>{ saveLayout(profile ? profile.email : "", m); $("g_hint").style.display="none"; });
+      return;
+    }
+    let saved=await loadLayout(profile.email);
+    if(!saved){ const anon = await loadLayout("");
+      if(anon){ saved = anon; await saveLayout(profile.email, anon); } }   // first login adopts the anonymous work
     if(saved){ window.SRF.applyLayout(saved); $("g_hint").style.display="none"; }
     else { window.SRF.applyLayout({}); $("g_hint").style.display=""; }   // clean slate: everything sits in bench
-    if(window.SRF.onLayout) window.SRF.onLayout(m=>{ if(profile) saveLayout(profile.email,m); $("g_hint").style.display="none"; });
+    if(window.SRF.onLayout) window.SRF.onLayout(m=>{ saveLayout(profile ? profile.email : "", m); $("g_hint").style.display="none"; });
   }
   function clubQuery(p){
     if(!p || !p.club) return "";
