@@ -599,7 +599,7 @@
          cursor:pointer; padding:0 2px; }
   .in_x:hover{ opacity:1; }
   .in_row{ display:flex; align-items:center; gap:9px; flex-wrap:wrap; margin:5px 0; }
-  .in_lab{ width:74px; flex:none; font-size:11px; color:var(--muted); letter-spacing:.03em; }
+  .in_lab{ width:80px; flex:none; font-size:11px; color:var(--muted); letter-spacing:.03em; }
   .in_seg{ display:inline-flex; gap:4px; flex-wrap:wrap; }
   .ichip{ background:transparent; border:1px solid color-mix(in srgb, var(--fg) 25%, transparent);
           color:var(--soft); border-radius:999px; padding:3px 11px; font-family:inherit; font-size:11px;
@@ -670,6 +670,32 @@
   .cal_bar label{ display:flex; align-items:center; gap:7px; font-size:11px; color:var(--muted); }
   .cal_bar select{ background:var(--field); border:1px solid var(--cyan); color:var(--fg); border-radius:999px;
                    padding:4px 10px; font-family:inherit; font-size:11px; outline:none; cursor:pointer; max-width:340px; }
+  /* the calibrator's two finders. 155 frames and 235 beds are more than a <select>
+     can honestly serve, so each picker gets its own search: left hunts frames,
+     right hunts string beds, and they never touch each other's list. */
+  .cal_seeks{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px; }
+  .cal_seeks .searchbar{ margin:0; }
+  .calseek{ transition:border-color .15s ease; }
+  .calseek.act{ border-color:color-mix(in srgb, var(--cyan) 60%, transparent); }
+  .calseek input{ font-size:12px; }
+  .calseek .calx{ flex:none; background:transparent; border:none; color:var(--muted); cursor:pointer;
+                  font-family:inherit; font-size:15px; line-height:1; padding:3px 7px; border-radius:999px; }
+  .calseek .calx:hover{ color:var(--bright); background:color-mix(in srgb, var(--fg) 10%, transparent); }
+  .calseek input:placeholder-shown ~ .calx{ visibility:hidden; }
+  .calseek .calcount{ flex:none; font-size:10.5px; color:var(--muted); white-space:nowrap; padding-right:6px; }
+  .calseek .calcount.nohit{ color:var(--signal); }
+  .cal_seekhint{ font-size:11px; color:var(--muted); margin:-4px 2px 12px; line-height:1.5; }
+  @media (max-width:860px){
+    .cal_seeks{ grid-template-columns:1fr; gap:8px; }
+    /* the amber bench bars wrap on a phone to make room for their SEARCH button;
+       these two have no button, so they stay one compact line instead. Two class
+       names on purpose: the phone rule for .searchbar is declared further down the
+       sheet, so an equally specific selector would lose to it. */
+    .searchbar.calseek{ flex-wrap:nowrap; padding:3px 6px 3px 12px; }
+    .searchbar.calseek input{ flex:1 1 auto; min-width:0; padding:7px 2px 7px 24px; }
+    .searchbar.calseek .mag{ top:50%; }
+    .searchbar.calseek .calcount{ font-size:10px; padding-right:2px; }
+  }
   .cal_char{ display:flex; gap:7px; flex-wrap:wrap; align-items:center; margin-bottom:14px; font-size:11px; }
   .cal_chip{ background:color-mix(in srgb, var(--cyan) 10%, transparent); border:1px solid color-mix(in srgb, var(--cyan) 30%, transparent);
              color:var(--soft); border-radius:999px; padding:3px 11px; }
@@ -2050,7 +2076,7 @@
 <button type="button" id="gearbtn" aria-label="settings — theme, export, import" aria-haspopup="true"
         aria-expanded="false" onclick="srfGearToggle(event)">⚙</button>
 <div id="gearpop" hidden>
-  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-08-27.3 · b86.2</span></div>
+  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-08-27.6 · b86.2</span></div>
   <span class="toolbit" id="themeCtl">theme
     <span class="themepick" id="themePick">
       <button type="button" class="thememain" id="themeBtn" aria-expanded="false" aria-controls="themeList"
@@ -2098,10 +2124,11 @@
           <button type="button" class="ichip" data-q="level" data-v="advanced">advanced</button>
           <button type="button" class="ichip" data-q="level" data-v="pro">pro</button></span></div>
         <div class="in_row"><span class="in_lab">swing</span>
-          <span class="in_seg"><button type="button" class="ichip" data-q="swing" data-v="compact">compact</button>
+          <span class="in_seg" role="group" aria-label="swing length"><button type="button" class="ichip" data-q="swing" data-v="compact">compact</button>
           <button type="button" class="ichip" data-q="swing" data-v="medium">medium</button>
-          <button type="button" class="ichip" data-q="swing" data-v="full">full &amp; fast</button></span>
-          <span class="in_seg"><button type="button" class="ichip" data-q="shape" data-v="flat">flat hitter</button>
+          <button type="button" class="ichip" data-q="swing" data-v="full">full &amp; fast</button></span></div>
+        <div class="in_row"><span class="in_lab">swingstyle</span>
+          <span class="in_seg" role="group" aria-label="swing style"><button type="button" class="ichip" data-q="shape" data-v="flat">flat hitter</button>
           <button type="button" class="ichip" data-q="shape" data-v="topspin">topspin-heavy</button>
           <button type="button" class="ichip" data-q="shape" data-v="allround">all-round</button></span></div>
         <div class="in_row"><span class="in_lab">I play</span>
@@ -2120,7 +2147,7 @@
       <div class="in_row in_act">
         <button type="button" class="go2 cta" onclick="ldGo()">find my gear</button>
         <span class="in_note" id="ld_note"></span>
-        <span style="font-size:10px;color:var(--muted);">four taps &mdash; your answers follow you into every mode</span>
+        <span style="font-size:10px;color:var(--muted);">a few taps &mdash; your answers follow you into every mode</span>
       </div>
     </div>
     <div class="ld_or">or choose your depth yourself:</div>
@@ -2198,10 +2225,11 @@
         <button type="button" class="ichip" data-q="level" data-v="advanced">advanced</button>
         <button type="button" class="ichip" data-q="level" data-v="pro">pro</button></span></div>
       <div class="in_row"><span class="in_lab">swing</span>
-        <span class="in_seg"><button type="button" class="ichip" data-q="swing" data-v="compact">compact</button>
+        <span class="in_seg" role="group" aria-label="swing length"><button type="button" class="ichip" data-q="swing" data-v="compact">compact</button>
         <button type="button" class="ichip" data-q="swing" data-v="medium">medium</button>
-        <button type="button" class="ichip" data-q="swing" data-v="full">full &amp; fast</button></span>
-        <span class="in_seg"><button type="button" class="ichip" data-q="shape" data-v="flat">flat hitter</button>
+        <button type="button" class="ichip" data-q="swing" data-v="full">full &amp; fast</button></span></div>
+      <div class="in_row"><span class="in_lab">swingstyle</span>
+        <span class="in_seg" role="group" aria-label="swing style"><button type="button" class="ichip" data-q="shape" data-v="flat">flat hitter</button>
         <button type="button" class="ichip" data-q="shape" data-v="topspin">topspin-heavy</button>
         <button type="button" class="ichip" data-q="shape" data-v="allround">all-round</button></span></div>
       <div class="in_row"><span class="in_lab">I play</span>
@@ -2248,7 +2276,7 @@
     <div class="mpi_body">Intermediate keeps this page's simplicity but hands you the dials:
       drag <b>what actually matters to you</b> &mdash; control over power, comfort over spin &mdash; and
       every frame, every stringbed and every matched setup re-ranks <b>live</b> as you drag.
-      Same engine, same answers, nothing to re-enter: your four taps come with you and just
+      Same engine, same answers, nothing to re-enter: your answers come with you and just
       become the starting position instead of the whole story.</div>
     <div class="mpi_row">
       <button type="button" class="bigcta" style="--cta:var(--amber);--cta-fg:var(--amber-fg,var(--amber));" onclick="setMode('mid')">continue to intermediate <span class="ctaArrow" aria-hidden="true">&rarr;</span></button>
@@ -2289,10 +2317,11 @@
         <button type="button" class="ichip" data-q="level" data-v="advanced">advanced</button>
         <button type="button" class="ichip" data-q="level" data-v="pro">pro</button></span></div>
       <div class="in_row"><span class="in_lab">swing</span>
-        <span class="in_seg"><button type="button" class="ichip" data-q="swing" data-v="compact">compact</button>
+        <span class="in_seg" role="group" aria-label="swing length"><button type="button" class="ichip" data-q="swing" data-v="compact">compact</button>
         <button type="button" class="ichip" data-q="swing" data-v="medium">medium</button>
-        <button type="button" class="ichip" data-q="swing" data-v="full">full &amp; fast</button></span>
-        <span class="in_seg"><button type="button" class="ichip" data-q="shape" data-v="flat">flat hitter</button>
+        <button type="button" class="ichip" data-q="swing" data-v="full">full &amp; fast</button></span></div>
+      <div class="in_row"><span class="in_lab">swingstyle</span>
+        <span class="in_seg" role="group" aria-label="swing style"><button type="button" class="ichip" data-q="shape" data-v="flat">flat hitter</button>
         <button type="button" class="ichip" data-q="shape" data-v="topspin">topspin-heavy</button>
         <button type="button" class="ichip" data-q="shape" data-v="allround">all-round</button></span></div>
       <div class="in_row"><span class="in_lab">I play</span>
@@ -2485,7 +2514,7 @@
 <div class="introcard" id="introCard">
   <div class="in_head">
     <span class="in_title">welcome — who's playing?</span>
-    <span class="in_sub">four taps · tunes the sliders on both benches, filters recommendations to your level, and flags what's outside your band</span>
+    <span class="in_sub">a few taps · tunes the sliders on both benches, filters recommendations to your level, and flags what's outside your band</span>
     <button type="button" class="in_x" aria-label="hide intro" onclick="introHide()">×</button>
   </div>
   <div class="in_rows" id="in_rows">
@@ -2501,8 +2530,9 @@
         <button type="button" class="ichip" data-q="swing" data-v="compact">compact</button>
         <button type="button" class="ichip" data-q="swing" data-v="medium">medium</button>
         <button type="button" class="ichip" data-q="swing" data-v="full">full &amp; fast</button>
-      </span>
-      <span class="in_seg" role="group" aria-label="shot shape">
+      </span></div>
+    <div class="in_row"><span class="in_lab">swingstyle</span>
+      <span class="in_seg" role="group" aria-label="swing style">
         <button type="button" class="ichip" data-q="shape" data-v="flat">flat hitter</button>
         <button type="button" class="ichip" data-q="shape" data-v="topspin">topspin-heavy</button>
         <button type="button" class="ichip" data-q="shape" data-v="allround">all-round</button>
@@ -2995,6 +3025,17 @@
 <div style="font-size:11px;color:var(--muted);letter-spacing:0.04em;margin-bottom:4px;">matchup department</div>
 <div class="deptsub">Which string belongs in which frame. Scored from the physics of the pairing &mdash; stiffness compounding, snapback spin, power budget, pattern wear &mdash; using each frame's filed specs and each bed's lab data. Your preference sliders don't touch this table: this is what the <em>equipment</em> asks for, not what you like.</div>
 <div style="background:var(--card);border-radius:12px;padding:1.25rem;color:var(--fg);">
+  <div class="cal_seeks">
+    <div class="searchbar calseek act" id="calSeekF_bar"><svg class="mag" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg><input id="calSeekF" type="text" autocomplete="off" spellcheck="false"
+        placeholder="Search a frame &mdash; then read its best strings&hellip;" aria-label="search a frame in the calibrator"
+        oninput="calSeek('frame')"
+        onkeydown="if(event.key==='Enter'){event.preventDefault();calSeek('frame',1);}if(event.key==='Escape'){event.preventDefault();calSeekClear('frame');}"><span class="calcount" id="calSeekF_n" aria-live="polite"></span><button type="button" class="calx" aria-label="clear the frame search" title="clear" onclick="calSeekClear('frame')">&times;</button></div>
+    <div class="searchbar calseek" id="calSeekS_bar"><svg class="mag" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg><input id="calSeekS" type="text" autocomplete="off" spellcheck="false"
+        placeholder="Search a string &mdash; then read its best frames&hellip;" aria-label="search a string bed in the calibrator"
+        oninput="calSeek('string')"
+        onkeydown="if(event.key==='Enter'){event.preventDefault();calSeek('string',1);}if(event.key==='Escape'){event.preventDefault();calSeekClear('string');}"><span class="calcount" id="calSeekS_n" aria-live="polite"></span><button type="button" class="calx" aria-label="clear the string search" title="clear" onclick="calSeekClear('string')">&times;</button></div>
+  </div>
+  <div class="cal_seekhint">Two separate finders: the left one hunts <b>frames</b>, the right one hunts <b>string beds</b>, and each only narrows its own picker below. Typing also turns the calibrator around &mdash; search a frame and it lists the strings for it, search a string and it lists the frames for it.</div>
   <div class="cal_bar">
     <span class="modeseg" role="group" aria-label="calibrator direction">
       <button type="button" class="modebtn" id="cal_dirF" aria-pressed="true" onclick="calDir('frame')">frame &#8594; strings</button>
@@ -5746,7 +5787,7 @@ function buildGrid(){
         `<button type="button" class="gonly" onclick="event.stopPropagation();rkGroupOnly('${r.g}')" aria-label="show only ${G[r.g][1]}">${solo?"all groups":"only"}</button></div>`;
     }
     if (sortIdx==="g" && !SEL.size && !filtering && RK_GCOLL.has(r.g)) return;   // folded: header stands, rows wait
-    h += `<div role="cell" class="namecell" data-no="${r.no}" style="color:${G[r.g][0]};display:flex;flex-direction:column;justify-content:center;padding:3px 4px 3px 7px;line-height:1.25;border-left:3px ${gStyle(r.g)} color-mix(in srgb, ${G[r.g][0]} 62%, transparent);"><span style="font-weight:500;"><span class="draghandle" draggable="true" data-drag="${r.no}" title="drag to reorder — your order is shared with hard specs and sticks until reset order">⋮⋮</span><span style="color:var(--muted);font-weight:400;">No. ${r.no}</span> ${cmpBox("racket", r.no)}<span class="custname" role="button" tabindex="0" onclick="cOpen(${r.no})" onkeydown="if(event.key==='Enter'){cOpen(${r.no});}" onmouseenter="noteHoverIn(noteFrame,${r.no},event)" onmouseleave="noteHoverOut()" title="customize this frame — hover for play notes">${r.b} ${r.n}</span><button type="button" class="infobtn" aria-label="play notes for ${r.b} ${r.n}" onclick="event.stopPropagation();noteFrame(${r.no},event)">ⓘ</button>${r.feel?`<button type="button" class="custbtn feelbtn" aria-label="edit how ${r.b} ${r.n} feels for you" onclick="event.stopPropagation();fOpen(${r.feelOf})">edit feel</button>`:`<button type="button" class="custbtn" aria-label="customize ${r.b} ${r.n} — describe what you did to it" onclick="event.stopPropagation();cOpen(${r.no})">customize</button><button type="button" class="custbtn feelbtn" aria-label="re-score ${r.b} ${r.n} to your feel" onclick="event.stopPropagation();fOpen(${r.no})">my feel</button>`}${tag(r)}${window.srfRecChip("racket",r)}${r.cust?`<span class="custchip" title="${r.cust.text.replace(/"/g,'&quot;')}">customized</span>`:""}${r.feel?`<span class="custchip feelchip" title="your category read of the stock ${r.b} ${r.n} — the stock row is still on the bench">my feel</span>`:""}${window.buyBtn("racket",(r.b?r.b+" ":"")+String(r.n).replace(/ · my feel$/,""),true,"buy",true)}</span><span style="color:var(--muted);font-size:10px;font-weight:400;">${r.sp[0]} · ${r.sp[2]}${grpBtn(r)}${window.srfDelBtn("racket", r.no)}</span></div>`;
+    h += `<div role="cell" class="namecell" data-no="${r.no}" style="color:${G[r.g][0]};display:flex;flex-direction:column;justify-content:center;padding:3px 4px 3px 7px;line-height:1.25;border-left:3px ${gStyle(r.g)} color-mix(in srgb, ${G[r.g][0]} 62%, transparent);"><span style="font-weight:500;"><span class="draghandle" draggable="true" data-drag="${r.no}" title="drag to reorder — your order is shared with hard specs and sticks until reset order">⋮⋮</span>${cmpBox("racket", r.no)}<span class="custname" role="button" tabindex="0" onclick="cOpen(${r.no})" onkeydown="if(event.key==='Enter'){cOpen(${r.no});}" onmouseenter="noteHoverIn(noteFrame,${r.no},event)" onmouseleave="noteHoverOut()" title="customize this frame — hover for play notes">${r.b} ${r.n}</span><button type="button" class="infobtn" aria-label="play notes for ${r.b} ${r.n}" onclick="event.stopPropagation();noteFrame(${r.no},event)">ⓘ</button>${r.feel?`<button type="button" class="custbtn feelbtn" aria-label="edit how ${r.b} ${r.n} feels for you" onclick="event.stopPropagation();fOpen(${r.feelOf})">edit feel</button>`:`<button type="button" class="custbtn" aria-label="customize ${r.b} ${r.n} — describe what you did to it" onclick="event.stopPropagation();cOpen(${r.no})">customize</button><button type="button" class="custbtn feelbtn" aria-label="re-score ${r.b} ${r.n} to your feel" onclick="event.stopPropagation();fOpen(${r.no})">my feel</button>`}${tag(r)}${window.srfRecChip("racket",r)}${r.cust?`<span class="custchip" title="${r.cust.text.replace(/"/g,'&quot;')}">customized</span>`:""}${r.feel?`<span class="custchip feelchip" title="your category read of the stock ${r.b} ${r.n} — the stock row is still on the bench">my feel</span>`:""}${window.buyBtn("racket",(r.b?r.b+" ":"")+String(r.n).replace(/ · my feel$/,""),true,"buy",true)}</span><span style="color:var(--muted);font-size:10px;font-weight:400;">${r.sp[0]} · ${r.sp[2]}${grpBtn(r)}${window.srfDelBtn("racket", r.no)}</span></div>`;
     h += `<div role="cell" class="spdcell" style="display:flex;align-items:center;justify-content:center;">${spiderIcon("racket", r.no, r.s)}</div>`;
     h += priceCell(r.p, sortIdx==="p");
     h += `<div role="cell" class="curvecell" style="display:flex;align-items:center;justify-content:center;">${perfCurve(r.s,200,44)}</div>`;
@@ -7193,7 +7234,7 @@ function buildSpecs(){
   }
   rows = rows.slice(0, window.SRFLIM.hsR || 5);
   rows.forEach(r => {
-    sh += `<div class="hs_name" data-no="${r.no}" style="color:${G[r.g][0]};padding:3px 4px;font-weight:500;"><span class="draghandle" draggable="true" data-drag="${r.no}" title="drag to reorder — your order is shared with the heatmap and sticks until reset order">⋮⋮</span><span style="color:var(--muted);font-weight:400;">No. ${r.no}</span> ${r.b} ${r.n}${tag(r,10)}${grpBtn(r)}${window.srfDelBtn("racket", r.no)}` +
+    sh += `<div class="hs_name" data-no="${r.no}" style="color:${G[r.g][0]};padding:3px 4px;font-weight:500;"><span class="draghandle" draggable="true" data-drag="${r.no}" title="drag to reorder — your order is shared with the heatmap and sticks until reset order">⋮⋮</span>${r.b} ${r.n}${tag(r,10)}${grpBtn(r)}${window.srfDelBtn("racket", r.no)}` +
       (r.cust ? `<button type="button" class="infobtn custi" aria-label="what this customization did" ` +
         `title="what this customization did to the frame" onclick="custInfo(${r.no})">\u24d8</button>` : "") + `</div>` +
       r.sp.map((v,i)=>`<div style="color:${specSort===i?"var(--cyan)":"var(--fg)"};padding:3px 4px;">${v}</div>`).join("");
@@ -7383,13 +7424,13 @@ window.cSave = () => {
   window.srfRecDone("racket", r);
   r.o = (grp==="fr" && own) ? [own,"var(--magenta-fg,var(--magenta))"] : (grp==="own" ? r.o : null);
   r.pt = (grp==="tested") ? true : r.pt;
-  if(!text){                       // regrouping alone is a valid edit — no description needed
-    cClose(); buildGrid(); buildSpecs(); render();
-    onLayoutChange(window.SRF.layout());
+  if(!text && !wv && !sw && !bal){   // regrouping alone stays a valid edit — but a weight
+    cClose(); buildGrid(); buildSpecs(); render();   // typed WITHOUT a description used to be
+    onLayoutChange(window.SRF.layout());             // swallowed silently right here
     return;
   }
   if(wv && isNaN(parseFloat(wv))){ err.textContent="Weight should be a number, e.g. 329."; return; }
-  const cust={ text, weight:wv, sw, bal, date:new Date().toISOString().slice(0,10) };
+  const cust={ text: text || "custom setup", weight:wv, sw, bal, date:new Date().toISOString().slice(0,10) };
   /* the stock frame NEVER leaves the bench: mods land on a separate "· custom" row
      (the my-feel pattern), so before and after sit side by side in every list */
   const target = r.custOf ? r : (rk.find(x => x.custOf === r.no) || mkCustRow(r));
@@ -8064,7 +8105,7 @@ function buildSbSpecs(){
   rows = rows.slice(0, window.SRFLIM.hsS || 5);
   rows.forEach(b=>{
     const [mat,st]=bedMat(b), pr=bedPrice(b);
-    h+=`<div style="color:${rowColor(b)};padding:4px 5px;font-weight:500;"><span style="color:var(--muted);font-weight:400;">No. ${b.no}</span> ${b.m}${window.srfDelBtn("string", b.i)}</div>`+
+    h+=`<div style="color:${rowColor(b)};padding:4px 5px;font-weight:500;">${b.m}${window.srfDelBtn("string", b.i)}</div>`+
        `<div style="color:${b.mt?"var(--fg)":"var(--muted)"};padding:4px 5px;">${b.mt?b.mt+" kg":"—"}</div>`+
        `<div style="color:var(--soft);padding:4px 5px;">× ${b.x}</div>`+
        `<div style="color:${b.ct?"var(--fg)":"var(--muted)"};padding:4px 5px;">${b.ct?b.ct+" kg":(/full bed/i.test(b.x)&&b.mt?b.mt+" kg":"—")}</div>`+
@@ -8964,7 +9005,7 @@ function buildGrid(){
     if(sortIdx==="g" && !SBSEL.size && SB_GCOLL.has(gkey(b))) return;
     const col=rowColor(b);
     h+=`<div role="cell" class="namecell" data-bi="${b.i}" style="display:flex;flex-direction:column;justify-content:center;padding:5px 4px;line-height:1.25;border-left:3px solid color-mix(in srgb, ${col} 55%, transparent);">
-          <span style="font-weight:500;"><span style="color:var(--muted);font-weight:400;font-size:10px;">No. ${b.no}</span> ${cmpBox("string", b.i)}<span class="custname" role="button" tabindex="0" onclick="sbOpen(${b.i})" onkeydown="if(event.key==='Enter'){sbOpen(${b.i});}" onmouseenter="noteHoverIn(noteBed,${b.i},event)" onmouseleave="noteHoverOut()" title="claim this bed — hover for play notes" style="color:var(--bright);">${b.m}</span><button type="button" class="infobtn" aria-label="play notes" onclick="event.stopPropagation();noteBed(${b.i},event)">ⓘ</button><button type="button" class="custbtn feelbtn" aria-label="re-score this bed to your feel" onclick="event.stopPropagation();sbFOpen(${b.i})">${b.feel?"edit feel":"my feel"}</button>${b.feel?`<span class="custchip feelchip" title="your own read — the stock row is still on the bench">my feel</span>`:""}${(sbTop.indexOf(b.i)>=0)?`<span class="medal ${["mG","mS","mB"][sbTop.indexOf(b.i)]}" title="your #${sbTop.indexOf(b.i)+1} suggestion — same as your suggestions">${sbTop.indexOf(b.i)+1}</span>`:""}${b.i === sbBudgetI ? SB_EURO : ""}${window.buyBtn("string", String(b.m).split(" \u00b7 ")[0], true, "buy", true)}</span>
+          <span style="font-weight:500;">${cmpBox("string", b.i)}<span class="custname" role="button" tabindex="0" onclick="sbOpen(${b.i})" onkeydown="if(event.key==='Enter'){sbOpen(${b.i});}" onmouseenter="noteHoverIn(noteBed,${b.i},event)" onmouseleave="noteHoverOut()" title="claim this bed — hover for play notes" style="color:var(--bright);">${b.m}</span><button type="button" class="infobtn" aria-label="play notes" onclick="event.stopPropagation();noteBed(${b.i},event)">ⓘ</button><button type="button" class="custbtn feelbtn" aria-label="re-score this bed to your feel" onclick="event.stopPropagation();sbFOpen(${b.i})">${b.feel?"edit feel":"my feel"}</button>${b.feel?`<span class="custchip feelchip" title="your own read — the stock row is still on the bench">my feel</span>`:""}${(sbTop.indexOf(b.i)>=0)?`<span class="medal ${["mG","mS","mB"][sbTop.indexOf(b.i)]}" title="your #${sbTop.indexOf(b.i)+1} suggestion — same as your suggestions">${sbTop.indexOf(b.i)+1}</span>`:""}${b.i === sbBudgetI ? SB_EURO : ""}${window.buyBtn("string", String(b.m).split(" \u00b7 ")[0], true, "buy", true)}</span>
           <span style="color:var(--muted);font-size:10px;">× ${b.x}${b.mt?` · ${b.mt}${b.ct?"/"+b.ct:""} kg`:""}</span>${tagChip(b)}${window.srfDelBtn("string", b.i)}${window.srfRecChip("string",b)}
           ${b.note?`<span class="custchip" title="${String(b.note).replace(/"/g,'&quot;')}">noted</span>`:""}${b.twin?`<span class="custchip" style="color:var(--amber);background:color-mix(in srgb, var(--amber) 14%, transparent);" title="identical derived stats to ${String(b.twin).replace(/"/g,'&quot;')} \u2014 reopen transfer specs and add stiffness, shape or gauge to separate them">twin est.</span>`:""}</div>`;
     h+=`<div role="cell" class="spdcell" style="display:flex;align-items:center;justify-content:center;">${spiderIcon("string", b.i, b.s)}</div>`;
@@ -10873,21 +10914,73 @@ window.calDir = (d) => {
   document.getElementById("cal_pickS_l").style.display = CAL_DIR==="string" ? "" : "none";
   calRun();
 };
-function calFill(){
+/* ---- the calibrator's two finders -------------------------------------------------
+   A <select> over 155 frames or 235 beds is a scroll, not a search. Each picker now
+   has its own text field and the two never interfere: CAL_SEEK.frame narrows the
+   frame list only, CAL_SEEK.string the bed list only. Matching is word-wise over
+   brand + model (and, for beds, the cross string), so "pure aero" finds the Babolat
+   and "alu rough" finds the Luxilon without punctuation or order mattering.
+   A search that matches nothing does NOT empty its picker — the previous list stays
+   usable and the counter says "no match" instead. */
+const CAL_SEEK = { frame: "", string: "" };
+const calSeekNorm = t => String(t == null ? "" : t).toLowerCase().replace(/[^a-z0-9.]+/g, " ").trim();
+const calSeekHit = (hay, q) => {
+  const H = calSeekNorm(hay);
+  return calSeekNorm(q).split(" ").filter(Boolean).every(w => H.indexOf(w) >= 0);
+};
+function calFill(force){
   const pf = document.getElementById("cal_pickF"), ps = document.getElementById("cal_pickS");
   if (!pf || !ps || !(window.SRF && SRF.frameFull && SRF.bedFull)) return;
   const fs = advFrames(), beds = calBeds();
-  if (pf.dataset.n != fs.length){
+  const qf = CAL_SEEK.frame, qs = CAL_SEEK.string;
+  const fHit = qf ? fs.filter(f => calSeekHit(f.b + " " + f.n, qf)) : fs;
+  const bHit = qs ? beds.filter(({bed}) => calSeekHit(bed.m + " " + bed.x, qs)) : beds;
+  const fUse = fHit.length ? fHit : fs;      // never leave a picker with nothing in it
+  const bUse = bHit.length ? bHit : beds;
+  const sigF = fs.length + "|" + fUse.length + "|" + (fHit.length ? qf : "");
+  const sigS = beds.length + "|" + bUse.length + "|" + (bHit.length ? qs : "");
+  if (force || pf.dataset.sig !== sigF){
     const keep = pf.value;
-    pf.innerHTML = fs.map(f => `<option value="${f.no}">No. ${f.no} — ${advEsc(f.b+" "+f.n)}</option>`).join("");
-    pf.dataset.n = fs.length; if (keep && [...pf.options].some(o=>o.value===keep)) pf.value = keep;
+    pf.innerHTML = fUse.map(f => `<option value="${f.no}">No. ${f.no} — ${advEsc(f.b+" "+f.n)}</option>`).join("");
+    pf.dataset.sig = sigF; pf.dataset.n = fs.length;
+    if (keep && [...pf.options].some(o=>o.value===keep)) pf.value = keep;   // else: first hit
   }
-  if (ps.dataset.n != beds.length){
+  if (force || ps.dataset.sig !== sigS){
     const keep = ps.value;
-    ps.innerHTML = beds.map(({bed}) => `<option value="${bed.i}">No. ${bed.i+1} — ${advEsc(bed.m)}${/full bed/i.test(bed.x)?"":" \u00d7 "+advEsc(bed.x)}</option>`).join("");
-    ps.dataset.n = beds.length; if (keep && [...ps.options].some(o=>o.value===keep)) ps.value = keep;
+    ps.innerHTML = bUse.map(({bed}) => `<option value="${bed.i}">No. ${bed.i+1} — ${advEsc(bed.m)}${/full bed/i.test(bed.x)?"":" \u00d7 "+advEsc(bed.x)}</option>`).join("");
+    ps.dataset.sig = sigS; ps.dataset.n = beds.length;
+    if (keep && [...ps.options].some(o=>o.value===keep)) ps.value = keep;
   }
+  const say = (id, q, n, word) => {
+    const el = document.getElementById(id); if (!el) return;
+    el.textContent = !q ? "" : (n ? n + " " + word + (n === 1 ? "" : "s") : "no match");
+    el.classList.toggle("nohit", !!q && !n);
+  };
+  say("calSeekF_n", qf, fHit.length, "frame");
+  say("calSeekS_n", qs, bHit.length, "bed");
 }
+/* typing in a finder also turns the calibrator around: hunting a frame is asking
+   what belongs IN it, hunting a bed is asking what it belongs in. */
+window.calSeek = (kind, go) => {
+  const k = kind === "string" ? "string" : "frame";
+  const inp = document.getElementById(k === "frame" ? "calSeekF" : "calSeekS");
+  if (!inp) return;
+  CAL_SEEK[k] = inp.value.trim();
+  calFill(true);
+  if (CAL_SEEK[k] && CAL_DIR !== k) calDir(k); else calRun();
+  if (go){
+    const pods = document.getElementById("cal_pods");
+    if (pods) pods.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+};
+window.calSeekClear = (kind) => {
+  const k = kind === "string" ? "string" : "frame";
+  const inp = document.getElementById(k === "frame" ? "calSeekF" : "calSeekS");
+  if (inp) inp.value = "";
+  CAL_SEEK[k] = "";
+  calFill(true); calRun();
+  if (inp) inp.focus();
+};
 let CAL_LAST = null, CAL_OPEN = null;
 window.calReview = (ci) => {
   const rv = document.getElementById("cal_review");
@@ -11006,6 +11099,10 @@ function calReviewHTML(f, bed, tech, r){
 }
 window.calRun = () => {
   calFill();
+  // the cyan ring says which finder is currently driving the table below
+  const bf = document.getElementById("calSeekF_bar"), bs = document.getElementById("calSeekS_bar");
+  if (bf) bf.classList.toggle("act", CAL_DIR === "frame");
+  if (bs) bs.classList.toggle("act", CAL_DIR === "string");
   const chr = document.getElementById("cal_char"), pods = document.getElementById("cal_pods"), full = document.getElementById("cal_full");
   if (!chr || !pods || !full) return;
   const rv = document.getElementById("cal_review");
