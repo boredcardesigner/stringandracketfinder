@@ -427,20 +427,21 @@
      reaches the row. Pointer devices only: on a touch screen there is no hover, so
      phones and tablets keep every control at full strength. */
   @media (hover:hover) and (pointer:fine){
-    .namecell .draghandle, .namecell .infobtn, .namecell .custbtn,
-    .namecell .grpchip, .namecell .delbtn, .namecell .cmpbox,
-    .mcard .draghandle, .mcard .infobtn{
-      opacity:.42; transition:opacity .16s ease;
+    /* Only the two housekeeping affordances recede — the drag handle and the compare
+       box. The shelf chip does NOT: an earlier pass faded it to 42% and that hid the
+       exact control this layout exists to make findable. */
+    .namecell .draghandle, .namecell .cmpbox, .mcard .draghandle{
+      opacity:.45; transition:opacity .16s ease;
     }
-    .namecell:hover .draghandle, .namecell:hover .infobtn, .namecell:hover .custbtn,
-    .namecell:hover .grpchip, .namecell:hover .delbtn, .namecell:hover .cmpbox,
-    .namecell:focus-within .draghandle, .namecell:focus-within .infobtn,
-    .namecell:focus-within .custbtn, .namecell:focus-within .grpchip,
-    .namecell:focus-within .delbtn, .namecell:focus-within .cmpbox,
-    .mcard:hover .draghandle, .mcard:hover .infobtn{ opacity:1; }
-    /* a chip that already carries a shelf name is information, not an affordance */
-    .namecell .grpchip.filed{ opacity:.8; }
+    .namecell:hover .draghandle, .namecell:hover .cmpbox,
+    .namecell:focus-within .draghandle, .namecell:focus-within .cmpbox,
+    .mcard:hover .draghandle{ opacity:1; }
   }
+  /* the shelf chip is a primary control now: real size, real contrast, real label */
+  .grpchip{ padding:3px 9px !important; }
+  .grpchip.unfiled{ border:1px dashed color-mix(in srgb, var(--fg) 36%, transparent) !important;
+                    background:transparent !important; color:var(--muted) !important; }
+  .grpchip.unfiled:hover{ border-color:var(--cyan) !important; color:var(--cyan) !important; }
   .deptrule{margin:34px 0 18px;border:none;border-top:1px solid color-mix(in srgb, var(--fg) 20%, transparent);}
   /* a section marker, demoted to an eyebrow — it was the largest element in the whole
      view, above every name and every score */
@@ -1212,6 +1213,9 @@
              letter-spacing:-.005em; }
   .ez_pspec{ font-size:10.5px; color:var(--muted); margin-bottom:8px; }
   .ez_pwhy{ font-size:11px; line-height:1.55; color:var(--soft); flex:1; margin-bottom:10px; }
+  .ez_armwhy{ display:block; margin-top:7px; padding-left:9px; font-size:10.5px; line-height:1.55;
+              border-left:2px solid color-mix(in srgb, var(--cyan) 55%, transparent); color:var(--muted); }
+  .ez_armwhy b{ color:var(--soft); }
   .ez_pbuy{ display:flex; gap:6px; flex-wrap:wrap; }
   .ez_pbuy .hybtn{ font-size:10.5px; padding:3px 10px; }
   .ez_pair{ background:var(--panel); border:1px solid color-mix(in srgb, var(--gold) 45%, transparent);
@@ -1666,6 +1670,34 @@
   .grppop_i.on{ color:var(--cyan); }
   .grppop_i i{ width:9px; height:9px; border-radius:50%; flex:0 0 auto; }
   .grppop_new{ display:flex; gap:5px; padding:6px 6px 3px; border-top:1px solid color-mix(in srgb, var(--fg) 10%, transparent); margin-top:4px; }
+  /* ---- the row's overflow menu ------------------------------------------------
+     Same shell as the shelf picker, so a row has exactly two menus and both look
+     and behave identically. */
+  .rowmenu_sep{ border-top:1px solid color-mix(in srgb, var(--fg) 10%, transparent); margin:4px 6px; }
+  .rowmenu_del{ color:var(--signal) !important; }
+  .rowmenu_del.armed{ background:#B3282D !important; color:#fff !important; font-weight:600; }
+  .rowmenu_k{ margin-left:auto; font-size:10px; color:var(--muted); letter-spacing:.04em; }
+  /* the ⋯ button: one predictable place on every row for everything that is not
+     "file it" or "buy it" */
+  .rowmore{ background:transparent; border:1px solid color-mix(in srgb, var(--fg) 22%, transparent);
+            color:var(--muted); border-radius:4px; font-family:inherit; font-size:12px; line-height:1.15;
+            padding:1px 7px; margin-left:6px; cursor:pointer; letter-spacing:.08em;
+            transition:color .15s ease, border-color .15s ease; }
+  .rowmore:hover, .rowmore:focus-visible{ color:var(--bright); border-color:var(--cyan); outline:none; }
+  .rw_bot{ display:flex; align-items:center; gap:2px; flex-wrap:wrap; }
+  .rw_meta{ color:var(--muted); font-size:10px; font-weight:400; }
+  @media (pointer:coarse){ .rowmore{ min-height:30px; padding:4px 11px; } }
+  /* a market row has no bench row behind it, so most of the menu would be dead.
+     Rather than showing four items and disabling three, the menu says why. */
+  .rowmenu_note{ font-size:10.5px; color:var(--muted); line-height:1.35;
+                 padding:2px 10px 6px; max-width:230px; }
+  /* find mode could delete but never undo — the benches had "restore all", the
+     cards did not. Same button, same handler, same wording. */
+  .midtrash{ background:transparent; color:var(--muted); font-family:inherit;
+             font-size:10px; letter-spacing:.06em; border:1px solid color-mix(in srgb, var(--fg) 18%, transparent);
+             border-radius:7px; padding:2px 8px; margin-left:8px; cursor:pointer;
+             transition:color .15s ease, border-color .15s ease; }
+  .midtrash:hover, .midtrash:focus-visible{ color:var(--cyan); border-color:var(--cyan); outline:none; }
   .grppop_new input{ flex:1; min-width:0; background:var(--page); color:var(--fg); font:inherit;
                      font-size:12px; border:1px solid color-mix(in srgb, var(--fg) 20%, transparent);
                      border-radius:8px; padding:4px 7px; }
@@ -1736,16 +1768,47 @@
   #gearpop[hidden]{ display:none; }
   #gearpop .gear_h{ font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); }
   #gearpop .gear_row{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  /* four segments in a 420px popup: equal shares, so "sharp" is never the one that
+     falls off the end */
+  #wcSeg{ display:flex; }
+  #wcSeg .modebtn{ flex:1 1 0; min-width:0; text-align:center; padding-left:4px; padding-right:4px; }
   /* ---- QW10: sticky section navigation in the workshop ---- */
-  #pronav{ position:sticky; top:0; z-index:80; display:flex; gap:6px; overflow-x:auto;
-           padding:8px 46px 8px 2px; margin:0 0 6px;
-           background:color-mix(in srgb, var(--page) 86%, transparent);
-           backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); }
-  #pronav button{ flex:0 0 auto; background:none; border:1px solid color-mix(in srgb, var(--fg) 20%, transparent);
+  /* THE ACTION BAR. It used to be a row of jump links; the finder and the shelf menu
+     live in it now, so the three things you actually do — find something, file it,
+     jump to a department — are one click away from anywhere on the page instead of
+     1766px of scrolling down into a folded chapter. */
+  #pronav{ position:sticky; top:0; z-index:80; display:flex; align-items:center; gap:9px;
+           flex-wrap:wrap; padding:9px 46px 9px 2px; margin:0 0 8px;
+           background:color-mix(in srgb, var(--page) 92%, transparent);
+           backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); }
+  #pronav .pn_find{ flex:1 1 300px; min-width:230px; max-width:460px; margin:0; }
+  #pronav .pn_div{ flex:none; width:1px; height:24px;
+                   background:color-mix(in srgb, var(--fg) 20%, transparent); }
+  #pronav .pn_jump{ display:flex; gap:6px; flex:1 1 auto; overflow-x:auto; padding-bottom:1px; }
+  #pronav .pn_jump button{ flex:0 0 auto; background:none;
+           border:1px solid color-mix(in srgb, var(--fg) 20%, transparent);
            color:var(--soft); border-radius:999px; padding:6px 13px; font:inherit; font-size:11.5px;
            letter-spacing:.04em; cursor:pointer; white-space:nowrap; }
-  #pronav button:hover, #pronav button:focus-visible{ border-color:var(--cyan); color:var(--bright); outline:none; }
-  @media (pointer:coarse){ #pronav button{ min-height:38px; padding:8px 14px; } }
+  #pronav .pn_jump button:hover, #pronav .pn_jump button:focus-visible{
+           border-color:var(--cyan); color:var(--bright); outline:none; }
+  .pn_shelf{ flex:none; background:transparent;
+           border:1px solid color-mix(in srgb, var(--magenta) 50%, transparent);
+           color:var(--magenta-fg,var(--magenta)); border-radius:999px; padding:9px 14px;
+           font:inherit; font-size:10.5px; font-weight:600; letter-spacing:.14em;
+           text-transform:uppercase; cursor:pointer; white-space:nowrap;
+           transition:background .15s ease, color .15s ease; }
+  .pn_shelf:hover, .pn_shelf:focus-visible{
+           background:color-mix(in srgb, var(--magenta) 16%, transparent);
+           color:var(--bright); outline:none; }
+  .pn_shelf.on{ background:color-mix(in srgb, var(--magenta) 22%, transparent); color:var(--bright); }
+  @media (pointer:coarse){ #pronav .pn_jump button{ min-height:38px; padding:8px 14px; } }
+  /* on a phone the finder takes the whole first line and the jump links scroll under it */
+  @media (max-width:820px){
+    #pronav{ gap:7px; padding:8px 6px; }
+    #pronav .pn_find{ flex:1 1 100%; max-width:none; }
+    #pronav .pn_div{ display:none; }
+    .pn_shelf{ padding:8px 12px; font-size:10px; }
+  }
   body:not(.mode-pro) #pronav{ display:none; }
   /* ---- the sliders explain themselves: clickable labels + one popover ---- */
   .axq{ cursor:help; text-decoration:underline dotted color-mix(in srgb, var(--fg) 36%, transparent);
@@ -2192,6 +2255,208 @@
                background:var(--card2); padding:8px 0 6px;
                box-shadow:0 1px 0 0 color-mix(in srgb, var(--fg) 20%, transparent); }
   .cmp_name{ align-items:flex-start; }
+  /* ============================== PLAYER BENCH ==============================
+     Alexey's standalone NTRP self-rating bench, folded into pro mode as its own
+     chapter. Two rules made the graft safe:
+       1 · EVERY selector is scoped to #pb_root. The module shipped with generic
+           names — .cell, .bar, .btn, .chip, table, thead th, input[type=range] —
+           and unscoped they would have restyled the heatmap and every slider in
+           the Finder. Its :root block became #pb_root for the same reason.
+       2 · Its palette is re-pointed at the Finder's theme variables, so the bench
+           follows all twenty themes instead of carrying its own obsidian/merlot.
+     Its three keyframes are renamed pb* — the Finder already owns "breathe". */
+  #pb_root{
+    --pb-line:color-mix(in srgb, var(--fg) 20%, transparent);
+    --pb-line-soft:color-mix(in srgb, var(--fg) 10%, transparent);
+    --pb-fg:var(--bright);
+    --pb-mute:var(--muted);
+    --pb-dim:var(--muted);
+    --pb-accent:var(--magenta-fg,var(--magenta));
+    --pb-jade:var(--cyan-fg,var(--cyan));
+    --pb-ocker:var(--amber);
+    color:var(--fg);
+    display:flex; flex-direction:column; gap:20px;
+  }
+  #pb_root .pb-lead{ font-size:12px; color:var(--pb-mute); line-height:1.7; max-width:82ch; margin:0; }
+  #pb_root .pb-lead b{ color:var(--soft); }
+  #pb_root h2{ margin:0; font-size:11px; font-weight:600; letter-spacing:.16em;
+               text-transform:uppercase; color:var(--pb-mute); }
+  #pb_root .mono{ font-variant-numeric:tabular-nums; }
+
+  @keyframes pbSweep{0%{background-position:180% 0}100%{background-position:-80% 0}}
+  @keyframes pbBreathe{0%,100%{opacity:.74}50%{opacity:1}}
+  @keyframes pbThumb{0%,100%{box-shadow:0 0 0 0 transparent}
+                     50%{box-shadow:0 0 0 3px color-mix(in srgb, var(--pb-accent) 24%, transparent)}}
+
+  /* ---- readout ---- */
+  #pb_root .readout{ background:var(--card); border:1px solid var(--pb-line); border-radius:12px;
+                     display:grid; grid-template-columns:minmax(280px,340px) 1fr; }
+  #pb_root .big{ padding:18px 20px; border-right:1px solid var(--pb-line);
+                 display:flex; flex-direction:column; gap:2px; }
+  #pb_root .bigrow{ display:flex; align-items:flex-end; gap:18px; }
+  #pb_root .utrbox{ padding-left:16px; border-left:1px solid var(--pb-line); align-self:stretch;
+                    display:flex; flex-direction:column; justify-content:flex-end; }
+  #pb_root .utrnum{ font-size:17px; font-weight:600; line-height:1.2; color:var(--pb-fg);
+                    white-space:nowrap; font-variant-numeric:tabular-nums; }
+  #pb_root .utrnum .est{ color:var(--pb-ocker); font-size:12px; }
+  #pb_root .bignum{ font-size:52px; line-height:1; font-weight:700; letter-spacing:-.02em;
+                    font-variant-numeric:tabular-nums; }
+  #pb_root .bigsub{ font-size:10px; letter-spacing:.13em; text-transform:uppercase;
+                    color:var(--pb-mute); white-space:nowrap; }
+  #pb_root .raw{ font-size:11px; color:var(--pb-dim); margin-top:8px; font-variant-numeric:tabular-nums; }
+  #pb_root .notes{ padding:16px 20px; display:flex; flex-direction:column; gap:10px; justify-content:center; }
+  #pb_root .note{ display:flex; gap:10px; align-items:baseline; font-size:12px; color:var(--pb-mute); line-height:1.55; }
+  #pb_root .note b{ color:var(--pb-fg); font-weight:600; }
+  #pb_root .note .tag{ font-size:9.5px; letter-spacing:.14em; text-transform:uppercase;
+                       color:var(--pb-dim); min-width:76px; flex:none; }
+  #pb_root .gate-on{ color:var(--pb-ocker); }
+  @media(max-width:820px){
+    #pb_root .readout{ grid-template-columns:1fr; }
+    #pb_root .big{ border-right:none; border-bottom:1px solid var(--pb-line); }
+  }
+
+  /* ---- chips ---- */
+  #pb_root .chip{ display:inline-flex; align-items:center; gap:6px; font-size:9.5px; letter-spacing:.13em;
+                  text-transform:uppercase; padding:3px 8px; border-radius:4px; border:1px solid currentColor;
+                  background:transparent; line-height:1.4; }
+  #pb_root .chip.est{ color:var(--pb-ocker); }
+  #pb_root .chip.msr{ color:var(--pb-jade); }
+
+  /* ---- control bar ---- */
+  #pb_root .bar{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; background:var(--card);
+                 border:1px solid var(--pb-line); border-radius:12px; padding:8px 10px; }
+  #pb_root .bar .lab{ font-size:9.5px; letter-spacing:.16em; text-transform:uppercase;
+                      color:var(--pb-dim); padding:0 8px 0 3px; }
+  #pb_root .btn{ font-family:inherit; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase;
+                 color:var(--pb-mute); background:transparent; border:1px solid var(--pb-line);
+                 border-radius:999px; padding:7px 13px; cursor:pointer;
+                 transition:color .18s, border-color .18s, background .18s; }
+  #pb_root .btn:hover{ color:var(--pb-fg); border-color:var(--pb-accent); }
+  #pb_root .btn[aria-pressed="true"]{ color:var(--bright); border-color:var(--pb-accent);
+                 background:color-mix(in srgb, var(--pb-accent) 18%, transparent); }
+  #pb_root .btn.go{ background:var(--cyan); color:#04150b; border-color:var(--cyan); font-weight:700; }
+  #pb_root .btn.go:hover{ filter:brightness(1.1); color:#04150b; }
+  /* a latched link has to look latched */
+  #pb_root .btn.go.pb-linked{ background:transparent; color:var(--pb-jade);
+        border-color:var(--pb-jade); box-shadow:inset 0 0 0 1px var(--pb-jade); }
+  #pb_root .btn.go.pb-linked:hover{ background:color-mix(in srgb, var(--pb-jade) 16%, transparent);
+        color:var(--pb-fg); }
+  #pb_root .spacer{ flex:1; }
+  #pb_root :focus-visible{ outline:2px solid var(--pb-jade); outline-offset:2px; }
+
+  /* ---- axis table ---- */
+  #pb_root .tablewrap{ overflow-x:auto; background:var(--card); border:1px solid var(--pb-line); border-radius:12px; }
+  #pb_root table{ border-collapse:collapse; width:100%; min-width:860px; }
+  #pb_root thead th{ font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--pb-mute);
+                     font-weight:600; text-align:left; padding:11px 12px; border-bottom:1px solid var(--pb-line);
+                     white-space:nowrap; background:var(--panel); }
+  #pb_root tbody td{ padding:9px 12px; border-bottom:1px solid var(--pb-line-soft); vertical-align:middle; }
+  #pb_root tbody tr:last-child td{ border-bottom:none; }
+  #pb_root tbody tr{ transition:background .18s; }
+  #pb_root tbody tr:hover{ background:color-mix(in srgb, var(--pb-accent) 8%, transparent); }
+  #pb_root .axname{ background:none; border:none; padding:0; text-align:left; cursor:pointer; color:var(--pb-fg);
+                    font-family:inherit; font-size:14px; font-weight:600; line-height:1.3; transition:color .18s; }
+  #pb_root .axname:hover{ color:var(--pb-accent); }
+  #pb_root .axno{ font-size:9.5px; color:var(--pb-dim); letter-spacing:.12em; font-variant-numeric:tabular-nums; }
+  #pb_root .desc{ font-size:12px; color:var(--pb-mute); max-width:390px; line-height:1.45; }
+  #pb_root .cell{ width:44px; height:32px; display:grid; place-items:center; border-radius:4px;
+                  font-size:16px; font-weight:700; font-variant-numeric:tabular-nums; }
+  #pb_root .cell.ten{ position:relative; }
+  #pb_root .cell.ten span{ background:linear-gradient(100deg,currentColor 0%,currentColor 40%,#FFFFFF 50%,currentColor 60%,currentColor 100%);
+                  background-size:280% 100%; -webkit-background-clip:text; background-clip:text;
+                  -webkit-text-fill-color:transparent; animation:pbSweep 3.4s linear infinite; }
+  #pb_root .lvl{ font-size:11px; color:var(--pb-mute); white-space:nowrap; font-variant-numeric:tabular-nums; }
+
+  /* ---- sliders (scoped: the Finder's own range inputs must not be touched) ---- */
+  #pb_root input[type=range]{ -webkit-appearance:none; appearance:none; width:112px; height:22px;
+                  background:transparent; cursor:pointer; display:block; }
+  #pb_root input[type=range]::-webkit-slider-runnable-track{ height:3px; border-radius:2px; background:var(--pb-track,#22262E); }
+  #pb_root input[type=range]::-moz-range-track{ height:3px; border-radius:2px; background:var(--pb-track,#22262E); }
+  #pb_root input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:13px; height:13px;
+                  border-radius:50%; background:var(--pb-accent); margin-top:-5px; border:none;
+                  transition:box-shadow .18s, background .18s; animation:pbThumb 4.6s ease-in-out infinite; }
+  #pb_root input[type=range]::-moz-range-thumb{ width:13px; height:13px; border-radius:50%;
+                  background:var(--pb-accent); border:none; }
+  #pb_root input[type=range]:hover::-webkit-slider-thumb{ animation-duration:1.15s;
+                  box-shadow:0 0 0 4px color-mix(in srgb, var(--pb-accent) 28%, transparent); }
+  #pb_root input[type=range]:active::-webkit-slider-thumb{ background:var(--pb-jade); }
+  #pb_root input[type=range]:active::-moz-range-thumb{ background:var(--pb-jade); }
+  #pb_root .wcell{ display:flex; align-items:center; gap:9px; }
+  #pb_root .wnum{ font-size:11px; color:var(--pb-dim); width:14px; text-align:right; font-variant-numeric:tabular-nums; }
+
+  #pb_root .tog{ background:transparent; border:1px solid currentColor; border-radius:999px; cursor:pointer;
+                 font-family:inherit; font-size:9.5px; letter-spacing:.13em; text-transform:uppercase;
+                 padding:4px 10px; color:var(--pb-ocker);
+                 transition:background .18s, color .18s, border-color .18s; white-space:nowrap; }
+  #pb_root .tog:hover{ background:color-mix(in srgb, var(--pb-ocker) 15%, transparent); }
+  #pb_root .tog[data-on="1"]{ color:var(--pb-jade); }
+  #pb_root .tog[data-on="1"]:hover{ background:color-mix(in srgb, var(--pb-jade) 15%, transparent); }
+
+  /* ---- log ---- */
+  #pb_root .logwrap{ overflow-x:auto; background:var(--card); border:1px solid var(--pb-line); border-radius:12px; }
+  #pb_root .logtable{ min-width:760px; }
+  #pb_root .logtable td, #pb_root .logtable th{ padding:7px 8px; }
+  #pb_root .logcell{ width:30px; height:26px; display:grid; place-items:center; border-radius:4px;
+                     font-size:12px; font-weight:700; font-variant-numeric:tabular-nums; }
+  #pb_root .del{ background:none; border:none; color:var(--pb-dim); cursor:pointer; font-size:14px;
+                 line-height:1; padding:2px 5px; transition:color .18s; }
+  #pb_root .del:hover{ color:var(--signal); }
+  #pb_root .empty{ padding:20px 22px; color:var(--pb-dim); font-size:12px; }
+
+  /* ---- protocol ---- */
+  #pb_root .pgrid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:12px; }
+  #pb_root .pcard{ background:var(--card); border:1px solid var(--pb-line); border-radius:12px;
+                   padding:14px 16px; display:flex; flex-direction:column; gap:8px;
+                   transition:border-color .3s, background .3s; }
+  #pb_root .pcard.hot{ border-color:var(--pb-accent); background:color-mix(in srgb, var(--pb-accent) 10%, transparent); }
+  #pb_root .pcard h3{ margin:0; font-size:13px; font-weight:700; letter-spacing:.01em; color:var(--pb-fg); }
+  #pb_root .pcard .drill{ font-size:12px; color:var(--pb-mute); line-height:1.5; }
+  #pb_root .marks{ display:flex; flex-wrap:wrap; gap:5px; margin-top:2px; }
+  #pb_root .mark{ font-size:10.5px; padding:3px 7px; border-radius:4px; border:1px solid var(--pb-line);
+                  color:var(--pb-mute); white-space:nowrap; font-variant-numeric:tabular-nums; }
+  #pb_root .mark b{ color:var(--pb-fg); font-weight:700; margin-right:5px; }
+
+  /* ---- slider suggestion ---- */
+  #pb_root .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media(max-width:820px){ #pb_root .grid2{ grid-template-columns:1fr; } }
+  #pb_root .sugcard{ background:var(--card); border:1px solid var(--pb-line); border-radius:12px; padding:14px 16px; }
+  #pb_root .sugcard h3{ margin:0 0 10px; font-size:10px; letter-spacing:.16em; text-transform:uppercase;
+                        color:var(--pb-mute); font-weight:600; }
+  #pb_root .sugrow{ display:flex; align-items:center; gap:11px; padding:5px 0; border-bottom:1px solid var(--pb-line-soft); }
+  #pb_root .sugrow:last-child{ border-bottom:none; }
+  #pb_root .sugname{ flex:1; font-size:12.5px; color:var(--pb-fg); }
+  #pb_root .sugsrc{ font-size:10.5px; color:var(--pb-dim); white-space:nowrap; }
+  #pb_root .sugcell{ width:32px; height:26px; flex:none; display:grid; place-items:center; border-radius:4px;
+                     font-size:13px; font-weight:700; font-variant-numeric:tabular-nums; }
+  #pb_root #pb-mix{ width:190px; }
+  #pb_root .stance{ font-size:11.5px; color:var(--pb-mute); white-space:nowrap; min-width:150px; }
+  /* the stance can only act on a profile that HAS strengths and weaknesses. When every
+     axis sits on the same score the two ends are mathematically identical, and a control
+     that cannot move anything has to say so instead of looking broken. */
+  #pb_root .pb-mixhint{ font-size:11px; line-height:1.6; color:var(--pb-dim); margin:7px 2px 0; }
+  #pb_root .pb-mixhint.flat{ color:var(--pb-ocker); }
+  #pb_root .bar.pb-inert{ border-color:color-mix(in srgb, var(--pb-ocker) 45%, transparent); }
+  #pb_root .bar.pb-inert input[type=range]{ opacity:.55; }
+
+  /* ---- cross-system ---- */
+  #pb_root .cross{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:12px; }
+  #pb_root .xc{ background:var(--card); border:1px solid var(--pb-line); border-radius:12px; padding:15px 17px; }
+  #pb_root .xc h3{ margin:0 0 10px; font-size:10px; letter-spacing:.16em; text-transform:uppercase;
+                   color:var(--pb-mute); font-weight:600; }
+  #pb_root .xc p{ margin:0 0 8px; font-size:12px; color:var(--pb-mute); line-height:1.55; }
+  #pb_root .xc p:last-child{ margin-bottom:0; }
+  #pb_root .xrow{ display:flex; justify-content:space-between; gap:12px; padding:5px 0;
+                  border-bottom:1px solid var(--pb-line-soft); font-size:12px; }
+  #pb_root .xrow:last-child{ border-bottom:none; }
+  #pb_root .xrow span:first-child{ color:var(--pb-mute); }
+  #pb_root .xrow.on span{ color:var(--pb-jade); }
+  #pb_root .pbfoot{ font-size:11px; color:var(--pb-dim); line-height:1.7;
+                    border-top:1px solid var(--pb-line); padding-top:14px; }
+  #pb_root .pbfoot a{ color:var(--pb-mute); text-decoration:none; border-bottom:1px solid var(--pb-line); }
+  #pb_root .pbfoot a:hover{ color:var(--pb-fg); border-bottom-color:var(--pb-accent); }
+  @media (prefers-reduced-motion:reduce){
+    #pb_root *, #pb_root *::before, #pb_root *::after{ animation:none !important; transition:none !important; }
+  }
 </style>
 </head>
 <body>
@@ -2199,7 +2464,7 @@
 <button type="button" id="gearbtn" aria-label="settings — theme, export, import" aria-haspopup="true"
         aria-expanded="false" onclick="srfGearToggle(event)">⚙</button>
 <div id="gearpop" hidden>
-  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-08-28.4 · b86.2</span></div>
+  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-08-29.11 · b86.2</span></div>
   <span class="toolbit" id="themeCtl">theme
     <span class="themepick" id="themePick">
       <button type="button" class="thememain" id="themeBtn" aria-expanded="false" aria-controls="themeList"
@@ -2212,6 +2477,18 @@
         <button type="button" class="modebtn" id="modeBright" aria-pressed="false" onclick="setThemeMode('bright')">bright</button>
       </span>
     </span>
+  </span>
+  <span class="toolbit" id="wcCtl" style="align-items:stretch;flex-direction:column;gap:5px;">
+    <span style="letter-spacing:.03em;">how hard your sliders steer</span>
+    <span class="modeseg" id="wcSeg" style="width:100%;" role="group" aria-label="slider authority">
+      <button type="button" class="modebtn" data-wc="flat"  aria-pressed="false" onclick="srfWCSet('flat')"  title="the original average — gentle to the point of invisible">flat</button>
+      <button type="button" class="modebtn" data-wc="soft"  aria-pressed="false" onclick="srfWCSet('soft')"  title="only how far a frame beats its own average counts">soft</button>
+      <button type="button" class="modebtn" data-wc="bal"   aria-pressed="true"  onclick="srfWCSet('bal')"   title="weights squared — a slider at 10 against nine at 3 owns 53% of the verdict">balanced</button>
+      <button type="button" class="modebtn" data-wc="sharp" aria-pressed="false" onclick="srfWCSet('sharp')" title="weights cubed — the ranking follows your highest slider almost alone">sharp</button>
+    </span>
+    <span class="toolnote" style="line-height:1.35;">Every ranking in the app is a weighted average of eleven axes, and most frames
+      average about the same — so on <b>flat</b> the top of the field sits inside a tenth of a point and your priorities
+      cannot show. Each step up gives the sliders you raised more of the verdict.</span>
   </span>
   <div class="gear_row">
     <button type="button" class="mcap ghost" onclick="exportAll()" title="download everything you've built as a JSON file">export</button>
@@ -2487,6 +2764,7 @@
     <span id="benchCardsHome" style="display:contents;"><div id="benchCards">
     <div id="mid_rsSlot"></div>
     <div class="mid_h" style="margin-top:0;">your rackets <small id="mid_rn"></small>
+      <button class="midtrash" id="mid_trash" hidden onclick="srfRestore()" title="bring every deleted racket and string back"></button>
       <span class="modeseg" style="margin-left:auto;" role="group" aria-label="view">
         <button type="button" class="modebtn" aria-pressed="true">cards</button>
         <button type="button" class="modebtn" onclick="srfFullTable()" title="the full table is the pro bench">full table &rarr;</button></span></div>
@@ -2509,7 +2787,10 @@
         pairings by physics &mdash; shock compounding, power budget, pattern wear &mdash; the
         <b>lab table</b> with dynamic stiffness in lb/in and tension-loss curves, spider dials,
         sortable hard specs, and a <b>&dagger;</b> on every value nobody has court-tested yet.
-        No medals without receipts.</div>
+        And the <b>player bench</b> is waiting for you there too &mdash; rate your own game on ten
+        axes, one drill apiece, an NTRP bracket and a UTR range at the top, every axis capped at
+        4.0 until you have actually counted it. Then it writes all nineteen sliders for you.
+        No medals without receipts &mdash; yours included.</div>
       <div class="mpi_row">
         <button type="button" class="bigcta" style="--cta:var(--magenta);--cta-fg:var(--magenta-fg,var(--magenta));" onclick="setMode('pro')">initiate nerd protocol <span class="ctaArrow" aria-hidden="true">&rarr;</span></button>
         <span class="mpi_fine">side effects may include opinions about gauge, string-savers discourse, and reading stiffness charts at 1 a.m.</span>
@@ -2547,13 +2828,32 @@
   </div>
 </div>
 <!-- QW10: sticky section navigation — the workshop's table of contents -->
-<nav id="pronav" aria-label="jump to a section">
-  <button type="button" onclick="srfNavGo('pro_answer')">setups</button>
-  <button type="button" onclick="srfNavGo('pro_slwrap')">priorities</button>
-  <button type="button" onclick="srfNavGo('rk','chap')">rackets</button>
-  <button type="button" onclick="srfNavGo('sb','chap')">strings</button>
-  <button type="button" onclick="srfNavGo('cal','chap')">calibrator</button>
-  <button type="button" onclick="srfNavGo('room','chap')">chatroom</button>
+<nav id="pronav" aria-label="find a racket or a string, file it on a shelf, jump to a section">
+  <div class="srchbar sb_f pn_find" role="search"><span class="sb_badge" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span><span class="sb_kick" aria-hidden="true">find</span>
+    <input id="proFind" type="text" autocomplete="off" spellcheck="false"
+           placeholder="Find a racket or a string &mdash; typos are fine&hellip;"
+           aria-label="find a racket or a string anywhere in the workshop"
+           oninput="srfProFind()"
+           onkeydown="if(event.key==='Enter'){event.preventDefault();srfProFind(1);}if(event.key==='Escape'){event.preventDefault();srfProFindClear();}">
+    <button type="button" class="sb_x" aria-label="clear the search" title="clear" onclick="srfProFindClear()">&times;</button>
+    <span class="sb_cnt" id="proFind_n" aria-live="polite"></span>
+    <button type="button" class="sb_act" onclick="srfProFind(1)" aria-label="find and jump to the result">find</button>
+  </div>
+  <button type="button" class="pn_shelf" id="pn_shelf" aria-haspopup="menu"
+          title="show only one shelf &mdash; my bag, test next, played, friends"
+          onclick="srfShelfMenu(event)">&#9636; shelves &#9662;</button>
+  <span class="pn_div" aria-hidden="true"></span>
+  <div class="pn_jump">
+    <!-- these land on the HEATMAP, not on the chapter bar: on a phone the department
+         header, toolbar and legend are 1300px of furniture before the first racket -->
+    <button type="button" onclick="srfSecGo('pb','pb_root')">player</button>
+    <button type="button" onclick="srfSecGo('rk','grid','gridM')">rackets</button>
+    <button type="button" onclick="srfSecGo('sb','sb_grid','sb_gridM')">strings</button>
+    <button type="button" onclick="srfNavGo('pro_answer')">setups</button>
+    <button type="button" onclick="srfNavGo('pro_slwrap')">priorities</button>
+    <button type="button" onclick="srfNavGo('cal','chap')">calibrator</button>
+    <button type="button" onclick="srfNavGo('room','chap')">chatroom</button>
+  </div>
 </nav>
 <!-- the shelf legend is a CONTROL now: each chip filters the heatmap to that group -->
 <div class="glegend" id="rk_legend" role="group" aria-label="filter the bench by shelf"></div>
@@ -2718,6 +3018,166 @@
   </div>
 </div>
 <div id="pro_cards_home"></div>
+<div class="chapbar" data-chap="pb" role="button" tabindex="0" aria-expanded="false"
+     onclick="srfChapToggle('pb')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();srfChapToggle('pb');}">
+  <span class="chev">&#9656;</span><span class="chapt azonix">player bench</span>
+  <span class="chapsub">rate your own game on ten axes &mdash; then sync your racket and string priorities to it</span>
+  <span class="chapcount" id="chap_n_pb"></span>
+</div>
+<hr class="deptrule">
+<div class="depthead azonix">player bench <span style="color:var(--cyan);">v.01a</span></div>
+<div style="font-size:11px;color:var(--muted);letter-spacing:0.04em;margin-bottom:4px;">self-rating department &middot; NTRP</div>
+<div class="deptsub">The other half of the equation: not what the gear can do, but what <em>you</em> can do. Ten axes from the USTA NTRP characteristics, each with a drill that earns the score, resolve into a bracket &mdash; and into a target for the nineteen sliders on the racket and string benches. Nothing is applied until you press the button.</div>
+
+<div id="pb_root">
+
+  <p class="pb-lead">Scores map linearly: <span class="mono">NTRP = 2.00 + 0.25 &times; weighted mean</span>, so 4&nbsp;=&nbsp;3.0, 6&nbsp;=&nbsp;3.5, 8&nbsp;=&nbsp;4.0, 10&nbsp;=&nbsp;4.5. An axis you have not <b>measured</b> is capped at 8 &mdash; a 4.5 has to be earned on court, not felt. Sessions live in this browser; export the log if you want it to outlive a cleared cache.</p>
+
+  <!-- readout -->
+  <section class="readout" aria-label="Current rating readout">
+    <div class="big">
+      <div class="bigrow">
+        <div>
+          <div class="bignum mono" id="pb-num">3.5</div>
+          <div class="bigsub">NTRP bracket &middot; 4.5 max</div>
+        </div>
+        <div class="utrbox">
+          <div class="utrnum" id="pb-utrnum">4.0 &ndash; 6.5</div>
+          <div class="bigsub">UTR range</div>
+        </div>
+      </div>
+      <div class="raw mono" id="pb-raw">weighted 3.50 &middot; 0/10 measured</div>
+    </div>
+    <div class="notes">
+      <div class="note"><span class="tag">Confidence</span><span id="pb-conf">Low &mdash; nothing measured yet. Estimates are capped at 8 (4.0).</span></div>
+      <div class="note"><span class="tag">Pressure gate</span><span id="pb-gate">Second serve and point construction set the ceiling: no more than +0.5 above their mean.</span></div>
+      <div class="note"><span class="tag">Weighting</span><span id="pb-preset">NTRP calibration</span></div>
+    </div>
+  </section>
+
+  <!-- controls -->
+  <div class="bar" role="group" aria-label="Weighting presets and actions">
+    <span class="lab">Weighting</span>
+    <button type="button" class="btn" data-preset="ntrp" aria-pressed="true">NTRP calibration</button>
+    <button type="button" class="btn" data-preset="flat" aria-pressed="false">Flat 5s</button>
+    <button type="button" class="btn" data-preset="singles" aria-pressed="false">Singles</button>
+    <button type="button" class="btn" data-preset="doubles" aria-pressed="false">Doubles</button>
+    <span class="spacer"></span>
+    <button type="button" class="btn" id="pb-reset">Reset scores</button>
+    <button type="button" class="btn go" id="pb-save">Save session</button>
+  </div>
+
+  <!-- axis table -->
+  <section aria-label="Axis scores">
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:34%">Axis</th>
+            <th>Level you are claiming</th>
+            <th style="width:60px">Score</th>
+            <th style="width:130px">Set</th>
+            <th style="width:130px">Weight</th>
+            <th style="width:104px">Evidence</th>
+          </tr>
+        </thead>
+        <tbody id="pb-rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- slider suggestion -->
+  <section aria-label="Slider suggestion">
+    <h2>Slider suggestion &mdash; what this profile asks of the gear</h2>
+    <p class="pb-lead" style="margin:8px 0 12px;">
+      Ten player axes, each carrying its own weight, resolve into a target for your priority sliders &mdash; eleven on the racket
+      side, eight on the string side. The stance decides what the profile does with a score: <b>compensate</b>
+      lets weaknesses pull the gear, <b>amplify</b> lets strengths pull it.
+      <b>Sync my priorities</b> writes these nineteen numbers into your nineteen priority sliders &mdash; the same
+      sliders the <b>spin-first</b> and <b>arm-first</b> presets set, and the only thing it touches. Your frames, your
+      customs and &ldquo;my feel&rdquo; rows, your shelves and your intro answers all stay exactly as they are; what changes is
+      how they are <em>weighed</em>, so the rankings, medals and setups re-sort at once. It then stays <b>synced</b>:
+      from that moment the stance moves both sets of sliders live, and you can watch the shortlist follow.
+      <b>Click to unlink</b> ends that following and leaves the sliders standing exactly where they are &mdash; nothing
+      is restored, nothing is undone; they are simply yours to drag by hand again.
+    </p>
+    <div class="bar">
+      <span class="lab">Stance</span>
+      <input type="range" min="0" max="100" step="5" id="pb-mix" aria-label="Compensate to amplify">
+      <span class="stance" id="pb-mixlab"></span>
+      <span class="spacer"></span>
+      <button type="button" class="btn" id="pb-copyall">Copy as JSON</button>
+      <button type="button" class="btn go" id="pb-apply"
+              title="Writes all 19 priority sliders (11 racket, 8 string) from this profile and keeps them in step with the stance until you unlink. Your frames, customs and shelves are not touched.">Sync my priorities</button>
+    </div>
+    <div class="pb-mixhint" id="pb-mixhint" aria-live="polite"></div>
+    <div class="grid2" style="margin-top:12px">
+      <div class="sugcard"><h3>Racket priorities &mdash; 11 sliders</h3><div id="pb-sugr"></div></div>
+      <div class="sugcard"><h3>String priorities &mdash; 8 sliders</h3><div id="pb-sugs"></div></div>
+    </div>
+  </section>
+
+  <!-- session log -->
+  <section aria-label="Session log">
+    <h2>Session log</h2>
+    <div class="logwrap" style="margin-top:10px">
+      <table class="logtable">
+        <thead><tr id="pb-loghead"></tr></thead>
+        <tbody id="pb-logrows"></tbody>
+      </table>
+      <div class="empty" id="pb-logempty">No sessions saved yet. Score the axes, then press <b>save session</b> &mdash; one row per month is enough to see a trend.</div>
+    </div>
+    <div class="bar" style="margin-top:10px">
+      <span class="lab">Log</span>
+      <button type="button" class="btn" id="pb-export">Export JSON</button>
+      <button type="button" class="btn" id="pb-import">Import JSON</button>
+      <span class="spacer"></span>
+      <span class="lab" id="pb-logstat"></span>
+    </div>
+  </section>
+
+  <!-- protocol -->
+  <section aria-label="Test protocol">
+    <h2>The protocol &mdash; what earns a score</h2>
+    <p class="pb-lead" style="margin:8px 0 14px;">
+      Every axis has one drill and five pass marks. Run it, count, set the score, then flip the axis to
+      <span class="chip msr">measured</span>. Until you do, the axis stays an
+      <span class="chip est">estimate</span> and is capped at 8 in the calculation.
+    </p>
+    <div class="pgrid" id="pb-protocol"></div>
+  </section>
+
+  <!-- cross-system -->
+  <section aria-label="Other rating systems">
+    <h2>What the number is worth elsewhere</h2>
+    <div class="cross" style="margin-top:10px">
+      <div class="xc">
+        <h3>NTRP &rarr; UTR</h3>
+        <div id="pb-utr"></div>
+        <p style="margin-top:10px">No official conversion exists. These are observed crossover ranges, not a formula. Anything under 3.0 sits below the published data and carries a <span style="color:var(--amber)">&dagger;</span> in the readout.</p>
+      </div>
+      <div class="xc">
+        <h3>Germany &mdash; Leistungsklasse</h3>
+        <p>NTRP is a US league label; in Munich the currency is the DTB <b style="color:var(--bright);">LK</b>, running from LK&nbsp;1.0 (elite) to LK&nbsp;25.0.</p>
+        <p>Adults start around LK&nbsp;24.0. Only wins move it &mdash; losses cost nothing. You need club membership and a DTB-ID, then it updates weekly.</p>
+        <p>One season of Medenspiele or LK tournaments gives you a hard number that everyone you actually meet on court understands.</p>
+      </div>
+      <div class="xc">
+        <h3>The match test</h3>
+        <p>Ratings are relational. Borrow someone else's calibrated number and play sets against it.</p>
+        <p><b style="color:var(--bright);">vs. a known 4.0:</b> 0&ndash;2 games per set &rarr; 3.0&ndash;3.5 &middot; 3&ndash;4 games &rarr; solid 3.5 &middot; splitting sets or winning breakers &rarr; 4.0.</p>
+        <p>Practice strokes flatter. The scoreboard doesn't.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="pbfoot">
+    Axis wording follows the USTA NTRP General Characteristics and the published stroke-by-stroke self-rating guidelines.<br>
+    <a href="https://www.usta.com/content/dam/usta/sections/eastern/pdfs/NTRP%20Characteristics.pdf" target="_blank" rel="noopener">NTRP General Characteristics</a> &middot;
+    <a href="https://www.austintennisnet.org/rules/NTRP_RATINGS_GUIDE.htm" target="_blank" rel="noopener">Stroke-by-stroke guidelines</a> &middot;
+    <a href="https://www.tennis.de/service/helpcenter/leistungsklasse--lk--und-dtb-ranglisten/leistungsklasse--lk-.html" target="_blank" rel="noopener">Leistungsklasse (DTB)</a>
+  </div>
+</div>
 <div class="chapbar" data-chap="rk" role="button" tabindex="0" aria-expanded="false"
      onclick="srfChapToggle('rk')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();srfChapToggle('rk');}">
   <span class="chev">▸</span><span class="chapt azonix">racket test bench</span>
@@ -2780,7 +3240,7 @@
   </div>
   <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;font-size:11px;flex-wrap:wrap;">
   <span style="color:var(--muted);"><b class="secname">heatmap</b> · click a column to rank · twice to flip · <b style="color:var(--soft);font-weight:500;">click any score cell to set your own rating</b> · <span id="sortState" style="color:var(--cyan);">recommended order</span></span>
-  <button class="resetbtn" data-label="grouped by shelf" onclick="rkGroupView()" title="quiver, playtested, bench — the old grouped view">grouped by shelf</button>
+  <button class="resetbtn" data-label="grouped by shelf" onclick="rkGroupView()" title="my bag, played, unfiled — see the bench split into your shelves">grouped by shelf</button>
   <button class="resetbtn" data-label="reset order" onclick="resetOrder()" style="margin-left:auto;">reset order</button>
   <button class="resetbtn" id="rk_trash" hidden onclick="srfRestore()" title="bring every deleted racket and string back"></button>
 </div>
@@ -2789,12 +3249,12 @@
     <h4 id="c_title">Log a customization</h4>
     <div class="sub">Tell the bench what you did — lead tape, grip build-up, a different butt cap. Give it the new numbers and the frame is re-scored from them.</div>
     <div class="mgrid">
-      <label>Put this frame in<select id="c_group">
-        <option value="own">my quiver</option>
-        <option value="tested">playtested — court tested</option>
-        <option value="next">selected — test next</option>
-        <option value="fr">friends' frames</option>
-        <option value="bench">bench (reference only)</option>
+      <label>Put this frame on the shelf<select id="c_group">
+        <option value="own">my bag</option>
+        <option value="tested">played</option>
+        <option value="next">test next</option>
+        <option value="fr">friends</option>
+        <option value="bench">unfiled</option>
       </select></label>
       <label>Whose frame? <span style="color:var(--muted);">(friends only)</span><input id="c_owner" type="text" placeholder="Edwin"></label>
       <label>New weight (g)<input id="c_weight" type="text" placeholder="329" oninput="cPreview()"></label>
@@ -2841,7 +3301,7 @@
   </div>
   <div class="boostbar" id="boost"></div>
   <div id="g_hint" style="display:none;font-size:11.5px;color:var(--muted);background:var(--card2);border:1px dashed color-mix(in srgb, var(--cyan) 30%, transparent);border-radius:8px;padding:9px 12px;margin-bottom:10px;">
-    The bench rests in <b style="color:var(--cyan);">recommended order</b> — your gold, silver, bronze and budget picks lead, then every other frame by the same weighted score, so this table and the picks above never disagree about what comes first. Rank any column and that ordering is yours until you reset. Your bench starts empty — every frame sits in <b style="color:var(--muted);">bench</b> until you claim it. Every row carries a <b>+ group</b> button — it files the frame into your quiver, test next, court tested or a shelf of your own; use <b style="color:var(--soft);">grouped by shelf</b> to see those shelves, and drag the ⋮⋮ handle to arrange rows by hand.
+    The bench rests in <b style="color:var(--cyan);">recommended order</b> — your gold, silver, bronze and budget picks lead, then every other frame by the same weighted score, so this table and the picks above never disagree about what comes first. Rank any column and that ordering is yours until you reset. Your shelves start empty — every frame is <b style="color:var(--muted);">unfiled</b> until you file it. Every row carries a <b>+ shelf</b> button — it files the frame into my bag, test next, played, friends or a shelf of your own; use <b style="color:var(--soft);">grouped by shelf</b> to see those shelves, and drag the ⋮⋮ handle to arrange rows by hand.
     <button class="mcap ghost" onclick="gAdoptDemo()" style="margin-left:8px;padding:3px 10px;">copy the demo layout</button>
   </div>
 
@@ -3399,7 +3859,7 @@ window.srfRepaintAll = function(){
   ["rkRepaint", "sbRepaint"].forEach(fn => { try { if (window[fn]) window[fn](); } catch(e){} });
 };
 /* ---------- shelf priority: YOUR shelves lead the resting order ----------
-   my quiver first, then test next, then court tested; the string bench adds
+   my bag first, then test next, then played; the string bench adds
    court-validated and the benchmark bed. Everything else keeps exactly the
    order it already had - the partition is stable, so inside each tier the
    podium picks and the weighted score still decide. A column sort overrides
@@ -3484,6 +3944,153 @@ window.srfShelfPop = function(kind, id, ev){
      the screen — very visible on a phone. */
   const first = pop.querySelector(".grppop_i"); if (first) first.focus({ preventScroll: true });
 };
+/* ---- the row's overflow menu ----------------------------------------------------
+   Everything that is not "file it on a shelf" or "buy it" lives here, in the same
+   place on every row: customize, my feel, play notes, and the two-step remove. */
+/* ---- the action bar's finder -----------------------------------------------------
+   One field for both benches. Typing filters them live; Enter (or the button) opens
+   whichever department actually matched and lands you on it. */
+window.srfProFind = function(go){
+  const inp = document.getElementById("proFind"); if (!inp) return;
+  const q = inp.value;
+  const r = document.getElementById("benchSeekR"), b = document.getElementById("benchSeekS");
+  if (r){ r.value = q; if (window.srfBenchSeek) srfBenchSeek("racket"); }
+  if (b){ b.value = q; if (window.srfBenchSeek) srfBenchSeek("string"); }
+  setTimeout(() => {
+    const rk = document.querySelectorAll("#grid .namecell[data-no], #gridM .mcard[data-no]").length;
+    const sb = document.querySelectorAll("#sb_grid .namecell[data-bi], #sb_gridM .mcard").length;
+    const n = document.getElementById("proFind_n");
+    if (n){
+      n.textContent = !q.trim() ? "" : (rk + sb ? rk + " frame" + (rk === 1 ? "" : "s") + " \u00b7 " + sb + " bed" + (sb === 1 ? "" : "s") : "no match");
+      n.classList.toggle("nohit", !!q.trim() && !(rk + sb));
+    }
+    if (go && (rk + sb)){
+      const chap = rk >= sb ? "rk" : "sb";
+      if (window.srfSecGo) srfSecGo(chap, chap === "rk" ? "grid" : "sb_grid",
+                                          chap === "rk" ? "gridM" : "sb_gridM");
+    }
+  }, 260);
+};
+window.srfProFindClear = function(){
+  const inp = document.getElementById("proFind"); if (!inp) return;
+  inp.value = ""; srfProFind(); inp.focus();
+};
+/* ---- the action bar's shelf menu ---------------------------------------------
+   The second job, promoted out of the row and into the furniture: pick a shelf and
+   the whole racket bench narrows to it. */
+window.srfShelfMenu = function(ev){
+  if (ev){ ev.stopPropagation(); ev.preventDefault(); }
+  const anchor = ev && (ev.currentTarget instanceof Element ? ev.currentTarget : ev.target);
+  srfRowMenuClose();
+  const pop = document.createElement("div");
+  pop.id = "srf_rowmenu"; pop.className = "grppop"; pop.setAttribute("role", "menu");
+  const sel = window.RK_GSEL || new Set();
+  const opts = window.rkGroupOptions ? rkGroupOptions() : [];
+  const count = k => {
+    try { return (window.SRF.frames() || []).filter(f => (window.SRF.frameFull(f.no) || {}).g === k).length; }
+    catch(e){ return ""; }
+  };
+  let html = '<div class="grppop_h">show only one shelf</div>';
+  html += opts.map(o =>
+    '<button type="button" role="menuitemcheckbox" aria-checked="' + sel.has(o.key) + '" ' +
+    'class="grppop_i' + (sel.has(o.key) ? " on" : "") + '" ' +
+    'onclick="srfShelfJump(\'' + String(o.key).replace(/\\/g,"\\\\").replace(/'/g,"\\'") + '\')">' +
+    '<i style="background:' + o.color + '"></i>' + o.label +
+    '<span class="rowmenu_k">' + count(o.key) + '</span></button>').join("");
+  html += '<div class="rowmenu_sep"></div>' +
+    '<button type="button" role="menuitem" class="grppop_i" onclick="srfShelfJump(\'__all\')">show every frame</button>';
+  pop.innerHTML = html;
+  document.body.appendChild(pop);
+  if (!anchor || !anchor.getBoundingClientRect) return;
+  const r = anchor.getBoundingClientRect();
+  const w = pop.offsetWidth, hgt = pop.offsetHeight;
+  let left = Math.min(r.left, window.innerWidth - w - 8);
+  let top = r.bottom + 4;
+  if (top + hgt > window.innerHeight - 8) top = Math.max(8, r.top - hgt - 4);
+  pop.style.left = Math.max(8, left) + "px"; pop.style.top = top + "px";
+  const first = pop.querySelector(".grppop_i"); if (first) first.focus({ preventScroll: true });
+};
+window.srfShelfJump = function(key){
+  srfRowMenuClose();
+  if (key === "__all"){ if (window.rkGClear) rkGClear(); }
+  else if (window.rkGSel) rkGSel(key);
+  const btn = document.getElementById("pn_shelf");
+  if (btn) btn.classList.toggle("on", !!(window.RK_GSEL && window.RK_GSEL.size));
+  if (window.srfSecGo) srfSecGo("rk", "grid", "gridM");
+};
+window.srfRowMenuClose = function(){
+  const p = document.getElementById("srf_rowmenu");
+  if (p) p.remove();
+};
+window.srfRowMenu = function(kind, id, ev){
+  if (ev){ ev.stopPropagation(); ev.preventDefault(); }
+  const anchor = ev && (ev.currentTarget instanceof Element ? ev.currentTarget : ev.target);
+  srfRowMenuClose();
+  const pop = document.createElement("div");
+  pop.id = "srf_rowmenu"; pop.className = "grppop"; pop.setAttribute("role", "menu");
+  const it = (label, call) =>
+    '<button type="button" role="menuitem" class="grppop_i" onclick="srfRowMenuClose();' + call + '">' + label + '</button>';
+  let html = '<div class="grppop_h">' + (kind === "racket" ? "this frame" : "this string bed") + '</div>';
+  let delLabel = "remove from every list";
+  /* Find mode ranks MARKET rows next to bench rows. A market row carries a 5000+
+     pseudo-id from MID_XREG and no bench row at all, so cOpen / fOpen / noteFrame
+     have nothing to write to. It can still be hidden, so the menu shrinks to that
+     one item and says why the others are missing. */
+  const xr = (Number(id) >= 5000 && typeof midXget === "function") ? midXget(Number(id)) : null;
+  if (xr){
+    html += '<div class="rowmenu_note">A market listing, not on your bench yet. ' +
+            'Customize, \u201cmy feel\u201d and notes need a bench row \u2014 add it first.</div>';
+    delLabel = "hide this row from the results";
+  } else if (kind === "racket"){
+    const f = (window.SRF && window.SRF.frameFull) ? window.SRF.frameFull(id) : null;
+    const feelId = (f && f.feel && f.feelOf != null) ? f.feelOf : id;
+    html += it("customize \u2014 lead tape, weight, balance", "cOpen(" + id + ");");
+    html += it((f && f.feel) ? "edit how it feels for you" : "rate it by my own feel", "fOpen(" + feelId + ");");
+    html += it("play notes", "noteFrame(" + id + ",event);");
+    /* a "\u00b7 my feel" or "\u00b7 custom" row is a DERIVED copy sitting next to the stock
+       frame. Saying "remove from every list" there reads as if the frame itself goes,
+       which is the one thing people are afraid of. Name what actually leaves. */
+    if (f && f.feelOf != null)      delLabel = "remove this \u201cmy feel\u201d row \u2014 the stock frame stays";
+    else if (f && f.custOf != null) delLabel = "remove this custom row \u2014 the stock frame stays";
+  } else if (kind === "string"){
+    html += it("rate it by my own feel", "sbFOpen(" + id + ");");
+    html += it("play notes", "noteBed(" + id + ",event);");
+  }
+  html += '<div class="rowmenu_sep"></div>' +
+    '<button type="button" role="menuitem" class="grppop_i rowmenu_del" data-label="' + delLabel + '" ' +
+    'onclick="event.stopPropagation();srfRowDel(\'' + kind + '\',' + id + ',event)">' + delLabel + '</button>';
+  pop.innerHTML = html;
+  document.body.appendChild(pop);
+  if (!anchor || !anchor.getBoundingClientRect){ return; }
+  const r = anchor.getBoundingClientRect();
+  const w = pop.offsetWidth, hgt = pop.offsetHeight;
+  let left = Math.min(r.left, window.innerWidth - w - 8);
+  let top = r.bottom + 4;
+  if (top + hgt > window.innerHeight - 8) top = Math.max(8, r.top - hgt - 4);
+  pop.style.left = Math.max(8, left) + "px";
+  pop.style.top = top + "px";
+  const first = pop.querySelector(".grppop_i"); if (first) first.focus({ preventScroll: true });
+};
+/* the same two-step as the row's old x, written out in words because a menu item
+   has room for them */
+window.srfRowDel = function(kind, id, ev){
+  const b = ev && ev.currentTarget;
+  if (!b) return;
+  if (!b.dataset.armed){
+    b.dataset.armed = "1"; b.classList.add("armed");
+    b.textContent = "sure? \u2014 click again to remove";
+    setTimeout(() => { if (b.isConnected){ delete b.dataset.armed; b.classList.remove("armed");
+      b.textContent = b.dataset.label || "remove from every list"; } }, 2600);
+    return;
+  }
+  srfRowMenuClose();
+  if (window.srfDelete) window.srfDelete(kind, id);
+};
+document.addEventListener("click", e => {
+  const p = document.getElementById("srf_rowmenu");
+  if (p && !p.contains(e.target)) srfRowMenuClose();
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape") srfRowMenuClose(); });
 window.srfShelfPick = function(key){
   if (!window.SRF_SHELF) return;
   const { kind, id } = window.SRF_SHELF;
@@ -3650,10 +4257,13 @@ window.srfLimTap = function(setter, v, el){
     if (Math.abs(delta) > 2) window.scrollBy(0, delta);
   });
 };
-window.srfLimitBar = function(key, total, setter, ghosts){
+window.srfLimitBar = function(key, total, setter, ghosts, shownOv){
   const n = window.SRFLIM[key] || 5;
   if (total <= 5) return "";
-  const shown = Math.min(n, total);
+  /* shownOv: the heatmap grows its window to fit the recency band, so what it PAINTS
+     can exceed SRFLIM. It passes the real count in; everything else keeps the old
+     behaviour by leaving it undefined. */
+  const shown = Math.min(shownOv != null ? shownOv : n, total);
   /* ghosts = rows spliced in from the wider market, so this total is legitimately
      one or two higher than the bench count shown elsewhere on the page */
   const ghostNote = ghosts > 0
@@ -3721,6 +4331,64 @@ window.srfCardsDock = (m) => {
    bench row is deletable now. Identity is the NAME (brand|model resp. mains|cross),
    persisted in localStorage; the data arrays are never mutated, every render
    pipeline just filters - so "restore all" is instant and nothing can corrupt. */
+/* ---------- ONE weighted score for the whole application ----------------------
+   Eighteen places used to spell out SUM(s*w)/SUM(w) by hand. That is a weighted
+   AVERAGE, and on a bench where every frame averages about 7 across its axes,
+   every weighted average is about 7 whatever the weights say — measured spread
+   between first and second place: 0.017 of 10, well under the one decimal the app
+   prints. The priorities were arithmetically real and visually invisible.
+
+   Four modes, all of them exact and all of them ranking the same pool:
+     flat   SUM(s*w)/SUM(w)          what shipped until now — kept so the old
+                                     behaviour is one click away, never lost
+     soft   only a frame's deviation from its OWN mean is weighted, x2.2
+     bal    weights squared before averaging          <- the default
+     sharp  weights cubed
+   Raising the weights to a power is scale-invariant in the denominator, so a
+   slider at 10 against nine sliders at 3 goes from owning 30% of the verdict to
+   53% (bal) or 79% (sharp) without any renormalisation.
+
+   The result is always clamped into 0..10: "soft" extrapolates away from the mean
+   and could otherwise print an 11 out of 10. */
+const SRF_WCKEY = "srf:wcontrast:v1";
+window.SRF_WC = (() => { try { const v = localStorage.getItem(SRF_WCKEY);
+  return (v === "flat" || v === "soft" || v === "bal" || v === "sharp") ? v : "bal";
+} catch(e){ return "bal"; } })();
+window.srfWScore = function(sv, wv){
+  if (!sv || !wv) return 0;
+  const L = Math.min(sv.length, wv.length);
+  const m = window.SRF_WC;
+  let t = 0, d = 0, i, q;
+  if (m === "soft"){
+    let mu = 0; for (i = 0; i < L; i++) mu += (+sv[i] || 0);
+    mu = L ? mu / L : 0;
+    for (i = 0; i < L; i++){ q = Math.max(0, +wv[i] || 0); t += ((+sv[i] || 0) - mu) * q; d += q; }
+    return Math.max(0, Math.min(10, mu + 2.2 * (t / (d || 1))));
+  }
+  const g = m === "sharp" ? 3 : m === "bal" ? 2 : 1;
+  for (i = 0; i < L; i++){
+    q = Math.max(0, +wv[i] || 0);
+    if (g !== 1) q = Math.pow(q, g);
+    t += (+sv[i] || 0) * q; d += q;
+  }
+  return Math.max(0, Math.min(10, t / (d || 1)));
+};
+window.srfWCSet = function(mode){
+  if (["flat", "soft", "bal", "sharp"].indexOf(mode) < 0) return;
+  window.SRF_WC = mode;
+  try { localStorage.setItem(SRF_WCKEY, mode); } catch(e){}
+  document.querySelectorAll("#wcSeg .modebtn").forEach(b =>
+    b.setAttribute("aria-pressed", b.dataset.wc === mode ? "true" : "false"));
+  /* every surface that ranks anything, repainted in the order a render would */
+  try { if (window.SRF && SRF.redraw) SRF.redraw(); } catch(e){}
+  try { if (window.sbRedraw) sbRedraw(); } catch(e){}
+  try { if (window.midPaint) midPaint(); } catch(e){}
+  try { if (window.srfPaintWinners) srfPaintWinners(); } catch(e){}
+  try { if (window.paintSetups4) paintSetups4(); } catch(e){}
+  try { if (window.srfSeedFlags) srfSeedFlags(); } catch(e){}
+};
+document.addEventListener("DOMContentLoaded", () => { try { srfWCSet(window.SRF_WC); } catch(e){} });
+
 const SRF_DELKEY = "srf:deleted:v2";
 window.SRF_DEL = (() => { try { const d = JSON.parse(localStorage.getItem(SRF_DELKEY) || "{}");
   return { racket: new Set(d.racket || []), string: new Set(d.string || []) };
@@ -3743,9 +4411,16 @@ window.srfDelAsk = function(kind, id, ev){
   srfDelete(kind, id);
 };
 window.srfDelete = function(kind, id){
-  const it = kind === "racket"
-    ? (window.SRF && SRF.frameFull ? SRF.frameFull(Number(id)) : null)
-    : (window.SRF && SRF.beds ? SRF.beds().find(x => x.i === Number(id)) : null);
+  /* 5000+ is a find-mode pseudo-id for a MARKET row: no bench row, only an entry
+     in MID_XREG. Resolve it there first. The delete store keys on brand|name (or
+     bed|gauge), never on the id, so a hidden market row stays hidden across a
+     reload exactly like a bench row, and "restore all" brings it back. */
+  const nId = Number(id);
+  const xr = (nId >= 5000 && typeof midXget === "function") ? midXget(nId) : null;
+  const it = xr ? (kind === "racket" ? xr.f : xr.bed)
+    : kind === "racket"
+    ? (window.SRF && SRF.frameFull ? SRF.frameFull(nId) : null)
+    : (window.SRF && SRF.beds ? SRF.beds().find(x => x.i === nId) : null);
   if (!it) return;
   SRF_DEL[kind].add(srfDelKeyOf(kind, it));
   srfDelPersist();
@@ -3765,7 +4440,7 @@ window.srfRestore = function(){
 };
 window.srfTrashPaint = function(){
   const n = SRF_DEL.racket.size + SRF_DEL.string.size;
-  ["rk_trash", "sb_trash"].forEach(id => { const b = document.getElementById(id);
+  ["rk_trash", "sb_trash", "mid_trash"].forEach(id => { const b = document.getElementById(id);
     if (!b) return; b.hidden = !n; b.textContent = `restore ${n} deleted`; });
 };
 document.addEventListener("DOMContentLoaded", () => { try { srfTrashPaint(); } catch(e){} });
@@ -5562,12 +6237,14 @@ const cats = ["Control (flat)", "Precision", "Spin", "Power", "Feel / comfort", 
    twenty palettes — measured: on theme 4.0 the quiver and the researched group land
    12 units apart in RGB, and several themes put amber and bronze within 20. So each
    group also owns a LINE STYLE on its left rail, which survives any palette. */
-const G = { own:["var(--magenta-fg,var(--magenta))","my quiver","solid"],
-            tested:["var(--cyan-fg,var(--cyan))","playtested — court tested","solid"],
-            next:["var(--amber-fg,var(--amber))","selected — test next","dashed"],
-            fr:["color-mix(in srgb, var(--cyan-fg,var(--cyan)) 45%, var(--magenta-fg,var(--magenta)))","friends' frames","dotted"],
-            bench:["var(--soft-fg,var(--soft))","bench","solid"],
-            rx_researched:["var(--bronze-fg,var(--bronze))","researched — specs looked up online","double"] };
+/* ONE NAME PER SHELF. These strings are the single source for the chip, the popover,
+   the legend and the customize panel — the keys never change, so saved shelves survive. */
+const G = { own:["var(--magenta-fg,var(--magenta))","my bag","solid"],
+            tested:["var(--cyan-fg,var(--cyan))","played","solid"],
+            next:["var(--amber-fg,var(--amber))","test next","dashed"],
+            fr:["color-mix(in srgb, var(--cyan-fg,var(--cyan)) 45%, var(--magenta-fg,var(--magenta)))","friends","dotted"],
+            bench:["var(--soft-fg,var(--soft))","unfiled","solid"],
+            rx_researched:["var(--bronze-fg,var(--bronze))","researched","double"] };
 const gStyle = g => (G[g] && G[g][2]) || "solid";
 /* display order for the ungrouped ("original order") view: researched groups lead — any rx_*
    key ranks ahead of the quiver — then the established groups; unknown keys fall to the end */
@@ -5742,6 +6419,27 @@ const rk = [
   {n:"Black Ace Pro", b:"PRO KENNEX", o:null, g:"bench", s:[7,8,8,6,8,6,7,7,6,7,6], d:8, p:220, sp:["305g","97","16x19","64 RA","~322","~315","21.5"], est:true}
 ];
 rk.forEach((r,i)=>{ r.no = i+1; });
+/* ---- difficulty floor: a filed number can be optimistic, a head size cannot ------
+   A tester was handed the YONEX Percept 97L as a BEGINNER pick. Its difficulty is a
+   hand-filed 3 — inside the beginner ceiling — because the frame is light (290 g) and
+   swings easily. But it is a 97 sq in tour frame: the sweet spot is a sixth smaller
+   than a 100, every off-centre ball twists it harder, and being light means there is
+   less mass to absorb that miss, not more. The same optimism sat on the Pro Staff 97L,
+   the EZONE 98L and the CX 200 LS — all of them beginner-legal at difficulty 2-3.
+   Rather than re-tuning 155 hand-set numbers, the two specs that cannot be argued with
+   impose a FLOOR. A filed value may be higher; it may never be lower than this. */
+function srfDiffFloor(sp){
+  const head = parseFloat(String(sp && sp[1] || "")) || 100;
+  const gm   = String(sp && sp[0] || "").match(/(\d{3})/);
+  const g    = gm ? +gm[1] : null;
+  let floor = 1;
+  if (head <= 95) floor = 8;            // 95 and under is tour equipment, full stop
+  else if (head <= 97) floor = 6;       // 97: advanced territory, never a beginner stick
+  else if (head <= 98) floor = 5;       // 98: intermediate at the very earliest
+  if (g != null && g >= 320) floor = Math.max(floor, 7);   // mass you have to be able to swing
+  return floor;
+}
+rk.forEach(r => { const fl = srfDiffFloor(r.sp); if (r.d != null && r.d < fl) r.d = fl; });
 // ---------- performance curve: a smooth spline across every axis, area-filled ----------
 // Catmull-Rom through the scores, converted to cubic beziers so the line accelerates
 // through peaks instead of kinking at each point.
@@ -5761,7 +6459,7 @@ function diffCell(d, active){
 }
 function tag(r, sz){
   const own = r.o ? ` <span style="color:${r.o[1]};font-size:${sz||11}px;font-weight:400;">· ${r.o[0]}</span>` : "";
-  const pt  = r.pt ? ` <span title="playtested — court tested" style="color:var(--cyan);font-size:${(sz||11)-2}px;font-weight:600;white-space:nowrap;">\u2713 playtested</span>` : "";
+  const pt  = r.pt ? ` <span title="played — you have hit with this frame" style="color:var(--cyan);font-size:${(sz||11)-2}px;font-weight:600;white-space:nowrap;">\u2713 played</span>` : "";
   const es  = r.est===true ? ` <span title="researched — scores auto-estimated from specs, edit as you learn the frame" style="color:var(--bronze);font-size:${(sz||11)-2}px;font-weight:600;white-space:nowrap;">est.</span>` : "";
   return own + pt + es;
 }
@@ -5804,7 +6502,7 @@ function rkRecOrder(arr){
   try { void w; } catch(e){ return window.srfRecFirst("racket", arr.slice().sort((a,b)=>
     (window.srfGrpRank("racket", a) - window.srfGrpRank("racket", b)) || (gRank(a.g) - gRank(b.g)))); }
   const tw = w.reduce((a,b)=>a+b,0) || 1;
-  const sc = r => r.s.reduce((a,v,i)=>a+v*w[i],0)/tw;
+  const sc = r => srfWScore(r.s, w);
   let meds = [], budgetNo = null;
   try {
     if (window.srfShortlist){
@@ -5817,7 +6515,7 @@ function rkRecOrder(arr){
   const slot = r => { const m = meds.indexOf(r.no);
     return m >= 0 ? m : (r.no === budgetNo ? 3 : 4); };
   /* recency sits ABOVE the podium: what you just looked up is what you came back for.
-     Below the recent band, YOUR shelves lead - quiver, test next, court tested - and
+     Below the recent band, YOUR shelves lead - my bag, test next, played - and
      only inside each tier do the podium slots and the weighted score order the rest. */
   return window.srfRecFirst("racket", arr.slice().sort((a,b) =>
     (window.srfGrpRank("racket", a) - window.srfGrpRank("racket", b)) ||
@@ -5912,16 +6610,16 @@ window.srfManMove = function(no, dir, ev){
   document.addEventListener("dragend", () => { clearMark(); dragNo = null;
     document.querySelectorAll(".row-dragging").forEach(x => x.classList.remove("row-dragging")); });
 })();
-/* THE group button. On the bench it reads "+ group" and invites; on a shelf it
+/* THE shelf button. Unfiled it reads "+ shelf" and invites; on a shelf it
    names the shelf. Heatmap, hard specs and the mobile cards all render this one. */
 function grpBtn(r){
   const un = r.g === "bench";
   const gi = G[r.g] || G.bench;
-  const nm = r.g === "next" ? "test next" : r.g === "tested" ? "court tested" : String(gi[1]).split(" — ")[0];
+  const nm = String(gi[1]);
   return `<button type="button" class="grpchip${un ? " unfiled" : ""}" style="color:${un ? "" : gi[0]};" ` +
-    `title="${un ? "put this frame in a group — my quiver, test next, court tested or a shelf of your own" : `on the ${String(gi[1]).replace(/"/g, "&quot;")} shelf — click to move it`}" ` +
-    `aria-label="group for this frame" onclick="event.stopPropagation();srfShelfPop('racket',${r.no},event)">` +
-    `${un ? "+ group" : "▤ " + nm}</button>`;
+    `title="${un ? "put this frame on a shelf — my bag, test next, played, friends, or a shelf of your own" : `on the ${nm.replace(/"/g, "&quot;")} shelf — click to move it`}" ` +
+    `aria-label="shelf for this frame" onclick="event.stopPropagation();srfShelfPop('racket',${r.no},event)">` +
+    `${un ? "+ shelf" : "▤ " + nm}</button>`;
 }
 window.srfGrpBtnR = grpBtn;   // the card lists render the same button
 /* the shelf grouping is not deleted, just demoted to a view you ask for */
@@ -5946,7 +6644,7 @@ function buildGrid(){
      Guarded like rkRecOrder: the first paint runs before the weights initialise. */
   let ovOf = null;
   try { const ovTw = w.reduce((a,b)=>a+b,0) || 1;
-        ovOf = r => r.s.reduce((a,v,i)=>a+v*w[i],0) / ovTw; } catch(e){}
+        ovOf = r => srfWScore(r.s, w); void ovTw; } catch(e){}
   let rows;
   if (SEL.size) rows = rk.slice().sort((a,b)=> selScore(b)-selScore(a));
   else if (sortIdx==="d") rows = rk.slice().sort((a,b)=> DIR*(a.d-b.d));
@@ -5966,10 +6664,22 @@ function buildGrid(){
      hard specs and the weighted ranking all follow it (rkGSel repaints all three) */
   if (window.RK_GSEL && window.RK_GSEL.size) rows = rows.filter(r => window.RK_GSEL.has(r.g));
   const rowsTotal = rows.length;
-  rows = rows.slice(0, window.SRFLIM.racket || 5);
+  /* The recency band is pinned ABOVE the podium (rkRecOrder), so with the default
+     five-row window three looked-up frames left only two rows showing the actual
+     recommendation — and those two rows are what a reader judges the sliders by.
+     Grow the window by the size of the band instead of letting it evict the podium.
+     Only in the resting order, only while the band is non-empty, and capped so a big
+     band cannot silently unfold the whole bench. */
+  let rkLim = window.SRFLIM.racket || 5;
+  if (sortIdx === null && !SEL.size && !filtering){
+    let band = 0;
+    try { band = window.srfRecCount("racket", rows); } catch(e){}
+    if (band > 0) rkLim = Math.min(rkLim + Math.min(band, 6), rowsTotal);
+  }
+  rows = rows.slice(0, rkLim);
   if (!rows.length){
     document.getElementById("grid").innerHTML = (window.RK_GSEL && window.RK_GSEL.size && !filtering)
-      ? `<div style="padding:22px 6px;color:var(--muted);font-size:12px;">Nothing on the selected shelves yet — file a frame there with the <b>+ group</b> button on any row or racket card, or click the legend chip again to show all.</div>`
+      ? `<div style="padding:22px 6px;color:var(--muted);font-size:12px;">Nothing on the selected shelves yet — file a frame there with the <b>+ shelf</b> button on any row or racket card, or click the legend chip again to show all.</div>`
       : `<div style="padding:22px 6px;color:var(--muted);font-size:12px;">No frame on the bench matches “${document.getElementById("specSearch").value.trim()}”. Use the amber <b style="color:var(--amber);">search ↗</b> button to look it up online.</div>`;
     document.getElementById("sortState").textContent = SEL.size
     ? "ranked by " + [...SEL].map(i=>cats[i]).join(" + ") + (SEL.size>1?` (${SEL.size} categories)`:"")
@@ -5996,7 +6706,7 @@ function buildGrid(){
         `<button type="button" class="gonly" onclick="event.stopPropagation();rkGroupOnly('${r.g}')" aria-label="show only ${G[r.g][1]}">${solo?"all groups":"only"}</button></div>`;
     }
     if (sortIdx==="g" && !SEL.size && !filtering && RK_GCOLL.has(r.g)) return;   // folded: header stands, rows wait
-    h += `<div role="cell" class="namecell" data-no="${r.no}" style="color:${G[r.g][0]};display:flex;flex-direction:column;justify-content:center;padding:3px 4px 3px 7px;line-height:1.25;border-left:3px ${gStyle(r.g)} color-mix(in srgb, ${G[r.g][0]} 62%, transparent);"><span style="font-weight:500;"><span class="draghandle" draggable="true" data-drag="${r.no}" title="drag to reorder — your order is shared with hard specs and sticks until reset order">⋮⋮</span>${cmpBox("racket", r.no)}<span class="custname" role="button" tabindex="0" onclick="cOpen(${r.no})" onkeydown="if(event.key==='Enter'){cOpen(${r.no});}" onmouseenter="noteHoverIn(noteFrame,${r.no},event)" onmouseleave="noteHoverOut()" title="customize this frame — hover for play notes">${r.b} ${r.n}</span><button type="button" class="infobtn" aria-label="play notes for ${r.b} ${r.n}" onclick="event.stopPropagation();noteFrame(${r.no},event)">ⓘ</button>${r.feel?`<button type="button" class="custbtn feelbtn" aria-label="edit how ${r.b} ${r.n} feels for you" onclick="event.stopPropagation();fOpen(${r.feelOf})">edit feel</button>`:`<button type="button" class="custbtn" aria-label="customize ${r.b} ${r.n} — describe what you did to it" onclick="event.stopPropagation();cOpen(${r.no})">customize</button><button type="button" class="custbtn feelbtn" aria-label="re-score ${r.b} ${r.n} to your feel" onclick="event.stopPropagation();fOpen(${r.no})">my feel</button>`}${tag(r)}${window.srfRecChip("racket",r)}${r.cust?`<span class="custchip" title="${r.cust.text.replace(/"/g,'&quot;')}">customized</span>`:""}${r.feel?`<span class="custchip feelchip" title="your category read of the stock ${r.b} ${r.n} — the stock row is still on the bench">my feel</span>`:""}${window.buyBtn("racket",(r.b?r.b+" ":"")+String(r.n).replace(/ · my feel$/,""),true,"buy",true)}</span><span style="color:var(--muted);font-size:10px;font-weight:400;">${r.sp[0]} · ${r.sp[2]}${grpBtn(r)}${window.srfDelBtn("racket", r.no)}</span></div>`;
+    h += `<div role="cell" class="namecell" data-no="${r.no}" style="color:${G[r.g][0]};display:flex;flex-direction:column;justify-content:center;padding:3px 4px 3px 7px;line-height:1.25;border-left:3px ${gStyle(r.g)} color-mix(in srgb, ${G[r.g][0]} 62%, transparent);"><span style="font-weight:500;"><span class="draghandle" draggable="true" data-drag="${r.no}" title="drag to reorder — your order is shared with hard specs and sticks until reset order">⋮⋮</span>${cmpBox("racket", r.no)}<span class="custname" role="button" tabindex="0" onclick="srfRowMenu('racket',${r.no},event)" onkeydown="if(event.key==='Enter'){srfRowMenu('racket',${r.no},event);}" onmouseenter="noteHoverIn(noteFrame,${r.no},event)" onmouseleave="noteHoverOut()" title="what you can do with this frame — customize, my feel, notes, remove">${r.b} ${r.n}</span>${tag(r)}${window.srfRecChip("racket",r)}${r.cust?`<span class="custchip" title="${r.cust.text.replace(/"/g,'&quot;')}">customized</span>`:""}${r.feel?`<span class="custchip feelchip" title="your category read of the stock ${r.b} ${r.n} — the stock row is still on the bench">my feel</span>`:""}${window.buyBtn("racket",(r.b?r.b+" ":"")+String(r.n).replace(/ · my feel$/,""),true,"buy",true)}</span><span class="rw_bot"><span class="rw_meta">${r.sp[0]} · ${r.sp[2]}</span>${grpBtn(r)}<button type="button" class="rowmore" aria-label="more actions for ${r.b} ${r.n}" title="customize · my feel · notes · remove" onclick="event.stopPropagation();srfRowMenu('racket',${r.no},event)">\u22ef</button></span></div>`;
     h += `<div role="cell" class="spdcell" style="display:flex;align-items:center;justify-content:center;">${spiderIcon("racket", r.no, r.s)}</div>`;
     h += priceCell(r.p, sortIdx==="p");
     h += `<div role="cell" class="curvecell" style="display:flex;align-items:center;justify-content:center;">${perfCurve(r.s,200,44)}</div>`;
@@ -6019,7 +6729,7 @@ function buildGrid(){
       `color:var(--bright);font-weight:600;font-size:13px;">${ovOf ? ovOf(r).toFixed(1) : "\u2014"}</div>`;
   });
   h += `</div>`;
-  h += window.srfLimitBar("racket", rowsTotal, "rkLimSet");
+  h += window.srfLimitBar("racket", rowsTotal, "rkLimSet", 0, rows.length);
   document.getElementById("grid").innerHTML = h;
   if (window.rkPaintLegend) rkPaintLegend();
   critChips(); mobileCards(rows, rowsTotal); if(window.cmpPaintAll) cmpPaintAll();
@@ -6072,15 +6782,31 @@ function estimateScores(sp, extra){
   // estimates cap at 9 — a magenta 10 stays something only court time earns
   return [control,precision,spin,power,feel,stability,maneuver,serve,smash,slice,ret].map(x=>Math.min(9,clamp(x)));
 }
-// difficulty = how much racket the player has to handle: mass, swingweight, small head, dense bed, low power
+/* difficulty = how much racket the player has to handle.
+   REBALANCED after a tester was handed a 97 sq in tour frame as a BEGINNER pick.
+   The old weighting was: swingweight +/-3, static weight +/-1, head +1/-2. Head size
+   was the weakest term in the formula and it is in fact the strongest thing there is:
+   the sweet spot is an AREA, so 97 -> 105 sq in is roughly a sixth more forgiving
+   surface, and every off-centre ball twists a small head harder.
+   Worse, the old formula read "light" as "easy" and so scored the light versions of
+   tour frames — Percept 97L, Pro Staff 97L, EZONE 98L, CX 200 LS, all 285-290 g with
+   97-98 in heads — at difficulty 2-3, i.e. inside the beginner ceiling. A light frame
+   with a small head is the OPPOSITE of easy: there is less mass to absorb the
+   off-centre hit that the small head makes more likely. That combination now costs a
+   point instead of earning three. */
 function estimateDifficulty(sp, extra){
   const w=num(sp[0])||305, head=num(sp[1])||98, ra=num(sp[3]);
   const pm=String(sp[2]).match(/(\d+)\s*x\s*(\d+)/); const dense=pm?parseInt(pm[1])*parseInt(pm[2]):304;
   const sw=(extra&&num(extra.sw))||num(sp[4])||(w+(head>=100?5:0)-5);
   let d=5;
+  // what you have to move
   if(sw>=330)d+=3; else if(sw>=322)d+=2; else if(sw<=305)d-=2;
   if(w>=330)d+=1; if(w<=290)d-=1;
-  if(head<=97)d+=1; if(head>=104)d-=2;
+  // the sweet spot — the dominant forgiveness term, not an afterthought
+  if(head<=95)d+=4; else if(head<=97)d+=3; else if(head<=98)d+=2;
+  else if(head>=105)d-=2; else if(head>=102)d-=1;
+  // light AND small-headed: no mass to absorb the miss the small head invites
+  if(head<=98&&w<=295)d+=1;
   if(dense>=350)d+=1;
   if(ra!==null&&ra<=61)d+=1;
   return Math.max(1,Math.min(10,d));
@@ -6965,8 +7691,8 @@ function mobileCards(rows, total){
         </div>
         <div class="pr">
           ${r.p?`<span class="prv">~${r.p}\u20ac</span>`:`<span class="prv" style="opacity:.4;">\u2014</span>`}
-          <span class="ovv" title="overall weighted score \u2014 follows your sliders">\u00d8 ${(r.s.reduce((a,v,i)=>a+v*w[i],0)/tot).toFixed(1)}</span>
-          <span class="movewrap"><button type="button" class="movebtn" aria-label="move this frame one position up" title="move up \u2014 your order sticks until reset" onclick="srfManMove(${r.no},-1,event)">\u25b2</button><button type="button" class="movebtn" aria-label="move this frame one position down" title="move down \u2014 your order sticks until reset" onclick="srfManMove(${r.no},1,event)">\u25bc</button></span>${window.srfDelBtn("racket", r.no)}
+          <span class="ovv" title="overall weighted score \u2014 follows your sliders">\u00d8 ${srfWScore(r.s, w).toFixed(1)}</span>
+          <span class="movewrap"><button type="button" class="movebtn" aria-label="move this frame one position up" title="move up \u2014 your order sticks until reset" onclick="srfManMove(${r.no},-1,event)">\u25b2</button><button type="button" class="movebtn" aria-label="move this frame one position down" title="move down \u2014 your order sticks until reset" onclick="srfManMove(${r.no},1,event)">\u25bc</button></span>
         </div>
       </header>
       <div class="cv">${perfCurve(r.s,336,56)}</div>
@@ -7056,7 +7782,7 @@ function render(){
     try { buildGrid(); } catch(e){} finally { RK_REORDERING = false; }
   }
   const tw = w.reduce((a,b)=>a+b,0) || 1;
-  const scored = rk.map(r => ({...r, sc: r.s.reduce((a,v,i)=>a+v*w[i],0)/tw})).sort((a,b)=> b.sc-a.sc || (a.b+a.n).localeCompare(b.b+b.n));   // name tiebreak: equal scores can never jitter
+  const scored = rk.map(r => ({...r, sc: srfWScore(r.s, w)})).sort((a,b)=> b.sc-a.sc || (a.b+a.n).localeCompare(b.b+b.n));   // name tiebreak: equal scores can never jitter
   /* the crowns are the SUGGESTIONS — the same gold/silver/bronze the strip above hands
      out (bench + market, gated to the intro answers). The ORDER stays the pure weighted
      math, so the best raw score can sit at #1 wearing no crown; its flag says why. */
@@ -7072,7 +7798,7 @@ function render(){
   /* every podium slot appears in this list — a pick that lives on the wider market gets
      a GHOST ROW at its true score position instead of silently losing its crown */
   const scOf = f => { const row = SLR && SLR.rows.find(x => x.f === f);
-    return row ? row.sc : f.s.reduce((a, v, i) => a + v * w[i], 0) / tw; };
+    return row ? row.sc : srfWScore(f.s, w); };
   const ghosts = [];
   if (SLR){
     SLR.meds.forEach((f, n) => { if (!(f.no > 0)) ghosts.push({ ghost: true, f, mi: n, sc: scOf(f) }); });
@@ -7107,7 +7833,7 @@ function render(){
      applied HERE, where disp is still a let — and doing it once per render is also
      cheaper than redoing it on every filter keystroke. */
   /* the shelf chips narrow this ranking too now — and with no chip active the
-     resting order pins your shelves first: my quiver, then test next, then court
+     resting order pins your shelves first: my bag, then test next, then played
      tested. Market ghosts carry no shelf, so a filtered ranking shows bench rows only. */
   if (window.RK_GSEL && window.RK_GSEL.size) disp = disp.filter(r => !r.ghost && window.RK_GSEL.has(r.g));
   disp = window.srfRecFirst("racket", window.srfGrpFirst("racket", disp));
@@ -7180,7 +7906,7 @@ function seedGridMedals(scored, medNos, budgetNo){
     // render() is called right after the weights exist and re-seeds the medals
     try { void w; } catch(e){ return; }
     const tw2 = w.reduce((a,b)=>a+b,0) || 1;
-    scored = rk.map(r => ({...r, sc: r.s.reduce((a,v,i)=>a+v*w[i],0)/tw2}))
+    scored = rk.map(r => ({...r, sc: srfWScore(r.s, w)}))
                .sort((a,b)=> b.sc-a.sc || (a.b+a.n).localeCompare(b.b+b.n));
   }
   document.querySelectorAll("#grid .namecell .medal").forEach(m => m.remove());
@@ -7234,24 +7960,20 @@ window.srfSetupWhy = (role, sc, pure, bedWhy, price) => {
    to just "buy" — the bar is the point of that view, not the buttons. */
 window.rowActs = (r, tiny) => {
   if (r.no == null || r.no <= 0) return "";
-  if (r.feel) return `<span class="rowact${tiny ? " tinyact" : ""}"><button type="button" class="custbtn feelbtn" ` +
-    `title="edit how this frame feels for you" onclick="event.stopPropagation();fOpen(${r.feelOf})">${tiny ? "\u270E" : "edit feel"}</button>` +
-    window.buyBtn("racket", (r.b ? r.b + " " : "") + String(r.n).replace(/ \u00b7 my feel$/, ""), true, tiny ? "buy" : undefined) + `</span>`;
-  /* In the ranking the two secondary actions become glyphs — the gear already meant
-     "customize" in this file's earlier revisions, so it is the house sign for it. The
-     full words stay everywhere else, where there is room for them. */
+  /* Two actions ride the row — buy, and the menu that holds everything else. The
+     gear/pencil glyph pair that used to sit here read as decoration on a phone. */
+  const nm = (r.b ? r.b + " " : "") + String(r.n).replace(/ \u00b7 my feel$/, "");
   return `<span class="rowact${tiny ? " tinyact" : ""}">` +
-    `<button type="button" class="custbtn" title="customize \u2014 physical mods, lead tape, weight, balance" ` +
-      `aria-label="customize this frame" onclick="event.stopPropagation();cOpen(${r.no})">${tiny ? "\u2699" : "customize"}</button>` +
-    `<button type="button" class="custbtn feelbtn" title="my feel \u2014 re-score the categories to how it plays for you" ` +
-      `aria-label="re-score this frame to your feel" onclick="event.stopPropagation();fOpen(${r.no})">${tiny ? "\u270E" : "my feel"}</button>` +
-    window.buyBtn("racket", (r.b ? r.b + " " : "") + r.n, true, tiny ? "buy" : undefined) + `</span>`;
+    window.buyBtn("racket", nm, true, tiny ? "buy" : undefined) +
+    `<button type="button" class="rowmore" title="customize \u00b7 my feel \u00b7 notes \u00b7 remove" ` +
+      `aria-label="more actions for ${nm.replace(/"/g, "&quot;")}" ` +
+      `onclick="event.stopPropagation();srfRowMenu('racket',${r.no},event)">\u22ef</button></span>`;
 };
 /* stock average under the same weights — shown next to a re-scored row's number */
 window.stockAvg = (r, w, tw) => {
   const src = r.feel ? r.stockS : (r.cust && r.stock ? r.stock.s : null);
   if (!src) return null;
-  return (src.reduce((a, v, i) => a + v * w[i], 0) / tw).toFixed(1);
+  return srfWScore(src, w).toFixed(1);
 };
 /* the four finished setups at the end of the calibrator — pro's version of the
    intermediate answer block. Same shortlist, same calibrator, same why-generator, so
@@ -7271,7 +7993,7 @@ window.paintSetups4 = () => {
     cand.forEach(x => { const r = calibScore(f, x.bed, x.tech); if (!top || r.sc > top.r.sc) top = { x, r }; });
     return top; };
   const tw2 = w.reduce((a, b) => a + b, 0) || 1;
-  const rawTop = rk.filter(r => !window.srfIsDel || !srfIsDel("racket", r)).map(r => ({ f: r, sc: r.s.reduce((a, v, i) => a + v * w[i], 0) / tw2 }))
+  const rawTop = rk.filter(r => !window.srfIsDel || !srfIsDel("racket", r)).map(r => ({ f: r, sc: srfWScore(r.s, w) }))
                    .sort((a, b) => b.sc - a.sc || (a.f.b + a.f.n).localeCompare(b.f.b + b.f.n))[0] || null;
   const scOf = f => { const row = (SL.rows || []).find(x => x.f === f); return row ? row.sc : (f.__sc != null ? f.__sc : 0); };
   const four = meds.slice(0, 3).map((f, i) => ({ f, role: i }));
@@ -7318,7 +8040,7 @@ function paintWinners(scored){
   } else {
     if (!scored){
       const tw2 = w.reduce((a,b)=>a+b,0) || 1;
-      scored = rk.map(r => ({...r, sc: r.s.reduce((a,v,i)=>a+v*w[i],0)/tw2}))
+      scored = rk.map(r => ({...r, sc: srfWScore(r.s, w)}))
                  .sort((a,b)=> b.sc-a.sc || (a.b+a.n).localeCompare(b.b+b.n));
     }
     const pool = (window.srfMedalPool ? srfMedalPool("racket", scored) : scored);
@@ -7344,7 +8066,7 @@ function paintWinners(scored){
     ` <span style="color:var(--muted);">× ${esc(x.bed.x)}</span>` : ` <span style="color:var(--muted);">· full bed</span>`);
   /* the raw-math top across the whole bench, for the gold card's why-line */
   const tw3 = w.reduce((a,b)=>a+b,0) || 1;
-  const pureTop = rk.filter(x => !window.srfIsDel || !srfIsDel("racket", x)).map(x => ({ f:x, sc: x.s.reduce((a,v,i)=>a+v*w[i],0)/tw3 }))
+  const pureTop = rk.filter(x => !window.srfIsDel || !srfIsDel("racket", x)).map(x => ({ f:x, sc: srfWScore(x.s, w) }))
                     .sort((a,b)=>b.sc-a.sc)[0] || null;
   const roleOf = (r) => r === meds[0] ? 0 : r === meds[1] ? 1 : r === meds[2] ? 2 : 3;
   const card = (r, badge, label, extra) => {
@@ -7443,7 +8165,7 @@ function buildSpecs(){
   }
   rows = rows.slice(0, window.SRFLIM.hsR || 5);
   rows.forEach(r => {
-    sh += `<div class="hs_name" data-no="${r.no}" style="color:${G[r.g][0]};padding:3px 4px;font-weight:500;"><span class="draghandle" draggable="true" data-drag="${r.no}" title="drag to reorder — your order is shared with the heatmap and sticks until reset order">⋮⋮</span>${r.b} ${r.n}${tag(r,10)}${grpBtn(r)}${window.srfDelBtn("racket", r.no)}` +
+    sh += `<div class="hs_name" data-no="${r.no}" style="color:${G[r.g][0]};padding:3px 4px;font-weight:500;"><span class="draghandle" draggable="true" data-drag="${r.no}" title="drag to reorder — your order is shared with the heatmap and sticks until reset order">⋮⋮</span>${r.b} ${r.n}${tag(r,10)}${grpBtn(r)}<button type="button" class="rowmore" aria-label="more actions for ${r.b} ${r.n}" title="more \u2014 customize, my feel, play notes, REMOVE this row" onclick="event.stopPropagation();srfRowMenu('racket',${r.no},event)">\u22ef</button>` +
       (r.cust ? `<button type="button" class="infobtn custi" aria-label="what this customization did" ` +
         `title="what this customization did to the frame" onclick="custInfo(${r.no})">\u24d8</button>` : "") + `</div>` +
       r.sp.map((v,i)=>`<div style="color:${specSort===i?"var(--cyan)":"var(--fg)"};padding:3px 4px;">${v}</div>`).join("");
@@ -7875,15 +8597,14 @@ window.rkPaintLegend = function(){
   const CANON = ["own", "next", "tested", "fr", "bench"];
   const keys = CANON.concat(Object.keys(G).filter(k =>
     CANON.indexOf(k) === -1 && (rk.some(r => r.g === k) || sel.has(k))));
-  /* chip labels in the player's own words — "playtested"/"selected" read as states,
-     not shelves */
-  const NICK = { own:"my quiver", next:"test next", tested:"court tested" };
+  /* the shelf names live in G now and there is only one set of them */
+  const NICK = { own:G.own[1], next:G.next[1], tested:G.tested[1] };
   const chips = keys.map(k => {
     const n = rk.filter(r => (!window.srfIsDel || !srfIsDel("racket", r)) && r.g === k).length;
     const on = sel.has(k);
     return `<button type="button" class="gleg${on ? " on" : ""}${sel.size && !on ? " dim" : ""}${n ? "" : " nil"}" ` +
       `aria-pressed="${on}" onclick="rkGSel('${k}')" ` +
-      `title="${on ? "showing this shelf \u2014 click to remove it from the filter" : (n ? "click to show only this shelf (click more to compare)" : "empty shelf \u2014 still selectable; the + group button on any row or racket card files a frame here")}">` +
+      `title="${on ? "showing this shelf \u2014 click to remove it from the filter" : (n ? "click to show only this shelf (click more to compare)" : "empty shelf \u2014 still selectable; the + shelf button on any row or racket card files a frame here")}">` +
       `<i style="background:${G[k][0]}"></i>${esc(NICK[k] || String(G[k][1]).split(" — ")[0])}<b>${n}</b></button>`;
   }).join("") +
   (sel.size ? `<button type="button" class="gleg all" onclick="rkGClear()">show all</button>` : "");
@@ -8314,7 +9035,7 @@ function buildSbSpecs(){
   rows = rows.slice(0, window.SRFLIM.hsS || 5);
   rows.forEach(b=>{
     const [mat,st]=bedMat(b), pr=bedPrice(b);
-    h+=`<div style="color:${rowColor(b)};padding:4px 5px;font-weight:500;">${b.m}${window.srfDelBtn("string", b.i)}</div>`+
+    h+=`<div style="color:${rowColor(b)};padding:4px 5px;font-weight:500;">${b.m}<button type="button" class="rowmore" aria-label="more actions for this bed" title="my feel \u00b7 notes \u00b7 remove" onclick="event.stopPropagation();srfRowMenu('string',${b.i},event)">\u22ef</button></div>`+
        `<div style="color:${b.mt?"var(--fg)":"var(--muted)"};padding:4px 5px;">${b.mt?b.mt+" kg":"—"}</div>`+
        `<div style="color:var(--soft);padding:4px 5px;">× ${b.x}</div>`+
        `<div style="color:${b.ct?"var(--fg)":"var(--muted)"};padding:4px 5px;">${b.ct?b.ct+" kg":(/full bed/i.test(b.x)&&b.mt?b.mt+" kg":"—")}</div>`+
@@ -8952,10 +9673,10 @@ window.SRF = window.SRF || {};
    does now — same physics, same lab adjustment, one source of truth. */
 /* the same three, for beds. "ref" is stored as an empty tag — that is the file's
    existing convention (see sbSave), not a new one. */
-const SB_TAGOPTS = [["mine","my beds \u2014 currently strung"], ["benchmark","my benchmark"],
-                    ["validated","court-validated"], ["tested","court-tested"],
-                    ["queued","queued \u2014 string next"], ["researched","researched"],
-                    ["ref","reference only"]];
+const SB_TAGOPTS = [["mine","in my racket"], ["benchmark","my benchmark"],
+                    ["validated","played \u00b7 confirmed"], ["tested","played"],
+                    ["queued","string next"], ["researched","researched"],
+                    ["ref","reference"]];
 window.sbScoreInfo = (i, ax) => {
   const b = beds[i]; if (!b) return null;
   return { label: AX[ax], value: b.s[ax], base: b.baseS ? b.baseS[ax] : null };
@@ -9143,7 +9864,7 @@ window.sbGroupView = () => { sortIdx = (sortIdx === "g" ? null : "g"); SBSEL.cle
 function buildGrid(){
   const tot=w.reduce((a,b)=>a+b,0)||1;
   beds.forEach((b,i)=>{ b.i=i; b.no=i+1; });
-  let scored=beds.filter(b => !window.srfIsDel || !srfIsDel("string", b)).map(b=>({...b, idx:b.s.reduce((a,v,i)=>a+v*w[i],0)/tot}));
+  let scored=beds.filter(b => !window.srfIsDel || !srfIsDel("string", b)).map(b=>({...b, idx:srfWScore(b.s, w)}));
   if(SBSEL.size){ scored.sort((a,b)=> sbSelScore(b)-sbSelScore(a)); }
   else if(sortIdx==="g"){ scored.sort((a,b)=> SBORDER.indexOf(gkey(a))-SBORDER.indexOf(gkey(b)) || b.idx-a.idx); }
   else if(sortIdx===null){ sbRecSort(scored); }
@@ -9214,8 +9935,8 @@ function buildGrid(){
     if(sortIdx==="g" && !SBSEL.size && SB_GCOLL.has(gkey(b))) return;
     const col=rowColor(b);
     h+=`<div role="cell" class="namecell" data-bi="${b.i}" style="display:flex;flex-direction:column;justify-content:center;padding:5px 4px;line-height:1.25;border-left:3px solid color-mix(in srgb, ${col} 55%, transparent);">
-          <span style="font-weight:500;">${cmpBox("string", b.i)}<span class="custname" role="button" tabindex="0" onclick="sbOpen(${b.i})" onkeydown="if(event.key==='Enter'){sbOpen(${b.i});}" onmouseenter="noteHoverIn(noteBed,${b.i},event)" onmouseleave="noteHoverOut()" title="claim this bed — hover for play notes" style="color:var(--bright);">${b.m}</span><button type="button" class="infobtn" aria-label="play notes" onclick="event.stopPropagation();noteBed(${b.i},event)">ⓘ</button><button type="button" class="custbtn feelbtn" aria-label="re-score this bed to your feel" onclick="event.stopPropagation();sbFOpen(${b.i})">${b.feel?"edit feel":"my feel"}</button>${b.feel?`<span class="custchip feelchip" title="your own read — the stock row is still on the bench">my feel</span>`:""}${(sbTop.indexOf(b.i)>=0)?`<span class="medal ${["mG","mS","mB"][sbTop.indexOf(b.i)]}" title="your #${sbTop.indexOf(b.i)+1} suggestion — same as your suggestions">${sbTop.indexOf(b.i)+1}</span>`:""}${b.i === sbBudgetI ? SB_EURO : ""}${window.buyBtn("string", String(b.m).split(" \u00b7 ")[0], true, "buy", true)}</span>
-          <span style="color:var(--muted);font-size:10px;">× ${b.x}${b.mt?` · ${b.mt}${b.ct?"/"+b.ct:""} kg`:""}</span>${tagChip(b)}${window.srfDelBtn("string", b.i)}${window.srfRecChip("string",b)}
+          <span style="font-weight:500;">${cmpBox("string", b.i)}<span class="custname" role="button" tabindex="0" onclick="sbOpen(${b.i})" onkeydown="if(event.key==='Enter'){sbOpen(${b.i});}" onmouseenter="noteHoverIn(noteBed,${b.i},event)" onmouseleave="noteHoverOut()" title="claim this bed — hover for play notes" style="color:var(--bright);">${b.m}</span>${b.feel?`<span class="custchip feelchip" title="your own read — the stock row is still on the bench">my feel</span>`:""}${(sbTop.indexOf(b.i)>=0)?`<span class="medal ${["mG","mS","mB"][sbTop.indexOf(b.i)]}" title="your #${sbTop.indexOf(b.i)+1} suggestion — same as your suggestions">${sbTop.indexOf(b.i)+1}</span>`:""}${b.i === sbBudgetI ? SB_EURO : ""}${window.buyBtn("string", String(b.m).split(" \u00b7 ")[0], true, "buy", true)}</span>
+          <span class="rw_bot"><span class="rw_meta">× ${b.x}${b.mt?` · ${b.mt}${b.ct?"/"+b.ct:""} kg`:""}</span>${tagChip(b)}<button type="button" class="rowmore" aria-label="more actions for this bed" title="my feel · notes · remove" onclick="event.stopPropagation();srfRowMenu('string',${b.i},event)">\u22ef</button>${window.srfRecChip("string",b)}</span>
           ${b.note?`<span class="custchip" title="${String(b.note).replace(/"/g,'&quot;')}">noted</span>`:""}${b.twin?`<span class="custchip" style="color:var(--amber);background:color-mix(in srgb, var(--amber) 14%, transparent);" title="identical derived stats to ${String(b.twin).replace(/"/g,'&quot;')} \u2014 reopen transfer specs and add stiffness, shape or gauge to separate them">twin est.</span>`:""}</div>`;
     h+=`<div role="cell" class="spdcell" style="display:flex;align-items:center;justify-content:center;">${spiderIcon("string", b.i, b.s)}</div>`;
     const pr=bedPrice(b);
@@ -9252,7 +9973,7 @@ function buildGrid(){
      rows at their true score position — no crown silently disappears */
   const sbScOf = bed => { const row = SBL && SBL.rows.find(x => x.bed === bed);
     if (row) return row.sc; const tot = w.reduce((a, x) => a + x, 0) || 1;
-    return bed.s.reduce((a, v, i) => a + v * w[i], 0) / tot; };
+    void tot; return srfWScore(bed.s, w); };
   const sbGhosts = [];
   if (SBL){
     SBL.meds.forEach((bed, n) => { if (!(bed.i >= 0)) sbGhosts.push({ ghost: true, bed, mi: n, sc: sbScOf(bed) }); });
@@ -9484,7 +10205,7 @@ function sbMobileCards(rows, total){
     return `<article class="mcard">
       <header>
         <div class="who">
-          <div class="nm">${cmpBox("string", b.i)}${n+1}. ${esc(b.m)}${window.buyBtn("string", String(b.m).split(" \u00b7 ")[0], true)}${b.twin?`<span class="custchip" style="color:var(--amber);background:color-mix(in srgb, var(--amber) 14%, transparent);" title="identical derived stats to ${String(b.twin).replace(/"/g,'&quot;')}">twin est.</span>`:""}<button type="button" class="infobtn" aria-label="play notes" onclick="noteBed(${b.i},event)">ⓘ</button><button type="button" class="custbtn feelbtn" aria-label="re-score this bed to your feel" onclick="event.stopPropagation();sbFOpen(${b.i})">${b.feel?"edit feel":"my feel"}</button>${spiderIcon("string", b.i, b.s)}${window.srfDelBtn("string", b.i)}</div>
+          <div class="nm">${cmpBox("string", b.i)}${n+1}. ${esc(b.m)}${window.buyBtn("string", String(b.m).split(" \u00b7 ")[0], true)}${b.twin?`<span class="custchip" style="color:var(--amber);background:color-mix(in srgb, var(--amber) 14%, transparent);" title="identical derived stats to ${String(b.twin).replace(/"/g,'&quot;')}">twin est.</span>`:""}${spiderIcon("string", b.i, b.s)}<button type="button" class="rowmore" aria-label="more actions for this bed" title="my feel \u00b7 notes \u00b7 remove" onclick="event.stopPropagation();srfRowMenu('string',${b.i},event)">\u22ef</button></div>
           <div class="sp">\u00d7 ${esc(b.x)}${b.mt?` \u00b7 ${b.mt}${b.ct?"/"+b.ct:""} kg`:""}</div>
           ${tagChip(b)}
         </div>
@@ -10150,7 +10871,7 @@ window.SRF.strings = () => NERD.map(r=>({ name:r[0], brand:r[1], label:r[1]+" "+
   };
   function quiverChips(){
     const q = (window.SRF && window.SRF.quiver) ? window.SRF.quiver() : [];
-    if(!q.length) return `<span class="meta">no frames in your quiver yet \u2014 the <b>+ group</b> button on any racket row or card files one</span>`;
+    if(!q.length) return `<span class="meta">nothing in your bag yet \u2014 the <b>+ shelf</b> button on any racket row or card files one</span>`;
     return q.map(r=>`<span style="background:color-mix(in srgb, var(--magenta) 14%, transparent);color:var(--magenta-fg,var(--magenta));border-radius:999px;padding:2px 9px;font-size:10.5px;font-weight:600;white-space:nowrap;">${r.b} ${r.n}</span>`).join(" ");
   }
 
@@ -10620,6 +11341,7 @@ function introWeights(){
   const LV = { beginner:"as a beginner", intermediate:"as an intermediate",
                advanced:"as an advanced player", pro:"at pro level" }[INTRO.level] || "";
   const FQ = { rarely:"you play rarely", "1x":"you play once a week",
+               "23x":"you play 2\u20133 times a week",
                "4x":"you play 4+ times a week" }[INTRO.freq] || "";
   ({ beginner:     () => { bR(R.pwr,2,"profile",LV); bR(R.man,2,"profile",LV); bR(R.feel,1,"profile",LV);
                            bR(R.ctrl,-1,"profile",LV); bR(R.prec,-1,"profile",LV);
@@ -10649,9 +11371,16 @@ function introWeights(){
                        bR(R.serve,2,"asked","your all-round game"); bR(R.man,1,"asked","your all-round game");
                        bS(S.feel,2,"asked","your all-round game"); bS(S.ctl,1,"asked","your all-round game"); } }
    [INTRO.shape] || (()=>{}))();
-  ({ rarely: () => { bR(R.feel,2,"profile",FQ); bR(R.man,1,"profile",FQ); bS(S.arm,2,"profile",FQ); },
-     "1x":   () => { bR(R.feel,1,"profile",FQ); bS(S.arm,1,"profile",FQ); },
-     "4x":   () => { bR(R.stab,1,"profile",FQ); bS(S.lng,2,"profile",FQ); } }
+  /* "2-3x/week" — the single most common answer — was missing from this table
+     entirely, so it fell through to a no-op: the most popular answer changed nothing.
+     The frequency axis is also the one place where play volume has a real physical
+     consequence, and it is string life: a bed that dies in eight hours is a different
+     purchase for someone playing seven hours a week than for someone playing one. */
+  ({ rarely: () => { bR(R.feel,2,"profile",FQ); bR(R.man,1,"profile",FQ);
+                     bS(S.arm,2,"profile",FQ); bS(S.lng,-2,"profile",FQ); },
+     "1x":   () => { bR(R.feel,1,"profile",FQ); bS(S.arm,1,"profile",FQ); bS(S.lng,-1,"profile",FQ); },
+     "23x":  () => { bR(R.stab,1,"profile",FQ); bS(S.lng,1,"profile",FQ); },
+     "4x":   () => { bR(R.stab,1,"profile",FQ); bR(R.ctrl,1,"profile",FQ); bS(S.lng,3,"profile",FQ); } }
    [INTRO.freq] || (()=>{}))();
   if (INTRO.arm === "yes"){   // an explicit ask, so it may appear as "what you asked for"
     bR(R.feel,3,"asked","you asked for arm-friendly gear");
@@ -10859,7 +11588,34 @@ function advisorShow(kind){
    territory whatever the arm score says, and an arm score below 7 is harsh on its own.
    Easy mode enforces the same two thresholds (68 RA / 195 lb/in) inside easyRun. */
 function srfFrameRA(f){ const m = String((f.sp && f.sp[3]) || "").match(/(\d+)/); return m ? +m[1] : 65; }
-function srfArmHarshFrame(f){ return srfFrameRA(f) >= 68 || f.s[4] < 6; }
+function srfFrameGrams(f){ const m = String((f.sp && f.sp[0]) || "").match(/(\d{3})/); return m ? +m[1] : null; }
+/* A tester ticked "arm-friendly, please" and was handed a YONEX VCORE Pro 97H:
+   330 g, 97 sq in, difficulty 9/10. The gate could not see any of that — it tested
+   stiffness and feel only, and that frame is a soft layup with feel 10/10.
+   The physics behind the old rule is sound for a strong player: mass absorbs shock,
+   so a heavy flexible frame IS gentle — as long as you can still swing it on time.
+   But the person ticking this box is usually saying "my elbow hurts", and late
+   contact with a frame you cannot swing is the most common way elbows get hurt in
+   the first place. So mass and overall demand now count as harsh too. Difficulty is
+   the right variable for the second half because it already folds head size,
+   swingweight and mass into one number. */
+function srfArmHarshFrame(f){
+  if (srfFrameRA(f) >= 68 || f.s[4] < 6) return true;      // stiff, or poor feel: harsh for anyone
+  /* Mass and demand are only harsh RELATIVE to what the player can swing. A 330 g tour
+     frame in the hands of a pro really is the gentle choice — mass absorbs shock. In the
+     hands of someone who ticked arm-friendly and nothing else it is the fastest route to
+     a sore elbow, because the damage comes from late contact, not from the frame. So the
+     two answers finally compose: with a level set the ceiling sits two steps above what
+     that level should be playing; with no level set the rule is conservative. */
+  let G = null;
+  try { if (INTRO.level && typeof ezGate === "function") G = ezGate(); } catch(e){}
+  const dCap = G ? G.fIdeal + 2 : 7;
+  const gCap = G ? (G.fIdeal >= 6 ? 335 : 315) : 315;
+  const g = srfFrameGrams(f);
+  if (f.d != null && f.d > dCap) return true;
+  if (g != null && g >= gCap) return true;
+  return false;
+}
 function srfBedStiffOf(bi){ try { const t = SRF.bedTech(bi); return t ? calMatStiff(t) : null; } catch(e){ return null; } }
 function srfArmHarshBed(bed, stiff){ return bed.s[7] < 7 || (stiff != null && stiff >= 195); }
 function srfArmFlagOf(kind, item, bi){
@@ -10870,9 +11626,42 @@ function srfArmFlagOf(kind, item, bi){
 }
 /* medal eligibility. When fewer than 3 arm-safe items exist the gate opens fully
    rather than inventing a podium out of nothing — same relax rule easy mode uses. */
+/* A frame and its own "· my feel" or "· custom" row are the SAME RACKET. Both rank,
+   both belong on the bench — but the podium answers "what should I buy", and it was
+   answering it twice with one frame: gold to the feel copy (scored by the player) and
+   silver to the stock original right behind it, because their axis vectors are nearly
+   identical. That costs a real alternative its place at BOTH ends of the stance, which
+   is a large part of why the podium looked frozen.
+   arr always arrives sorted best-first, so keeping the first member of each family
+   keeps the family's best score and drops only the duplicates below it. */
+/* a DECLARATION, not window.srfFamKey = ... : the first render calls srfMedalPool
+   while this script is still evaluating, and only declarations are hoisted that far */
+function srfFamKey(kind, r){
+  if (!r) return "";
+  const strip = t => String(t == null ? "" : t).replace(/\s*\u00b7\s*(my feel|custom)\s*$/i, "").trim();
+  /* An item with NO name has no family. Returning "|" for it \u2014 which is what the
+     first version did \u2014 made every nameless item a duplicate of every other, and
+     srfOnePerFrame collapsed four of them into one. Real rows always carry a name,
+     so this only ever bit the synthetic rows the gate tests build, but a dedupe that
+     can silently eat unnamed input is wrong however rarely it fires. */
+  const base = strip(kind === "racket" ? r.n : r.m);
+  if (!base) return "";
+  return kind === "racket"
+    ? String(r.b == null ? "" : r.b) + "|" + base
+    : base + "|" + String(r.x == null ? "" : r.x);
+}
+window.srfFamKey = srfFamKey;
+function srfOnePerFrame(kind, arr){
+  const seen = new Set(), out = [];
+  arr.forEach(r => { const k = srfFamKey(kind, r);
+    if (!k){ out.push(r); return; }
+    if (seen.has(k)) return;
+    seen.add(k); out.push(r); });
+  return out;
+}
 function srfMedalPool(kind, arr){
   let armAsk = false; try { armAsk = INTRO.arm === "yes"; } catch(e){}
-  let pool = arr;
+  let pool = srfOnePerFrame(kind, arr);
   /* Specialist ask: a longevity or arm-friendliness slider at 9-10 (hand-set or via
      the durability-first / arm-first presets) is a statement, not a taste. Beds that
      FAIL that axis - 4/10 or less - cannot take a medal, exactly like the arm answer
@@ -10892,10 +11681,18 @@ function srfMedalPool(kind, arr){
     window.SRF_SPEC_GATE = hits.join(" + ");
   }
   if (!armAsk) return pool;
-  const soft = kind === "racket"
-    ? pool.filter(r => !srfArmHarshFrame(r))
-    : pool.filter(r => !srfArmHarshBed(r, srfBedStiffOf(r.i)));
-  return soft.length >= 3 ? soft : pool;
+  const harsh = kind === "racket"
+    ? (r => srfArmHarshFrame(r))
+    : (r => srfArmHarshBed(r, srfBedStiffOf(r.i)));
+  const soft = pool.filter(r => !harsh(r));
+  if (soft.length >= 3){ window.SRF_ARM_SHORT = 0; return soft; }
+  /* Fewer than three arm-safe items. Opening the gate fully — what this used to do — is
+     how an arm-friendly ask ended up crowning a 330 g difficulty-9 frame. Partial credit
+     instead: everything arm-safe outranks everything harsh, and inside each group the
+     weighted score still decides. The ask is honoured as far as the bench allows, and
+     SRF_ARM_SHORT lets the card say how far that was. */
+  window.SRF_ARM_SHORT = soft.length;
+  return soft.concat(pool.filter(harsh));
 }
 function advGateNote(what, kept, all){
   const bits = [];
@@ -11506,7 +12303,15 @@ const CHAP_KEY = "srf:chapters:v1";
 let CHAP_OPEN = new Set();
 try { const c0 = JSON.parse(localStorage.getItem(CHAP_KEY) || "[]");
       if (Array.isArray(c0)) CHAP_OPEN = new Set(c0); } catch(e){}
+/* The racket bench is where all three jobs live, so it is OPEN on arrival — but only
+   until you say otherwise. Once anything has been toggled, the stored state is the
+   truth and a closed bench stays closed. */
+try {
+  if (localStorage.getItem(CHAP_KEY) === null){ CHAP_OPEN.add("rk"); }
+} catch(e){ CHAP_OPEN.add("rk"); }
 function chapSave(){ try { localStorage.setItem(CHAP_KEY, JSON.stringify([...CHAP_OPEN])); } catch(e){} }
+/* a theme change repaints every score cell in the app — the player bench joins in */
+window.srfPBTheme = function(){ try{ if(window.srfPBRepaint) window.srfPBRepaint(); }catch(e){} };
 window.srfChapApply = function(){
   document.querySelectorAll(".chapbar").forEach(bar => {
     const open = CHAP_OPEN.has(bar.dataset.chap);
@@ -11853,6 +12658,26 @@ function ezStyleNote(kind, ST, res){
     (res.relaxed ? `<span style="color:var(--amber);">, lowered from ${kind === "frames" ? ST.fMin : ST.bMin} because too few qualified</span>` : "") + `.`;
 }
 const ezFloorPen = (d, floor) => (floor && d < floor) ? (floor - d) * 0.35 : 0;
+/* ---- what "how often do you play" actually costs you --------------------------
+   The tester complaint was precise: four different answers to "how often" produced
+   almost the same podium, so the question read as decorative. It is not — frequency
+   decides how fast a bed dies, and therefore what a setup costs to keep. A weighting
+   nudge is invisible; a number of weeks and a euro figure is not. Both are derived,
+   not invented: playing hours come from the answer, bed life from the longevity axis
+   that the lab table already publishes. */
+const EZ_HOURS = { rarely:1, "1x":1.5, "23x":4, "4x":7 };            // playing hours a week
+const EZ_FQTXT = { rarely:"playing rarely", "1x":"at 1\u00d7/week",
+                   "23x":"at 2\u20133\u00d7/week", "4x":"at 4+\u00d7/week" };
+const ezBedLifeH = l => l >= 9 ? 34 : l >= 8 ? 26 : l >= 7 ? 20 : l >= 6 ? 15
+                      : l >= 5 ? 11 : l >= 4 ? 8 : l >= 3 ? 6 : 4;   // hours before it is dead
+function ezRunCost(bed, tech){
+  const hpw = EZ_HOURS[INTRO.freq];
+  if (!hpw || !tech || tech.priceV == null || !bed || !bed.s) return "";
+  const weeks = ezBedLifeH(bed.s[6]) / hpw;
+  const perYear = Math.round(tech.priceV * (52 / weeks));
+  const w = weeks >= 8 ? Math.round(weeks) : (Math.round(weeks * 10) / 10).toString().replace(/\.0$/, "");
+  return ` \u00b7 <b>lasts ~${w} weeks ${EZ_FQTXT[INTRO.freq]} \u00b7 ~${perYear}\u20ac a year</b>`;
+}
 /* ---- frame weight bands by sex + level (unstrung grams) ----
    "I am man/woman" finally DOES something: together with level it selects the weight
    band frames are matched against. A 329 g customised frame stops being offered to a
@@ -12012,7 +12837,7 @@ window.srfShortlist = (kind) => {
     const tw = rw.reduce((a, b) => a + b, 0) || 1;
     const frames = advFrames().concat(mkFrames());
     const gp = srfGatePool("racket", frames);
-    const rows = gp.pool.map(f => ({ f, sc: f.s.reduce((a, v, i) => a + v * rw[i], 0) / tw }))
+    const rows = gp.pool.map(f => ({ f, sc: srfWScore(f.s, rw) }))
       .sort((a, b) => b.sc - a.sc || (a.f.b + a.f.n).localeCompare(b.f.b + b.f.n));
     const meds = (window.srfMedalPool ? srfMedalPool("racket", rows.map(x => x.f)) : rows.map(x => x.f)).slice(0, 3);
     const priced = rows.filter(x => meds.indexOf(x.f) < 0 && x.f.p != null);
@@ -12026,7 +12851,7 @@ window.srfShortlist = (kind) => {
   const gp = srfGatePool("string", all.map(x => x.bed));
   const keep = new Set(gp.pool);
   const rows = all.filter(x => keep.has(x.bed))
-    .map(x => ({ bed: x.bed, tech: x.tech, sc: x.bed.s.reduce((a, v, i) => a + v * sw[i], 0) / tw }))
+    .map(x => ({ bed: x.bed, tech: x.tech, sc: srfWScore(x.bed.s, sw) }))
     .sort((a, b) => b.sc - a.sc || String(a.bed.m).localeCompare(String(b.bed.m)));
   const meds = (window.srfMedalPool ? srfMedalPool("string", rows.map(x => x.bed)) : rows.map(x => x.bed)).slice(0, 3);
   const priced = rows.filter(x => meds.indexOf(x.bed) < 0 && x.tech.priceV != null);
@@ -12047,14 +12872,17 @@ window.midPaint = (skipSliderSync) => {
   const twR = rw.reduce((a, b) => a + b, 0) || 1;
   const rl = (SRF.axisLabels ? SRF.axisLabels() : []).map(String);
   const frames = advFrames().concat(mkFrames());
-  const fScore = f => ({ f, sc: f.s.reduce((a, v, i) => a + v * rw[i], 0) / twR });
+  const fScore = f => ({ f, sc: srfWScore(f.s, rw) });
   const fSort = arr => arr.sort((a, b) => b.sc - a.sc || (a.f.b + a.f.n).localeCompare(b.f.b + b.f.n));
   const SL = srfShortlist("racket");
   const gpF = { gated: SL.gated };
   // medals anchor to the gated ranking; a typed search overrides the gate — if you name
   // a frame, you see it, and the flag tells you what the gate would have said
   const fMeds = SL.meds;
-  const fRows = q ? fSort(frames.filter(f => srfMatch(q, f.b + " " + f.n)).map(fScore)) : SL.rows;
+  /* the gated path filters deleted rows inside srfGatePool; this one never did, so
+     a row you removed came back the instant you typed its name */
+  const fRows = q ? fSort(frames.filter(f => srfMatch(q, f.b + " " + f.n) &&
+      (!window.srfIsDel || !srfIsDel("racket", f))).map(fScore)) : SL.rows;
   const fCard = (x, idx) => {
     const mi = fMeds.indexOf(x.f);
     const band = srfBandOf("racket", x.f);
@@ -12068,7 +12896,10 @@ window.midPaint = (skipSliderSync) => {
       `<span class="pc_buy">${window.buyBtn("racket", (x.f.b ? x.f.b + " " : "") + x.f.n, true)}</span>` +
       `<div class="nm" style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;">${cmpBox("racket", cid)}<span class="jump2"${jump}><b>${esc(x.f.b)}</b> ${esc(x.f.n)}</span>${x.f.src === "market" ? MK_BADGE : ""}${onBench && window.srfGrpBtnR ? srfGrpBtnR(x.f) : ""}` +
       (band ? `<span class="lvlflag ${band.cls}" title="from your answers">${band.txt}</span>` : "") +
-      `<span style="margin-left:auto;">${spiderIcon("racket", cid, x.f.s)}</span></div>` +
+      `<span style="margin-left:auto;display:inline-flex;align-items:center;gap:3px;">${spiderIcon("racket", cid, x.f.s)}` +
+      `<button type="button" class="rowmore" aria-label="more actions for this frame" ` +
+      `title="${onBench ? "customize \u00b7 my feel \u00b7 notes \u00b7 remove" : "hide this market row"}" ` +
+      `onclick="event.stopPropagation();srfRowMenu('racket',${cid},event)">\u22ef</button></span></div>` +
       `<div class="sp">${esc(String(x.f.sp[0]))} \u00b7 ${esc(String(x.f.sp[2]))}${x.f.p != null ? ` \u00b7 ~${x.f.p}\u20ac` : ""} \u00b7 match ${x.sc.toFixed(1)}/10 \u00b7 difficulty ${x.f.d}/10</div>` +
       `<div class="st">strong where you care: <b>${strongest(x.f.s, rw, rl)}</b></div></div>`;
   };
@@ -12080,6 +12911,7 @@ window.midPaint = (skipSliderSync) => {
     `<div style="color:var(--muted);font-size:11.5px;">No bench or market match for \u201c${esc(q)}\u201d \u2014 use <b>research online</b> to look it up.</div>`;
   if (fPrev.length) out.querySelectorAll(".mid_pc").forEach((c, i) => {
     if (fPrev[i] !== fNow[i]){ c.classList.remove("rowflash"); void c.offsetWidth; c.classList.add("rowflash"); } });
+  try { if (window.srfTrashPaint) srfTrashPaint(); } catch(e){}
   const rn = document.getElementById("mid_rn");
   if (rn) rn.textContent = q
     ? `\u00b7 ${fRows.length} match${fRows.length === 1 ? "" : "es"} for \u201c${q}\u201d \u2014 gate lifted, flags tell the story`
@@ -12087,12 +12919,13 @@ window.midPaint = (skipSliderSync) => {
   // ---- strings
   const sw = midSW(); const twS = sw.reduce((a, b) => a + b, 0) || 1;
   const bedsAll = calBeds().concat(mkBeds());
-  const bScore = x => ({ bed: x.bed, tech: x.tech, sc: x.bed.s.reduce((a, v, i) => a + v * sw[i], 0) / twS });
+  const bScore = x => ({ bed: x.bed, tech: x.tech, sc: srfWScore(x.bed.s, sw) });
   const bSort = arr => arr.sort((a, b) => b.sc - a.sc || String(a.bed.m).localeCompare(String(b.bed.m)));
   const SLB = srfShortlist("string");
   const gpB = { gated: SLB.gated };
   const bMeds = SLB.meds;
-  const bRows = q ? bSort(bedsAll.filter(x => srfMatch(q, String(x.bed.m) + " " + String(x.bed.x || ""))).map(bScore)) : SLB.rows;
+  const bRows = q ? bSort(bedsAll.filter(x => srfMatch(q, String(x.bed.m) + " " + String(x.bed.x || "")) &&
+      (!window.srfIsDel || !srfIsDel("string", x.bed))).map(bScore)) : SLB.rows;
   const bName = b => esc(String(b.m)) + (b.x && !/full bed/i.test(String(b.x)) ? ` <span style="color:var(--muted);">\u00d7 ${esc(String(b.x))}</span>` : "") +
     (b.src === "market" ? MK_BADGE : b.src === "combo" ? CB_BADGE : "") + (b.deal ? DEAL_BADGE : "");
   const bCard = (x, idx) => {
@@ -12104,7 +12937,10 @@ window.midPaint = (skipSliderSync) => {
       (mi >= 0 ? `<span class="medal ${["mG","mS","mB"][mi]}">${mi + 1}</span> ` : "") +
       `<div class="nm" style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;">${cmpBox("string", cid)}<span style="min-width:0;">${bName(x.bed)}</span>${window.buyBtn("string", String(x.bed.m).split(" \u00b7 ")[0], true)}${x.bed.twin?`<span class="custchip" style="color:var(--amber);background:color-mix(in srgb, var(--amber) 14%, transparent);" title="identical derived stats to ${String(x.bed.twin).replace(/"/g,'&quot;')}">twin est.</span>`:""}` +
       (band ? `<span class="lvlflag ${band.cls}" title="from your answers">${band.txt}</span>` : "") +
-      `<span style="margin-left:auto;">${spiderIcon("string", cid, x.bed.s)}</span></div>` +
+      `<span style="margin-left:auto;display:inline-flex;align-items:center;gap:3px;">${spiderIcon("string", cid, x.bed.s)}` +
+      `<button type="button" class="rowmore" aria-label="more actions for this bed" ` +
+      `title="${(x.bed.i != null && x.bed.i >= 0) ? "my feel \u00b7 notes \u00b7 remove" : "hide this market row"}" ` +
+      `onclick="event.stopPropagation();srfRowMenu('string',${cid},event)">\u22ef</button></span></div>` +
       `<div class="sp">${x.tech.hybrid ? "hybrid" : "full bed"}${x.tech.priceV != null ? ` \u00b7 ~${x.tech.priceV}\u20ac` : ""}${x.tech.stiff != null ? ` \u00b7 ~${Math.round(x.tech.stiff)} lb/in` : ""} \u00b7 match ${x.sc.toFixed(1)}/10 \u00b7 demand ${x.bed.demand.toFixed(0)}/10</div>` +
       `<div class="st">strong where you care: <b>${strongest(x.bed.s, sw, MID_SLBL)}</b></div></div>`;
   };
@@ -12215,7 +13051,7 @@ window.easyRun = () => {
   const fStyle = ezFloorGate(fGate.pool, f => f.s[ST ? ST.fAxis : 0], ST ? ST.fMin : null, 4);
   const fArm = ARM ? ezFloorGate(fStyle.pool, f => f.s[4], 7, 4) : { pool:fStyle.pool, min:null, relaxed:false };
   const fRank = fArm.pool
-    .map(f => ({ f, sc: f.s.reduce((a,v,i)=>a+v*rw[i],0)/twR
+    .map(f => ({ f, sc: srfWScore(f.s, rw)
                        - ezFloorPen(f.d, G.fIdeal)
                        - ezBandFit(f).pen                     // sex+level weight band
                        - ezPricePen(f.p, "frame")             // frequency price check
@@ -12267,7 +13103,30 @@ window.easyRun = () => {
     if (!bits.length) bits.push(n === 0
       ? `of everything that passed your gates, the highest overall match to your answers`
       : `within ${(pod[0].sc - x.sc).toFixed(1)} of gold — a matter of taste, not class`);
-    return `<b>Why this one:</b> ${bits.slice(0,2).join("; ")}. `;
+    /* A tester ticked arm-friendly and was handed a 330 g frame, and reasonably called
+       it wrong. It is not wrong — at a level that can swing it, mass is what protects an
+       arm, because shock comes from the ball moving the racket and a heavy soft frame
+       moves least. But the app never said so, and an unexplained answer that contradicts
+       common sense reads as a bug. So when the arm ask crowns something heavy or
+       demanding, the card now says why in the same breath. */
+    let armLine = "";
+    if (INTRO.arm === "yes"){
+      const gA = (String(x.f.sp[0]||"").match(/(\d{3})/)||[,null])[1];
+      const raA = (String(x.f.sp[3]||"").match(/(\d+)/)||[,null])[1];
+      if (gA && +gA >= 315)
+        armLine = ` <span class="ez_armwhy"><b>Why a heavy frame for a sore arm:</b> shock comes from the ball ` +
+          `moving the racket, so mass resists it${raA ? ` and a ${raA} RA layup flexes instead of jarring` : ""} — ` +
+          `at ${gA}g this is the gentle choice <em>as long as you can still meet the ball in front</em>. ` +
+          `If you are arriving late on it, go lighter, not softer.</span>`;
+      else if (x.f.d != null && x.f.d >= 7)
+        armLine = ` <span class="ez_armwhy">Arm-friendly and this demanding a frame pull against each other; ` +
+          `this is the softest thing that still belongs at your level.</span>`;
+      if (window.SRF_ARM_SHORT != null && window.SRF_ARM_SHORT > 0 && window.SRF_ARM_SHORT < 3 && n === 0)
+        armLine += ` <span class="ez_armwhy" style="color:var(--amber);">Only ${window.SRF_ARM_SHORT} frame` +
+          `${window.SRF_ARM_SHORT === 1 ? "" : "s"} at your level cleared the arm rule outright, so the rest of ` +
+          `this podium is ranked softest-first rather than filtered.</span>`;
+    }
+    return `<b>Why this one:</b> ${bits.slice(0,2).join("; ")}.${armLine} `;
   };
   if (EZ_WANT !== "string"){
     html += `<div class="ez_sec"><div class="ez_sech">Your racket</div>` +
@@ -12312,7 +13171,7 @@ window.easyRun = () => {
   const bRank = bArm.pool
     // no separate stiffness bonus here on purpose: demand is already computed FROM dynamic
     // stiffness and gauge, so rewarding stiffness again would double-count the same fact
-    .map(({bed,tech}) => ({ bed, tech, sc: bed.s.reduce((a,v,i)=>a+v*sw[i],0)/twS
+    .map(({bed,tech}) => ({ bed, tech, sc: srfWScore(bed.s, sw)
                                           - ezFloorPen(bed.demand, G.bIdeal)
                                           - ezPricePen(tech.priceV, "bed")
                                           - (ARM && tech.stiff != null && tech.stiff >= 195 ? 0.7 : 0) }))
@@ -12369,7 +13228,7 @@ window.easyRun = () => {
       `${EZ_VALUE[INTRO.freq] ? ` Price-checked for how often you play: beds over <b>${(EZ_VALUE[INTRO.freq]||{}).bP0}\u20ac</b> lose ground${INTRO.freq==="4x"?" only slightly \u2014 frequent stringers pay for performance":""}.` : ""}</div>` +
       `<div class="ez_pods">` +
       bPod.map((x,n) => ezPod(["pG","pS","pB"][n], EZ_LABEL[n], EZ_MEDAL[n], bedName(x.bed),
-        `${x.tech.hybrid?"hybrid":"full bed"}${x.tech.priceV!=null?` \u00b7 ~${x.tech.priceV}\u20ac`:""} \u00b7 match ${x.sc.toFixed(1)}/10 \u00b7 demand ${x.bed.demand.toFixed(0)}/10`,
+        `${x.tech.hybrid?"hybrid":"full bed"}${x.tech.priceV!=null?` \u00b7 ~${x.tech.priceV}\u20ac`:""} \u00b7 match ${x.sc.toFixed(1)}/10 \u00b7 demand ${x.bed.demand.toFixed(0)}/10${ezRunCost(x.bed, x.tech)}`,
         bWhy(x, bPod, n) +
         `${ST ? `<b>${ST.axis} ${x.bed.s[ST.bAxis]}/10</b>. ` : ""}` +
         ezStory(x.bed.s, sw, slog, sLabels) +
@@ -12456,6 +13315,575 @@ window.easyRun = () => {
 };
 (function easyInit(){ easyPaintWant(); })();
 
+</script>
+<script>
+/* ================= PLAYER BENCH v.01a — grafted into pro mode =================
+   The standalone bench, unchanged in its maths, with four adaptations:
+     1 · every score cell asks the FINDER for its colour, so the bench follows all
+         twenty themes instead of carrying its own obsidian ramp (its own ramp is
+         kept as the fallback);
+     2 · claude.use("downloads") is gone — export is a real Blob download with a
+         clipboard fallback, because this file runs on the open web now;
+     3 · "sync my priorities" writes the eleven racket and eight string values
+         straight into the Finder's own sliders through applyRacketWeights /
+         applyStringWeights — the whole reason for the graft;
+     4 · it lives in its own IIFE and touches nothing outside #pb_root, so the
+         Finder's globals are untouched.
+   The eleven racket axes and eight string axes below are the Finder's own lists,
+   in the Finder's own order. */
+(function(){
+  "use strict";
+  if (!document.getElementById("pb-rows")) return;
+
+  var AXES = [
+    {n:"Forehand — depth &amp; direction", s:"FH",
+     d:["Gets it back, direction is chance","Fairly consistent, some directional intent, no depth control","Good directional control on moderate balls, developing spin","Dependable — depth AND direction on moderate balls","Varies pace and spin, controls depth as a tactic"],
+     drill:"10 feeds at rally pace, alternating crosscourt / down-the-line on call. Count the balls that land in the back third without losing pace.",
+     m:["≤2 of 10","3–4 of 10","5–6 of 10","7–8 of 10","9–10 of 10"]},
+    {n:"Backhand — under height &amp; pace", s:"BH",
+     d:["Avoided or blocked","Prepared, fair on moderate balls only","Directional control on moderate balls, difficulty on high or hard ones","Consistency and depth on moderate balls, developing spin","Attacks the high ball, drives or carves by choice"],
+     drill:"10 shoulder-height or hard-driven feeds to the backhand. Count balls returned past the service line with intent — a bailout slice does not count.",
+     m:["≤2 of 10","3–4 of 10","5–6 of 10","7–8 of 10","9–10 of 10"]},
+    {n:"First serve", s:"S1",
+     d:["Getting it in is the whole plan","In play, little pace or placement","Starting to serve with control and some power","Places first serves, frequent power, uses spin","Serve is a weapon — pace, spin and target on demand"],
+     drill:"20 first serves, five to each target: deuce wide, deuce T, ad wide, ad T. Count the ones that land in AND within a racquet length of the target.",
+     m:["≤3 of 20","4–7 of 20","8–11 of 20","12–15 of 20","16+ of 20"]},
+    {n:"Second serve — the gate", s:"S2",
+     d:["Double faults decide games","Push serve, sits up, gets attacked","Some spin, but still a defensive ball","Places the second serve with spin, not attackable for free","Kick or slice you can play the next ball behind"],
+     drill:"20 spin second serves — count how many land in. Then the honest half: your second-serve double-fault rate over a real set.",
+     m:["≤6 in, or DF &gt; 30%","7–9 in, or DF &gt; 25%","10–13 in, push character","14–16 in with spin","17+ in, attackable behind it"]},
+    {n:"Return", s:"RET",
+     d:["Contact is the achievement","Returns the moderate serve, no direction","Returns consistently with directional control","Dependable return, can return with depth in singles","Takes time away, returns to a chosen target under pace"],
+     drill:"10 first serves from the biggest server you can find. Count returns that land in play past the service line.",
+     m:["≤2 of 10","3–4 of 10","5–6 of 10","7–8 of 10","9–10 of 10"]},
+    {n:"Volley &amp; net finish", s:"VOL",
+     d:["Avoids the net","Reaches the ball, no control of it","Directs the forehand volley, backhand controlled but with little offense","Depth and control on the forehand volley, developing wide and low volleys, finishes points","Finishes from anywhere, handles the low and wide ball"],
+     drill:"10 volleys per side alternating, then 5 wide and 5 low. Count the ones you directed to a chosen half of the court.",
+     m:["≤5 of 30","6–11 of 30","12–17 of 30","18–24 of 30","25+ of 30"]},
+    {n:"Smash &amp; overhead", s:"SM",
+     d:["Lets it bounce every time","Hits it, no control","Consistent on overheads within reach","Puts away the easy overhead","Puts away overheads moving backwards"],
+     drill:"10 lobs — 5 within reach, 5 that force you back. Count the ones put away or driven deep with control.",
+     m:["≤2 of 10","3–4 of 10","5–6 of 10","7–8 of 10","9–10 of 10"]},
+    {n:"Slice / touch", s:"SL",
+     d:["Not in the toolbox","Slice as an emergency only","Developing approach shots, drop shots and half volleys","Reliable slice, uses it to change rhythm","Carves, stops and floats by design"],
+     drill:"10 slice approaches into the back third with a low bounce, then 5 drop shots that die inside the service box.",
+     m:["≤2 of 15","3–5 of 15","6–8 of 15","9–11 of 15","12+ of 15"]},
+    {n:"Movement &amp; coverage", s:"MOV",
+     d:["Reaches what comes to him","Covers the middle, late to the corners","Improved coverage, starting to look for the net","Effective coverage, follows the aggressive shot in","Effective court coverage — recovery is automatic"],
+     drill:"Six-ball wide pattern, corner to corner, recovering through the centre each time. Count the sets of six you finish with all six in play.",
+     m:["0 of 5 sets","1 of 5","2 of 5","3–4 of 5","5 of 5"]},
+    {n:"Point construction under pressure", s:"PC",
+     d:["No pattern, hits and hopes","Rallies, but the plan ends at the first ball","Consistent on moderate balls, no variation of plan","Not yet playing good percentage tennis, but the intent is there","Builds game plans around strengths and weaknesses"],
+     drill:"Four tiebreaks against a regular partner. Count the points where you executed the pattern you intended, rather than bailing out or over-hitting.",
+     m:["&lt;25% of points","25–40%","40–55%","55–70%","&gt;70%"]}
+  ];
+
+  var PRESETS = { ntrp:[8,8,7,10,7,6,4,4,6,9], flat:[5,5,5,5,5,5,5,5,5,5],
+                  singles:[8,8,8,10,7,5,5,5,8,9], doubles:[6,6,6,9,8,9,8,6,5,8] };
+  var PRESET_NAME = {ntrp:"NTRP calibration", flat:"Flat 5s", singles:"Singles", doubles:"Doubles"};
+  var UTR = {"1.5":"1.0 – 2.0","2.0":"1.0 – 2.5","2.5":"1.5 – 3.5",
+             "3.0":"2.5 – 4.5","3.5":"4.0 – 6.5","4.0":"6.0 – 8.0","4.5":"7.5 – 9.5"};
+  var UTR_EST = {"1.5":1,"2.0":1,"2.5":1};
+
+  var KEY = "pb:v01a";
+  var S2 = 3, PC = 9, EST_CAP = 8;
+  var state = load();
+
+  function blank(){
+    return {scores:[5,5,5,5,5,5,5,5,5,5], measured:[0,0,0,0,0,0,0,0,0,0],
+            weights:PRESETS.ntrp.slice(), preset:"ntrp", mix:50, sessions:[], live:false};
+  }
+  function load(){
+    try{
+      var raw = localStorage.getItem(KEY); if(!raw) return blank();
+      var o = JSON.parse(raw), b = blank();
+      if(Array.isArray(o.scores) && o.scores.length === 10) b.scores = o.scores.map(clamp);
+      if(Array.isArray(o.measured) && o.measured.length === 10) b.measured = o.measured.map(function(v){return v?1:0});
+      if(Array.isArray(o.weights) && o.weights.length === 10) b.weights = o.weights.map(clamp);
+      if(Array.isArray(o.sessions)) b.sessions = o.sessions.slice(0,60);
+      if(PRESETS[o.preset]) b.preset = o.preset;
+      if(typeof o.mix === "number") b.mix = Math.max(0, Math.min(100, o.mix));
+      b.live = !!o.live;
+      return b;
+    }catch(e){ return blank(); }
+  }
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+  function clamp(v){ v = Math.round(Number(v)||1); return v<1?1:(v>10?10:v); }
+
+  /* the bench asks the Finder for its colours so it follows every theme; the
+     original obsidian ramp stays as the fallback if that function ever moves */
+  var ANCHORS = [[1,"#6b1d22"],[3,"#8b2635"],[4,"#a96f44"],[6,"#c28e58"],[7,"#907d51"],[8,"#5f6b4a"],[9,"#2d5a43"]];
+  function hex2rgb(h){ return [parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)]; }
+  function rgb2css(c){ return "rgb("+Math.round(c[0])+","+Math.round(c[1])+","+Math.round(c[2])+")"; }
+  function ownRamp(v){
+    if(v >= 10) return "#2DBE75";
+    if(v <= 1)  return ANCHORS[0][1];
+    for(var i=0;i<ANCHORS.length-1;i++){
+      var a = ANCHORS[i], b = ANCHORS[i+1];
+      if(v >= a[0] && v <= b[0]){
+        var t = (v - a[0]) / (b[0] - a[0]), ca = hex2rgb(a[1]), cb = hex2rgb(b[1]);
+        return rgb2css([ca[0]+(cb[0]-ca[0])*t, ca[1]+(cb[1]-ca[1])*t, ca[2]+(cb[2]-ca[2])*t]);
+      }
+    }
+    return ANCHORS[ANCHORS.length-1][1];
+  }
+  /* the Finder's cellColor returns a PAIR — [background, ink] — not a string. Handing
+     that array straight to style.background silently produced a transparent cell, which
+     is exactly what the first graft did. Both halves are read explicitly now. */
+  function pbPair(v){
+    try{ if(typeof window.cellColor === "function"){ var c = window.cellColor(v); if(c) return c; } }catch(e){}
+    return null;
+  }
+  function pbCell(v){
+    var c = pbPair(v);
+    if(Array.isArray(c) && c[0]) return c[0];
+    if(typeof c === "string" && c) return c;
+    return ownRamp(v);
+  }
+  function pbInk(v, bg){
+    var c = pbPair(v);
+    if(Array.isArray(c) && c[1]) return c[1];
+    return textOn(bg);
+  }
+  function textOn(color){
+    var s = String(color).trim(), m;
+    if(s.charAt(0) === "#"){ var q = s.slice(1);
+      if(q.length === 3) q = q.split("").map(function(x){return x+x;}).join("");
+      m = [parseInt(q.slice(0,2),16), parseInt(q.slice(2,4),16), parseInt(q.slice(4,6),16)];
+    } else { m = (s.match(/\d+/g) || []).slice(0,3).map(Number); }
+    if(m.length < 3) return "#F5F6F8";
+    var L = (0.2126*m[0] + 0.7152*m[1] + 0.0722*m[2]) / 255;
+    return L > 0.52 ? "#0A0B0E" : "#F5F6F8";
+  }
+
+  function effective(i, scores, measured){
+    var v = scores[i];
+    return (!measured[i] && v > EST_CAP) ? EST_CAP : v;
+  }
+  function compute(scores, measured, weights){
+    var sum = 0, wsum = 0, capped = 0;
+    for(var i=0;i<10;i++){
+      var e = effective(i, scores, measured);
+      if(e < scores[i]) capped++;
+      sum += e * weights[i]; wsum += weights[i];
+    }
+    var mean = wsum ? sum / wsum : 0;
+    var raw = 2 + 0.25 * mean;
+    var gateMean = (effective(S2,scores,measured) + effective(PC,scores,measured)) / 2;
+    var gate = 2 + 0.25 * gateMean + 0.5;
+    var fin = Math.min(raw, gate);
+    var bracket = Math.floor(fin * 2) / 2;
+    if(bracket < 1.5) bracket = 1.5;
+    if(bracket > 4.5) bracket = 4.5;
+    var nm = 0; for(var j=0;j<10;j++) if(measured[j]) nm++;
+    return {raw:raw, gate:gate, final:fin, bracket:bracket, gated:(gate < raw - 0.001), capped:capped, measured:nm};
+  }
+  function levelOf(v){ return (2 + 0.25 * v); }
+  function bandIndex(v){ return v<=2 ? 0 : (v<=4 ? 1 : (v<=6 ? 2 : (v<=8 ? 3 : 4))); }
+
+  /* the Finder's own axis lists, in the Finder's own order */
+  var RAX = ["Control (flat)","Precision","Spin","Power","Feel / comfort","Stability",
+             "Maneuverability","Serve","Smash & overhead","Slice / touch","Return / blocking"];
+  var SAX = ["spin","power","control (flat)","precision","feel","sound","longevity","arm friendliness"];
+
+  var MR = [
+    {2:1.0, 3:0.8, 0:0.3}, {5:1.2, 6:0.6, 10:0.7, 4:0.3}, {7:1.2, 3:0.7}, {2:1.2, 7:0.9},
+    {10:1.3, 5:0.8, 6:0.5}, {4:1.0, 5:0.7, 6:0.6}, {8:1.2, 6:0.6}, {9:1.2, 4:0.7},
+    {6:1.3, 5:-0.3}, {0:1.2, 1:1.0, 3:-0.5}
+  ];
+  var MS = [
+    {1:0.8, 0:0.7}, {7:0.8, 1:0.7, 4:0.4}, {1:0.9, 0:0.5}, {0:1.3, 1:0.6},
+    {2:0.8, 7:0.6}, {4:1.0, 5:0.5}, {1:0.4}, {4:0.9, 2:0.6}, {}, {2:1.2, 3:1.0, 1:-0.4}
+  ];
+  function scaleTo(raw){
+    var mn = Math.min.apply(null, raw), mx = Math.max.apply(null, raw);
+    if(mx - mn < 1e-9) return raw.map(function(){ return 5; });
+    return raw.map(function(v){ return Math.round(3 + 7 * (v - mn) / (mx - mn)); });
+  }
+  function suggest(mixOv){
+    var mix = (mixOv == null ? state.mix : mixOv) / 100, i, j, eff = [];
+    for(i=0;i<10;i++) eff[i] = effective(i, state.scores, state.measured);
+    var drive = eff.map(function(e, k){
+      var need = (10 - e) / 9, strong = (e - 1) / 9;
+      return (mix * strong + (1 - mix) * need) * (state.weights[k] / 10);
+    });
+    function build(M, n){
+      var raw = [], src = [], best = [];
+      for(j=0;j<n;j++){ raw[j] = 0; src[j] = -1; best[j] = 0; }
+      for(i=0;i<10;i++){
+        for(var key in M[i]){
+          var col = +key, c = M[i][key] * drive[i];
+          raw[col] += c;
+          if(Math.abs(c) > Math.abs(best[col])){ best[col] = c; src[col] = i; }
+        }
+      }
+      return {v:scaleTo(raw), src:src};
+    }
+    var r = build(MR, 11), s = build(MS, 8);
+    var spinDrive = (eff[0] + eff[3]) / 2;
+    var overall = eff.reduce(function(a,b){ return a+b; }, 0) / 10;
+    s.v[6] = Math.max(1, Math.min(10, Math.round(3 + 7 * (spinDrive - 1) / 9)));  s.src[6] = -2;
+    s.v[7] = Math.max(1, Math.min(10, Math.round(10 - 6 * (overall - 1) / 9)));   s.src[7] = -3;
+    return {racket:r, string:s, mix:mix};
+  }
+  function stanceLabel(m){
+    if(m <= 15) return "cover my weaknesses";
+    if(m <= 40) return "lean on coverage";
+    if(m <  60) return "balanced";
+    if(m <  85) return "lean on strengths";
+    return "amplify my strengths";
+  }
+
+  function renderSuggest(){
+    var g = suggest();
+    document.getElementById("pb-mixlab").textContent = stanceLabel(state.mix) + " · " + state.mix + "/100";
+    /* WHY THE STANCE CAN LOOK DEAD. drive[i] = (mix*strong + (1-mix)*need) * weight[i],
+       and on a profile where every axis carries the same score, strong and need are the
+       same number for every axis — so the stance only scales every column by one common
+       factor, and scaleTo's min-max normalisation divides that factor straight back out.
+       The suggestion is then provably identical at 0/100 and 100/100. That is correct
+       (a flat profile has no strengths to amplify) but it must be said out loud. */
+    var effAll = [];
+    for (var q = 0; q < 10; q++) effAll.push(effective(q, state.scores, state.measured));
+    var spread = Math.max.apply(null, effAll) - Math.min.apply(null, effAll);
+    /* Do not GUESS from the spread whether the stance can act \u2014 run both ends and count.
+       An earlier version promised movement from a spread of 3 upward; this states exactly
+       how many of the nineteen sliders actually differ between the two extremes. */
+    var A = suggest(0), B = suggest(100), moves = 0, j2;
+    for (j2 = 0; j2 < 11; j2++) if (A.racket.v[j2] !== B.racket.v[j2]) moves++;
+    for (j2 = 0; j2 < 8;  j2++) if (A.string.v[j2] !== B.string.v[j2]) moves++;
+    /* He asked about RACKETS, and the hint answered about sliders. Rank the whole
+       bench at both ends of the stance — with the shared scorer, without touching a
+       single control — and say how many of the top ten frames actually change places.
+       If the answer really is stable, saying so is worth more than silence. */
+    var rankMoves = null, rankTop1 = null;
+    try {
+      var topAt = function(wv){
+        var fr = [], no2, f2;
+        for (no2 = 1; ; no2++){ f2 = window.SRF.frameFull(no2); if (!f2) break;
+          if (window.srfIsDel && window.srfIsDel("racket", f2)) continue;
+          fr.push(f2); }
+        fr.sort(function(x, y){ return window.srfWScore(y.s, wv) - window.srfWScore(x.s, wv); });
+        return fr.slice(0, 10).map(function(z){ return String(z.b) + "|" + String(z.n); });
+      };
+      var TA = topAt(A.racket.v), TB = topAt(B.racket.v), q2;
+      rankMoves = 0;
+      for (q2 = 0; q2 < TA.length; q2++) if (TA[q2] !== TB[q2]) rankMoves++;
+      rankTop1 = (TA[0] === TB[0]);
+    } catch(e){ rankMoves = null; }
+    var rankLine = rankMoves == null ? ""
+      : rankMoves === 0
+        ? " Your top ten frames hold the same order at both ends \u2014 on this profile the stance changes how you get there, not what you end up with."
+        : (" It also reshuffles " + rankMoves + " of the top ten frames"
+           + (rankTop1 ? ", though the same frame stays first." : ", the winner included."));
+    var hint = document.getElementById("pb-mixhint");
+    var bar = document.getElementById("pb-mix").closest(".bar");
+    if (hint){
+      if (moves === 0){
+        hint.textContent = spread === 0
+          ? "All ten axes sit on the same score, so this profile has no strengths and no weaknesses \u2014 there is nothing to amplify or cover, and both ends of this slider give the identical set. Score the axes apart and it starts to bite."
+          : "At these axis scores the two ends round to the same nineteen sliders. Spread the axes further apart and the stance starts to bite.";
+        hint.className = "pb-mixhint flat";
+      } else {
+        hint.textContent = "End to end, this slider moves " + moves + " of the 19 sliders (axis spread "
+          + spread + " points, " + Math.min.apply(null, effAll) + "\u2013" + Math.max.apply(null, effAll) + ")."
+          + rankLine + " "
+          + (state.live ? "Your priorities are synced: every drag re-sorts the rankings, the medals and the setups live."
+                        : "Only the suggestion below is following \u2014 your priority sliders are NOT. Press \u201cSync my priorities\u201d once and they will, from then on.");
+        hint.className = "pb-mixhint";
+      }
+    }
+    if (bar) bar.classList.toggle("pb-inert", moves === 0);
+    if (state.live && !PB_APPLYING){ clearTimeout(PB_T); PB_T = setTimeout(pbPush, 110); }
+    pbPaintApply();
+    var mixEl = document.getElementById("pb-mix");
+    mixEl.value = state.mix;
+    mixEl.style.setProperty("--pb-track",
+      "linear-gradient(90deg, var(--pb-accent) 0%, var(--pb-accent) "+state.mix+"%, " +
+      "color-mix(in srgb, var(--fg) 20%, transparent) "+state.mix+"%, color-mix(in srgb, var(--fg) 20%, transparent) 100%)");
+    function paint(el, names, set){
+      var html = "";
+      for(var j=0;j<names.length;j++){
+        var v = set.v[j], c = pbCell(v), sIdx = set.src[j];
+        var who = sIdx === -2 ? "swing speed" : sIdx === -3 ? "level" : sIdx >= 0 ? AXES[sIdx].s : "—";
+        html += '<div class="sugrow"><div class="sugcell" style="background:'+c+';color:'+pbInk(v,c)+'">'+v+'</div>'+
+                '<div class="sugname">'+names[j]+'</div><div class="sugsrc">← '+who+'</div></div>';
+      }
+      document.getElementById(el).innerHTML = html;
+    }
+    paint("pb-sugr", RAX, g.racket);
+    paint("pb-sugs", SAX, g.string);
+    return g;
+  }
+
+  window.PB_PROFILE = function(){
+    var g = suggest(), r = compute(state.scores, state.measured, state.weights);
+    return {source:"Player Bench v.01a", ntrp:r.bracket, weighted:+r.final.toFixed(2),
+            measured:r.measured, stance:stanceLabel(state.mix), mix:state.mix,
+            racket:{axes:RAX, weights:g.racket.v}, string:{axes:SAX, weights:g.string.v}};
+  };
+
+  /* THE GRAFT: the profile writes straight into the Finder's own sliders. */
+  var PB_APPLYING = false, PB_T = null;
+  function pbPush(){
+    var g = suggest(), ok = 0;
+    PB_APPLYING = true;
+    try{ if(typeof applyRacketWeights === "function"){ applyRacketWeights(g.racket.v); ok++; } }catch(e){}
+    try{ if(typeof applyStringWeights === "function"){ applyStringWeights(g.string.v); ok++; } }catch(e){}
+    try{ if(window.srfSeedFlags) srfSeedFlags(); }catch(e){}
+    PB_APPLYING = false;
+    return !!ok;
+  }
+  window.srfPBApply = pbPush;
+  /* The button is a LATCH, not a one-shot. Reported symptom: "nothing changes when I
+     amplify or compensate" \u2014 the suggestion did change, but the benches below kept the
+     numbers from the last press, and the benches are what you are looking at. Once
+     linked, every stance and every score change re-ranks both benches live. */
+  function pbPaintApply(){
+    var btn = document.getElementById("pb-apply"); if (!btn) return;
+    if (btn.dataset.busy === "1") return;
+    btn.textContent = state.live ? "Synced \u2713 \u2014 click to unlink" : "Sync my priorities";
+    btn.title = state.live
+      ? "Your 19 priority sliders are in step with this profile and follow the stance live. Click to unlink: the sliders stay exactly where they are now, they just stop following."
+      : "Writes all 19 priority sliders (11 racket, 8 string) from this profile and keeps them in step with the stance until you unlink. Your frames, customs and shelves are not touched.";
+    btn.classList.toggle("pb-linked", !!state.live);
+    btn.setAttribute("aria-pressed", state.live ? "true" : "false");
+  }
+
+  var rowsEl = document.getElementById("pb-rows");
+
+  function buildRows(){
+    var html = "";
+    for(var i=0;i<10;i++){
+      html += '<tr data-i="'+i+'">'+
+        '<td><button type="button" class="axname" data-jump="'+i+'">'+AXES[i].n+'</button>'+
+            '<div class="axno mono">'+String(i+1).padStart(2,"0")+' &middot; '+AXES[i].s+'</div></td>'+
+        '<td><div class="desc" data-desc="'+i+'"></div></td>'+
+        '<td><div class="cell mono" data-cell="'+i+'"></div><div class="lvl" data-lvl="'+i+'"></div></td>'+
+        '<td><input type="range" min="1" max="10" step="1" data-score="'+i+'" aria-label="Score for '+AXES[i].s+'"></td>'+
+        '<td><div class="wcell"><input type="range" min="1" max="10" step="1" data-weight="'+i+'" aria-label="Weight for '+AXES[i].s+'">'+
+            '<span class="wnum mono" data-wnum="'+i+'"></span></div></td>'+
+        '<td><button type="button" class="tog" data-tog="'+i+'"></button></td>'+
+      '</tr>';
+    }
+    rowsEl.innerHTML = html;
+    rowsEl.querySelectorAll("[data-score]").forEach(function(el){
+      el.addEventListener("input", function(){ state.scores[+el.dataset.score] = clamp(el.value); save(); render(); });
+    });
+    rowsEl.querySelectorAll("[data-weight]").forEach(function(el){
+      el.addEventListener("input", function(){ state.weights[+el.dataset.weight] = clamp(el.value);
+        state.preset = "custom"; save(); render(); });
+    });
+    rowsEl.querySelectorAll("[data-tog]").forEach(function(el){
+      el.addEventListener("click", function(){ var i = +el.dataset.tog;
+        state.measured[i] = state.measured[i] ? 0 : 1; save(); render(); });
+    });
+    rowsEl.querySelectorAll("[data-jump]").forEach(function(el){
+      el.addEventListener("click", function(){
+        var card = document.getElementById("pc-"+(+el.dataset.jump));
+        if(!card) return;
+        document.querySelectorAll("#pb_root .pcard").forEach(function(c){ c.classList.remove("hot"); });
+        card.classList.add("hot");
+        card.scrollIntoView({behavior:"smooth", block:"center"});
+      });
+    });
+  }
+
+  function trackStyle(el, v){
+    var pct = ((v - 1) / 9) * 100;
+    el.style.setProperty("--pb-track",
+      "linear-gradient(90deg, var(--pb-accent) 0%, var(--pb-accent) "+pct+"%, " +
+      "color-mix(in srgb, var(--fg) 20%, transparent) "+pct+"%, color-mix(in srgb, var(--fg) 20%, transparent) 100%)");
+  }
+
+  function render(){
+    for(var i=0;i<10;i++){
+      var sc = state.scores[i], eff = effective(i, state.scores, state.measured);
+      var cell = rowsEl.querySelector('[data-cell="'+i+'"]');
+      var col = pbCell(sc);
+      cell.style.background = col; cell.style.color = pbInk(sc, col);
+      if(sc >= 10){ cell.classList.add("ten"); cell.innerHTML = "<span>10</span>"; }
+      else { cell.classList.remove("ten"); cell.textContent = sc; }
+      rowsEl.querySelector('[data-desc="'+i+'"]').textContent = AXES[i].d[bandIndex(sc)];
+      var lv = rowsEl.querySelector('[data-lvl="'+i+'"]');
+      lv.textContent = "≙ " + levelOf(eff).toFixed(2) + (eff < sc ? " capped" : "");
+      lv.style.color = eff < sc ? "var(--pb-accent)" : "var(--pb-mute)";
+      var srange = rowsEl.querySelector('[data-score="'+i+'"]');
+      srange.value = sc; trackStyle(srange, sc);
+      var wrange = rowsEl.querySelector('[data-weight="'+i+'"]');
+      wrange.value = state.weights[i]; trackStyle(wrange, state.weights[i]);
+      rowsEl.querySelector('[data-wnum="'+i+'"]').textContent = state.weights[i];
+      var tog = rowsEl.querySelector('[data-tog="'+i+'"]');
+      tog.dataset.on = state.measured[i] ? "1" : "0";
+      tog.textContent = state.measured[i] ? "measured" : "estimate";
+      tog.setAttribute("aria-pressed", state.measured[i] ? "true" : "false");
+    }
+
+    var r = compute(state.scores, state.measured, state.weights);
+    var bk = r.bracket.toFixed(1);
+    var numEl = document.getElementById("pb-num");
+    numEl.textContent = bk;
+    numEl.style.color = pbCell((r.final - 2) * 4);   /* background half = the accent tone */
+    document.getElementById("pb-utrnum").innerHTML =
+      (UTR[bk] || "—") + (UTR_EST[bk] ? ' <span class="est">†</span>' : "");
+    document.getElementById("pb-raw").innerHTML =
+      "weighted " + r.final.toFixed(2) + " &middot; " + r.measured + "/10 measured" +
+      (r.capped ? " &middot; " + r.capped + " capped" : "");
+    document.getElementById("pb-conf").textContent =
+      r.measured >= 8 ? "High — the number is standing on measured evidence."
+    : r.measured >= 4 ? "Medium — " + (10 - r.measured) + " axes are still guesses, capped at 8 (4.0)."
+    : "Low — " + (10 - r.measured) + " axes are still guesses, capped at 8 (4.0).";
+
+    var g = document.getElementById("pb-gate");
+    if(r.gated){
+      g.innerHTML = "<b>Binding.</b> Raw score says " + r.raw.toFixed(2) +
+        ", the second serve and point construction pull it to " + r.final.toFixed(2) + ".";
+      g.className = "gate-on";
+    } else {
+      g.textContent = "Not binding — the serve and the head are keeping up with the strokes.";
+      g.className = "";
+    }
+    document.getElementById("pb-preset").textContent =
+      (PRESET_NAME[state.preset] || "Custom") + " — second serve and point construction carry the most weight by default.";
+    document.querySelectorAll("#pb_root [data-preset]").forEach(function(b){
+      b.setAttribute("aria-pressed", b.dataset.preset === state.preset ? "true" : "false");
+    });
+
+    var utr = "";
+    ["3.0","3.5","4.0","4.5"].forEach(function(k){
+      var on = Math.abs(r.bracket - parseFloat(k)) < 0.01;
+      utr += '<div class="xrow'+(on?" on":"")+'"><span>NTRP '+k+'</span><span class="mono">UTR '+UTR[k]+'</span></div>';
+    });
+    document.getElementById("pb-utr").innerHTML = utr;
+
+    var cn = document.getElementById("chap_n_pb");
+    if(cn) cn.textContent = "NTRP " + bk + " · " + r.measured + "/10 measured";
+
+    renderSuggest();
+    renderLog();
+  }
+
+  (function protocol(){
+    var html = "", lv = ["2.5","3.0","3.5","4.0","4.5"];
+    for(var i=0;i<10;i++){
+      var marks = "";
+      for(var j=0;j<5;j++) marks += '<span class="mark"><b>'+lv[j]+'</b>'+AXES[i].m[j]+'</span>';
+      html += '<article class="pcard" id="pc-'+i+'">'+
+        '<h3>'+String(i+1).padStart(2,"0")+' &middot; '+AXES[i].n+'</h3>'+
+        '<div class="drill">'+AXES[i].drill+'</div><div class="marks">'+marks+'</div></article>';
+    }
+    document.getElementById("pb-protocol").innerHTML = html;
+  })();
+
+  function renderLog(){
+    var head = document.getElementById("pb-loghead"), body = document.getElementById("pb-logrows");
+    var empty = document.getElementById("pb-logempty"), stat = document.getElementById("pb-logstat");
+    if(!state.sessions.length){
+      head.innerHTML = ""; body.innerHTML = ""; empty.style.display = "block"; stat.textContent = ""; return;
+    }
+    empty.style.display = "none";
+    var h = '<th style="width:104px">Date</th>';
+    for(var i=0;i<10;i++) h += '<th style="text-align:center">'+AXES[i].s+'</th>';
+    h += '<th style="text-align:center">NTRP</th><th></th>';
+    head.innerHTML = h;
+    var rows = "";
+    for(var k=0;k<state.sessions.length;k++){
+      var s = state.sessions[k];
+      rows += '<tr><td class="mono" style="font-size:11px;color:var(--pb-mute)">'+s.date+'</td>';
+      for(var j=0;j<10;j++){
+        var c = pbCell(s.scores[j]);
+        rows += '<td><div class="logcell" style="background:'+c+';color:'+pbInk(s.scores[j],c)+'">'+s.scores[j]+'</div></td>';
+      }
+      rows += '<td style="text-align:center" class="mono"><b>'+s.ntrp.toFixed(1)+'</b>'+
+              '<div style="font-size:10px;color:var(--pb-dim)">'+s.measured+'/10</div></td>'+
+              '<td><button type="button" class="del" data-del="'+k+'" aria-label="Delete session '+s.date+'">&times;</button></td></tr>';
+    }
+    body.innerHTML = rows;
+    body.querySelectorAll("[data-del]").forEach(function(b){
+      b.addEventListener("click", function(){ state.sessions.splice(+b.dataset.del, 1); save(); render(); });
+    });
+    var first = state.sessions[state.sessions.length-1], last = state.sessions[0];
+    var delta = last.ntrp - first.ntrp;
+    stat.textContent = state.sessions.length + " session" + (state.sessions.length>1?"s":"") +
+      (state.sessions.length>1 ? "  ·  " + (delta>=0?"+":"") + delta.toFixed(1) + " since " + first.date : "");
+  }
+
+  document.querySelectorAll("#pb_root [data-preset]").forEach(function(b){
+    b.addEventListener("click", function(){
+      state.preset = b.dataset.preset; state.weights = PRESETS[state.preset].slice(); save(); render();
+    });
+  });
+  document.getElementById("pb-reset").addEventListener("click", function(){
+    state.scores = [5,5,5,5,5,5,5,5,5,5]; state.measured = [0,0,0,0,0,0,0,0,0,0]; save(); render();
+  });
+  document.getElementById("pb-save").addEventListener("click", function(){
+    var r = compute(state.scores, state.measured, state.weights), d = new Date();
+    var date = d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+    state.sessions.unshift({date:date, scores:state.scores.slice(), measured:r.measured, ntrp:r.final});
+    if(state.sessions.length > 60) state.sessions.length = 60;
+    save(); render();
+    var btn = this; btn.textContent = "Saved " + date;
+    setTimeout(function(){ btn.textContent = "Save session"; }, 2200);
+  });
+  document.getElementById("pb-mix").addEventListener("input", function(){
+    state.mix = Math.max(0, Math.min(100, Math.round(+this.value))); save(); renderSuggest();
+  });
+
+  document.getElementById("pb-apply").addEventListener("click", function(){
+    var btn = this;
+    if (state.live){                        // unlink: the benches keep what they have
+      state.live = false; save(); pbPaintApply(); renderSuggest(); return;
+    }
+    var ok = pbPush();
+    state.live = !!ok; save();
+    btn.dataset.busy = "1";
+    btn.textContent = ok ? "Synced ✓ — your priorities now follow" : "Priorities not ready";
+    setTimeout(function(){ delete btn.dataset.busy; pbPaintApply(); }, 2400);
+    renderSuggest();
+    if(ok && window.srfSecGo) srfSecGo("rk", "grid", "gridM");
+  });
+
+  /* the standalone used the artifact download bridge; on the open web this is a Blob */
+  function handOff(btn, text, label){
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){
+        btn.textContent = "Copied"; setTimeout(function(){ btn.textContent = label; }, 2000);
+      }).catch(function(){ window.prompt("Copy this:", text); });
+    } else { window.prompt("Copy this:", text); }
+  }
+  function download(name, text){
+    try{
+      var blob = new Blob([text], {type:"application/json"});
+      var url = URL.createObjectURL(blob), a = document.createElement("a");
+      a.href = url; a.download = name; document.body.appendChild(a); a.click();
+      setTimeout(function(){ URL.revokeObjectURL(url); a.remove(); }, 400);
+      return true;
+    }catch(e){ return false; }
+  }
+  document.getElementById("pb-copyall").addEventListener("click", function(){
+    handOff(this, JSON.stringify(window.PB_PROFILE(), null, 2), "Copy as JSON");
+  });
+  document.getElementById("pb-export").addEventListener("click", function(){
+    var payload = JSON.stringify({bench:"player-bench-v01a", state:state}, null, 2), btn = this;
+    if(download("player-bench-log.json", payload)){
+      btn.textContent = "Exported"; setTimeout(function(){ btn.textContent = "Export JSON"; }, 2000);
+    } else handOff(btn, payload, "Export JSON");
+  });
+  document.getElementById("pb-import").addEventListener("click", function(){
+    var txt = window.prompt("Paste an exported log:"); if(!txt) return;
+    try{
+      var o = JSON.parse(txt), st = o.state || o;
+      if(!st || !Array.isArray(st.scores)) throw new Error("bad shape");
+      localStorage.setItem(KEY, JSON.stringify(st));
+      state = load(); buildRows(); render();
+    }catch(e){ window.alert("That is not a Player Bench log — paste the full JSON from Export."); }
+  });
+
+  buildRows();
+  render();
+  /* themes repaint every score cell in the app; the player bench joins that */
+  window.srfPBRepaint = render;
+})();
 </script>
 </body>
 </html>
