@@ -1734,6 +1734,27 @@
   .methodpop_body{ overflow-y:auto; padding:2px 16px 14px; font-size:11.5px; line-height:1.55; color:var(--fg); }
   .methodpop_body b{ color:var(--bright); }
   .methodpop_body .mono{ font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:11px; color:var(--cyan); }
+  /* the top stays clean: only the Azonix name and the mode switcher survive up there */
+  .ez_top .ez_logo, .ez_top .ez_sub, .ez_top .ez_credit{ display:none; }
+  .ez_mark{ display:flex; align-items:center; }
+  .ez_mark img{ height:48px; width:auto; display:block; }
+  .ld_logo img.markimg{ width:auto; height:56px; }
+  /* the landing top is logo + name, nothing else — the A3 credit lives at the very
+     bottom of every page now, so the kicker up here was saying it twice */
+  .ld_kicker{ display:none; }
+  .ld_brandline{ gap:16px; margin-bottom:14px; }
+  @media (max-width:640px){ .ez_mark img{ height:38px; } }
+  /* the brand, standing at the very bottom of every mode */
+  #srf_brandfoot{ display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+                  margin:18px 0 26px; padding:16px 18px;
+                  border:1px solid color-mix(in srgb, var(--fg) 10%, transparent);
+                  border-radius:14px; background:color-mix(in srgb, var(--card2) 55%, transparent); }
+  #srf_brandfoot .bf_logo img{ width:64px; height:64px; display:block; }
+  #srf_brandfoot .bf_name{ font-size:17px; letter-spacing:.06em; color:var(--bright); }
+  #srf_brandfoot .bf_sub{ font-size:10.5px; letter-spacing:.12em; text-transform:uppercase;
+                          color:var(--soft, var(--muted)); margin-top:3px; }
+  #srf_brandfoot .ez_credit{ display:flex !important; align-items:center; gap:10px; flex-wrap:wrap;
+                             margin-top:7px; font-size:11px; }
   /* the methodology, standing open at the foot of every mode */
   #srf_methfoot{ margin:26px 0 10px; padding:16px 18px 14px; border:1px solid color-mix(in srgb, var(--fg) 13%, transparent);
                  border-radius:14px; background:color-mix(in srgb, var(--card2) 72%, transparent); max-width:100%; }
@@ -1744,6 +1765,37 @@
   .methfoot_body .mono{ font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:11px; color:var(--cyan); }
   /* the honest readout */
   .utr_note{ font-size:10px; color:var(--muted); line-height:1.5; margin-top:8px; max-width:60ch; }
+  .scaleof{ font-size:13px; color:var(--muted); font-weight:400; letter-spacing:0; }
+  .rangesub{ font-size:11px; color:var(--muted); margin-top:2px; }
+  /* ---- "why this?": the popup that shows its work ---- */
+  .balsvg{ vertical-align:-4px; flex:0 0 auto; display:inline-block; }
+  .rw_bot .balsvg{ vertical-align:middle; margin:0 2px; }
+  .whychip{ background:color-mix(in srgb, var(--cyan) 10%, transparent);
+            border:1px solid color-mix(in srgb, var(--cyan) 30%, transparent);
+            color:var(--cyan); font-family:inherit; font-size:9.5px; letter-spacing:.06em; border-radius:999px;
+            padding:1px 8px 2px; cursor:pointer; vertical-align:1px; white-space:nowrap;
+            transition:background .15s ease, color .15s ease, border-color .15s ease; }
+  .whychip:hover, .whychip:focus-visible{ background:var(--cyan); color:#0a130e; border-color:var(--cyan); outline:none; }
+  #whypop_bg{ position:fixed; inset:0; background:color-mix(in srgb, #000 55%, transparent);
+              z-index:9500; display:flex; align-items:center; justify-content:center; padding:18px; }
+  #whypop{ background:var(--card2); border:1px solid color-mix(in srgb, var(--fg) 16%, transparent);
+           border-radius:14px; max-width:680px; width:100%; max-height:min(86vh, 780px);
+           display:flex; flex-direction:column; box-shadow:0 18px 60px rgba(0,0,0,.5); }
+  .whypop_h{ display:flex; align-items:center; gap:8px; padding:12px 16px 8px; font-size:11px;
+             letter-spacing:.14em; text-transform:uppercase; color:var(--muted); }
+  .whypop_x{ margin-left:auto; background:transparent; border:0; color:var(--muted); font-size:19px;
+             cursor:pointer; line-height:1; padding:2px 6px; }
+  .whypop_x:hover, .whypop_x:focus-visible{ color:var(--bright); outline:none; }
+  .whypop_body{ overflow-y:auto; padding:2px 16px 16px; font-size:11.5px; line-height:1.6; color:var(--fg); }
+  .whypop_body h4{ margin:14px 0 5px; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--cyan); }
+  .whypop_body b{ color:var(--bright); }
+  .whypop_body .mono{ font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:10.5px; color:var(--cyan); }
+  .whypop_name{ font-size:14.5px; color:var(--bright); font-weight:700; letter-spacing:.02em; margin-top:2px; }
+  .whypop_tag{ font-size:10px; color:var(--muted); letter-spacing:.05em; margin-bottom:2px; }
+  .whyspecs{ font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:10.5px; color:var(--soft);
+             border:1px dashed color-mix(in srgb, var(--fg) 14%, transparent); border-radius:8px;
+             padding:6px 9px; margin:8px 0 2px; line-height:1.7; }
+  .whypop_body p{ margin:6px 0; }
   .rowmenu_note{ font-size:10.5px; color:var(--muted); line-height:1.35;
                  padding:2px 10px 6px; max-width:230px; }
   /* find mode could delete but never undo — the benches had "restore all", the
@@ -1811,10 +1863,12 @@
   .ez_more[open] summary::before{ content:"▾ "; }
   .ez_more[open]{ padding-bottom:2px; }
   /* ---- QW6: the gear menu ---- */
-  #gearbtn{ position:fixed; top:12px; right:12px; z-index:160; width:40px; height:40px; border-radius:50%;
-            background:color-mix(in srgb, var(--card) 90%, transparent); color:var(--soft);
-            border:1px solid color-mix(in srgb, var(--fg) 20%, transparent); font-size:17px; line-height:1;
-            cursor:pointer; backdrop-filter:blur(5px); -webkit-backdrop-filter:blur(5px); }
+  #gearbtn{ position:fixed; top:12px; right:12px; z-index:400; width:40px; height:40px; border-radius:50%;
+            background:color-mix(in srgb, var(--card) 90%, transparent); color:var(--cyan);
+            border:1px solid color-mix(in srgb, var(--cyan) 45%, transparent); font-size:17px; line-height:1;
+            cursor:pointer; backdrop-filter:blur(5px); -webkit-backdrop-filter:blur(5px);
+            box-shadow:0 0 10px color-mix(in srgb, var(--cyan) 22%, transparent); }
+  .gearword{ white-space:nowrap; }
   #gearbtn:hover, #gearbtn:focus-visible{ color:var(--cyan); border-color:var(--cyan); outline:none; }
   #gearpop{ position:fixed; top:58px; right:12px; z-index:159; background:var(--card); color:var(--fg);
             border:1px solid color-mix(in srgb, var(--fg) 20%, transparent); border-radius:12px;
@@ -2356,6 +2410,7 @@
   #pb_root .utrnum{ font-size:17px; font-weight:600; line-height:1.2; color:var(--pb-fg);
                     white-space:nowrap; font-variant-numeric:tabular-nums; }
   #pb_root .utrnum .est{ color:var(--pb-ocker); font-size:12px; }
+  #pb_root .bignum.rangenum{ font-size:38px; }
   #pb_root .bignum{ font-size:52px; line-height:1; font-weight:700; letter-spacing:-.02em;
                     font-variant-numeric:tabular-nums; }
   #pb_root .bigsub{ font-size:10px; letter-spacing:.13em; text-transform:uppercase;
@@ -2404,6 +2459,41 @@
   /* ---- axis table ---- */
   #pb_root .tablewrap{ overflow-x:auto; background:var(--card); border:1px solid var(--pb-line); border-radius:12px; }
   #pb_root table{ border-collapse:collapse; width:100%; min-width:860px; }
+  .scell.pnocell{ background:transparent; border:1px dashed color-mix(in srgb, var(--fg) 22%, transparent);
+                  color:var(--muted); }
+  /* ---- the player bench on a phone: the 860px six-column table becomes a
+     stacked card per axis - name+number up top, description, then full-width
+     score and weight sliders with their own captions, then the evidence toggle.
+     Nothing scrolls sideways any more. */
+  @media (max-width: 760px){
+    #pb_root table{ min-width:0; }
+    #pb_root thead{ display:none; }
+    #pb_root tbody tr{ display:grid; grid-template-columns:1fr 74px; gap:3px 10px;
+      padding:12px 2px 13px; border-bottom:1px solid var(--pb-line); }
+    #pb_root tbody td{ display:block; padding:1px 0; border:0; }
+    #pb_root tbody td:nth-child(1){ grid-column:1; grid-row:1; }
+    #pb_root tbody td:nth-child(2){ grid-column:1 / -1; grid-row:2; }
+    #pb_root tbody td:nth-child(3){ grid-column:2; grid-row:1; justify-self:end; text-align:right; }
+    #pb_root tbody td:nth-child(4){ grid-column:1 / -1; grid-row:3; }
+    #pb_root tbody td:nth-child(5){ grid-column:1 / -1; grid-row:4; }
+    #pb_root tbody td:nth-child(6){ grid-column:1 / -1; grid-row:5; }
+    #pb_root tbody td:nth-child(4)::before{ content:"score"; display:block; font-size:9px;
+      letter-spacing:.16em; text-transform:uppercase; color:var(--pb-mute); margin-bottom:2px; }
+    #pb_root tbody td:nth-child(5) .wcell::before{ content:"weight"; font-size:9px;
+      letter-spacing:.16em; text-transform:uppercase; color:var(--pb-mute); margin-right:8px; }
+    #pb_root input[type=range]{ width:100%; }
+    #pb_root .wcell{ display:flex; align-items:center; gap:8px; }
+    #pb_root .wcell input[type=range]{ flex:1; }
+    #pb_root .tog{ width:100%; padding:9px 0; }
+    #pb_root .bignum{ font-size:38px; }
+    #pb_root .bigrow{ flex-wrap:wrap; gap:12px 16px; }
+    #pb_root .utrbox{ border-left:0; padding-left:0; }
+    #pb_root .big{ padding:14px 14px; }
+    #pb_root .notes{ padding:12px 14px; }
+    /* the session log is a wide table by nature - on a phone it scrolls inside
+       its own box instead of stretching the whole page */
+    #pb_root table.logtable{ display:block; overflow-x:auto; max-width:100%; min-width:0; -webkit-overflow-scrolling:touch; }
+  }
   #pb_root thead th{ font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--pb-mute);
                      font-weight:600; text-align:left; padding:11px 12px; border-bottom:1px solid var(--pb-line);
                      white-space:nowrap; background:var(--panel); }
@@ -2521,7 +2611,7 @@
 <button type="button" id="gearbtn" aria-label="settings — theme, export, import" aria-haspopup="true"
         aria-expanded="false" onclick="srfGearToggle(event)">⚙</button>
 <div id="gearpop" hidden>
-  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-08-30.9 · b87</span></div>
+  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-08-30.26 · b87</span></div>
   <span class="toolbit" id="themeCtl">theme
     <span class="themepick" id="themePick">
       <button type="button" class="thememain" id="themeBtn" aria-expanded="false" aria-controls="themeList"
@@ -2553,11 +2643,11 @@
       <button type="button" class="modebtn" data-md="scored" aria-pressed="true" onclick="srfModelSet('scored')"
               title="the bench's own reading of each frame across all eleven axes">scored</button>
       <button type="button" class="modebtn" data-md="phys" aria-pressed="false" onclick="srfModelSet('phys')"
-              title="every axis recomputed from mass, balance, swingweight, stiffness, pattern and beam - three axes left blank because no formula reaches them">pure physics</button>
+              title="every axis recomputed from mass, balance, swingweight, stiffness, pattern and the beam profile (average depth + taper) - three axes left blank because no formula reaches them">pure physics</button>
     </span>
     <span class="toolnote" style="line-height:1.35;">Physics mode recomputes every frame from its own published specs
       &mdash; recoil weight from the parallel axis theorem, spin from strings per square inch, power from stiffness and
-      beam. <b>Serve, smash and slice go blank</b>: they trade racket speed against effective mass, or they belong to
+      the beam profile (average depth plus taper &mdash; 23/26/23 is not a constant 26). <b>Serve, smash and slice go blank</b>: they trade racket speed against effective mass, or they belong to
       your hand, and no honest formula reaches them. The two views disagree on purpose &mdash; that disagreement is
       itself the interesting number.</span>
   </span>
@@ -2579,11 +2669,8 @@
   <div class="ld_card">
     <div class="ld_brandline">
       <span class="ld_logo" id="ld_logo"></span>
-      <div>
-        <div class="ld_kicker azonix">A&sup3; Agentur edition</div>
-      </div>
+      <h1 class="ld_title azonix" style="margin:0;">String &amp; Racket Finder</h1>
     </div>
-    <h1 class="ld_title azonix">String &amp; Racket Finder</h1>
     <p class="ld_lede"><span id="ld_nf">155</span> frames and <span id="ld_nb">235</span> string beds &mdash; the current market of eleven racket and twenty-three string brands &mdash; scored on the same axes and matched to each other
        by the physics of the pairing. Tell it how you play and it hands you a shortlist &mdash; or open the whole
        workshop and rank everything yourself.</p>
@@ -2685,6 +2772,7 @@
       <button type="button" class="modebtn" onclick="setMode('pro')">pro</button>
     </span>
     <button type="button" class="mcap ghost" onclick="setMode('landing')">home</button>
+    <button type="button" class="mcap ghost gearword" onclick="srfGearToggle(event)" aria-haspopup="true" title="theme &middot; scored vs pure physics &middot; ranking contrast &middot; export">&#9881; settings</button>
     <span id="themeSlotEz" style="display:contents;"></span>
   </div>
 
@@ -2777,6 +2865,7 @@
       <button type="button" class="modebtn" onclick="setMode('pro')">pro</button>
     </span>
     <button type="button" class="mcap ghost" onclick="setMode('landing')">home</button>
+    <button type="button" class="mcap ghost gearword" onclick="srfGearToggle(event)" aria-haspopup="true" title="theme &middot; scored vs pure physics &middot; ranking contrast &middot; export">&#9881; settings</button>
     <span id="themeSlotMid" style="display:contents;"></span>
   </div>
 
@@ -2809,10 +2898,11 @@
         <button type="button" class="ichip" data-q="sex" data-v="woman">woman</button>
         <span style="font-size:10px;color:var(--muted);align-self:center;">optional — only sets the weight band frames are matched to</span></span></div>
     </div>
-    <div style="margin-top:10px;"><button type="button" class="go2 cta" onclick="introApply()">tune the sliders for me</button>
-      <span style="font-size:10px;color:var(--muted);margin-left:8px;">answers gate the lists &mdash; the sliders stay yours to drag &middot; click any slider label for what it means</span>
-      <span class="prefnote" style="font-size:10px;color:var(--cyan);margin-left:8px;"></span>
-      <button type="button" class="hybtn ghost" style="margin-left:8px;font-size:10px;" onclick="prefReset()" title="forget the saved sliders and re-seed from your answers">reset saved sliders</button></div>
+    <div style="margin-top:10px;display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap;margin-bottom:4px;">
+      <button type="button" class="go2 cta" onclick="introApply()">tune the sliders for me</button>
+      <span style="flex:1 1 240px;min-width:0;font-size:10px;color:var(--muted);line-height:1.45;">answers gate the lists &mdash; the sliders stay yours to drag &middot; click any slider label for what it means</span>
+      <span class="prefnote" style="font-size:10px;color:var(--cyan);"></span>
+      <button type="button" class="hybtn ghost" style="font-size:10px;white-space:nowrap;" onclick="prefReset()" title="forget the saved sliders and re-seed from your answers">reset saved sliders</button></div>
     <div class="mid_h" style="margin-top:14px;">best setups <small>&mdash; the answer first: paired by the calibrator&rsquo;s physics, live with every answer and slider you change</small></div>
     <div id="mid_su"></div>
     <div class="mid_slwrap">
@@ -2897,6 +2987,7 @@
         <button type="button" class="modebtn" aria-pressed="true">pro</button>
       </span>
       <button type="button" class="mcap ghost" onclick="setMode('landing')" title="back to the start page">home</button>
+      <button type="button" class="mcap ghost gearword" onclick="srfGearToggle(event)" aria-haspopup="true" title="theme &middot; scored vs pure physics &middot; ranking contrast &middot; export">&#9881; settings</button>
     </span>
   </div>
 </div>
@@ -3111,12 +3202,13 @@
     <div class="big">
       <div class="bigrow">
         <div>
-          <div class="bignum mono" id="pb-num">3.5</div>
-          <div class="bigsub">NTRP-style bracket &middot; 4.5 max</div>
+          <div class="bignum mono" id="pb-utrnum">5.25<span class="scaleof"> / 16.5</span></div>
+          <div class="bigsub">UTR-style point estimate</div>
+          <div class="rangesub mono" id="pb-utrband">likely band 4.0 &ndash; 6.5</div>
         </div>
         <div class="utrbox">
-          <div class="utrnum" id="pb-utrnum">4.0 &ndash; 6.5</div>
-          <div class="bigsub">UTR-style comparison range</div>
+          <div class="utrnum mono" id="pb-num">3.5</div>
+          <div class="bigsub">NTRP-style bracket &middot; 4.5 max</div>
         </div>
       </div>
       <div class="raw mono" id="pb-raw">weighted 3.50 &middot; 0/10 measured</div>
@@ -3279,8 +3371,10 @@
       <li><b>Manoeuvrability</b> &mdash; inverse swingweight. <b>Stability and return</b> &mdash; recoil weight.</li>
       <li><b>Spin</b> &mdash; strings per square inch, not the raw pattern: the same 16&times;19 on a bigger head slides
         and snaps back further.</li>
-      <li><b>Power</b> &mdash; stiffness, beam depth and head size, the three published quantities that govern how much
-        energy the frame returns. <b>Control</b> is its counterpart, not an independent number.</li>
+      <li><b>Power</b> &mdash; stiffness, the <b>beam profile</b> and head size. The beam enters as its average depth
+        <em>plus its taper</em> (max&nbsp;&minus;&nbsp;min of the published section, e.g. 23/26/23 &rarr; avg&nbsp;24, taper&nbsp;3):
+        a hoop that is 26&nbsp;mm only at mid-hoop is softer than 26&nbsp;mm everywhere, and the taper itself is the
+        power/aero geometry. <b>Control</b> is its counterpart, not an independent number.</li>
       <li><b>Comfort</b> &mdash; inverse stiffness. <b>Precision</b> &mdash; head size.</li>
     </ul>
 
@@ -4535,8 +4629,8 @@ document.addEventListener("DOMContentLoaded", () => { try { srfWCSet(window.SRF_
    a number there would be inventing one, so the physics view leaves them blank and
    srfWScore skips them. */
 const SRF_MODELKEY = "srf:model:v1";
-window.SRF_MODEL = (() => { try { return localStorage.getItem(SRF_MODELKEY) === "phys" ? "phys" : "scored"; }
-  catch(e){ return "scored"; } })();
+window.SRF_MODEL = (() => { try { return localStorage.getItem(SRF_MODELKEY) === "scored" ? "scored" : "phys"; }
+  catch(e){ return "phys"; } })();
 
 function srfPhysNum(v){ const m = String(v == null ? "" : v).match(/[\d.]+/); return m ? parseFloat(m[0]) : null; }
 /* pull the physical quantities out of one spec row; null when a required one is missing */
@@ -4548,15 +4642,29 @@ function srfPhysDerive(sp, extra){
   const SW = (extra && n(extra.sw)) || n(sp[4]);
   const bal = (extra && n(extra.bal)) || n(sp[5]);
   const bs = String(sp[6] == null ? "" : sp[6]).match(/[\d.]+/g);
-  const beam = bs ? Math.max.apply(null, bs.map(parseFloat)) : ((extra && n(extra.beam)) || null);
+  const bNums = bs ? bs.map(parseFloat) : ((extra && n(extra.beam)) != null ? [n(extra.beam)] : null);
+  const beam = bNums ? Math.max.apply(null, bNums) : null;
+  /* the beam is a PROFILE, not one number: 23/26/23 is a tapered aero section,
+     26 flat is a slab, 20/20/20 is the box-beam control geometry. Average depth
+     carries the stiffness load; the taper (max-min) is the design intent. */
+  const beamAvg = bNums ? Math.round(bNums.reduce((a, b) => a + b, 0) / bNums.length * 10) / 10 : null;
+  const beamTaper = bNums ? Math.round((Math.max.apply(null, bNums) - Math.min.apply(null, bNums)) * 10) / 10 : null;
   if (M == null || SW == null || bal == null || head == null) return null;
   const Mkg = M / 1000, h = bal / 10;
   /* strings per square inch, not the raw count: the same 16x19 spread over a bigger
      head slides and snaps back further, which is where spin actually comes from */
   const density = pm ? (parseInt(pm[1]) * parseInt(pm[2])) / head : null;
-  return { M, Mkg, head, ra, SW, h, beam, density, Icm: SW - Mkg * Math.pow(h - 10, 2) };
+  return { M, Mkg, head, ra, SW, h, beam, beamAvg, beamTaper, density, Icm: SW - Mkg * Math.pow(h - 10, 2) };
 }
-function srfPhysPow(d){ return (d.ra != null ? d.ra : 65) * 0.55 + (d.beam != null ? d.beam : 23) * 1.2 + d.head * 0.12; }
+function srfPhysPow(d){
+  /* average section depth carries the load (a hoop that is 26 mm ONLY at mid is
+     softer than 26 mm everywhere - the old max-only reading scored them alike);
+     each millimetre of taper adds half a step of what tapered molds are built
+     for: elliptic power sections at mid-hoop, where the bending moment peaks. */
+  const bA = d.beamAvg != null ? d.beamAvg : (d.beam != null ? d.beam : 23);
+  const bT = d.beamTaper != null ? d.beamTaper : 0;
+  return (d.ra != null ? d.ra : 65) * 0.55 + bA * 1.2 + bT * 0.5 + d.head * 0.12;
+}
 function srfPhysCtl(d){ return srfPhysPow(d) * 0.65 + d.head * 0.35; }
 /* min-max over the WHOLE field: "9/10 for manoeuvrability" can only ever mean
    "manoeuvrable next to the rackets you could actually buy" */
@@ -4588,10 +4696,31 @@ function srfPhysScalers(){
   };
 }
 /* the eleven-axis vector in the bench's own order, with honest nulls */
+/* the field's current size - two length reads, cheap enough to run per call.
+   Used as the cache fingerprint below: grows when a researched frame lands. */
+function srfPhysFieldN(){
+  let n = 0;
+  try { n += (window.SRF && SRF.frames) ? (SRF.frames() || []).length : 0; } catch(e){}
+  try { n += (window.MK_FRAMES || []).length; } catch(e){}
+  return n;
+}
 window.srfPhysVec = function(f){
   const d = srfPhysDerive(f && f.sp, f && f.cust);
   if (!d) return null;
-  const S = SRF_PHYS_SC || (SRF_PHYS_SC = srfPhysScalers());
+  /* The scalers are min-max over the whole field, so they are only as good as
+     the field they saw. Built too early - a boot that STARTS in physics view
+     paints before the bench script has evaluated - they came out empty, and
+     the empty set was cached, which blanked every stock frame for the rest of
+     the session (all dashes, overall 0.0; only feel rows survived, because
+     they bypass the model). Two rules now: an empty scaler set is never
+     cached, and a changed field size rebuilds the cache on the next call. */
+  let S = SRF_PHYS_SC;
+  const k = srfPhysFieldN();
+  if (!S || S.k !== k){
+    S = srfPhysScalers(); S.k = k;
+    SRF_PHYS_SC = S.n > 0 ? S : null;
+  }
+  if (!S.n) return null;   // field not loaded yet - srfAxes falls back to the scored vector
   return [ S.ctl(srfPhysCtl(d)), S.prec(d.head), S.spin(d.density), S.pow(srfPhysPow(d)),
            S.comf(d.ra), S.stab(d.Icm), S.man(d.SW),
            null, null, null,                     // serve, smash, slice - not derivable
@@ -4616,11 +4745,358 @@ window.srfAxes = function(f){
    its content on open, so the two can never disagree. The first line adapts to the
    active scoring view - a disclosure that does not know which numbers the reader
    is currently looking at is only half a disclosure. */
+/* ================= "why this?" - the popup that shows its work ==================
+   Alexey: "an elaborate answer based on physics ... and also some marketing bs
+   like sound grommets and auxetic 2.0 ... every racket has its own gimmicks and
+   tech, describe that too." So: two voices on one card, clearly separated. The
+   physics section is computed live from the frame's own spec sheet and placed
+   against the whole field; the tech section is the maker's pitch, named as such
+   and decoded into what it physically amounts to. Family-keyed, longest match
+   wins, so every generation of a line inherits its story. */
+const SRF_TECH = [
+["HEAD EXTREME", "HEAD's spin franchise. <b>Auxetic 2.0</b> is a lattice in the yoke that widens under load \u2014 a real structure with a modest measurable effect and a very large ad budget, sold as \u201csensational feel\u201d. <b>Spin Grommets</b> are elongated holes that free the mains to slide and snap back \u2014 that one is honest physics. Recent generations add <b>Sound Grommets</b>, tuned so spin is audible: marketing theatre at its purest. The 16/19 pattern and the thick aero beam do most of the actual work."],
+["HEAD SQUARED", "Too new for independent teardowns \u2014 the current HEAD stack (an <b>Auxetic 2.0</b>-generation yoke and modern grommet work) is the likely story, but treat every specific claim as a claim until someone saws one open. The spec sheet above is the reliable part."],
+["HEAD SPEED", "Sinner's line. <b>Auxetic 2.0</b> in the yoke for the feel story, <b>Graphene 360+</b> surviving mostly in press releases, and a clean 100 in\u00b2 all-court mold that would sell with no story at all. The most honest racket HEAD makes, dressed in the most marketing."],
+["HEAD RADICAL", "Agassi's old flag, Murray's after him. Current generations carry <b>Auxetic 2.0</b> and the Graphene legacy layup; the \u201cWorld Beater DNA\u201d line is doing the heavy lifting emotionally. The mold is a middle-of-everything all-courter \u2014 which is the actual product."],
+["HEAD GRAVITY", "The teardrop hoop is the real technology: it pushes the widest part of the face \u2014 and with it the sweetspot \u2014 up to where topspin actually meets the ball. <b>Auxetic</b> yoke for feel, flip cosmetics for the gram. Zverev's frame."],
+["HEAD PRESTIGE", "The tech that matters shipped in 1987: a dense, small-faced box beam that filters nothing and flatters nobody. <b>Auxetic</b> arrived recently as the feel story, but Prestige feel was always geometry and mass, not lattice work."],
+["HEAD BOOM", "The friendly one. <b>Auxetic</b> yoke plus the <b>Morph Beam</b> \u2014 a cross-section that changes shape around the hoop, marketed as easy power with feel. It is a comfortable modern power mold in loud paint, and none the worse for it."],
+["WILSON PRO STAFF RF97", "Federer's own spec. The layup story here is the one that is actually old and true: <b>braided graphite + aramid</b>, the weave Wilson has built Pro Staffs from since St.\u00a0Vincent \u2014 slow-filtered, muted, expensive feel. Add a leather grip and 340 g of unapologetic mass. No gimmick needed; the gimmick is that there is no gimmick."],
+["WILSON PRO STAFF PRECISION", "The Pro Staff name on a friendlier price mold \u2014 the cosmetics are the main technology. Nothing wrong with that, as long as you know which part you are paying for."],
+["WILSON PRO STAFF", "The feel dynasty. <b>Braid 45</b> \u2014 the classic graphite-aramid braid re-laid at 45\u00b0 \u2014 plus <b>Paradigm Bending</b>, Wilson's name for tuning WHERE the frame flexes rather than just how much, and the <b>Amplifeel</b> handle build. For once the marketing describes something you can feel on a volley."],
+["WILSON RF 01", "Designed with Federer after his retirement \u2014 the pitch is \u201cRF DNA\u201d, the reality is a thicker-beamed, more forgiving modern player's frame than the RF97 ever was. The signature is the technology; the mold is quietly sensible."],
+["WILSON BLADE", "<b>FORTYFIVE\u00b0</b> \u2014 carbon laid at 45\u00b0 so the hoop \u201cflexes with you\u201d \u2014 plus <b>DirectConnect</b>, a carbon handle fused straight to the hoop for torsional calm. Both real, both subtle; the v8 colour-shift paint moved more units than any layup ever has. The Blade's true tech is its pattern discipline: 18\u00d720 for the surgeons, 16\u00d719 for everyone else."],
+["WILSON ULTRA", "The power line. <b>Crush Zone</b> grommets compress at impact \u2014 \u201cexplosive power\u201d in the brochure, a slightly softer, longer launch in physics \u2014 riding a stiff <b>PowerProfile</b> geometry. The beam width is the honest spec: it tells you what this frame is for."],
+["WILSON CLASH", "The rare case where the gimmick is real and measurable. <b>FreeFlex</b> is a carbon mapping that lets the frame bend in planes rackets normally refuse; <b>StableSmart</b> is the geometry that keeps it from twisting anyway. Result: stiffness numbers in the 50s with normal stability \u2014 genuinely new when it shipped, still the arm-friendly modern benchmark."],
+["WILSON SHIFT", "The concept frame that made it to shelves: engineered to bend vertically while resisting torsion, so the face stays honest while the launch window grows. Spin through stability rather than through an open bed \u2014 an actual idea, not just a name."],
+["WILSON BURN", "Spin-line molds: stiff beam, open pattern, launch angle as the product. The tech sheet is short and the paint is orange \u2014 what you see is what it does."],
+["WILSON DEFYER", "New line \u2014 no independent teardown on file yet, so every named technology is a claim for now. The mass, balance, swingweight and pattern above are the parts you can bank."],
+["BABOLAT PURE AERO", "The spin machine that built a brand on Nadal's forehand. <b>AeroModular</b> beam shaping (the aero story since 2004), <b>FSI Spin</b> \u2014 mains spaced wider so the bed opens up \u2014 and <b>NF\u00b2-Tech</b>, flax fibres at 3 and 9 o'clock sold as natural vibration filtering, atop the <b>SWX Pure Feel</b> damping layer. Strip the vocabulary and it is an aero beam plus an open bed \u2014 which is exactly where the spin comes from."],
+["BABOLAT PURE DRIVE", "The loudest \u201cfree power\u201d in tennis since 1994. <b>FSI Power</b> (diamond grommets, crosses pulled tighter toward the tip), the <b>HTR</b> high-torsional-rigidity layup, and a generation of damping names \u2014 Cortex, SWX Pure Feel \u2014 to apologise for the stiffness that makes the power. The RA number above explains the whole product in one figure."],
+["BABOLAT PURE STRIKE", "Babolat's leash on its own power. The <b>Control Frame</b> geometry \u2014 a hybrid box/elliptical beam \u2014 trades the Drive's trampoline for directness, and <b>C\u00b2 Pure Feel</b> (a viscoelastic SMAC layer in the layup) keeps the firmness from turning brittle. Thiem's old flag; the thinner beam mostly keeps the promise."],
+["YONEX EZONE", "The <b>Isometric</b> head \u2014 Yonex's squared hoop, on every frame since 1980 \u2014 is that rarest thing, a gimmick you can measure: longer effective strings toward the corners, a visibly wider sweetspot. <b>2G-Namd Flex Force</b> graphite (\u201csnaps back faster\u201d) and the <b>Oval Pressed Shaft</b> carry the feel story. Osaka's frame."],
+["YONEX VCORE PRO", "The old name of the Percept line: flexible control molds, the <b>Servo Filter</b> vibration mesh, Isometric hoop. The feel-first bench \u2014 and the flex numbers back the talk."],
+["YONEX VCORE", "The spin line. <b>Isometric</b> hoop as always, plus <b>Aero Fin</b> and <b>Aero Trench</b> \u2014 sculpted cutouts sold on wind-tunnel slides \u2014 and <b>String Sync</b> grommets to free the mains. The aero garnish is marketing; the open bed and hoop speed are the spin."],
+["YONEX PERCEPT", "The feel-first line. <b>Servo Filter</b> \u2014 a damping mesh sitting in the grommet strip \u2014 plus <b>2G-Namd</b> graphite and the Isometric hoop. Unusually for this industry, the plush impact the brochure promises is the impact you get."],
+["TECNIFIBRE TF40", "French control engineering, Medvedev-adjacent. <b>RS Section</b> \u2014 rectangular beam walls for directional stability \u2014 and <b>Foam Inside</b>, a fully foam-filled hoop that genuinely deadens the impact into something solid and quiet, finished with the <b>XTC</b> surface. The 18\u00d720 and 16\u00d719 beds are the actual choice being offered."],
+["TECNIFIBRE T-FIGHT", "Medvedev's actual frame family. <b>Isoflex</b> varies stiffness around the hoop so the response map is even instead of sweetspot-or-nothing; <b>Foam Inside</b> and the <b>RS Section</b> do the solidity. One of the few tech sheets where each name maps to a design decision you can feel."],
+["TECNIFIBRE TFIGHT", "Medvedev's actual frame family. <b>Isoflex</b> varies stiffness around the hoop so the response map is even instead of sweetspot-or-nothing; <b>Foam Inside</b> and the <b>RS Section</b> do the solidity. One of the few tech sheets where each name maps to a design decision you can feel."],
+["TECNIFIBRE FIRE", "The new easy-speed line: foam-damped construction on quicker molds, dynamite cosmetics, and refreshingly little invented vocabulary. Too new for teardowns \u2014 bank the specs, not the adjectives."],
+["TECNIFIBRE TEMPO", "The lighter-spec bench of the same French foam-damped construction, tuned for faster handling without going hollow. Little tech theatre; the spec sheet is the pitch."],
+["DUNLOP CX", "The control line. <b>Sonic Core with Infinergy</b> \u2014 BASF's expanded-TPU beads set into the hoop corners \u2014 is a real material with a real, small damping effect (the \u201c37% better dampening\u201d figure is the marketing dose), plus <b>FlexBooster</b> at 2 and 10 o'clock and <b>PowerGrid StringTech</b>. Underneath: a classic box-beam control mold."],
+["DUNLOP SX", "The spin line. <b>Spin Boost</b> grommets angled so the mains slide and snap back, <b>Sonic Core</b> for the comfort story. Launch-angle merchandise, and effective at it."],
+["DUNLOP FX", "The power line \u2014 <b>Power Boost</b> grooves, <b>Sonic Core</b> damping, and a beam width that announces the mission before the paint does."],
+["DIADEM", "The US boutique. High-modulus layups, thick modern molds, foam-filled hoops \u2014 and almost no invented vocabulary, which in this market is nearly a technology in itself. Elevate is the control bench, Nova the power/spin bench; the spec sheet IS the pitch."],
+["PRINCE PHANTOM", "The flex-first refuge. Thin, very soft box beams skinned in <b>TeXtreme \u00d7 Twaron</b> spread-tow carbon-aramid, and on some molds <b>O3</b> \u2014 string-sized ports instead of grommet holes, a genuinely different aerodynamic and feel (and the loudest whoosh in tennis). RA numbers the big brands abandoned decades ago."],
+["PRINCE TOUR", "Classic control molds under modern skins: <b>TeXtreme \u00d7 Twaron</b> spread-tow layup for stiffness without weight, the <b>Anti-Torque System</b> for hoop calm. Prince sells continuity, and this bench is where it lives."],
+["PRINCE RIPSTICK", "Built and marketed for one thing: RPM. <b>O3</b> ports mixed with standard grommets, a whippy balance and an open bed \u2014 the whole frame is a launch-angle argument."],
+["SOLINCO", "The string company's rackets. 40T high-modulus carbon, foam-filled construction, and a near-total absence of gimmick names \u2014 Whiteout is the control bench, Blackout the power/spin bench, and the absence of marketing is the marketing. The strings ARE the famous technology here."],
+["LACOSTE", "Engineered inside the Tecnifibre group, dressed by the fashion house. The croc on the throat is the headline technology; the quietly competent French carbon work underneath is the reason it plays better than a fashion racket has any right to."],
+["V\u00d6LKL", "The quiet German house \u2014 Becker's old brand. Its signature is the <b>Sensor Handle</b>, a hollow, damped grip system that swallows vibration before it reaches the wrist, on frames whose flexible box-beam feel has stayed deliberately old-school since the C10's nineties heyday. Almost no vocabulary theatre; the C10 Pro survives on word of mouth among people who value their arm."],
+["PRO KENNEX", "<b>Kinetic System</b>: sealed chambers in the hoop holding thousands of free micro-bearings that shift at impact and eat shock \u2014 the rare gimmick that is also a mechanism, with decades of tennis-elbow testimony behind it. The arm-friendly refuge brand; Ki Q+ and Black Ace both carry it."]
+];
+function srfTechFor(f){
+  const nm = ((f.b ? f.b + " " : "") + String(f.n != null ? f.n : (f.label || ""))).toUpperCase();
+  let best = null;
+  for (const e of SRF_TECH){ if (nm.startsWith(e[0]) && (!best || e[0].length > best[0].length)) best = e; }
+  return best ? best[1] : null;
+}
+/* the physics field for percentiles - one derived row per distinct frame */
+function srfWhyField(){
+  const rows = [];
+  try { (SRF.frames() || []).forEach(fr => {
+    const f = SRF.frameFull(fr.no);
+    if (f && f.feelOf == null) rows.push(f);   // feel rows duplicate their stock specs
+  }); } catch(e){}
+  try { (window.MK_FRAMES || []).forEach(f => rows.push(f)); } catch(e){}
+  return rows.map(f => srfPhysDerive(f.sp, f.cust)).filter(Boolean);
+}
+/* ---- the string side of "why this?" ------------------------------------------
+   A bed's character is three physical facts (material elasticity, measured bed
+   stiffness, gauge) plus one honest caveat (tension changes feel more than any
+   marketing). The popup says all four, then lets the maker speak. */
+/* ---- the balance/swingweight glyph ------------------------------------------
+   grip |==[accent third]==(o)==| head   with a thin SW gauge underneath.
+   Dot = balance point against the whole bench's range; lit third = head-light /
+   even / head-heavy; gauge fill = swingweight against the whole field. */
+function srfBalScalers(){
+  const bal = [], sw = [];
+  try { (SRF.frames() || []).forEach(fr => { const f = SRF.frameFull(fr.no);
+    if (!f || f.feelOf != null) return;
+    const d = srfPhysDerive(f.sp, f.cust); if (!d || d.h == null || d.SW == null) return;
+    bal.push(d.h); sw.push(d.SW); }); } catch(e){}
+  try { (window.MK_FRAMES || []).forEach(f => { const d = srfPhysDerive(f && f.sp);
+    if (d && d.h != null && d.SW != null){ bal.push(d.h); sw.push(d.SW); } }); } catch(e){}
+  const mm = a => a.length > 1 ? [Math.min.apply(null, a), Math.max.apply(null, a)] : null;
+  return { bal: mm(bal), sw: mm(sw), n: bal.length };
+}
+let SRF_BALSC = null;
+window.srfBalSvg = function(f, o){
+  o = o || {};
+  const d = srfPhysDerive(f && f.sp, f && f.cust);
+  if (!d || d.h == null || d.SW == null) return "";
+  let S = SRF_BALSC;
+  const k = (typeof srfPhysFieldN === "function") ? srfPhysFieldN() : 0;
+  if (!S || S.k !== k){ S = srfBalScalers(); S.k = k; SRF_BALSC = (S.bal && S.sw) ? S : null; }
+  if (!SRF_BALSC) return "";
+  S = SRF_BALSC;
+  const W = o.w || 84, H = o.labels ? 28 : 17;
+  const nm = (v, mm2) => Math.max(0.04, Math.min(0.96, (v - mm2[0]) / ((mm2[1] - mm2[0]) || 1)));
+  const tB = nm(d.h, S.bal), tS = nm(d.SW, S.sw);
+  const balMM = Math.round(d.h * 10);
+  const zone = balMM <= 320 ? 0 : balMM < 340 ? 1 : 2;
+  const zl = ["head-light", "even balance", "head-heavy"][zone];
+  const tx = 7, tw = W - 19;
+  const zx = tx + zone * tw / 3, zw = tw / 3;
+  const bx = tx + tB * tw;
+  const swW = Math.max(3, tS * tw);
+  const cy = "var(--cyan)";
+  const faint = "color-mix(in srgb, var(--fg) 17%, transparent)";
+  const soft = "color-mix(in srgb, var(--fg) 42%, transparent)";
+  const tip = ("balance " + (Math.round(d.h * 10) / 10) + " cm from the butt \u2014 " + zl +
+    " \u00b7 dot: its place in the bench's " + S.bal[0].toFixed(1) + "\u2013" + S.bal[1].toFixed(1) +
+    " cm range \u00b7 bottom bar: swingweight " + d.SW + " against the field (" + S.sw[0] + "\u2013" + S.sw[1] + ")")
+    .replace(/"/g, "&quot;");
+  const lab = (t2, x2, anchor, on) =>
+    '<text x="' + x2 + '" y="' + (H - 1.5) + '" font-size="6.8" letter-spacing=".08em"' +
+    (anchor ? ' text-anchor="' + anchor + '"' : "") + ' fill="' + (on ? cy : soft) + '">' + t2 + "</text>";
+  return '<svg class="balsvg" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="' + tip + '">' +
+    "<title>" + tip + "</title>" +
+    '<rect x="1.5" y="3.5" width="3.2" height="9" rx="1.4" fill="' + soft + '"/>' +
+    '<ellipse cx="' + (W - 6.5) + '" cy="8" rx="5" ry="6.4" fill="none" stroke="' + soft + '" stroke-width="1.4"/>' +
+    '<rect x="' + tx + '" y="6.4" width="' + tw + '" height="3.2" rx="1.6" fill="' + faint + '"/>' +
+    '<rect x="' + zx.toFixed(1) + '" y="4.9" width="' + zw.toFixed(1) + '" height="6.2" rx="3.1" fill="' + cy + '" opacity="0.30"/>' +
+    '<rect x="' + tx + '" y="13" width="' + swW.toFixed(1) + '" height="2.2" rx="1.1" fill="' + cy + '" opacity="0.55"/>' +
+    '<circle cx="' + bx.toFixed(1) + '" cy="8" r="3.4" fill="' + cy + '" stroke="var(--card, #101010)" stroke-width="1.2"/>' +
+    (o.labels ? lab("grip", tx, null, zone === 0) + lab("even", W / 2, "middle", zone === 1) + lab("head", W - 5, "end", zone === 2) : "") +
+    "</svg>";
+};
+function srfMatTxt(mat, side){
+  const m = String(mat || "").toLowerCase();
+  const who = side ? "<b>" + side + "</b> \u2014 " : "";
+  if (/gut/.test(m)) return who + "<b>natural gut</b>: the most elastic string made and still the benchmark for tension stability \u2014 the bed pockets the ball, returns energy softly, and plays in week six like week one. The arm-friendliest material there is; the price and weather sensitivity are the tax.";
+  if (/multi/.test(m)) return who + "<b>multifilament</b>: hundreds of bundled micro-fibres imitating gut's pocketing \u2014 comfort and easy power without gut's price. It gives back less spin than a slick poly (the fibres grip instead of sliding) and notches under full western swings.";
+  if (/kevlar|aramid/.test(m)) return who + "<b>aramid</b>: near-zero stretch \u2014 maximum control, minimum mercy. Historically the string of last resort for chronic string breakers, and the first thing an arm surgeon would confiscate.";
+  if (/syn|nylon/.test(m)) return who + "<b>synthetic gut</b>: a single nylon core \u2014 the honest all-round baseline. Middle power, middle feel, middle everything; what it lacks in character it repays in predictability and price.";
+  if (/poly/.test(m)) return who + "<b>co-polyester</b>: modest elasticity \u2014 that is the control: you can swing flat out and the ball stays in. The slick surface lets the mains slide and snap back, which is where its spin actually comes from. It hands more shock to the arm than anything softer and bleeds tension steadily, so it plays best fresh.";
+  return null;
+}
+function srfStrInfoFor(name){
+  try {
+    if (typeof STRINGINFO === "undefined" || !name) return null;
+    const nm = String(name).split(" \u00b7 ")[0].trim();
+    if (STRINGINFO[nm]) return STRINGINFO[nm];
+    const g = nm.replace(/\s+1\.\d{2}.*$/, "").trim();
+    if (STRINGINFO[g]) return STRINGINFO[g];
+    let best = null;
+    for (const k in STRINGINFO){ if (nm.toUpperCase().startsWith(k.toUpperCase()) && (!best || k.length > best.length)) best = k; }
+    return best ? STRINGINFO[best] : null;
+  } catch(e){ return null; }
+}
+/* the shared physics core - used by the bed popup AND the setups popup's string half */
+function srfWhyBedCore(bed, tech){
+  if (!tech) return "";
+  const wesc = t => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+  let out = "";
+  if (tech.stiff != null && isFinite(tech.stiff)){
+    let pctS = null;
+    try {
+      const a = (typeof calBeds === "function" ? calBeds() : [])
+        .map(x => x.tech && x.tech.stiff).filter(v => v != null && isFinite(v));
+      if (a.length) pctS = Math.round(100 * a.filter(v => v < tech.stiff).length / a.length);
+    } catch(e){}
+    out += "<p><b>Bed stiffness ~" + Math.round(tech.stiff) + " lb/in</b>" +
+      (pctS != null ? " \u2014 stiffer than " + pctS + "% of the string field. " : ". ") +
+      (pctS != null && pctS >= 67
+        ? "A firm bed: short dwell, little free power, maximum say over where the ball goes \u2014 and the impact lands in your arm, so the frame and your technique have to be the suspension."
+        : pctS != null && pctS <= 33
+        ? "A soft bed: the ball sinks in and stays longer, energy comes back for free, and the arm is spared \u2014 the price is a longer launch you must control with your swing."
+        : "A mid-stiffness bed \u2014 neither trampoline nor board; it will follow the frame's character rather than override it.") + "</p>";
+  }
+  const mm = srfMatTxt(tech.mat, tech.hybrid ? "mains" : null);
+  const xm = tech.hybrid ? srfMatTxt(tech.xmat, "crosses") : null;
+  if (mm) out += "<p>" + mm + "</p>";
+  if (xm) out += "<p>" + xm + " In a hybrid the mains write most of the bed's character \u2014 they are the strings that move \u2014 and the crosses tune comfort and snapback.</p>";
+  const gm = String(bed && bed.m || "").match(/1\.(\d{2})/);
+  if (gm){
+    const g = parseFloat("1." + gm[1]);
+    out += "<p><b>Gauge " + g.toFixed(2) + " mm</b> \u2014 " + (g <= 1.25
+      ? "on the thin side: deeper bite, livelier snapback and more feel, paid for in playing life."
+      : "on the thick side: durability and a steadier launch, at some cost in bite and touch.") + "</p>";
+  }
+  out += '<p class="whypop_tag">One honest caveat: the stiffness above is the material\u2019s at reference tension \u2014 the tension your stringer pulls moves the feel more than any technology on this card.</p>';
+  return out;
+}
+window.SRF_WHY_SB = [];   // the painted string cards, recorded by midPaint
+window.srfWhyShowBed = function(ctx, i){
+  const wesc = t => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+  const bed = ctx.bed, tech = ctx.tech;
+  const hy = tech && tech.hybrid;
+  const nm = String(bed.m) + (hy ? " \u00d7 " + String(bed.x) : "");
+  let mine = "";
+  try {
+    const sw8 = (typeof midSW === "function") ? midSW() : Array(8).fill(5);
+    const lbl = (bed.axes || window.MID_SLBL || []).map(x => String(x));
+    const top = sw8.map((wt, k2) => ({ wt, k: k2 })).sort((a, b) => b.wt - a.wt).slice(0, 3);
+    mine = "<p>" + top.map(t =>
+        "<b>" + wesc(lbl[t.k] || ("axis " + (t.k + 1))) + "</b> (your weight " + t.wt + "/10) \u2192 this bed " +
+        (bed.s && bed.s[t.k] != null ? bed.s[t.k] + "/10" : "?")
+      ).join(" \u00b7 ") + "</p>" +
+      "<p>Weighted over all eight axes: <b>" + (ctx.sc != null ? ctx.sc.toFixed(1) : "?") + "/10</b> \u2014 that score set its rank." +
+      (bed.demand != null ? " Demand <b>" + Math.round(bed.demand) + "/10</b> \u2014 how much precision the bed asks of YOU before it gives any of this back." : "") + "</p>";
+  } catch(e){ mine = ""; }
+  const infoM = srfStrInfoFor(bed.m);
+  const infoX = hy ? srfStrInfoFor(bed.x) : null;
+  let maker = "";
+  if (infoM) maker += "<p>" + (hy ? "<b>mains \u2014 " + wesc(String(bed.m).split(" \u00b7 ")[0]) + ":</b> " : "") + infoM + "</p>";
+  if (infoX) maker += "<p><b>crosses \u2014 " + wesc(String(bed.x)) + ":</b> " + infoX + "</p>";
+  if (!maker) maker = "<p>No dossier on file for this one \u2014 no insult meant: the material, stiffness and gauge above are the parts that touch the ball.</p>";
+  const wrap = document.createElement("div");
+  wrap.id = "whypop_bg";
+  wrap.innerHTML = '<div id="whypop" role="dialog" aria-modal="true" aria-label="why this string bed">' +
+    '<div class="whypop_h">why this?<button type="button" class="whypop_x" aria-label="close" onclick="srfWhyClose()">\u00d7</button></div>' +
+    '<div class="whypop_body">' +
+      '<div class="whypop_name">' + wesc(nm) + "</div>" +
+      '<div class="whypop_tag">ranked #' + (i + 1) + " in your strings list \u00b7 " + (hy ? "hybrid" : "full bed") +
+        (tech && tech.priceV != null ? " \u00b7 ~" + tech.priceV + "\u20ac" : "") + "</div>" +
+      "<h4>the physics of this bed</h4>" + srfWhyBedCore(bed, tech) +
+      "<h4>against your priorities</h4>" + mine +
+      "<h4>what the maker says</h4>" + maker +
+    "</div></div>";
+  wrap.addEventListener("click", e => { if (e.target === wrap) srfWhyClose(); });
+  document.body.appendChild(wrap);
+  const x = wrap.querySelector(".whypop_x"); if (x) x.focus({ preventScroll: true });
+};
+window.SRF_WHY_SU = [];   // the four pro setups, recorded by paintSetups4 as it paints
+window.SRF_WHY_MS = [];   // the four intermediate setups, recorded by midPaint
+window.SRF_WHY_FR = [];   // the painted racket cards, recorded by midPaint
+window.srfWhyClose = function(){ const w = document.getElementById("whypop_bg"); if (w) w.remove(); };
+document.addEventListener("keydown", e => { if (e.key === "Escape") srfWhyClose(); });
+window.srfWhyShow = function(src, i, ev){
+  if (ev){ ev.stopPropagation(); ev.preventDefault(); }
+  srfWhyClose();
+  const ctx = (src === "su" ? window.SRF_WHY_SU : src === "ms" ? window.SRF_WHY_MS
+             : src === "sb" ? window.SRF_WHY_SB : window.SRF_WHY_FR)[i];
+  if (!ctx) return;
+  if (ctx.kind === "bed"){ window.srfWhyShowBed(ctx, i); return; }
+  if (!ctx.f) return;
+  const F = ctx.f;
+  const wesc = t => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+  const nmFull = (F.b ? F.b + " " : "") + F.n;
+  const d = srfPhysDerive(F.sp, F.cust);
+  const field = srfWhyField();
+  const pct = (get, v) => { const a = field.map(get).filter(x => x != null && isFinite(x));
+    if (!a.length || v == null || !isFinite(v)) return null;
+    return Math.round(100 * a.filter(x => x < v).length / a.length); };
+  const r1 = x => x == null ? null : Math.round(x * 10) / 10;
+  const pm = d ? String(F.sp[2] || "").match(/\d+\s*x\s*\d+/) : null;
+  let phys = "";
+  if (d){
+    const pI = pct(z => z.Icm, d.Icm), pSW = pct(z => z.SW, d.SW),
+          pRA = d.ra != null ? pct(z => z.ra, d.ra) : null,
+          pDe = d.density != null ? pct(z => z.density, d.density) : null;
+    const iTxt = pI == null ? "" : pI >= 67
+      ? "That is more recoil-stable than " + pI + "% of the field: it plants itself against pace \u2014 returns, block volleys and heavy exchanges feel like hitting from behind a wall."
+      : pI >= 33
+      ? "That sits mid-field (" + pI + "% of frames below it): stable enough to trust against pace, light enough to redirect."
+      : "That is lighter at impact than most of the field (" + (100 - (pI || 0)) + "% above it): quick to redirect, but big pace can push it around \u2014 your timing is the stabiliser.";
+    const sTxt = pSW == null ? "" : pSW >= 67
+      ? "It swings heavier than " + pSW + "% of the field \u2014 plough-through on your terms, but you pay for it in racket-head speed late in a rally."
+      : pSW >= 33
+      ? "Swingweight sits mid-field \u2014 the compromise position between whip and plough."
+      : "It swings lighter than most of the field \u2014 racket-head speed for free; the depth has to come from you.";
+    const dTxt = d.density == null || pDe == null ? ""
+      : pDe >= 60
+      ? "The bed is strung denser than " + pDe + "% of the field (" + d.density.toFixed(2) + " strings/in\u00b2): shorter snapback, lower launch \u2014 a line-drawing, flat-hitting bed."
+      : pDe <= 40
+      ? "The bed is more open than most of the field (" + d.density.toFixed(2) + " strings/in\u00b2): the mains slide further and snap back harder, which is where its spin and high launch come from."
+      : "Pattern density is mid-field (" + d.density.toFixed(2) + " strings/in\u00b2) \u2014 neither a spin trampoline nor a flat ruler.";
+    const bTxt = d.beamTaper == null ? ""
+      : d.beamTaper >= 2
+      ? " The beam is not one number: it swells " + d.beamTaper + " mm toward mid-hoop \u2014 a tapered aero/power section, stiff where the bending moment peaks; a constant box beam of the same average would play softer and more connected. Counted in the rating as average depth plus the taper."
+      : d.beamTaper > 0
+      ? " The beam profile is nearly constant (" + d.beamTaper + " mm of variation) \u2014 counted as average depth plus that small taper."
+      : (d.beam != null && d.beam <= 21.5
+        ? " A constant " + d.beam + " mm box beam \u2014 the classic control geometry, and the rating counts it that way: no taper bonus, just its honest average."
+        : " A constant-width beam \u2014 no taper; the rating counts its full depth everywhere, which is exactly what a slab section is.");
+    const rTxt = (d.ra == null ? ""
+      : (pRA != null && pRA >= 67
+        ? "At RA " + d.ra + " it is stiffer than " + pRA + "% of the field: crisp, energetic, and it hands the shock to your arm \u2014 string choice matters here."
+        : pRA != null && pRA <= 33
+        ? "At RA " + d.ra + " it is softer than most of the field: long dwell, plush impact, and it asks you for the power it refuses to fake."
+        : "RA " + (d.ra || "?") + " sits mid-field \u2014 firm without being harsh.")) + bTxt;
+    phys =
+      '<div class="whyspecs">' + wesc(String(F.sp[0])) + " \u00b7 " + d.head + " in\u00b2 \u00b7 " +
+        (pm ? pm[0].replace(/\s+/g, "") : "?") + " \u00b7 SW " + d.SW + " \u00b7 balance " + r1(d.h) + " cm" +
+        (d.ra != null ? " \u00b7 RA " + d.ra : "") +
+        (d.beam != null ? " \u00b7 beam " + (d.beamTaper > 0
+          ? String(F.sp[6]).replace(/\s*mm.*$/i, "") + " mm (avg " + d.beamAvg + " \u00b7 taper " + d.beamTaper + ")"
+          : d.beam + " mm constant") : "") + "</div>" +
+      (window.srfBalSvg ? '<div style="margin:5px 0 1px;">' + srfBalSvg(F, { w: 250, labels: true }) + "</div>" : "") +
+      "<p><b>Recoil weight</b> \u2014 the frame's refusal to be pushed back at impact \u2014 computed from its own numbers by the parallel axis theorem: " +
+      '<span class="mono">I<sub>cm</sub> = SW \u2212 M\u00b7(h\u221210)\u00b2 = ' + d.SW + " \u2212 " + (d.Mkg.toFixed(3)) + "\u00b7(" + r1(d.h) + "\u221210)\u00b2 = <b>" +
+      r1(d.Icm) + "</b> kg\u00b7cm\u00b2</span>. " + iTxt + "</p>" +
+      "<p>" + sTxt + " " + dTxt + " " + rTxt + "</p>";
+  } else {
+    phys = "<p>The public spec sheet for this frame is missing one of the four quantities the physics needs (mass, balance, swingweight, head size), so the model refuses to invent the rest \u2014 the tech story below still applies.</p>";
+  }
+  /* against the player's own sliders */
+  let mine = "";
+  try {
+    const wv = SRF.weights(), lbl = (SRF.axisLabels() || []).map(x => String(x).replace(/\s+/g, " ").trim());
+    const ax = srfAxes(F) || [];
+    const top = wv.map((wt, k2) => ({ wt, k: k2 })).sort((a, b) => b.wt - a.wt).slice(0, 3);
+    mine = "<p>" + top.map(t =>
+        "<b>" + wesc(lbl[t.k] || ("axis " + (t.k + 1))) + "</b> (your weight " + t.wt + "/10) \u2192 this frame " +
+        (ax[t.k] == null ? "<i>no formula \u2014 blank, skipped, never zeroed</i>" : ax[t.k] + "/10")
+      ).join(" \u00b7 ") + "</p>" +
+      "<p>Weighted over all eleven axes: <b>" + (ctx.sc != null ? ctx.sc.toFixed(1) : "?") + "/10</b>" +
+      (ctx.role != null
+        ? " \u2014 " + ["your gold pick: top weighted score inside your level band", "your silver pick \u2014 #2 of the frames your answers allow", "your bronze pick \u2014 #3 of the frames your answers allow", "your budget pick \u2014 best value of the older generation"][ctx.role] + "."
+        : " \u2014 that score, against the " + (field.length || "") + "-frame field, is what set its rank.") + "</p>" +
+      '<p class="whypop_tag">' + (window.SRF_MODEL === "phys"
+        ? "Read in the pure-physics view: recomputed from published specs alone; serve, smash and slice carry no formula."
+        : "Read in the scored view: one disclosed estimator over published specs \u2014 structured estimates, not measurements.") +
+      ((F.feel || F.feelOf != null) ? " This row carries your own hand ratings \u2014 they override the model." : "") + "</p>";
+  } catch(e){ mine = ""; }
+  /* the maker's pitch + the independent read */
+  const tech = srfTechFor(F);
+  const baseNm = nmFull.replace(/ \u00b7 (my feel|custom)$/, "");
+  let info = null;
+  try { if (typeof FRAMEINFO !== "undefined" && FRAMEINFO) info = FRAMEINFO[baseNm] || null; } catch(e){}
+  let bedHtml = "";
+  if (ctx.bed){
+    const bx = ctx.bed.x && !/full bed/i.test(String(ctx.bed.x)) ? " \u00d7 " + wesc(String(ctx.bed.x)) : "";
+    bedHtml = "<h4>the string half</h4><p><b>" + wesc(String(ctx.bed.m)) + bx + "</b> \u2014 pairing " +
+      (ctx.pairSc != null ? ctx.pairSc.toFixed(1) : "?") + "/10 with this frame" +
+      (ctx.bedWhy ? "; the calibrator's main reason: " + wesc(ctx.bedWhy) : "") + ".</p>" +
+      (window.srfWhyBedCore ? srfWhyBedCore(ctx.bed, ctx.bedTech) : "");
+  }
+  const wrap = document.createElement("div");
+  wrap.id = "whypop_bg";
+  wrap.innerHTML = '<div id="whypop" role="dialog" aria-modal="true" aria-label="why this racket">' +
+    '<div class="whypop_h">why this?<button type="button" class="whypop_x" aria-label="close" onclick="srfWhyClose()">\u00d7</button></div>' +
+    '<div class="whypop_body">' +
+      '<div class="whypop_name">' + wesc(nmFull) + "</div>" +
+      '<div class="whypop_tag">' + (ctx.role != null
+        ? ["gold setup", "silver setup", "bronze setup", "budget setup"][ctx.role]
+        : "ranked #" + (i + 1) + " in your rackets list") + "</div>" +
+      "<h4>the physics that ranked it</h4>" + phys +
+      "<h4>against your priorities</h4>" + mine +
+      bedHtml +
+      "<h4>what " + wesc(F.b || "the maker") + " says it put inside</h4>" +
+      "<p>" + (tech || "No verified tech dossier on file for this one \u2014 which is no insult: the mass, balance, swingweight and pattern above are the parts that hit the ball.") + "</p>" +
+      (info ? "<h4>an independent read</h4><p>" + info + "</p>" : "") +
+    "</div></div>";
+  wrap.addEventListener("click", e => { if (e.target === wrap) srfWhyClose(); });
+  document.body.appendChild(wrap);
+  const x = wrap.querySelector(".whypop_x"); if (x) x.focus({ preventScroll: true });
+};
 function srfMethLeadTxt(){
   const sw = (m, label) =>
     '<button type="button" class="methlink" style="font-size:inherit;" onclick="srfModelSet(\'' + m + '\')">' + label + '</button>';
   return (window.SRF_MODEL === "phys"
-    ? 'You are reading the <b>pure physics</b> view \u2014 every number is recomputed from six measured quantities alone: mass, balance, swingweight, stiffness, string pattern and beam. Frames separate sharply, because a continuous scale never lands two different frames on the same value \u2014 but the model refuses what it cannot reach: <b>serve, smash and slice stay blank</b>. If you want an estimate on all eleven axes, coarser but complete, ' + sw('scored', 'switch back to scored \u2190')
+    ? 'You are reading the <b>pure physics</b> view \u2014 every number is recomputed from six measured quantities alone: mass, balance, swingweight, stiffness, string pattern and the beam profile (average depth plus taper). Frames separate sharply, because a continuous scale never lands two different frames on the same value \u2014 but the model refuses what it cannot reach: <b>serve, smash and slice stay blank</b>. If you want an estimate on all eleven axes, coarser but complete, ' + sw('scored', 'switch back to scored \u2190')
     : 'You are reading the <b>scored</b> view \u2014 one estimator fills in all eleven axes for every frame, play axes included, so nothing is ever blank. The price is resolution: its whole-point buckets land many frames on identical values, so near-ties are everywhere and the podium is decided by small margins. For the stricter ranking \u2014 recoil weight from the parallel axis theorem, sharp separation, honest blanks where no formula reaches \u2014 ' + sw('phys', 'review pure physics \u2192'));
 }
 window.srfMethLead = function(){
@@ -5373,9 +5849,17 @@ function cellColorBase(v){
   // to their light page colour so low scores fade INTO the page instead of toward black.
   const BG = T.bg || [13,29,30];
   const rampBase = (u) => {
+    u = Math.max(1, u);   // physics view hands out 0.5s; below 1 the ramp has no colour of its own
     let q = u<=6 ? T.low.map((a,i)=>lerp(a, T.mid[i], (u-1)/5))
                  : T.mid.map((a,i)=>lerp(a, T.hi[i], (u-6)/3));
-    if (u<=3){ const k=[0.30,0.52,0.74][u-1]; q = q.map((x,i)=>Math.round(BG[i]+(x-BG[i])*k)); }
+    /* The low-end dampener was a 3-slot lookup indexed by u-1 - integers only.
+       The pure-physics view paints HALF scores (1.5, 2.5), which indexed at 0.5,
+       returned undefined, multiplied into NaN and produced rgb(NaN,..) - an
+       invalid colour, so the cell fell through to the page: the black holes in
+       Alexey's heatmap. Continuous now: k = 0.30 + (u-1)*0.22 matches the old
+       integers exactly (1->0.30, 2->0.52, 3->0.74) and gives every half-step
+       between them a real, darker-green blend of its own. */
+    if (u<=3){ const k = 0.30 + (u-1)*0.22; q = q.map((x,i)=>Math.round(BG[i]+(x-BG[i])*k)); }
     if (u>=8){ const g = u===9 ? T.g9 : T.g8; q = q.map(x=>Math.min(255,Math.round(x*g))); }
     return q;
   };
@@ -6959,6 +7443,11 @@ function buildGrid(){
   // entry plus any group created via transfer-specs) leads, then the quiver and the rest. The
   // sort is stable, so numbering and within-group order stay exactly as authored.
   else if (sortIdx==="g") rows = rk.slice().sort((a,b)=> gRank(a.g) - gRank(b.g));
+  else if (window.SRF_TOPLIVE_R && ovOf)
+    /* armed by any slider drag: the table follows the sliders live, new highest
+       overall first - shelf pins, recency band and hand order stand aside until
+       "reset order" disarms it */
+    rows = rk.slice().sort((a, b) => ovOf(b) - ovOf(a) || (a.b + a.n).localeCompare(b.b + b.n));
   else rows = manApply(rkRecOrder(rk));   // resting order — with your hand order applied on top
   rows = rows.filter(r => !window.srfIsDel || !srfIsDel("racket", r));   // deleted rows leave every list
   const filtering = !!(typeof searchQ!=="undefined" && searchQ);
@@ -6966,6 +7455,13 @@ function buildGrid(){
   /* the legend chips: ONE shelf selection for the whole department — heatmap,
      hard specs and the weighted ranking all follow it (rkGSel repaints all three) */
   if (window.RK_GSEL && window.RK_GSEL.size) rows = rows.filter(r => window.RK_GSEL.has(r.g));
+  /* A FRESH SEARCH LEADS WITH THE WINNER (Alexey, 2026-08-30): while a text query
+     narrows the bench and the reader has not chosen a sort herself, the matches
+     order by the same overall weighted score the Overall column shows - the new
+     highest overall first. A clicked column, difficulty, price or shelf grouping
+     still wins; clearing the query returns the resting order untouched. */
+  if (filtering && !SEL.size && sortIdx === null && ovOf)
+    rows = rows.slice().sort((a, b) => ovOf(b) - ovOf(a) || (a.b + a.n).localeCompare(b.b + b.n));
   const rowsTotal = rows.length;
   /* The recency band is pinned ABOVE the podium (rkRecOrder), so with the default
      five-row window three looked-up frames left only two rows showing the actual
@@ -6974,7 +7470,7 @@ function buildGrid(){
      Only in the resting order, only while the band is non-empty, and capped so a big
      band cannot silently unfold the whole bench. */
   let rkLim = window.SRFLIM.racket || 5;
-  if (sortIdx === null && !SEL.size && !filtering){
+  if (sortIdx === null && !SEL.size && !filtering && !window.SRF_TOPLIVE_R){
     let band = 0;
     try { band = window.srfRecCount("racket", rows); } catch(e){}
     if (band > 0) rkLim = Math.min(rkLim + Math.min(band, 6), rowsTotal);
@@ -7009,7 +7505,7 @@ function buildGrid(){
         `<button type="button" class="gonly" onclick="event.stopPropagation();rkGroupOnly('${r.g}')" aria-label="show only ${G[r.g][1]}">${solo?"all groups":"only"}</button></div>`;
     }
     if (sortIdx==="g" && !SEL.size && !filtering && RK_GCOLL.has(r.g)) return;   // folded: header stands, rows wait
-    h += `<div role="cell" class="namecell" data-no="${r.no}" style="color:${G[r.g][0]};display:flex;flex-direction:column;justify-content:center;padding:3px 4px 3px 7px;line-height:1.25;border-left:3px ${gStyle(r.g)} color-mix(in srgb, ${G[r.g][0]} 62%, transparent);"><span style="font-weight:500;"><span class="draghandle" draggable="true" data-drag="${r.no}" title="drag to reorder — your order is shared with hard specs and sticks until reset order">⋮⋮</span>${cmpBox("racket", r.no)}<span class="custname" role="button" tabindex="0" onclick="srfRowMenu('racket',${r.no},event)" onkeydown="if(event.key==='Enter'){srfRowMenu('racket',${r.no},event);}" onmouseenter="noteHoverIn(noteFrame,${r.no},event)" onmouseleave="noteHoverOut()" title="what you can do with this frame — customize, my feel, notes, remove">${r.b} ${r.n}</span>${tag(r)}${window.srfRecChip("racket",r)}${r.cust?`<span class="custchip" title="${r.cust.text.replace(/"/g,'&quot;')}">customized</span>`:""}${r.feel?`<span class="custchip feelchip" title="your category read of the stock ${r.b} ${r.n} — the stock row is still on the bench">my feel</span>`:""}${window.buyBtn("racket",(r.b?r.b+" ":"")+String(r.n).replace(/ · my feel$/,""),true,"buy",true)}</span><span class="rw_bot"><span class="rw_meta">${r.sp[0]} · ${r.sp[2]}</span>${grpBtn(r)}<button type="button" class="rowmore" aria-label="more actions for ${r.b} ${r.n}" title="customize · my feel · notes · remove" onclick="event.stopPropagation();srfRowMenu('racket',${r.no},event)">\u22ef</button></span></div>`;
+    h += `<div role="cell" class="namecell" data-no="${r.no}" style="color:${G[r.g][0]};display:flex;flex-direction:column;justify-content:center;padding:3px 4px 3px 7px;line-height:1.25;border-left:3px ${gStyle(r.g)} color-mix(in srgb, ${G[r.g][0]} 62%, transparent);"><span style="font-weight:500;"><span class="draghandle" draggable="true" data-drag="${r.no}" title="drag to reorder — your order is shared with hard specs and sticks until reset order">⋮⋮</span>${cmpBox("racket", r.no)}<span class="custname" role="button" tabindex="0" onclick="srfRowMenu('racket',${r.no},event)" onkeydown="if(event.key==='Enter'){srfRowMenu('racket',${r.no},event);}" onmouseenter="noteHoverIn(noteFrame,${r.no},event)" onmouseleave="noteHoverOut()" title="what you can do with this frame — customize, my feel, notes, remove">${r.b} ${r.n}</span>${tag(r)}${window.srfRecChip("racket",r)}${r.cust?`<span class="custchip" title="${r.cust.text.replace(/"/g,'&quot;')}">customized</span>`:""}${r.feel?`<span class="custchip feelchip" title="your category read of the stock ${r.b} ${r.n} — the stock row is still on the bench">my feel</span>`:""}${window.buyBtn("racket",(r.b?r.b+" ":"")+String(r.n).replace(/ · my feel$/,""),true,"buy",true)}</span><span class="rw_bot"><span class="rw_meta">${r.sp[0]} · ${r.sp[2]}</span>${window.srfBalSvg ? srfBalSvg(r, { w: 76 }) : ""}${grpBtn(r)}<button type="button" class="rowmore" aria-label="more actions for ${r.b} ${r.n}" title="customize · my feel · notes · remove" onclick="event.stopPropagation();srfRowMenu('racket',${r.no},event)">\u22ef</button></span></div>`;
     h += `<div role="cell" class="spdcell" style="display:flex;align-items:center;justify-content:center;">${spiderIcon("racket", r.no, r.s)}</div>`;
     h += priceCell(r.p, sortIdx==="p");
     h += `<div role="cell" class="curvecell" style="display:flex;align-items:center;justify-content:center;">${perfCurve(r.s,200,44)}</div>`;
@@ -7046,7 +7542,9 @@ function buildGrid(){
   seedGridMedals();   // re-seed the podium into the freshly built name cells
   document.getElementById("sortState").innerHTML = (SEL.size
     ? "ranked by " + [...SEL].map(([i,d])=>cats[i]+(d===-1?" \u25B2":" \u25BC")).join(" + ") + (SEL.size>1?` (${SEL.size} combined)`:"")
-    : (sortIdx===null ? (window.srfManActive && srfManActive() ? "your hand order \u2014 dragged rows stay put; reset order returns to recommended" : "recommended order \u2014 same as your picks above")
+    : (sortIdx===null ? (filtering ? "search \u2014 highest overall first"
+       : window.SRF_TOPLIVE_R ? "following your sliders \u2014 highest overall first"
+       : window.srfManActive && srfManActive() ? "your hand order \u2014 dragged rows stay put; reset order returns to recommended" : "recommended order \u2014 same as your picks above")
        : sortIdx==="g" ? "grouped by shelf"
        : "ranked by " + (sortIdx==="d" ? "difficulty" : sortIdx==="ov" ? "overall score" : (sortIdx==="p" ? "average price" : cats[sortIdx])) + (DIR===-1?" \u2014 highest first":" \u2014 lowest first")))
     + window.srfRecNote("racket", rk);
@@ -7989,7 +8487,10 @@ function mobileCards(rows, total){
   }
   let tot; try{ tot = w.reduce((a,b)=>a+b,0)||1; }catch(e){ return; }   // weights not up yet — render() calls back
   el.innerHTML = window.srfLimitBar("racket", total || rows.length, "rkLimSet") + rows.map((r,n)=>{
-    const grid = r.s.map((v,i)=>{ const [bg,fg]=cellColor(v);
+    const axv = (window.srfAxes ? srfAxes(r) : r.s) || r.s;   // mobile parity: same accessor as the desktop grid
+    const grid = axv.map((v,i)=>{
+      if (v == null) return `<div class="scell pnocell" title="${esc(cats[i])} — no formula reaches this axis in the pure physics view"><i>${catsShort[i]}</i><b>\u2014</b></div>`;
+      const [bg,fg]=cellColor(v);
       const gh=(r.baseS&&r.baseS[i]!==v)?r.baseS[i]:((r.feel&&r.stockS&&r.stockS[i]!==v)?r.stockS[i]:((r.cust&&r.stock&&r.stock.s[i]!==v)?r.stock.s[i]:null));
       return `<div class="scell${r.baseS&&r.baseS[i]!==v?" mycell":""}" role="button" tabindex="0"         title="${esc(cats[i])} ${v}/10 — tap to set your own"         onclick="srfScorePop('racket',${r.no},${i},event)"         style="position:relative;background:${bg};color:${fg};"><i>${catsShort[i]}</i><b>${v}</b>${gh!=null?`<i class="stckv" title="stock: ${gh}">${gh}</i>`:""}</div>`; }).join("")
       + `<div class="scell tri"><i>Diff</i>${diffCell(r.d,false).match(/<svg.*<\/svg>/s)[0]}</div>`;
@@ -7997,7 +8498,7 @@ function mobileCards(rows, total){
       <header>
         <div class="who">
           <div class="nm">${cmpBox("racket", r.no)}${n+1}. ${esc((r.b?r.b+" ":"")+r.n)}${r.feel?`<span class="custchip feelchip">my feel</span>`:""}<button type="button" class="infobtn" aria-label="play notes" onclick="noteFrame(${r.no},event)">ⓘ</button>${spiderIcon("racket", r.no, r.s)}${rowActs(r, true)}</div>
-          <div class="sp">${r.sp[0]} \u00b7 ${r.sp[1]} \u00b7 ${r.sp[2]} ${grpBtn(r)}</div>
+          <div class="sp">${r.sp[0]} \u00b7 ${r.sp[1]} \u00b7 ${r.sp[2]} ${window.srfBalSvg ? srfBalSvg(r, { w: 86 }) : ""} ${grpBtn(r)}</div>
         </div>
         <div class="pr">
           ${r.p?`<span class="prv">~${r.p}\u20ac</span>`:`<span class="prv" style="opacity:.4;">\u2014</span>`}
@@ -8032,6 +8533,7 @@ window.SD = (i, d) => {                     // the little chevrons: aim this axi
 };
 window.resetOrder = () => {
   if (window.srfManClear) srfManClear();
+  window.SRF_TOPLIVE_R = false;   // back to the classic resting order until the next drag
   sortIdx = null; specSort = null; SEL.clear(); DIR = -1; buildGrid(); buildSpecs();
   document.querySelectorAll(".resetbtn").forEach(b => {
     b.classList.add("gold"); setTimeout(()=>b.classList.remove("gold"), 1100);
@@ -8311,6 +8813,7 @@ window.paintSetups4 = () => {
   const BADGE = n2 => n2 < 3 ? `<span class="medal ${["mG","mS","mB"][n2]}">${n2 + 1}</span>`
     : `<span class="medal" style="background:linear-gradient(135deg,var(--amber),#8a6a28);" title="budget pick">\u20ac</span>`;
   const LBL = ["gold setup","silver setup","bronze setup","budget setup"];
+  window.SRF_WHY_SU = [];   // rebuilt on every paint so the popup always matches the pixels
   host.innerHTML = four.map(o2 => {
     const s = pairFor(o2.f); if (!s) return "";
     const why = (s.r.why || []).filter(w2 => w2.d > 0).sort((a, b) => b.d - a.d)[0];
@@ -8318,6 +8821,8 @@ window.paintSetups4 = () => {
     const pure = o2.role === 0 && rawTop && rawTop.f !== o2.f
       ? { beaten: true, name: esc(rawTop.f.b + " " + rawTop.f.n), sc: rawTop.sc, band: band && band.txt ? band.txt : "" } : null;
     const pTot = (o2.f.p != null && s.x.tech.priceV != null) ? Math.round(o2.f.p + s.x.tech.priceV) : null;
+    SRF_WHY_SU[o2.role] = { f: o2.f, role: o2.role, sc: scOf(o2.f), bed: s.x.bed,
+                            bedTech: s.x.tech, pairSc: s.r.sc, bedWhy: why ? why.t : "" };
     const nm = o2.f.no != null && o2.f.no > 0
       ? `<span role="button" tabindex="0" style="cursor:pointer;text-decoration:underline dotted;" ` +
         `onclick="advJump('racket',${o2.f.no})" onkeydown="if(event.key==='Enter')advJump('racket',${o2.f.no})" ` +
@@ -8326,7 +8831,9 @@ window.paintSetups4 = () => {
     return `<div class="mid_su">${BADGE(o2.role)}` +
       `<span><span class="su_lbl">${LBL[o2.role]}</span><b>${nm} + ${esc(String(s.x.bed.m))}` +
       `${s.x.bed.x && !/full bed/i.test(String(s.x.bed.x)) ? " \u00d7 " + esc(String(s.x.bed.x)) : ""}</b>` +
-      `<span class="rsn">${srfSetupWhy(o2.role, scOf(o2.f), pure, why ? esc(why.t) : "", o2.f.p)}</span></span>` +
+      `<span class="rsn">${srfSetupWhy(o2.role, scOf(o2.f), pure, why ? esc(why.t) : "", o2.f.p)} ` +
+      `<button type="button" class="whychip" onclick="event.stopPropagation();srfWhyShow('su',${o2.role},event)" ` +
+      `title="the physics that ranked it, your own sliders against it, and the maker&#39;s tech story \u2014 click">why this?</button></span></span>` +
       `<span class="sc">pairing ${s.r.sc.toFixed(1)}/10${pTot != null ? `<i class="su_pr">~${pTot}\u20ac all-in</i>` : ""}` +
       `<span class="su_buy">${window.buyBtn("racket", (o2.f.b ? o2.f.b + " " : "") + o2.f.n, true, "buy frame")}` +
       `${window.buyBtn("string", String(s.x.bed.m).split(" \u00b7 ")[0], true, "buy string")}</span></span></div>`;
@@ -8425,7 +8932,10 @@ function paintWinners(scored){
     `${armAsk ? " · arm-friendly is on: stiff frames can’t take a slot and every suggested bed stays arm-safe" : ""}</div>`;
 }
 window.srfPaintWinners = paintWinners;
-window.W = (i,v) => { w[i]=Math.max(0, parseFloat(v)||0); document.getElementById("wv"+i).textContent=v; fillTrack(document.getElementById("sl"+i)); render();
+window.W = (i,v) => { w[i]=Math.max(0, parseFloat(v)||0); document.getElementById("wv"+i).textContent=v; fillTrack(document.getElementById("sl"+i));
+  window.SRF_TOPLIVE_R = true;   // Alexey: after every slider change, heatmap + hard specs lead with the new highest overall
+  render();
+  try { buildSpecs(); } catch(e){}   // the specs table shows slider-independent numbers, so nothing repainted it on a drag - until its ORDER began following the sliders
   if (window.prefRememberWeights) prefRememberWeights("racket", w); };
 render();
 const specLabels = ["weight","head","pattern","stiffness","swingweight","balance","beam"];
@@ -8458,6 +8968,12 @@ function buildSpecs(){
   if (hsRQ) rows = rows.filter(r => matches(r, hsRQ));
   /* the shelf chips narrow this table too — same selection as heatmap and ranking */
   if (window.RK_GSEL && window.RK_GSEL.size) rows = rows.filter(r => window.RK_GSEL.has(r.g));
+  /* same rule as the heatmap: while a search narrows this table (the amber bar or
+     this table's own) and no spec column is chosen, the new highest overall leads */
+  if (specSort === null && ((typeof searchQ !== "undefined" && searchQ) || hsRQ || window.SRF_TOPLIVE_R)){
+    try { const ov = r => srfWScore(srfAxes(r), w);
+          rows = rows.slice().sort((a, b) => ov(b) - ov(a) || (a.b + a.n).localeCompare(b.b + b.n)); } catch(e){}
+  }
   const hsTotal = rows.length;
   /* the count reads "N of 155" whenever ANY filter is narrowing the table — the amber
      bench search counts too, otherwise searching "wilson" upstairs left this header
@@ -8484,7 +9000,9 @@ function buildSpecs(){
   sh += window.srfLimitBar("hsR", hsTotal, "hsRLimSet");
   document.getElementById("specs").innerHTML = sh;
   document.getElementById("specState").textContent =
-    specSort===null ? ((window.srfManActive && srfManActive()) ? "your hand order" : "original order") : "sorted by " + specLabels[specSort];
+    specSort===null ? (((typeof searchQ !== "undefined" && searchQ) || hsRQ) ? "search \u2014 highest overall first"
+      : window.SRF_TOPLIVE_R ? "following your sliders \u2014 highest overall first"
+      : (window.srfManActive && srfManActive()) ? "your hand order" : "original order") : "sorted by " + specLabels[specSort];
 }
 window.SP = i => {
   specSort = i; buildSpecs();
@@ -9329,6 +9847,10 @@ function buildSbSpecs(){
   let h=`<div style="display:grid;grid-template-columns:196px 74px 176px 74px 124px 76px 70px 66px;gap:2px;background:var(--page);min-width:1180px;">`+
     SBSPEC.map((c,i)=>`<div class="sbhdr${sbSpecSort===i?" on":""}" data-label="${c}" onclick="sbSpecS(${i})" style="--d:${(i*0.18).toFixed(2)}s;animation-delay:${(i*0.18).toFixed(2)}s;text-align:left;padding:3px 5px;">${c}</div>`).join("");
   if (hsSQ) rows = rows.filter(b => sbMatches(b, hsSQ));
+  if ((hsSQ || window.SRF_TOPLIVE_S) && sbSpecSort === null){
+    try { rows = rows.slice().sort((a, b) => srfWScore(b.s, w) - srfWScore(a.s, w)
+            || String(a.m).localeCompare(String(b.m))); } catch(e){}
+  }
   /* the shelf chips narrow this table too — same selection as heatmap and ranking */
   if (window.SB_GSEL && window.SB_GSEL.size) rows = rows.filter(b => window.SB_GSEL.has(gkey(b)));
   const sbHsTotal = rows.length;
@@ -10192,12 +10714,19 @@ function buildGrid(){
   let scored=beds.filter(b => !window.srfIsDel || !srfIsDel("string", b)).map(b=>({...b, idx:srfWScore(b.s, w)}));
   if(SBSEL.size){ scored.sort((a,b)=> sbSelScore(b)-sbSelScore(a)); }
   else if(sortIdx==="g"){ scored.sort((a,b)=> SBORDER.indexOf(gkey(a))-SBORDER.indexOf(gkey(b)) || b.idx-a.idx); }
-  else if(sortIdx===null){ sbRecSort(scored); }
+  else if(sortIdx===null){
+    if (window.SRF_TOPLIVE_S) scored.sort((a, b) => b.idx - a.idx || String(a.m).localeCompare(String(b.m)));
+    else sbRecSort(scored);
+  }
   else if(sortIdx==="idx") scored.sort((a,b)=>SBDIR*(a.idx-b.idx));
   else if(sortIdx==="p")  scored.sort((a,b)=>SBDIR*((bedPrice(a)?bedPrice(a).v:0)-(bedPrice(b)?bedPrice(b).v:0)));
   else if(sortIdx==="d")  scored.sort((a,b)=>SBDIR*(bedDemand(a)-bedDemand(b)));
   else scored.sort((a,b)=>SBDIR*(a.s[sortIdx]-b.s[sortIdx]));
   if(typeof sbQ!=="undefined" && sbQ) scored=scored.filter(b=>sbMatches(b,sbQ));
+  /* the racket bench's search rule, mirrored: a query with no chosen sort leads
+     with the new highest overall (idx IS the weighted score, computed above) */
+  if (typeof sbQ !== "undefined" && sbQ && !SBSEL.size && sortIdx === null)
+    scored = scored.slice().sort((a, b) => b.idx - a.idx || String(a.m).localeCompare(String(b.m)));
   /* ranking list captured BEFORE the shelf chips narrow the view: the ranking
      applies the same shelf selection itself further down, after the pure math */
   const sbAllBeds = scored.slice();
@@ -10583,6 +11112,7 @@ window.sbSD = (i, d) => {
   sortIdx=null; buildGrid();
 };
 window.sbResetOrder = () => {
+  window.SRF_TOPLIVE_S = false;
   sortIdx=null; sbSpecSort=null; SBSEL.clear(); SBDIR = -1; w=PRESETS.spin.slice(); syncSliders(); buildGrid();
   document.querySelectorAll(".sbbtn").forEach(b=>{ b.classList.add("gold"); setTimeout(()=>b.classList.remove("gold"),1100); });
 };
@@ -10605,7 +11135,10 @@ function syncSliders(){
   w.forEach((v,i)=>{ const el=document.getElementById("sb_sl"+i); el.value=v;
     document.getElementById("sb_wv"+i).textContent=v; fillTrack(el); });
 }
-window.sbW = (i,v) => { w[i]=Math.max(0, parseFloat(v)||0); document.getElementById("sb_wv"+i).textContent=v; fillTrack(document.getElementById("sb_sl"+i)); buildGrid();
+window.sbW = (i,v) => { w[i]=Math.max(0, parseFloat(v)||0); document.getElementById("sb_wv"+i).textContent=v; fillTrack(document.getElementById("sb_sl"+i));
+  window.SRF_TOPLIVE_S = true;   // same rule on the string bench
+  buildGrid();
+  try { if (document.getElementById("sb_specs")) buildSbSpecs(); } catch(e){}
   if (window.prefRememberWeights) prefRememberWeights("string", w); };
 window.sbRerank = () => { try { buildGrid(); } catch(e){} };
 
@@ -12103,6 +12636,9 @@ document.addEventListener("DOMContentLoaded", () => {
     prefQuiet(() => {
       if (PREF.rw && PREF.rw.length && window.applyRacketWeights) applyRacketWeights(PREF.rw);
       if (PREF.sw && PREF.sw.length && window.applyStringWeights) applyStringWeights(PREF.sw);
+      /* restoring remembered weights at boot is not a slider change - the page
+         still OPENS in the classic resting order; the first real drag arms it */
+      window.SRF_TOPLIVE_R = false; window.SRF_TOPLIVE_S = false;
     });
   } catch(e){}
   /* Both benches need this second pass, and since the resting order became the
@@ -12115,6 +12651,35 @@ document.addEventListener("DOMContentLoaded", () => {
        showing your numbers rather than flashing the estimates first */
     try { if (window.rkApplyMy) rkApplyMy(); } catch(e){}
     try { if (window.sbApplyMy) sbApplyMy(); } catch(e){}
+    /* the S-and-racket mark: black lifted to transparency (steep alpha ramp over
+       the metal's own luminance), so the signature green shows through */
+    const SRF_MARK = "data:image/png;base64,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WV9fr6urq3MzmUy+bdvpEydOtDc0NPC8efOMP//5z4e2bNnyypgxY0bFYrE7RlRUfKGvv3/p22+/uu2GG24INe5vzIysqDwnlUk3hMMR8cEHH9x/002fTBw58saY/njCfGvFitd/+K/X4vz5C9dFo8MTrmN/c8TIyu4518+Rj/760T2f//zncxHxobLy8u898sgjHxQWFu4mgqtSieQvwvlFv9u+deuBbKWxs7Pzzr6+vgds2x65cfPGO/riyR39iYTBrCM5OWb37t2790Wj0SAAOEII7bqu9NEGBgCEiMh2HMdxXcNglqhUWti2HSAiiYi2bduusiwtPFRCxjRNx0/uQGsdkOXl5aqpqYnXrVtX6rrOMGZIEWU7hYgITMygAcDrArIWgUAQhpeUrAUALi0tVQCAiUTCTSaTbcOHDw9dOm3ajedNmbL25z//eRcAwOLFi+n2229/ZvrkyeXBwoLfVlePmTB16vf5F7/4xcuISCTlF3Kt/K888cQTsRkzZiw777xzryek+6tGVf4QAOCrX13oMDPeeecX74rH+76USqQa3bT97Z/+9J8uOXz4SMmRI0cee/755zNf//rXI4899tjuOXPmDEPk50YWFE39wYM/uG5s9dhHV6xYUa1cN71ixYrtALC9pqamMKegYJJSqiGZTBqZjD2zqqpqdTKZZCEEpxADwitjmK4rpJSKXdc1DMMApRypVDrNDBgMBpmZXdd1bSmllswmS+kopaCvr4+llGYgECDbtoUYOXIkNTc367KysikMcDciuuhtCQDwcL4A7Ph9Q0JEUVRUdPz666//6TPPPJP2MzBTCBGwLMvKzc3tDIRCxVLIf5w9e3bZpz71qd3z5s3LAACMO/fcLyXT6Wc7O7veCIWsK7du3fbpMWNG3dLb2/3mq6++tmXu3Lnh119/vcM0yXYcp7u4uDRn1qxZd99666fbfv/734dTydQVnZ2dT7z00kvxTZs3vx2NFkI6mfruuPFjY9deOyf+b//2b4cBQF504QU/Kygc9v3/+I//eLeqsiLg2s5XXOX+yCD6h207dhwFAPH1r389ffjgwStd1t2GlJ8kovJodNi6Xbt2nQiHwxYpxVJKS2stTFNklFIgtZbag+lppRQHg0FSStla64AQgoRXv89lZhcRHUQ0A4GA4CSjsIQaEPbIkSMvBoZaZu73sxUFAIqZHT/oE0QkiASVlpYcuu+++x7x4VoYjUajRFQQDAaNioqK3vfff//g0aNHVwwbNnxyZ3dX7aWXXyIrR1RSXzw+ae26dUumT5+unnvuz+uHDRvW1t/X/4PRY6qT11xzTea3v/3tfgCAqeef/3PH5V8sWrT43Wh0eAsiX5foT/wTEj/9+utv7My2z/7whz98tqe36+cWym0a4avXXHPteTU14y/u6elueOGFReu//vWvR5566g87C4uKpOs6uqKyqvCKKy6b8s1vfmvX0qVLZwghIqD1MiJxt+M4rjCNpiPNzTsikUiIiNi2bdJaK2VZbAAAEylEDPphsSNEMqO1FKZpBrTW2nEcR0ppau+liEIh103bDjiglNIym6rYtmuQQBsAMh76xatkIaKZBTNprdEwBCCh4zgO+sVx0lqTaYZzjx49su/o0aPu1KlTjfr6+r5Fi57/bWlpaejqq6+6NpVI/Mew4cOfBQBYsmSJAgBQjnNTMh6/s7u7u62/v//e++6779qenq74sWPHNrz77ntdvlmonzFjRsayjOKxY8eP/M537vv5uHHnPnbdddcZADB65syrt/nQgb+fO3fujcp1Xxhdfc7Dv/zlL0fcf//9R+fNmxfq7uy449Chl+a++CI4X/zi52/vaOv4cTgcmlFcXHLLk08+GZ8yZcr7SqkqZdvV2RzCtm3TNE07k8kEMJlUbBgpAAhprdM+aoBs2zKFQA85lslkUEp2XbdXKSWEECyl62gtTV85UgOaXVpaNksIcTUwpH3glkb0kHiEKDy5onZdV1RVVjVfc801T82fPx+i0Zqw48Q0mFLOvOKKT1166aXmsmXLDgMA3HnnnYE1a9aktAZOp1JYVl6uL7nssm/U3nZbq2VZwUzavnrUOdVPP/30011bt259q7i4TGqlfjNmTPWOWbNmHfvVr351AgBg6gUXPGw77vznn39+WWVZea7tul9wHed+APjtggULGgHAYGZ++umnP9HT07OkIL+gqb+//x8+9alPWbt27Zre2d61ecOmozu//e1vBxcsWLh99MgRUSnkaMO0xpw78Vx5vPl4p9a6TEhhVlRUrDtx4gSEQiFLKaURkbPOkogkeXG24cGphcUGCdRasJQuAFjM7GIgEBYeqEn4qbzSWgflya62ItYi44cyLgAKrXSKgZMaUQKiJGRIp9MChGCfetEfDifH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";
+    document.querySelectorAll(".ez_top").forEach(t => {
+      if (t.querySelector(".ez_mark")) return;
+      const sp = document.createElement("span");
+      sp.className = "ez_mark";
+      sp.innerHTML = '<img alt="String &amp; Racket Finder" src="' + SRF_MARK + '">';
+      t.insertBefore(sp, t.firstElementChild);
+    });
+    const ld = document.getElementById("ld_logo");
+    if (ld) ld.innerHTML = '<img class="markimg" alt="String &amp; Racket Finder" src="' + SRF_MARK + '">';
+    if (!document.getElementById("srf_brandfoot")){
+      /* clone from the pro header — markup stays untouched, one function owns the move */
+      const logo = document.querySelector(".ez_top .ez_logo");
+      const cred = document.querySelector(".ez_top .ez_credit");
+      if (logo && cred){
+        const bf = document.createElement("div");
+        bf.id = "srf_brandfoot";
+        const l = document.createElement("span"); l.className = "bf_logo";
+        l.appendChild(logo.cloneNode(true));
+        const t = document.createElement("div");
+        t.innerHTML = '<div class="bf_name azonix">String &amp; Racket Finder</div>' +
+                      '<div class="bf_sub">the workshop \u00b7 friend\u2019s edition</div>';
+        t.appendChild(cred.cloneNode(true));
+        bf.appendChild(l); bf.appendChild(t);
+        window.SRF_BRANDFOOT = bf;   // appended after the legal line, so it is truly last
+      }
+    }
     if (!document.getElementById("srf_methfoot")){
       const src = document.querySelector(".methodbox .methodin");
       if (src){
@@ -12138,6 +12703,9 @@ document.addEventListener("DOMContentLoaded", () => {
          out beside .wrap and stretched to its full height. Inside .wrap it is ordinary
          block flow — last element, full content width, same in all three modes. */
       (document.querySelector(".wrap") || document.body).appendChild(lf);
+    }
+    if (window.SRF_BRANDFOOT && !document.getElementById("srf_brandfoot")){
+      (document.querySelector(".wrap") || document.body).appendChild(window.SRF_BRANDFOOT);
     }
   } catch(e){}
   /* the disclosure lives wherever buy buttons live: both pro benches and easy mode */
@@ -13257,13 +13825,16 @@ window.midPaint = (skipSliderSync) => {
       `title="${onBench ? "customize \u00b7 my feel \u00b7 notes \u00b7 remove" : "hide this market row"}" ` +
       `onclick="event.stopPropagation();srfRowMenu('racket',${cid},event)">\u22ef</button></span></div>` +
       `<div class="sp">${esc(String(x.f.sp[0]))} \u00b7 ${esc(String(x.f.sp[2]))}${x.f.p != null ? ` \u00b7 ~${x.f.p}\u20ac` : ""} \u00b7 match ${x.sc.toFixed(1)}/10 \u00b7 difficulty ${x.f.d}/10` +
-        `${window.srfRecoil && srfRecoil(x.f) != null ? ` \u00b7 <span class="recoil" title="recoil weight: how hard the frame is to push back at impact. I_cm = swingweight \u2212 mass \u00d7 (balance \u2212 10 cm)\u00b2, computed from this frame's own specs">recoil ${srfRecoil(x.f)}</span>` : ""}</div>` +
-      `<div class="st">strong where you care: <b>${strongest(x.f.s, rw, rl)}</b></div></div>`;
+        `${window.srfRecoil && srfRecoil(x.f) != null ? ` \u00b7 <span class="recoil" title="recoil weight: how hard the frame is to push back at impact. I_cm = swingweight \u2212 mass \u00d7 (balance \u2212 10 cm)\u00b2, computed from this frame's own specs">recoil ${srfRecoil(x.f)}</span>` : ""} ${window.srfBalSvg ? srfBalSvg(x.f, { w: 96 }) : ""}</div>` +
+      `<div class="st">strong where you care: <b>${strongest(x.f.s, rw, rl)}</b> ` +
+      `<button type="button" class="whychip" onclick="event.stopPropagation();srfWhyShow('fr',${idx},event)" ` +
+      `title="the physics that ranked it, your own sliders against it, and the maker&#39;s tech story \u2014 click">why this?</button></div></div>`;
   };
   const fPrev = (MID_BASE ? MID_BASE.f : window.MID_PF) || [];
   const fLim = window.SRFLIM.midR || 5;
   const fNow = fRows.slice(0, fLim).map(x => x.f.b + x.f.n);
   window.MID_PF = fNow;
+  window.SRF_WHY_FR = fRows.slice(0, fLim);   // what the cards below actually show
   out.innerHTML = fRows.slice(0, fLim).map(fCard).join("") + window.srfLimitBar("midR", fRows.length, "midLimR") ||
     `<div style="color:var(--muted);font-size:11.5px;">No bench or market match for \u201c${esc(q)}\u201d \u2014 use <b>research online</b> to look it up.</div>`;
   if (fPrev.length) out.querySelectorAll(".mid_pc").forEach((c, i) => {
@@ -13299,12 +13870,15 @@ window.midPaint = (skipSliderSync) => {
       `title="${(x.bed.i != null && x.bed.i >= 0) ? "my feel \u00b7 notes \u00b7 remove" : "hide this market row"}" ` +
       `onclick="event.stopPropagation();srfRowMenu('string',${cid},event)">\u22ef</button></span></div>` +
       `<div class="sp">${x.tech.hybrid ? "hybrid" : "full bed"}${x.tech.priceV != null ? ` \u00b7 ~${x.tech.priceV}\u20ac` : ""}${x.tech.stiff != null ? ` \u00b7 ~${Math.round(x.tech.stiff)} lb/in` : ""} \u00b7 match ${x.sc.toFixed(1)}/10 \u00b7 demand ${x.bed.demand.toFixed(0)}/10</div>` +
-      `<div class="st">strong where you care: <b>${strongest(x.bed.s, sw, MID_SLBL)}</b></div></div>`;
+      `<div class="st">strong where you care: <b>${strongest(x.bed.s, sw, MID_SLBL)}</b> ` +
+      `<button type="button" class="whychip" onclick="event.stopPropagation();srfWhyShow('sb',${idx},event)" ` +
+      `title="the bed's own physics \u2014 stiffness, material, gauge \u2014 your sliders against it, and the maker&#39;s story">why this?</button></div></div>`;
   };
   const bPrev = (MID_BASE ? MID_BASE.b : window.MID_PB) || [];
   const bLim = window.SRFLIM.midS || 5;
   const bNow = bRows.slice(0, bLim).map(x => String(x.bed.m) + String(x.bed.x || ""));
   window.MID_PB = bNow;
+  window.SRF_WHY_SB = bRows.slice(0, bLim).map(x => ({ kind: "bed", bed: x.bed, tech: x.tech, sc: x.sc }));
   const bd = document.getElementById("mid_bd");
   if (bd) bd.innerHTML = bRows.slice(0, bLim).map(bCard).join("") + window.srfLimitBar("midS", bRows.length, "midLimS") ||
     `<div style="color:var(--muted);font-size:11.5px;">No bed matches \u201c${esc(q)}\u201d.</div>`;
@@ -13333,6 +13907,7 @@ window.midPaint = (skipSliderSync) => {
   const BADGE = n2 => n2 < 3 ? `<span class="medal ${["mG","mS","mB"][n2]}">${n2 + 1}</span>`
     : `<span class="medal" style="background:linear-gradient(135deg,var(--amber),#8a6a28);" title="budget pick">\u20ac</span>`;
   const LBL = ["gold setup","silver setup","bronze setup","budget setup"];
+  window.SRF_WHY_MS = [];   // rebuilt on every paint so the popup always matches the pixels
   const su = document.getElementById("mid_su");
   if (su) su.innerHTML = four.map(o2 => {
     const s = pairFor(o2.f); if (!s) return "";
@@ -13341,9 +13916,13 @@ window.midPaint = (skipSliderSync) => {
     const pure = o2.role === 0 && pureRow && pureRow.f !== o2.f
       ? { beaten: true, name: esc(pureRow.f.b + " " + pureRow.f.n), sc: pureRow.sc, band: band && band.txt ? band.txt : "" } : null;
     const pTot = (o2.f.p != null && s.x.tech.priceV != null) ? Math.round(o2.f.p + s.x.tech.priceV) : null;
+    SRF_WHY_MS[o2.role] = { f: o2.f, role: o2.role, sc: scOfF(o2.f), bed: s.x.bed,
+                            bedTech: s.x.tech, pairSc: s.r.sc, bedWhy: why ? why.t : "" };
     return `<div class="mid_su">${BADGE(o2.role)}` +
       `<span><span class="su_lbl">${LBL[o2.role]}</span><b>${esc(o2.f.b)} ${esc(o2.f.n)} + ${esc(String(s.x.bed.m))}${s.x.bed.x && !/full bed/i.test(String(s.x.bed.x)) ? " \u00d7 " + esc(String(s.x.bed.x)) : ""}</b>` +
-      `<span class="rsn">${srfSetupWhy(o2.role, scOfF(o2.f), pure, why ? esc(why.t) : "", o2.f.p)}</span></span>` +
+      `<span class="rsn">${srfSetupWhy(o2.role, scOfF(o2.f), pure, why ? esc(why.t) : "", o2.f.p)} ` +
+      `<button type="button" class="whychip" onclick="event.stopPropagation();srfWhyShow('ms',${o2.role},event)" ` +
+      `title="the physics that ranked it, your own sliders against it, and the maker&#39;s tech story \u2014 click">why this?</button></span></span>` +
       `<span class="sc">pairing ${s.r.sc.toFixed(1)}/10${pTot != null ? `<i class="su_pr">~${pTot}\u20ac all-in</i>` : ""}` +
       `<span class="su_buy">${window.buyBtn("racket", (o2.f.b ? o2.f.b + " " : "") + o2.f.n, true, "buy frame")}` +
       `${window.buyBtn("string", String(s.x.bed.m).split(" \u00b7 ")[0], true, "buy string")}</span></span></div>`;
@@ -13741,6 +14320,22 @@ window.easyRun = () => {
   var UTR = {"1.5":"1.0 – 2.0","2.0":"1.0 – 2.5","2.5":"1.5 – 3.5",
              "3.0":"2.5 – 4.5","3.5":"4.0 – 6.5","4.0":"6.0 – 8.0","4.5":"7.5 – 9.5"};
   var UTR_EST = {"1.5":1,"2.0":1,"2.5":1};
+  /* the continuous level -> ONE point on the open UTR-style scale (1.00-16.50),
+     interpolated piecewise-linearly through the midpoints of the bands above -
+     so the point and the band it sits in can never disagree. */
+  var UTR_PT = [[1.5,1.5],[2.0,1.75],[2.5,2.5],[3.0,3.5],[3.5,5.25],[4.0,7.0],[4.5,8.5]];
+  function utrPoint(v){
+    var P = UTR_PT, last = P[P.length-1];
+    if (v <= P[0][0]) return Math.max(1, P[0][1] - (P[0][0] - v));
+    if (v >= last[0]) return last[1];
+    for (var q = 0; q < P.length - 1; q++){
+      if (v >= P[q][0] && v <= P[q+1][0]){
+        var t = (v - P[q][0]) / (P[q+1][0] - P[q][0]);
+        return P[q][1] + t * (P[q+1][1] - P[q][1]);
+      }
+    }
+    return last[1];
+  }
 
   var KEY = "pb:v01a";
   var S2 = 3, PC = 9, EST_CAP = 8;
@@ -13862,7 +14457,18 @@ window.easyRun = () => {
     for(i=0;i<10;i++) eff[i] = effective(i, state.scores, state.measured);
     var drive = eff.map(function(e, k){
       var need = (10 - e) / 9, strong = (e - 1) / 9;
-      return (mix * strong + (1 - mix) * need) * (state.weights[k] / 10);
+      var a = mix * strong + (1 - mix) * need;
+      /* THE ENDS MUST BITE. On a mild profile (axes 4-8) the linear tilt left the
+         two extremes inside scaleTo's integer rounding - "amplify" and "cover"
+         produced near-identical slider sets and identical rankings (Alexey's
+         report, twice). The exponent rises from 1 at balanced to 2.2 at either
+         extreme: it CONCENTRATES the drive on the axes that actually fit the
+         chosen stance instead of tilting all nineteen by a rounding error.
+         mix=50 keeps gamma=1 - the balanced suggestion is bit-for-bit what it
+         always was; flat profiles still normalise to all-5s and the hint still
+         explains why. */
+      var g = 1 + 1.2 * Math.abs(2 * mix - 1);
+      return Math.pow(a, g) * (state.weights[k] / 10);
     });
     function build(M, n){
       var raw = [], src = [], best = [];
@@ -13920,7 +14526,14 @@ window.easyRun = () => {
         for (no2 = 1; ; no2++){ f2 = window.SRF.frameFull(no2); if (!f2) break;
           if (window.srfIsDel && window.srfIsDel("racket", f2)) continue;
           fr.push(f2); }
-        fr.sort(function(x, y){ return window.srfWScore(y.s, wv) - window.srfWScore(x.s, wv); });
+        /* rank with srfAxes - the accessor the whole app uses - NOT the raw scored
+           vector. In the pure-physics view those are different universes: the scored
+           field is full of bucketed near-ties that flip on any breeze, the physics
+           field is sharply separated and flips only when the weights really move.
+           Simulating the wrong one made this hint promise reshuffles the grid never
+           delivered (Alexey's screenshot, 2026-08-30). */
+        var ax = function(z){ return (window.srfAxes ? window.srfAxes(z) : z.s) || z.s; };
+        fr.sort(function(x, y){ return window.srfWScore(ax(y), wv) - window.srfWScore(ax(x), wv); });
         return fr.slice(0, 10).map(function(z){ return String(z.b) + "|" + String(z.n); });
       };
       var TA = topAt(A.racket.v), TB = topAt(B.racket.v), q2;
@@ -14080,9 +14693,19 @@ window.easyRun = () => {
     var bk = r.bracket.toFixed(1);
     var numEl = document.getElementById("pb-num");
     numEl.textContent = bk;
-    numEl.style.color = pbCell((r.final - 2) * 4);   /* background half = the accent tone */
+    /* UTR fronts the readout now, so the computed accent tone paints BOTH numbers —
+       the lead range most of all */
+    var pbAcc = pbCell((r.final - 2) * 4);
+    numEl.style.color = pbAcc;
+    var utrEl0 = document.getElementById("pb-utrnum");
+    if (utrEl0) utrEl0.style.color = pbAcc;
+    /* the exact point fronts the readout; the band under it is the honest part -
+       a self-assessment earns a neighbourhood, the point is just its centre */
     document.getElementById("pb-utrnum").innerHTML =
-      (UTR[bk] || "—") + (UTR_EST[bk] ? ' <span class="est">†</span>' : "");
+      utrPoint(r.final).toFixed(2) + '<span class="scaleof"> / 16.5</span>' +
+      (UTR_EST[bk] ? ' <span class="est">†</span>' : "");
+    var bandEl = document.getElementById("pb-utrband");
+    if (bandEl) bandEl.textContent = "likely band " + (UTR[bk] || "—");
     document.getElementById("pb-raw").innerHTML =
       "weighted " + r.final.toFixed(2) + " &middot; " + r.measured + "/10 measured" +
       (r.capped ? " &middot; " + r.capped + " capped" : "");
