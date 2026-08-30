@@ -2611,7 +2611,7 @@
 <button type="button" id="gearbtn" aria-label="settings — theme, export, import" aria-haspopup="true"
         aria-expanded="false" onclick="srfGearToggle(event)">⚙</button>
 <div id="gearpop" hidden>
-  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-08-30.26 · b87</span></div>
+  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-08-30.28 · b87</span></div>
   <span class="toolbit" id="themeCtl">theme
     <span class="themepick" id="themePick">
       <button type="button" class="thememain" id="themeBtn" aria-expanded="false" aria-controls="themeList"
@@ -3516,6 +3516,19 @@
   </div>
 
   <div id="rk_dept"><section>
+  <div class="srchbar sb_f benchsearch" style="margin-bottom:8px;"><span class="sb_badge" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span><span class="sb_kick" aria-hidden="true">find</span>
+    <input id="benchSeekR2" type="text" autocomplete="off" spellcheck="false"
+           placeholder="Search this bench &mdash; the winner leads the list&hellip;"
+           aria-label="search rackets right here at the heatmap"
+           oninput="var m=document.getElementById('benchSeekR');if(m)m.value=this.value;srfBenchSeek('racket')"
+           onkeydown="if(event.key==='Enter'){event.preventDefault();var m=document.getElementById('benchSeekR');if(m)m.value=this.value;srfBenchSeek('racket',1);}if(event.key==='Escape'){event.preventDefault();srfBenchClear('racket');}">
+    <button type="button" class="sb_x" aria-label="clear this search" title="clear"
+            onclick="srfBenchClear('racket')">&times;</button>
+    <button type="button" class="sb_2nd am" onclick="var m=document.getElementById('benchSeekR');if(m)m.value=document.getElementById('benchSeekR2').value;srfBenchSeek('racket',1)"
+            title="hand this query to the research engine and look it up on the web">online &#8599;</button>
+    <button type="button" class="sb_act" onclick="var m=document.getElementById('benchSeekR');if(m)m.value=document.getElementById('benchSeekR2').value;srfBenchGo('racket')"
+            aria-label="filter this bench">filter</button>
+  </div>
   <div class="mobileonly">
     <div class="viewtog" role="tablist" aria-label="racket view">
       <button type="button" id="rv_cards" class="on" onclick="setView('cards')">cards</button>
@@ -4975,8 +4988,39 @@ document.addEventListener("keydown", e => { if (e.key === "Escape") srfWhyClose(
 window.srfWhyShow = function(src, i, ev){
   if (ev){ ev.stopPropagation(); ev.preventDefault(); }
   srfWhyClose();
-  const ctx = (src === "su" ? window.SRF_WHY_SU : src === "ms" ? window.SRF_WHY_MS
-             : src === "sb" ? window.SRF_WHY_SB : window.SRF_WHY_FR)[i];
+  let ctx;
+  if (src === "fno"){
+    /* a heatmap racket row: build the context live from the bench number */
+    const F0 = window.SRF && SRF.frameFull ? SRF.frameFull(i) : null;
+    if (!F0) return;
+    let sc = null, liveRank = null;
+    try {
+      const wv = SRF.weights();
+      sc = srfWScore(srfAxes(F0), wv);
+      liveRank = 1;
+      (SRF.frames() || []).forEach(fr => { const g = SRF.frameFull(fr.no);
+        if (g && g !== F0 && (!window.srfIsDel || !srfIsDel("racket", g)) &&
+            srfWScore(srfAxes(g), wv) > sc) liveRank++; });
+    } catch(e){}
+    ctx = { f: F0, sc, liveRank };
+  } else if (src === "bi"){
+    /* a heatmap bed row: same idea on the string side */
+    const bed0 = (window.SRF && SRF.beds ? SRF.beds() : [])[i];
+    if (!bed0) return;
+    let tech = null; try { tech = SRF.bedTech(i); } catch(e){}
+    let sc = null, rank = 1;
+    try {
+      const w8 = (typeof midSW === "function") ? midSW() : Array(8).fill(5);
+      sc = srfWScore(bed0.s, w8);
+      (SRF.beds() || []).forEach(b2 => { if (b2 !== bed0 && (!window.srfIsDel || !srfIsDel("string", b2)) &&
+        srfWScore(b2.s, w8) > sc) rank++; });
+    } catch(e){}
+    window.srfWhyShowBed({ kind: "bed", bed: bed0, tech, sc }, rank - 1);
+    return;
+  } else {
+    ctx = (src === "su" ? window.SRF_WHY_SU : src === "ms" ? window.SRF_WHY_MS
+         : src === "sb" ? window.SRF_WHY_SB : window.SRF_WHY_FR)[i];
+  }
   if (!ctx) return;
   if (ctx.kind === "bed"){ window.srfWhyShowBed(ctx, i); return; }
   if (!ctx.f) return;
@@ -5080,6 +5124,7 @@ window.srfWhyShow = function(src, i, ev){
       '<div class="whypop_name">' + wesc(nmFull) + "</div>" +
       '<div class="whypop_tag">' + (ctx.role != null
         ? ["gold setup", "silver setup", "bronze setup", "budget setup"][ctx.role]
+        : ctx.liveRank != null ? "#" + ctx.liveRank + " on your bench right now, under your current sliders"
         : "ranked #" + (i + 1) + " in your rackets list") + "</div>" +
       "<h4>the physics that ranked it</h4>" + phys +
       "<h4>against your priorities</h4>" + mine +
@@ -5246,7 +5291,10 @@ window.srfFilterClear = function(key){
 window.srfBenchClear = function(kind){
   const prox = document.getElementById(kind === "racket" ? "benchSeekR" : "benchSeekS");
   if (!prox) return;
-  prox.value = ""; window.srfBenchSeek(kind); prox.focus();
+  prox.value = "";
+  const twin = kind === "racket" ? document.getElementById("benchSeekR2") : null;
+  if (twin) twin.value = "";
+  window.srfBenchSeek(kind); prox.focus();
 };
 window.srfBenchGo = function(kind){
   window.srfBenchSeek(kind);
@@ -7505,7 +7553,7 @@ function buildGrid(){
         `<button type="button" class="gonly" onclick="event.stopPropagation();rkGroupOnly('${r.g}')" aria-label="show only ${G[r.g][1]}">${solo?"all groups":"only"}</button></div>`;
     }
     if (sortIdx==="g" && !SEL.size && !filtering && RK_GCOLL.has(r.g)) return;   // folded: header stands, rows wait
-    h += `<div role="cell" class="namecell" data-no="${r.no}" style="color:${G[r.g][0]};display:flex;flex-direction:column;justify-content:center;padding:3px 4px 3px 7px;line-height:1.25;border-left:3px ${gStyle(r.g)} color-mix(in srgb, ${G[r.g][0]} 62%, transparent);"><span style="font-weight:500;"><span class="draghandle" draggable="true" data-drag="${r.no}" title="drag to reorder — your order is shared with hard specs and sticks until reset order">⋮⋮</span>${cmpBox("racket", r.no)}<span class="custname" role="button" tabindex="0" onclick="srfRowMenu('racket',${r.no},event)" onkeydown="if(event.key==='Enter'){srfRowMenu('racket',${r.no},event);}" onmouseenter="noteHoverIn(noteFrame,${r.no},event)" onmouseleave="noteHoverOut()" title="what you can do with this frame — customize, my feel, notes, remove">${r.b} ${r.n}</span>${tag(r)}${window.srfRecChip("racket",r)}${r.cust?`<span class="custchip" title="${r.cust.text.replace(/"/g,'&quot;')}">customized</span>`:""}${r.feel?`<span class="custchip feelchip" title="your category read of the stock ${r.b} ${r.n} — the stock row is still on the bench">my feel</span>`:""}${window.buyBtn("racket",(r.b?r.b+" ":"")+String(r.n).replace(/ · my feel$/,""),true,"buy",true)}</span><span class="rw_bot"><span class="rw_meta">${r.sp[0]} · ${r.sp[2]}</span>${window.srfBalSvg ? srfBalSvg(r, { w: 76 }) : ""}${grpBtn(r)}<button type="button" class="rowmore" aria-label="more actions for ${r.b} ${r.n}" title="customize · my feel · notes · remove" onclick="event.stopPropagation();srfRowMenu('racket',${r.no},event)">\u22ef</button></span></div>`;
+    h += `<div role="cell" class="namecell" data-no="${r.no}" style="color:${G[r.g][0]};display:flex;flex-direction:column;justify-content:center;padding:3px 4px 3px 7px;line-height:1.25;border-left:3px ${gStyle(r.g)} color-mix(in srgb, ${G[r.g][0]} 62%, transparent);"><span style="font-weight:500;"><span class="draghandle" draggable="true" data-drag="${r.no}" title="drag to reorder — your order is shared with hard specs and sticks until reset order">⋮⋮</span>${cmpBox("racket", r.no)}<span class="custname" role="button" tabindex="0" onclick="srfRowMenu('racket',${r.no},event)" onkeydown="if(event.key==='Enter'){srfRowMenu('racket',${r.no},event);}" onmouseenter="noteHoverIn(noteFrame,${r.no},event)" onmouseleave="noteHoverOut()" title="what you can do with this frame — customize, my feel, notes, remove">${r.b} ${r.n}</span>${tag(r)}${window.srfRecChip("racket",r)}${r.cust?`<span class="custchip" title="${r.cust.text.replace(/"/g,'&quot;')}">customized</span>`:""}${r.feel?`<span class="custchip feelchip" title="your category read of the stock ${r.b} ${r.n} — the stock row is still on the bench">my feel</span>`:""}${window.buyBtn("racket",(r.b?r.b+" ":"")+String(r.n).replace(/ · my feel$/,""),true,"buy",true)}</span><span class="rw_bot"><span class="rw_meta">${r.sp[0]} · ${r.sp[2]}</span>${window.srfBalSvg ? srfBalSvg(r, { w: 76 }) : ""}<button type="button" class="whychip" onclick="event.stopPropagation();srfWhyShow('fno',${r.no},event)" title="the physics that ranked it, your sliders against it, and the maker&#39;s tech story">why this?</button>${grpBtn(r)}<button type="button" class="rowmore" aria-label="more actions for ${r.b} ${r.n}" title="customize · my feel · notes · remove" onclick="event.stopPropagation();srfRowMenu('racket',${r.no},event)">\u22ef</button></span></div>`;
     h += `<div role="cell" class="spdcell" style="display:flex;align-items:center;justify-content:center;">${spiderIcon("racket", r.no, r.s)}</div>`;
     h += priceCell(r.p, sortIdx==="p");
     h += `<div role="cell" class="curvecell" style="display:flex;align-items:center;justify-content:center;">${perfCurve(r.s,200,44)}</div>`;
@@ -8446,6 +8494,7 @@ function updateMeta(){
 document.getElementById("specSearch").addEventListener("input", e=>{
   searchQ = normalize(e.target.value); buildGrid(); buildSpecs(); updateMeta();
   const px = document.getElementById("benchSeekR"); if (px && px.value !== e.target.value) px.value = e.target.value;
+  const p2 = document.getElementById("benchSeekR2"); if (p2 && p2.value !== e.target.value) p2.value = e.target.value;
   /* the search sits with the card lists in pro; the filtered table lives in the
      chapter below — typing opens it so the results are actually in view */
   if (searchQ && document.body.classList.contains("mode-pro") && window.srfChapOpen) srfChapOpen("rk");
@@ -8498,7 +8547,7 @@ function mobileCards(rows, total){
       <header>
         <div class="who">
           <div class="nm">${cmpBox("racket", r.no)}${n+1}. ${esc((r.b?r.b+" ":"")+r.n)}${r.feel?`<span class="custchip feelchip">my feel</span>`:""}<button type="button" class="infobtn" aria-label="play notes" onclick="noteFrame(${r.no},event)">ⓘ</button>${spiderIcon("racket", r.no, r.s)}${rowActs(r, true)}</div>
-          <div class="sp">${r.sp[0]} \u00b7 ${r.sp[1]} \u00b7 ${r.sp[2]} ${window.srfBalSvg ? srfBalSvg(r, { w: 86 }) : ""} ${grpBtn(r)}</div>
+          <div class="sp">${r.sp[0]} \u00b7 ${r.sp[1]} \u00b7 ${r.sp[2]} ${window.srfBalSvg ? srfBalSvg(r, { w: 86 }) : ""} <button type="button" class="whychip" onclick="event.stopPropagation();srfWhyShow('fno',${r.no},event)">why this?</button> ${grpBtn(r)}</div>
         </div>
         <div class="pr">
           ${r.p?`<span class="prv">~${r.p}\u20ac</span>`:`<span class="prv" style="opacity:.4;">\u2014</span>`}
@@ -10792,7 +10841,7 @@ function buildGrid(){
     const col=rowColor(b);
     h+=`<div role="cell" class="namecell" data-bi="${b.i}" style="display:flex;flex-direction:column;justify-content:center;padding:5px 4px;line-height:1.25;border-left:3px solid color-mix(in srgb, ${col} 55%, transparent);">
           <span style="font-weight:500;">${cmpBox("string", b.i)}<span class="custname" role="button" tabindex="0" onclick="sbOpen(${b.i})" onkeydown="if(event.key==='Enter'){sbOpen(${b.i});}" onmouseenter="noteHoverIn(noteBed,${b.i},event)" onmouseleave="noteHoverOut()" title="claim this bed — hover for play notes" style="color:var(--bright);">${b.m}</span>${b.feel?`<span class="custchip feelchip" title="your own read — the stock row is still on the bench">my feel</span>`:""}${(sbTop.indexOf(b.i)>=0)?`<span class="medal ${["mG","mS","mB"][sbTop.indexOf(b.i)]}" title="your #${sbTop.indexOf(b.i)+1} suggestion — same as your suggestions">${sbTop.indexOf(b.i)+1}</span>`:""}${b.i === sbBudgetI ? SB_EURO : ""}${window.buyBtn("string", String(b.m).split(" \u00b7 ")[0], true, "buy", true)}</span>
-          <span class="rw_bot"><span class="rw_meta">× ${b.x}${b.mt?` · ${b.mt}${b.ct?"/"+b.ct:""} kg`:""}</span>${tagChip(b)}<button type="button" class="rowmore" aria-label="more actions for this bed" title="my feel · notes · remove" onclick="event.stopPropagation();srfRowMenu('string',${b.i},event)">\u22ef</button>${window.srfRecChip("string",b)}</span>
+          <span class="rw_bot"><span class="rw_meta">× ${b.x}${b.mt?` · ${b.mt}${b.ct?"/"+b.ct:""} kg`:""}</span>${tagChip(b)}<button type="button" class="whychip" onclick="event.stopPropagation();srfWhyShow('bi',${b.i},event)" title="the bed's own physics, your sliders against it, and the maker&#39;s story">why this?</button><button type="button" class="rowmore" aria-label="more actions for this bed" title="my feel · notes · remove" onclick="event.stopPropagation();srfRowMenu('string',${b.i},event)">\u22ef</button>${window.srfRecChip("string",b)}</span>
           ${b.note?`<span class="custchip" title="${String(b.note).replace(/"/g,'&quot;')}">noted</span>`:""}${b.twin?`<span class="custchip" style="color:var(--amber);background:color-mix(in srgb, var(--amber) 14%, transparent);" title="identical derived stats to ${String(b.twin).replace(/"/g,'&quot;')} \u2014 reopen transfer specs and add stiffness, shape or gauge to separate them">twin est.</span>`:""}</div>`;
     h+=`<div role="cell" class="spdcell" style="display:flex;align-items:center;justify-content:center;">${spiderIcon("string", b.i, b.s)}</div>`;
     const pr=bedPrice(b);
@@ -11079,7 +11128,7 @@ function sbMobileCards(rows, total){
       <header>
         <div class="who">
           <div class="nm">${cmpBox("string", b.i)}${n+1}. ${esc(b.m)}${window.buyBtn("string", String(b.m).split(" \u00b7 ")[0], true)}${b.twin?`<span class="custchip" style="color:var(--amber);background:color-mix(in srgb, var(--amber) 14%, transparent);" title="identical derived stats to ${String(b.twin).replace(/"/g,'&quot;')}">twin est.</span>`:""}${spiderIcon("string", b.i, b.s)}<button type="button" class="rowmore" aria-label="more actions for this bed" title="my feel \u00b7 notes \u00b7 remove" onclick="event.stopPropagation();srfRowMenu('string',${b.i},event)">\u22ef</button></div>
-          <div class="sp">\u00d7 ${esc(b.x)}${b.mt?` \u00b7 ${b.mt}${b.ct?"/"+b.ct:""} kg`:""}</div>
+          <div class="sp">\u00d7 ${esc(b.x)}${b.mt?` \u00b7 ${b.mt}${b.ct?"/"+b.ct:""} kg`:""} <button type="button" class="whychip" onclick="event.stopPropagation();srfWhyShow('bi',${b.i},event)">why this?</button></div>
           ${tagChip(b)}
         </div>
         <div class="pr">
