@@ -1862,6 +1862,57 @@
   .ez_more summary::before{ content:"▸ "; }
   .ez_more[open] summary::before{ content:"▾ "; }
   .ez_more[open]{ padding-bottom:2px; }
+  /* ---- the pro department shell: SETUPS · RACKETS · STRINGS · PLAYER ---- */
+  #deptnav{ display:none; }
+  .mode-pro #deptnav{ display:flex; gap:6px; align-items:stretch; position:sticky; top:0; z-index:220;
+    background:color-mix(in srgb, var(--page) 88%, transparent); backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px); padding:8px 2px; margin:0 0 10px;
+    border-bottom:1px solid color-mix(in srgb, var(--fg) 10%, transparent); }
+  .deptbtn{ flex:1 1 0; display:flex; flex-direction:column; align-items:center; gap:2px;
+    background:var(--card); color:var(--soft); border:1px solid color-mix(in srgb, var(--fg) 14%, transparent);
+    border-radius:11px; padding:8px 6px 7px; cursor:pointer; font-family:inherit;
+    transition:color .15s ease, border-color .15s ease, background .15s ease; }
+  .deptbtn .dt_ic{ font-size:15px; line-height:1; }
+  .deptbtn .dt_lb{ font-size:10px; letter-spacing:.14em; text-transform:uppercase; }
+  .deptbtn .dt_n{ font-size:8.5px; color:var(--muted); letter-spacing:.04em; }
+  .deptbtn:hover, .deptbtn:focus-visible{ color:var(--cyan); border-color:color-mix(in srgb, var(--cyan) 45%, transparent); outline:none; }
+  .deptbtn[aria-pressed="true"]{ color:var(--cyan); background:color-mix(in srgb, var(--cyan) 10%, var(--card));
+    border-color:color-mix(in srgb, var(--cyan) 55%, transparent);
+    box-shadow:0 0 12px color-mix(in srgb, var(--cyan) 18%, transparent); }
+  /* one department on screen at a time */
+  .mode-pro.dept-home [data-dept]:not([data-dept="home"]),
+  .mode-pro.dept-rk   [data-dept]:not([data-dept="rk"]),
+  .mode-pro.dept-sb   [data-dept]:not([data-dept="sb"]),
+  .mode-pro.dept-pb   [data-dept]:not([data-dept="pb"]){ display:none !important; }
+  /* inside a department tab its chapter bar is redundant furniture */
+  .mode-pro.dept-rk .chapbar[data-chap="rk"],
+  .mode-pro.dept-sb .chapbar[data-chap="sb"],
+  .mode-pro.dept-pb .chapbar[data-chap="pb"]{ display:none !important; }
+  /* the tabs replace the old jump pills */
+  .mode-pro #pronav .pn_jump, .mode-pro #pronav .pn_div{ display:none; }
+  /* intermediate mode gets the same shell, three tabs, no player */
+  #deptnavM{ display:none; }
+  .mode-mid #deptnavM{ display:flex; gap:6px; align-items:stretch; position:sticky; top:0; z-index:220;
+    background:color-mix(in srgb, var(--page) 88%, transparent); backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px); padding:8px 2px; margin:0 0 10px;
+    border-bottom:1px solid color-mix(in srgb, var(--fg) 10%, transparent); }
+  .mode-mid.mdept-home [data-mdept]:not([data-mdept="home"]),
+  .mode-mid.mdept-rk   [data-mdept]:not([data-mdept="rk"]),
+  .mode-mid.mdept-sb   [data-mdept]:not([data-mdept="sb"]){ display:none !important; }
+  @media (max-width: 760px){
+    .mode-pro #deptnav{ position:fixed; top:auto; bottom:0; left:0; right:0; margin:0;
+      padding:6px 8px calc(6px + env(safe-area-inset-bottom, 0px)); gap:6px;
+      background:color-mix(in srgb, var(--page) 94%, transparent);
+      border-top:1px solid color-mix(in srgb, var(--fg) 14%, transparent); border-bottom:0; }
+    .deptbtn{ padding:6px 2px 5px; border-radius:10px; min-height:44px; }
+    .deptbtn .dt_n{ display:none; }
+    .mode-pro #proWrap{ padding-bottom:82px; }
+    .mode-mid #deptnavM{ position:fixed; top:auto; bottom:0; left:0; right:0; margin:0;
+      padding:6px 8px calc(6px + env(safe-area-inset-bottom, 0px)); gap:6px;
+      background:color-mix(in srgb, var(--page) 94%, transparent);
+      border-top:1px solid color-mix(in srgb, var(--fg) 14%, transparent); border-bottom:0; }
+    .mode-mid #midWrap{ padding-bottom:82px; }
+  }
   /* ---- QW6: the gear menu ---- */
   #gearbtn{ position:fixed; top:12px; right:12px; z-index:400; width:40px; height:40px; border-radius:50%;
             background:color-mix(in srgb, var(--card) 90%, transparent); color:var(--cyan);
@@ -2611,7 +2662,7 @@
 <button type="button" id="gearbtn" aria-label="settings — theme, export, import" aria-haspopup="true"
         aria-expanded="false" onclick="srfGearToggle(event)">⚙</button>
 <div id="gearpop" hidden>
-  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-08-30.28 · b87</span></div>
+  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-08-30.30 · b88</span></div>
   <span class="toolbit" id="themeCtl">theme
     <span class="themepick" id="themePick">
       <button type="button" class="thememain" id="themeBtn" aria-expanded="false" aria-controls="themeList"
@@ -2868,6 +2919,14 @@
     <button type="button" class="mcap ghost gearword" onclick="srfGearToggle(event)" aria-haspopup="true" title="theme &middot; scored vs pure physics &middot; ranking contrast &middot; export">&#9881; settings</button>
     <span id="themeSlotMid" style="display:contents;"></span>
   </div>
+  <nav id="deptnavM" aria-label="intermediate departments">
+    <button type="button" class="deptbtn" data-mdept-go="home" aria-pressed="true" onclick="srfMDeptGo('home')">
+      <span class="dt_ic" aria-hidden="true">&#9733;</span><span class="dt_lb azonix">setups</span><span class="dt_n">your answer &amp; priorities</span></button>
+    <button type="button" class="deptbtn" data-mdept-go="rk" aria-pressed="false" onclick="srfMDeptGo('rk')">
+      <span class="dt_ic" aria-hidden="true">&#127934;</span><span class="dt_lb azonix">rackets</span><span class="dt_n" id="mdeptn_rk"></span></button>
+    <button type="button" class="deptbtn" data-mdept-go="sb" aria-pressed="false" onclick="srfMDeptGo('sb')">
+      <span class="dt_ic" aria-hidden="true">&#129526;</span><span class="dt_lb azonix">strings</span><span class="dt_n" id="mdeptn_sb"></span></button>
+  </nav>
 
   <div class="mid_card">
     <div class="mid_slh">about you &mdash; seeds the sliders, gates the shortlists</div>
@@ -3018,6 +3077,16 @@
     <button type="button" onclick="srfNavGo('cal','chap')">calibrator</button>
     <button type="button" onclick="srfNavGo('room','chap')">chatroom</button>
   </div>
+</nav>
+<nav id="deptnav" aria-label="pro departments">
+  <button type="button" class="deptbtn" data-dept-go="home" aria-pressed="true" onclick="srfDeptGo('home')">
+    <span class="dt_ic" aria-hidden="true">&#9733;</span><span class="dt_lb azonix">setups</span><span class="dt_n">your answer &amp; priorities</span></button>
+  <button type="button" class="deptbtn" data-dept-go="rk" aria-pressed="false" onclick="srfDeptGo('rk')">
+    <span class="dt_ic" aria-hidden="true">&#127934;</span><span class="dt_lb azonix">rackets</span><span class="dt_n" id="deptn_rk"></span></button>
+  <button type="button" class="deptbtn" data-dept-go="sb" aria-pressed="false" onclick="srfDeptGo('sb')">
+    <span class="dt_ic" aria-hidden="true">&#129526;</span><span class="dt_lb azonix">strings</span><span class="dt_n" id="deptn_sb"></span></button>
+  <button type="button" class="deptbtn" data-dept-go="pb" aria-pressed="false" onclick="srfDeptGo('pb')">
+    <span class="dt_ic" aria-hidden="true">&#128100;</span><span class="dt_lb azonix">player</span><span class="dt_n">your own game</span></button>
 </nav>
 <!-- the shelf legend is a CONTROL now: each chip filters the heatmap to that group -->
 <div class="glegend" id="rk_legend" role="group" aria-label="filter the bench by shelf"></div>
@@ -13313,6 +13382,135 @@ window.srfChapOpen = function(k){
 };
 srfChapApply();
 
+/* ---------- the department shell: one group on screen at a time ----------
+   Alexey's v12 redesign, choice A: SETUPS · RACKETS · STRINGS · PLAYER as
+   department tabs, HOME first. Built as a SHELL: nothing in the DOM moved -
+   every top-level element is tagged with its department and CSS does the rest,
+   so all machinery, doors and tests keep working through srfChapOpen(). */
+const DEPT_KEY = "srf:prodept:v1";
+const DEPT_OF_CHAP = { pb: "pb", rk: "rk", sb: "sb", cal: "home", room: "home" };
+const CHAP_OF_DEPT = { rk: "rk", sb: "sb", pb: "pb" };
+window.SRF_DEPT = (() => { try { const v = localStorage.getItem(DEPT_KEY);
+  return ["home","rk","sb","pb"].includes(v) ? v : "home"; } catch(e){ return "home"; } })();
+window.srfDeptTag = function(){
+  const bars = [...document.querySelectorAll(".chapbar")];
+  if (!bars.length) return;
+  /* the pro column is SPLIT across containers: the card div holds home + player
+     + rackets, while the strings chapter, calibrator and chatroom are siblings
+     one level up. Walk EVERY container that hosts a chapter bar. */
+  const parents = [...new Set(bars.map(b2 => b2.parentElement))];
+  parents.forEach(parent => {
+  let cur = null;
+  [...parent.children].forEach(el => {
+    if (el.id === "pro_end"){ cur = null; return; }
+    /* the deptheads are NESTED inside their blocks, so the home range is opened
+       by the answer block itself: #pro_answer wraps the four-setups head, and
+       the bare priorities wrapper follows it as the next sibling */
+    if (el.id === "pro_answer") cur = "home";
+    if (el.id === "introCard"){ el.dataset.dept = "home"; return; }   // the welcome card belongs to HOME
+    if (el.id === "rk_legend"){ el.dataset.dept = "rk"; return; }     // the shelf legend filters the racket bench
+    if (el.classList && el.classList.contains("chapbar")) cur = DEPT_OF_CHAP[el.dataset.chap] || "home";
+    if (el.id === "pro_cards_home" || el.id === "deptnav") return;   // global: live search results, the tabs
+    if (cur) el.dataset.dept = cur;
+  });
+  });
+};
+let SRF_DEPT_SW = false;   // reentry guard: srfDeptGo -> srfChapOpen -> srfDeptGo
+window.srfDeptGo = function(d, opts){
+  if (!["home","rk","sb","pb"].includes(d)) return;
+  SRF_DEPT_SW = true;
+  window.SRF_DEPT = d;
+  try { localStorage.setItem(DEPT_KEY, d); } catch(e){}
+  document.body.classList.remove("dept-home","dept-rk","dept-sb","dept-pb");
+  document.body.classList.add("dept-" + d);
+  document.querySelectorAll("#deptnav .deptbtn").forEach(b =>
+    b.setAttribute("aria-pressed", String(b.dataset.deptGo === d)));
+  if (CHAP_OF_DEPT[d] && window.srfChapOpen) srfChapOpen(CHAP_OF_DEPT[d]);
+  /* tag AFTER the chapter opened: opening can lazy-rebuild a department's
+     top-level wrapper, which would strip a tag laid down a moment earlier */
+  try { srfDeptTag(); } catch(e){}
+  SRF_DEPT_SW = false;
+  if (!(opts && opts.noscroll)){
+    const nav = document.getElementById("deptnav");
+    try { window.scrollTo({ top: nav ? Math.max(0, nav.getBoundingClientRect().top + window.scrollY - 60) : 0,
+                            behavior: "smooth" }); } catch(e){ window.scrollTo(0, 0); }
+  }
+  try {
+    const nr = document.getElementById("deptn_rk"), ns = document.getElementById("deptn_sb");
+    if (nr && window.SRF && SRF.frames) nr.textContent = SRF.frames().length + " frames";
+    if (ns && window.SRF && SRF.beds) ns.textContent = SRF.beds().length + " beds";
+  } catch(e){}
+};
+/* every deep link in the app goes through srfChapOpen - opening a chapter now
+   also switches to its department, so doors, searches and tests keep working */
+const srfChapOpen0 = window.srfChapOpen;
+window.srfChapOpen = function(k){
+  srfChapOpen0(k);
+  if (!SRF_DEPT_SW && document.body.classList.contains("mode-pro")){
+    const d = DEPT_OF_CHAP[k];
+    if (d && d !== window.SRF_DEPT) srfDeptGo(d, { noscroll: true });
+  }
+};
+srfDeptTag();
+srfDeptGo(window.SRF_DEPT, { noscroll: true });
+
+/* ------- the intermediate shell: same idea, three tabs, no player -----------
+   The mid column is two cards: the answer card (about-you, setups, priority
+   sliders, the shared search bar) and #benchCards (racket list, string list,
+   both search engines). Markers tag each child; the shared search bar and the
+   re-rank note stay global. */
+const MDEPT_KEY = "srf:middept:v1";
+window.SRF_MDEPT = (() => { try { const v = localStorage.getItem(MDEPT_KEY);
+  return ["home","rk","sb"].includes(v) ? v : "home"; } catch(e){ return "home"; } })();
+window.srfMDeptTag = function(){
+  const has = (el, id) => el.id === id || (el.querySelector ? !!el.querySelector("#" + id) : false);
+  const su = document.getElementById("mid_su");
+  if (su){
+    const card = su.closest("#midWrap > *");
+    if (card) [...card.children].forEach(el => {
+      if (has(el, "mid_q") || el.classList.contains("mid_note")) return;   // the shared search stays global
+      el.dataset.mdept = "home";
+    });
+  }
+  const bc = document.getElementById("benchCards");
+  if (bc) [...bc.children].forEach(el => {
+    if (has(el, "mid_fr") || has(el, "mid_rn") || has(el, "mid_rsSlot") || el.id === "cmpbar2_racket") el.dataset.mdept = "rk";
+    else if (has(el, "mid_bd") || has(el, "mid_sn") || has(el, "mid_ssSlot") || el.id === "cmpbar2_string") el.dataset.mdept = "sb";
+  });
+  const inv = document.querySelector("#midWrap .mid_proinv");
+  if (inv) inv.dataset.mdept = "home";
+};
+window.srfMDeptGo = function(d, opts){
+  if (!["home","rk","sb"].includes(d)) return;
+  window.SRF_MDEPT = d;
+  try { localStorage.setItem(MDEPT_KEY, d); } catch(e){}
+  try { srfMDeptTag(); } catch(e){}
+  document.body.classList.remove("mdept-home","mdept-rk","mdept-sb");
+  document.body.classList.add("mdept-" + d);
+  document.querySelectorAll("#deptnavM .deptbtn").forEach(b =>
+    b.setAttribute("aria-pressed", String(b.dataset.mdeptGo === d)));
+  if (!(opts && opts.noscroll)){
+    const nav = document.getElementById("deptnavM");
+    try { window.scrollTo({ top: nav ? Math.max(0, nav.getBoundingClientRect().top + window.scrollY - 60) : 0,
+                            behavior: "smooth" }); } catch(e){ window.scrollTo(0, 0); }
+  }
+  try {
+    const nr = document.getElementById("mdeptn_rk"), ns = document.getElementById("mdeptn_sb");
+    if (nr && window.SRF && SRF.frames) nr.textContent = SRF.frames().length + " frames";
+    if (ns && window.SRF && SRF.beds) ns.textContent = SRF.beds().length + " beds";
+  } catch(e){}
+};
+/* typing in the shared search while on SETUPS surfaces the racket results */
+try {
+  const mq = document.getElementById("mid_q");
+  if (mq) mq.addEventListener("input", () => {
+    if (document.body.classList.contains("mode-mid") && mq.value.trim() &&
+        window.SRF_MDEPT === "home") srfMDeptGo("rk", { noscroll: true });
+  });
+} catch(e){}
+srfMDeptTag();
+srfMDeptGo(window.SRF_MDEPT, { noscroll: true });
+
 /* ---------- QW6: the gear menu (theme · export · import · intro) ---------- */
 window.srfGearToggle = function(ev){
   if (ev) ev.stopPropagation();
@@ -13339,6 +13537,12 @@ window.srfNavGo = function(id, kind){
     if (window.srfChapOpen) srfChapOpen(id);
     el = document.querySelector('.chapbar[data-chap="' + id + '"]');
   } else el = document.getElementById(id);
+  /* the department shell: a jump to a HOME anchor (setups, priorities) must
+     surface the HOME tab first, or the smooth-scroll lands on nothing */
+  if (el && window.srfDeptGo && document.body.classList.contains("mode-pro")){
+    const host = el.closest ? el.closest("[data-dept]") : null;
+    if (host && host.dataset.dept !== window.SRF_DEPT) srfDeptGo(host.dataset.dept, { noscroll: true });
+  }
   if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
 };
 
