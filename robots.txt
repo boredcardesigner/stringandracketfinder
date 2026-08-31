@@ -1,0 +1,8 @@
+# stringandracketfinder.com
+# Place this file in the REPO ROOT, next to index.html.
+# Vercel serves it automatically at https://stringandracketfinder.com/robots.txt
+
+User-agent: *
+Allow: /
+
+Sitemap: https://stringandracketfinder.com/sitemap.xml

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  stringandracketfinder.com sitemap
+  Place in the REPO ROOT, next to index.html and robots.txt.
+  Served at https://stringandracketfinder.com/sitemap.xml
+
+  Only one URL for now, because the whole app lives at one address.
+  When you do Variant B, add one <url> block per landing page.
+  Bump <lastmod> to the deploy date whenever you ship a real content change.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://stringandracketfinder.com/</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>
