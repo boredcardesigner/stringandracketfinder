@@ -2962,7 +2962,7 @@
 <button type="button" id="gearbtn" aria-label="settings — theme, export, import" aria-haspopup="true"
         aria-expanded="false" onclick="srfGearToggle(event)">⚙</button>
 <div id="gearpop" hidden>
-  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-08-31.26 · b97</span></div>
+  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-08-31.27 · b98</span></div>
   <span class="toolbit" id="themeCtl">theme
     <span class="themepick" id="themePick">
       <button type="button" class="thememain" id="themeBtn" aria-expanded="false" aria-controls="themeList"
@@ -15391,6 +15391,20 @@ srfChapApply();
    every top-level element is tagged with its department and CSS does the rest,
    so all machinery, doors and tests keep working through srfChapOpen(). */
 const DEPT_KEY = "srf:prodept:v1";
+/* URL segment -> department code, and back. Both spellings of racket/racquet
+   land on the same department; only the canonical one is ever written out. */
+const SRF_ROUTE_IN = { setups:"home", home:"home", rackets:"rk", racquets:"rk", rk:"rk",
+                       strings:"sb", sb:"sb", player:"pb", pb:"pb",
+                       calibrator:"cal", cal:"cal" };
+const SRF_ROUTE_OUT = { home:"/setups", rk:"/rackets", sb:"/strings",
+                        pb:"/player", cal:"/calibrator" };
+const SRF_ROUTE_TITLE = {
+  home: "Your Setup \u2014 Tennis Racket & String Finder",
+  rk:   "Racket Bench \u2014 155 Frames Compared | String & Racket Finder",
+  sb:   "String Bench \u2014 235 String Beds Compared | String & Racket Finder",
+  pb:   "Player Bench \u2014 Your Rackets & Strings | String & Racket Finder",
+  cal:  "Calibrator \u2014 Frame \u21c4 String Matchup | String & Racket Finder"
+};
 const DEPT_OF_CHAP = { pb: "pb", rk: "rk", sb: "sb", cal: "cal", room: "home" };   // cal = its own 5th tab (Alexey 2026-08-30)
 const CHAP_OF_DEPT = { rk: "rk", sb: "sb", pb: "pb", cal: "cal" };
 window.SRF_DEPT = (() => {
@@ -15400,10 +15414,13 @@ window.SRF_DEPT = (() => {
      codes here, so the links stay readable. Deliberately NOT written back to
      localStorage - a deep link should not permanently retag a returning user. */
   try {
+    /* the five departments have real URLs. vercel.json rewrites each of them to
+       this same document, so the path is the only thing that differs - read it
+       here, and srfDeptGo below keeps it in sync with pushState. */
+    const seg = location.pathname.replace(/^\/+|\/+$/g, "").toLowerCase();
+    if (seg && SRF_ROUTE_IN[seg]) return SRF_ROUTE_IN[seg];
     const q = new URLSearchParams(location.search).get("dept");
-    const MAP = { rackets:"rk", racquets:"rk", rk:"rk", strings:"sb", sb:"sb",
-                  player:"pb", pb:"pb", calibrator:"cal", cal:"cal", home:"home" };
-    if (q && MAP[q.toLowerCase()]) return MAP[q.toLowerCase()];
+    if (q && SRF_ROUTE_IN[q.toLowerCase()]) return SRF_ROUTE_IN[q.toLowerCase()];
   } catch(e){}
   try { const v = localStorage.getItem(DEPT_KEY);
   return ["home","rk","sb","pb","cal"].includes(v) ? v : "home"; } catch(e){ return "home"; } })();
@@ -15458,7 +15475,31 @@ window.srfDeptGo = function(d, opts){
     if (nr && window.SRF && SRF.frames) nr.textContent = SRF.frames().length + " frames";
     if (ns && window.SRF && SRF.beds) ns.textContent = SRF.beds().length + " beds";
   } catch(e){}
+  /* keep the address bar honest so a department can be linked, bookmarked and
+     reached with the back button. replaceState on the first paint, pushState
+     afterwards - otherwise every load would leave a phantom history entry. */
+  try {
+    if (!(opts && opts.nourl)){
+      const want = SRF_ROUTE_OUT[d] || "/";
+      if (location.pathname !== want){
+        history[SRF_URL_READY ? "pushState" : "replaceState"]({ srfDept: d }, "", want + location.hash);
+      }
+      if (SRF_ROUTE_TITLE[d]) document.title = SRF_ROUTE_TITLE[d];
+    }
+  } catch(e){}
+  SRF_URL_READY = true;
 };
+/* false until the first srfDeptGo has run, so the initial call replaces the
+   entry instead of stacking a second one on top of the page load */
+var SRF_URL_READY = false;
+/* back / forward: re-open whatever the URL now says, without pushing again */
+window.addEventListener("popstate", function(){
+  try {
+    const seg = location.pathname.replace(/^\/+|\/+$/g, "").toLowerCase();
+    const d = SRF_ROUTE_IN[seg] || "home";
+    if (d !== window.SRF_DEPT && window.srfDeptGo) srfDeptGo(d, { nourl:true, noscroll:true });
+  } catch(e){}
+});
 /* every deep link in the app goes through srfChapOpen - opening a chapter now
    also switches to its department, so doors, searches and tests keep working */
 const srfChapOpen0 = window.srfChapOpen;
