@@ -5,12 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- no external font requests: Azonix is embedded in the stylesheet below -->
 <title>String &amp; Racket Finder</title>
-  <link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="icon" href="/icon-192.png?v=1" type="image/png" sizes="192x192">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="manifest" href="/site.webmanifest">
-<meta name="theme-color" content="#0d1d1e">
-  
 
 <!-- Privacy-friendly analytics by Plausible -->
 <script async src="https://plausible.io/js/pa-2PZ3dvuEUkVWfxD8JdPia.js"></script>
@@ -725,7 +719,9 @@
          cursor:pointer; padding:0 2px; }
   .in_x:hover{ opacity:1; }
   .in_row{ display:flex; align-items:center; gap:9px; flex-wrap:wrap; margin:5px 0; }
-  .in_lab{ width:80px; flex:none; font-size:11px; color:var(--muted); letter-spacing:.03em; }
+  .in_lab{ width:104px; flex:none; font-size:11px; color:var(--muted); letter-spacing:.03em;
+    display:inline-flex; align-items:center; white-space:nowrap; }
+  .in_lab > .qmark{ margin-left:auto; }   /* the circled i parks at the column edge, never wraps */
   .in_seg{ display:inline-flex; gap:4px; flex-wrap:wrap; }
   .ichip{ background:transparent; border:1px solid color-mix(in srgb, var(--fg) 20%, transparent);
           color:var(--soft); border-radius:999px; padding:3px 11px; font-family:inherit; font-size:11px;
@@ -2355,11 +2351,22 @@
     letter-spacing:.03em; color:var(--muted); }
   .cmp_cvlab span{ position:absolute; top:0; white-space:nowrap; }
   @media (max-width:760px){ .cmp_cvlab{ font-size:7px; } }
-  .ez_expl{ background:var(--card2); border:1px solid color-mix(in srgb, var(--muted) 22%, transparent);
-    border-radius:10px; padding:9px 13px 10px; margin:0 0 14px; }
-  .ez_expl .mf_tog{ margin-bottom:4px; }
-  .ez_expl_fold div{ font-size:11px; line-height:1.55; color:var(--muted); margin:4px 0; }
-  .ez_expl_fold div::first-line{ color:var(--soft); }
+  .qmark{ display:inline-flex; align-items:center; justify-content:center; width:15px; height:15px;
+    margin-left:5px; padding:0; border-radius:50%; font-size:10px; line-height:1; font-family:inherit;
+    background:none; cursor:pointer; vertical-align:middle; flex:none;
+    border:1px solid color-mix(in srgb, var(--muted) 45%, transparent); color:var(--muted); }
+  .qmark:hover, .qmark:focus-visible, .qmark[aria-expanded="true"]{
+    color:var(--cyan); border-color:var(--cyan); outline:none; }
+  @media (max-width:760px){ .qmark{ width:21px; height:21px; font-size:11px; } }
+  #termpop{ position:fixed; z-index:600; display:none; box-sizing:border-box;
+    width:335px; max-width:calc(100vw - 20px); background:var(--card2);
+    border:1px solid color-mix(in srgb, var(--cyan) 42%, transparent); border-radius:11px;
+    padding:11px 13px 12px; box-shadow:0 14px 40px rgba(0,0,0,.55); color:var(--fg); }
+  #termpop.on{ display:block; }
+  #termpop .tp_h{ font-size:9.5px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--cyan); margin:0 0 6px; }
+  #termpop .tp_r{ font-size:11px; line-height:1.5; color:var(--muted); margin:5px 0; }
+  #termpop .tp_r b{ color:var(--soft); font-weight:500; }
   .cmp_cv{ font-size:10px; opacity:.9; }
   .cmp_cv svg{ width:100%; height:auto; }
   @media (max-width:820px){
@@ -2717,7 +2724,7 @@
 <button type="button" id="gearbtn" aria-label="settings — theme, export, import" aria-haspopup="true"
         aria-expanded="false" onclick="srfGearToggle(event)">⚙</button>
 <div id="gearpop" hidden>
-  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-08-30.50 · b88</span></div>
+  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-08-30.54 · b88</span></div>
   <span class="toolbit" id="themeCtl">theme
     <span class="themepick" id="themePick">
       <button type="button" class="thememain" id="themeBtn" aria-expanded="false" aria-controls="themeList"
@@ -2889,17 +2896,6 @@
   </div>
 
   <div class="ez_card">
-    <div class="ez_expl" id="ez_expl">
-      <button type="button" class="methfoot_h mf_tog" aria-expanded="true" onclick="srfFootTog(this)">what these words mean <span class="mfcar">▸</span></button>
-      <div class="ez_expl_fold">
-        <div>experience — beginner: first months, still learning rallies · intermediate: steady weekly tennis, rallies hold · advanced: league level, full swings under pressure · pro: high-performance tennis with pace of its own</div>
-        <div>swing — compact: short backswing, blocks and punches · medium: the classic middle · full &amp; fast: long fast strokes that make their own pace</div>
-        <div>swingstyle — flat hitter: drives through the ball, low over the net, little spin · topspin-heavy: brushes up the ball, heavy rotation, big net clearance · all-round: mixes flat and spin as the point asks</div>
-        <div>I play — honest weekly volume: the more you play, the heavier and more demanding a frame you can handle</div>
-        <div>my arm — tick it after elbow or shoulder trouble: comfort then outranks every other axis</div>
-        <div>I am — only sets the weight band frames are matched to; nothing else changes</div>
-      </div>
-    </div>
     <div class="ez_step">1 &middot; who plays?</div>
     <div id="easyQ">
       <div class="in_row"><span class="in_lab">experience</span>
@@ -5418,6 +5414,95 @@ window.SRF_I18N = (() => {
   window.SRF_I18N_KE = KE;
   Object.keys(TE).forEach(lg => { TE[lg].forEach((v, i) => { if (v) SRF_I18N[lg][KE[i]] = v; }); });
 })();
+window.srfTermPop = function(key, ev, hover){
+  const D = window.SRF_I18N_KD || [], dict = SRF_I18N[window.SRF_LANG] || null;
+  const tr = s => (dict && dict[s]) || s;
+  const G = {
+    "experience": [["beginner",0],["intermediate",1],["advanced",2],["pro",3]],
+    "swing":      [["compact",4],["medium",5],["full & fast",6]],
+    "swingstyle": [["flat hitter",7],["topspin-heavy",8],["all-round",9]],
+    "I play":     [["rarely",10],["1\u00d7/week",11],["2\u20133\u00d7/week",12],["4+\u00d7/week",13]],
+    "my arm":     [["arm-friendly, please",14]],
+    "I am":       [["man \u00b7 woman",15]]
+  };
+  const rows = G[key]; if (!rows) return;
+  let pop = document.getElementById("termpop");
+  if (!pop){ pop = document.createElement("div"); pop.id = "termpop";
+    pop.addEventListener("mouseenter", () => clearTimeout(window.SRF_TPT));
+    pop.addEventListener("mouseleave", () => srfTermPopClose(true));
+    document.body.appendChild(pop); }
+  const btn = ev && (ev.currentTarget || ev.target);
+  if (!hover && pop.classList.contains("on") && pop.dataset.k === key){ srfTermPopClose(); return; }
+  clearTimeout(window.SRF_TPT);
+  pop.dataset.k = key;
+  pop.innerHTML = '<div class="tp_h">' + tr(key) + "</div>" +
+    rows.map(([term, i]) => '<div class="tp_r"><b>' + tr(term) + "</b> \u2014 " + tr(D[i] || "") + "</div>").join("");
+  pop.classList.add("on");
+  document.querySelectorAll('.qmark[aria-expanded="true"]').forEach(b => b.setAttribute("aria-expanded", "false"));
+  if (btn && btn.setAttribute) btn.setAttribute("aria-expanded", "true");
+  if (btn && btn.getBoundingClientRect){
+    const r = btn.getBoundingClientRect(), w = pop.offsetWidth, h = pop.offsetHeight;
+    const x = Math.min(Math.max(8, r.left - 8), innerWidth - w - 8);
+    let y = r.bottom + 7;
+    if (y + h > innerHeight - 8) y = Math.max(8, r.top - h - 7);
+    pop.style.left = x + "px"; pop.style.top = y + "px";
+  }
+};
+window.srfTermPopClose = function(delayed){
+  clearTimeout(window.SRF_TPT);
+  const go = () => { const p = document.getElementById("termpop");
+    if (p) p.classList.remove("on");
+    document.querySelectorAll('.qmark[aria-expanded="true"]').forEach(b => b.setAttribute("aria-expanded", "false")); };
+  if (delayed) window.SRF_TPT = setTimeout(go, 220); else go();
+};
+/* every "who plays" row label gets a small circled i (Alexey 2026-08-30): hover on a
+   desktop, tap on a phone, and that group's terms explain themselves in a popover.
+   Injected ONCE before the first language pass, while the labels are still english. */
+window.srfQmarks = function(){
+  const KEYS = ["experience","swing","swingstyle","I play","my arm","I am"];
+  document.querySelectorAll(".in_row .in_lab").forEach(lab => {
+    if (lab.querySelector(".qmark")) return;
+    const k = lab.textContent.replace(/\s+/g, " ").trim();
+    if (KEYS.indexOf(k) < 0) return;
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "qmark"; b.textContent = "\u24d8";
+    b.setAttribute("aria-expanded", "false");
+    b.setAttribute("aria-label", "what " + k + " means");
+    b.dataset.tg = k;
+    b.onclick = e => { e.preventDefault(); e.stopPropagation(); srfTermPop(k, e); };
+    b.onmouseenter = e => { if (window.isTouchLayout && isTouchLayout()) return;
+      clearTimeout(window.SRF_TPT); srfTermPop(k, e, true); };
+    b.onmouseleave = () => { if (window.isTouchLayout && isTouchLayout()) return; srfTermPopClose(true); };
+    b.onfocus = e => srfTermPop(k, e, true);
+    lab.appendChild(b);
+  });
+};
+document.addEventListener("click", e => { if (!e.target || !e.target.closest ||
+  (!e.target.closest("#termpop") && !e.target.closest(".qmark"))) srfTermPopClose(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") srfTermPopClose(); });
+window.addEventListener("scroll", () => srfTermPopClose(), true);
+window.SRF_I18N_KD = [
+  "first months on court, rallies still being built — light, forgiving frames and soft beds lead",
+  "steady weekly tennis, rallies hold, first reliable spin — the broad middle of the bench",
+  "club or league competition, full swings under pressure — heavier, more demanding frames open up",
+  "high-performance tennis with pace of its own — the whole bench, nothing held back",
+  "short backswing, blocks and punches — a frame that gives power back beats one that demands it",
+  "the classic middle: full but controlled preparation, neither cramped nor extravagant",
+  "long, fast strokes that make their own pace — control-first, heavier frames pay off",
+  "drives through the ball, low over the net, little rotation — precision and control lead the ranking",
+  "brushes up the back of the ball, heavy rotation, big net clearance — spin and snapback lead",
+  "mixes flat and spin as the point asks — nothing is weighted extra, the balance decides",
+  "a few times a month — lighter, easier frames keep the arm fresh when timing is not sharp",
+  "one session a week — comfort and forgiveness still outrank raw demand",
+  "regular play — the middle of the difficulty range is yours",
+  "near-daily tennis — the most demanding frames become realistic",
+  "tick it after elbow or shoulder trouble — comfort and low stiffness then outrank every other axis, and harsh string beds drop off the podium",
+  "only sets the weight band frames are matched to; nothing else in the scoring changes",
+  "man · woman"];
+window.srfExplAdd = function(lg, d16){
+  if (!SRF_I18N[lg]) return;
+  SRF_I18N_KD.forEach((k, i) => { if (d16[i]) SRF_I18N[lg][k] = d16[i]; });
+};
 window.srfLangAdd = function(lg, base, kx, ke, cal){
   const d = {};
   SRF_I18N_K.forEach((k, i) => { if (base[i]) d[k] = base[i]; });
@@ -5698,6 +5783,278 @@ srfLangAdd("hi",
 "मेरी बाँह — कोहनी या कंधे की तकलीफ़ के बाद टिक करें: फिर आराम हर धुरी से ऊपर",
 "मैं हूँ — सिर्फ़ रैकेट का वज़न-बैंड तय करता है; और कुछ नहीं बदलता"],
 ["कैलिब्रेटर","रैकेट ⇆ स्ट्रिंग मिलान"]);
+srfExplAdd("de",["erste Monate auf dem Platz, Ballwechsel im Aufbau — leichte, fehlerverzeihende Schläger und weiche Betten führen",
+"regelmäßiges wöchentliches Tennis, stabile Ballwechsel, erster verlässlicher Spin — die breite Mitte der Bank",
+"Club- oder Ligaspiel, volle Schwünge unter Druck — schwerere, anspruchsvollere Rahmen öffnen sich",
+"Leistungstennis mit eigenem Tempo — die ganze Bank, nichts zurückgehalten",
+"kurze Ausholbewegung, blocken und punchen — ein Rahmen, der Power zurückgibt, schlägt einen, der sie fordert",
+"die klassische Mitte: volle, aber kontrollierte Vorbereitung, weder verkrampft noch ausladend",
+"lange, schnelle Schläge mit eigenem Tempo — kontrollorientierte, schwerere Rahmen zahlen sich aus",
+"treibt durch den Ball, flach übers Netz, wenig Rotation — Präzision und Kontrolle führen das Ranking",
+"bürstet den Ball hinten hoch, viel Rotation, große Netzhöhe — Spin und Snapback führen",
+"mischt flach und Spin, wie der Punkt es verlangt — nichts wird extra gewichtet, die Balance entscheidet",
+"ein paar Mal im Monat — leichtere, einfachere Rahmen halten den Arm frisch, wenn das Timing nicht sitzt",
+"eine Einheit pro Woche — Komfort und Fehlerverzeihung schlagen weiter den reinen Anspruch",
+"regelmäßiges Spiel — die Mitte des Schwierigkeitsbereichs gehört dir",
+"fast tägliches Tennis — die anspruchsvollsten Rahmen werden realistisch",
+"nach Ellbogen- oder Schulterproblemen ankreuzen — Komfort und geringe Steifigkeit schlagen dann jede andere Achse, harte Saitenbetten fallen vom Podium",
+"setzt nur das Gewichtsband, dem Rahmen zugeordnet werden; sonst ändert sich in der Wertung nichts",
+"Mann · Frau"]);
+srfExplAdd("fr",["premiers mois sur le court, échanges en construction — cadres légers et tolérants, lits souples en tête",
+"tennis hebdomadaire régulier, échanges stables, premier lift fiable — le large milieu du banc",
+"compétition club ou ligue, gestes complets sous pression — les cadres plus lourds et exigeants s'ouvrent",
+"tennis de haut niveau avec son propre rythme — tout le banc, rien de retenu",
+"préparation courte, blocs et punchs — un cadre qui rend la puissance vaut mieux qu'un cadre qui l'exige",
+"le classique milieu : préparation complète mais contrôlée, ni crispée ni extravagante",
+"gestes longs et rapides qui créent leur rythme — les cadres lourds orientés contrôle paient",
+"traverse la balle, ras du filet, peu de rotation — précision et contrôle mènent le classement",
+"brosse l'arrière de la balle, grosse rotation, haute marge au filet — lift et snapback mènent",
+"mélange plat et lift selon le point — rien n'est surpondéré, l'équilibre décide",
+"quelques fois par mois — des cadres plus légers gardent le bras frais quand le timing n'est pas net",
+"une séance par semaine — confort et tolérance priment encore sur l'exigence brute",
+"jeu régulier — le milieu de la plage de difficulté est pour toi",
+"tennis quasi quotidien — les cadres les plus exigeants deviennent réalistes",
+"coche après des soucis de coude ou d'épaule — confort et faible rigidité priment alors sur tout, les cordages secs quittent le podium",
+"ne fixe que la plage de poids des cadres appariés ; rien d'autre ne change dans la notation",
+"homme · femme"]);
+srfExplAdd("es",["primeros meses en pista, peloteos en construcción — marcos ligeros y tolerantes, encordados suaves al frente",
+"tenis semanal estable, los peloteos aguantan, primer liftado fiable — el amplio medio del banco",
+"competición de club o liga, swings completos bajo presión — se abren marcos más pesados y exigentes",
+"tenis de alto rendimiento con ritmo propio — el banco entero, nada retenido",
+"preparación corta, bloqueos y golpes secos — un marco que devuelve potencia gana al que la exige",
+"el clásico término medio: preparación completa pero controlada, ni encogida ni extravagante",
+"golpes largos y rápidos con ritmo propio — los marcos pesados orientados al control compensan",
+"atraviesa la bola, bajo sobre la red, poca rotación — precisión y control lideran el ranking",
+"cepilla la parte trasera de la bola, mucha rotación, gran margen — efecto y snapback lideran",
+"mezcla plano y liftado según el punto — nada se pondera de más, decide el equilibrio",
+"unas veces al mes — marcos más ligeros mantienen el brazo fresco cuando el timing no es fino",
+"una sesión por semana — confort y tolerancia siguen por delante de la exigencia pura",
+"juego regular — el medio del rango de dificultad es tuyo",
+"tenis casi diario — los marcos más exigentes se vuelven realistas",
+"márcalo tras molestias de codo u hombro — confort y baja rigidez mandan entonces sobre todo, y los encordados ásperos caen del podio",
+"solo fija la banda de peso de los marcos emparejados; nada más cambia en la puntuación",
+"hombre · mujer"]);
+srfExplAdd("it",["primi mesi in campo, scambi in costruzione — telai leggeri e tolleranti, piatti morbidi in testa",
+"tennis settimanale stabile, gli scambi reggono, primo topspin affidabile — l'ampio centro del banco",
+"gare di club o campionato, swing pieni sotto pressione — si aprono telai più pesanti ed esigenti",
+"tennis ad alto livello con ritmo proprio — tutto il banco, niente trattenuto",
+"preparazione corta, blocchi e punch — un telaio che restituisce potenza batte uno che la pretende",
+"il classico mezzo: preparazione piena ma controllata, né contratta né esagerata",
+"colpi lunghi e veloci che creano ritmo — i telai pesanti orientati al controllo ripagano",
+"attraversa la palla, basso sulla rete, poca rotazione — precisione e controllo guidano la classifica",
+"spazzola la parte posteriore della palla, tanta rotazione, grande margine — spin e snapback guidano",
+"mescola piatto e spin come chiede il punto — nulla è pesato in più, decide l'equilibrio",
+"qualche volta al mese — telai più leggeri tengono il braccio fresco quando il timing non è preciso",
+"una sessione a settimana — comfort e tolleranza battono ancora l'esigenza pura",
+"gioco regolare — il centro della fascia di difficoltà è tuo",
+"tennis quasi quotidiano — i telai più esigenti diventano realistici",
+"spunta dopo problemi a gomito o spalla — comfort e bassa rigidità battono allora ogni altro asse, e i piatti duri escono dal podio",
+"fissa solo la fascia di peso dei telai abbinati; nient'altro cambia nel punteggio",
+"uomo · donna"]);
+srfExplAdd("sv",["första månaderna på banan, dueller byggs upp — lätta, förlåtande racketar och mjuka bäddar leder",
+"stadigt veckotennis, duellerna håller, första pålitliga skruven — bänkens breda mitt",
+"klubb- eller seriespel, fulla svingar under press — tyngre, mer krävande racketar öppnar sig",
+"prestationstennis med eget tempo — hela bänken, inget hålls tillbaka",
+"kort bakswing, blockar och punchar — en racket som ger tillbaka kraft slår en som kräver den",
+"den klassiska mitten: full men kontrollerad förberedelse, varken hopkrupen eller extravagant",
+"långa, snabba slag med eget tempo — tyngre, kontrollinriktade racketar lönar sig",
+"går rakt genom bollen, lågt över nätet, lite rotation — precision och kontroll leder rankingen",
+"borstar bollens baksida, tung rotation, stor nätmarginal — skruv och snapback leder",
+"blandar platt och skruv som poängen kräver — inget viktas extra, balansen avgör",
+"några gånger i månaden — lättare racketar håller armen fräsch när timingen inte sitter",
+"ett pass i veckan — komfort och förlåtelse går fortfarande före ren kravnivå",
+"regelbundet spel — mitten av svårighetsspannet är din",
+"nästan daglig tennis — de mest krävande racketarna blir realistiska",
+"bocka efter armbågs- eller axelbesvär — komfort och låg styvhet går då före varje annan axel, och hårda bäddar ramlar av pallen",
+"sätter bara viktbandet racketar matchas mot; inget annat i poängsättningen ändras",
+"man · kvinna"]);
+srfExplAdd("ru",["первые месяцы на корте, розыгрыши ещё строятся — лёгкие, прощающие ракетки и мягкие струны впереди",
+"стабильный теннис каждую неделю, розыгрыши держатся, первое надёжное вращение — широкая середина скамьи",
+"клубные или лиговые матчи, полные замахи под давлением — открываются тяжёлые, требовательные рамы",
+"теннис высоких достижений со своим темпом — вся скамья, ничего не придержано",
+"короткий замах, блоки и панчи — рама, которая отдаёт мощь, лучше той, что её требует",
+"классическая середина: полная, но контролируемая подготовка, ни зажатая, ни размашистая",
+"длинные быстрые удары со своим темпом — тяжёлые рамы под контроль окупаются",
+"проходит сквозь мяч, низко над сеткой, мало вращения — точность и контроль ведут рейтинг",
+"щёткой по задней части мяча, сильное вращение, большой запас над сеткой — спин и snapback ведут",
+"смешивает плоско и кручёно по ситуации — ничего не весит больше, решает баланс",
+"пару раз в месяц — лёгкие, простые рамы берегут руку, когда тайминг не идеален",
+"одна тренировка в неделю — комфорт и прощение всё ещё важнее чистой требовательности",
+"регулярная игра — середина диапазона сложности твоя",
+"почти ежедневный теннис — самые требовательные рамы становятся реальными",
+"отметь после проблем с локтем или плечом — комфорт и низкая жёсткость тогда важнее всех осей, а жёсткие струны уходят с пьедестала",
+"задаёт только весовой диапазон подбираемых рам; в оценке больше ничего не меняется",
+"мужчина · женщина"]);
+srfExplAdd("zh",["上场头几个月，回合还在建立 — 轻、宽容的球拍与柔软线床领先",
+"每周稳定打球，回合稳得住，开始有可靠上旋 — 测试台的广阔中段",
+"俱乐部或联赛比赛，压力下完整挥拍 — 更重、更苛刻的球拍开放",
+"自带节奏的高水平网球 — 整张测试台，毫无保留",
+"引拍短，以挡和短促发力为主 — 会回馈力量的球拍胜过索取力量的球拍",
+"经典的中间态：完整但受控的准备动作，既不局促也不夸张",
+"又长又快、自造节奏的挥拍 — 偏控制的重拍最划算",
+"穿透球，过网低，旋转少 — 精准与控制主导排名",
+"向上刷球背面，旋转重，过网余量大 — 旋转与回弹主导",
+"按分数需要混合平击与上旋 — 没有额外加权，由平衡决定",
+"一个月几次 — 更轻更易用的球拍在手感不佳时保护手臂",
+"每周一次 — 舒适与宽容仍胜过纯粹的苛刻度",
+"规律打球 — 难度区间的中段属于你",
+"几乎每天打球 — 最苛刻的球拍变得现实",
+"肘或肩有过伤就勾选 — 舒适度与低硬度将压过其他所有轴，生硬线床跌出领奖台",
+"仅设定匹配球拍的重量区间；评分中其他一切不变",
+"男 · 女"]);
+srfExplAdd("ja",["コート最初の数か月、ラリーを構築中 — 軽く寛容なフレームと柔らかいベッドが先行",
+"毎週の安定したテニス、ラリーが続き、最初の確かなスピン — ベンチの広い中間層",
+"クラブやリーグの試合、プレッシャー下でのフルスイング — 重く要求の高いフレームが開かれる",
+"独自のペースを持つ競技レベルのテニス — ベンチ全体、出し惜しみなし",
+"短いテイクバック、ブロックとパンチ — 力を返すフレームが力を要求するフレームに勝る",
+"クラシックな中間：フルだが制御された準備、窮屈でも大振りでもない",
+"自らペースを作る長く速いストローク — コントロール寄りの重いフレームが効く",
+"ボールを貫き、ネット上を低く、回転少なめ — 精度とコントロールがランキングを牽引",
+"ボール後方を擦り上げ、重い回転、ネット余裕大 — スピンとスナップバックが牽引",
+"ポイントに応じてフラットとスピンを混ぜる — 追加の重み付けはなく、バランスが決める",
+"月に数回 — タイミングが甘いときは軽く扱いやすいフレームが腕を守る",
+"週1回 — 快適性と寛容さがなお要求度に勝る",
+"定期的なプレー — 難易度レンジの中央があなたのもの",
+"ほぼ毎日のテニス — 最も要求の高いフレームが現実的になる",
+"肘や肩の不調の後にチェック — 快適性と低剛性が他のすべての軸に優先し、硬いベッドは表彰台から外れる",
+"マッチするフレームの重量帯を設定するだけ；採点の他は何も変わらない",
+"男性 · 女性"]);
+srfExplAdd("pt",["primeiros meses na quadra, trocas em construção — raquetes leves e tolerantes, cordas macias na frente",
+"tênis semanal estável, as trocas se sustentam, primeiro efeito confiável — o amplo meio do banco",
+"competição de clube ou liga, swings completos sob pressão — raquetes mais pesadas e exigentes se abrem",
+"tênis de alto rendimento com ritmo próprio — o banco inteiro, nada retido",
+"preparação curta, blocos e punches — uma raquete que devolve potência vence a que a exige",
+"o clássico meio-termo: preparação completa mas controlada, nem encolhida nem exagerada",
+"golpes longos e velozes com ritmo próprio — raquetes pesadas voltadas ao controle compensam",
+"atravessa a bola, baixo sobre a rede, pouca rotação — precisão e controle lideram o ranking",
+"escova a parte de trás da bola, muita rotação, grande margem — efeito e snapback lideram",
+"mistura plano e topspin conforme o ponto — nada é ponderado a mais, o equilíbrio decide",
+"algumas vezes por mês — raquetes mais leves mantêm o braço fresco quando o timing não está fino",
+"uma sessão por semana — conforto e tolerância ainda vêm antes da exigência pura",
+"jogo regular — o meio da faixa de dificuldade é seu",
+"tênis quase diário — as raquetes mais exigentes tornam-se realistas",
+"marque após problemas de cotovelo ou ombro — conforto e baixa rigidez passam à frente de todos os eixos, e cordas ásperas saem do pódio",
+"só define a faixa de peso das raquetes pareadas; nada mais muda na pontuação",
+"homem · mulher"]);
+srfExplAdd("pl",["pierwsze miesiące na korcie, wymiany dopiero się budują — lekkie, wybaczające rakiety i miękkie naciągi na czele",
+"stały cotygodniowy tenis, wymiany się trzymają, pierwsza pewna rotacja — szeroki środek ławki",
+"gra klubowa lub ligowa, pełne zamachy pod presją — otwierają się cięższe, bardziej wymagające rakiety",
+"tenis wyczynowy z własnym tempem — cała ławka, nic nie wstrzymane",
+"krótki zamach, bloki i punche — rakieta, która oddaje moc, bije tę, która jej żąda",
+"klasyczny środek: pełne, ale kontrolowane przygotowanie, ani skurczone, ani rozłożyste",
+"długie, szybkie uderzenia z własnym tempem — cięższe rakiety pod kontrolę się opłacają",
+"przechodzi przez piłkę, nisko nad siatką, mało rotacji — precyzja i kontrola prowadzą ranking",
+"szczotkuje tył piłki, ciężka rotacja, duży zapas nad siatką — rotacja i snapback prowadzą",
+"miesza płaskie i rotacyjne według potrzeb wymiany — nic nie jest dodatkowo ważone, decyduje równowaga",
+"kilka razy w miesiącu — lżejsze, łatwiejsze rakiety oszczędzają rękę, gdy timing nie jest ostry",
+"jedna sesja tygodniowo — komfort i wybaczanie wciąż biją czystą wymagalność",
+"regularna gra — środek zakresu trudności należy do ciebie",
+"tenis prawie codzienny — najbardziej wymagające rakiety stają się realne",
+"zaznacz po kłopotach z łokciem lub barkiem — komfort i niska sztywność biją wtedy każdą inną oś, a twarde naciągi spadają z podium",
+"ustawia tylko pasmo wagi dopasowywanych rakiet; nic innego w punktacji się nie zmienia",
+"mężczyzna · kobieta"]);
+srfExplAdd("nl",["eerste maanden op de baan, rally's nog in opbouw — lichte, vergevende rackets en zachte bedden voorop",
+"vast wekelijks tennis, rally's houden stand, eerste betrouwbare spin — het brede midden van de bank",
+"club- of competitiewedstrijden, volle zwaaien onder druk — zwaardere, veeleisender rackets gaan open",
+"topsporttennis met eigen tempo — de hele bank, niets achtergehouden",
+"korte uithaal, blokken en punches — een racket dat kracht teruggeeft wint van een dat kracht eist",
+"het klassieke midden: volle maar gecontroleerde voorbereiding, niet krampachtig, niet uitbundig",
+"lange, snelle slagen met eigen tempo — zwaardere, controlegerichte rackets lonen",
+"gaat door de bal, laag over het net, weinig rotatie — precisie en controle leiden de ranglijst",
+"borstelt de achterkant van de bal, zware rotatie, veel netmarge — spin en snapback leiden",
+"mengt vlak en spin zoals het punt vraagt — niets weegt extra, de balans beslist",
+"een paar keer per maand — lichtere, makkelijker rackets houden de arm fris als de timing niet scherp is",
+"één sessie per week — comfort en vergevingsgezindheid gaan nog boven pure eisen",
+"regelmatig spel — het midden van het moeilijkheidsbereik is van jou",
+"bijna dagelijks tennis — de veeleisendste rackets worden realistisch",
+"aanvinken na elleboog- of schouderklachten — comfort en lage stijfheid gaan dan boven elke andere as, en harde bedden vallen van het podium",
+"bepaalt alleen de gewichtsband van gekoppelde rackets; verder verandert er niets in de scores",
+"man · vrouw"]);
+srfExplAdd("tr",["kortta ilk aylar, ralliler henüz kuruluyor — hafif, affedici raketler ve yumuşak kordajlar önde",
+"düzenli haftalık tenis, ralliler tutuyor, ilk güvenilir topspin — tezgâhın geniş ortası",
+"kulüp ya da lig maçları, baskı altında tam salınım — daha ağır, daha talepkâr raketler açılır",
+"kendi temposu olan üst düzey tenis — tezgâhın tamamı, hiçbir şey saklı değil",
+"kısa geri çekiş, blok ve punch — gücü geri veren raket, gücü isteyen rakete üstün gelir",
+"klasik orta yol: tam ama kontrollü hazırlık, ne sıkışık ne abartılı",
+"kendi hızını üreten uzun, hızlı vuruşlar — kontrol odaklı ağır raketler karşılığını verir",
+"topun içinden geçer, ağın üstünden alçak, az rotasyon — hassasiyet ve kontrol sıralamayı yönetir",
+"topun arkasını fırçalar, ağır rotasyon, geniş ağ marjı — spin ve snapback öne çıkar",
+"sayının istediğine göre düz ve spini karıştırır — hiçbir şey fazladan ağırlık almaz, denge karar verir",
+"ayda birkaç kez — zamanlama keskin değilken hafif, kolay raketler kolu dinç tutar",
+"haftada bir antrenman — konfor ve affedicilik hâlâ ham talebin önünde",
+"düzenli oyun — zorluk aralığının ortası senin",
+"neredeyse her gün tenis — en talepkâr raketler gerçekçi hale gelir",
+"dirsek ya da omuz sorunundan sonra işaretle — konfor ve düşük sertlik o zaman tüm eksenlerin önüne geçer, sert kordajlar podyumdan düşer",
+"yalnızca eşleşen raketlerin ağırlık bandını belirler; puanlamada başka hiçbir şey değişmez",
+"erkek · kadın"]);
+srfExplAdd("cs",["první měsíce na kurtu, výměny se teprve staví — lehké, odpouštějící rakety a měkké výplety vedou",
+"stabilní týdenní tenis, výměny drží, první spolehlivá rotace — široký střed lavice",
+"klubové nebo ligové zápasy, plné švihy pod tlakem — otevírají se těžší, náročnější rakety",
+"vrcholový tenis s vlastním tempem — celá lavice, nic zadrženo",
+"krátký nápřah, bloky a punče — raketa, která sílu vrací, poráží tu, která ji vyžaduje",
+"klasický střed: plná, ale kontrolovaná příprava, ani křečovitá, ani rozmáchlá",
+"dlouhé rychlé údery s vlastním tempem — těžší rakety zaměřené na kontrolu se vyplatí",
+"jde skrz míč, nízko nad síť, málo rotace — přesnost a kontrola vedou pořadí",
+"kartáčuje zadní stranu míče, těžká rotace, velká rezerva nad sítí — rotace a snapback vedou",
+"míchá ploché a rotované podle výměny — nic není váženo navíc, rozhoduje rovnováha",
+"párkrát za měsíc — lehčí, snazší rakety šetří paži, když načasování nesedí",
+"jedna tréninková jednotka týdně — komfort a odpouštění stále předčí čistou náročnost",
+"pravidelná hra — střed rozsahu obtížnosti je tvůj",
+"téměř každodenní tenis — nejnáročnější rakety se stávají reálnými",
+"zaškrtni po potížích s loktem či ramenem — komfort a nízká tuhost pak předčí každou jinou osu a tvrdé výplety padají z pódia",
+"určuje jen váhové pásmo párovaných raket; nic jiného se v hodnocení nemění",
+"muž · žena"]);
+srfExplAdd("uk",["перші місяці на корті, розіграші ще будуються — легкі, прощаючі ракетки та м'які струни попереду",
+"стабільний теніс щотижня, розіграші тримаються, перше надійне обертання — широка середина лави",
+"клубні або лігові матчі, повні замахи під тиском — відкриваються важчі, вимогливіші рами",
+"теніс високих досягнень із власним темпом — уся лава, нічого не притримано",
+"короткий замах, блоки й панчі — рама, що віддає потужність, кращa за ту, що її вимагає",
+"класична середина: повна, але контрольована підготовка, ні затиснута, ні розмашиста",
+"довгі швидкі удари з власним темпом — важчі рами під контроль окупаються",
+"проходить крізь м'яч, низько над сіткою, мало обертання — точність і контроль ведуть рейтинг",
+"щіткою по задній частині м'яча, сильне обертання, великий запас над сіткою — спін і snapback ведуть",
+"змішує пласке й кручене за ситуацією — ніщо не важить більше, вирішує баланс",
+"кілька разів на місяць — легші, простіші рами бережуть руку, коли тайминг не ідеальний",
+"одне тренування на тиждень — комфорт і прощення й далі важливіші за чисту вимогливість",
+"регулярна гра — середина діапазону складності твоя",
+"майже щоденний теніс — найвимогливіші рами стають реальними",
+"познач після проблем із ліктем чи плечем — комфорт і низька жорсткість тоді понад усі осі, а жорсткі струни залишають п'єдестал",
+"задає лише ваговий діапазон підібраних рам; в оцінці більше нічого не змінюється",
+"чоловік · жінка"]);
+srfExplAdd("ko",["코트에서의 첫 몇 달, 랠리를 만드는 중 — 가볍고 관대한 라켓과 부드러운 베드가 앞섭니다",
+"매주 안정적인 테니스, 랠리가 유지되고 첫 스핀이 안정 — 벤치의 넓은 중간층",
+"클럽 또는 리그 경기, 압박 속 풀스윙 — 더 무겁고 까다로운 라켓이 열립니다",
+"자체 페이스를 지닌 고수준 테니스 — 벤치 전체, 아무것도 제한 없음",
+"짧은 테이크백, 블록과 펀치 — 파워를 돌려주는 라켓이 파워를 요구하는 라켓보다 낫습니다",
+"클래식한 중간: 충분하지만 절제된 준비 동작, 위축되지도 과하지도 않게",
+"스스로 페이스를 만드는 길고 빠른 스트로크 — 컨트롤 중심의 무거운 라켓이 유리",
+"공을 관통하고 네트 위 낮게, 회전 적음 — 정밀도와 컨트롤이 랭킹을 주도",
+"공 뒤쪽을 쓸어 올려 회전이 무겁고 네트 여유 큼 — 스핀과 스냅백이 주도",
+"포인트에 따라 플랫과 스핀을 섞음 — 추가 가중치 없이 균형이 결정",
+"한 달에 몇 번 — 타이밍이 좋지 않을 때 가볍고 쉬운 라켓이 팔을 지켜줍니다",
+"주 1회 — 편안함과 관용이 여전히 순수한 요구도보다 앞섭니다",
+"규칙적인 플레이 — 난이도 범위의 중앙이 당신 몫",
+"거의 매일 테니스 — 가장 까다로운 라켓도 현실적이 됩니다",
+"팔꿈치나 어깨 문제 후 체크 — 편안함과 낮은 강성이 모든 축보다 우선하고, 거친 베드는 시상대에서 내려갑니다",
+"매칭되는 라켓의 무게 범위만 설정합니다; 채점의 나머지는 변하지 않습니다",
+"남성 · 여성"]);
+srfExplAdd("hi",["कोर्ट पर पहले महीने, रैली अभी बन रही है — हल्के, क्षमाशील रैकेट और नरम बेड आगे",
+"हर हफ़्ते स्थिर टेनिस, रैली टिकती है, पहला भरोसेमंद स्पिन — बेंच का चौड़ा मध्य भाग",
+"क्लब या लीग मुक़ाबले, दबाव में पूरा स्विंग — भारी और ज़्यादा माँग वाले रैकेट खुलते हैं",
+"अपने टेम्पो वाला उच्च-स्तरीय टेनिस — पूरी बेंच, कुछ भी रोका नहीं गया",
+"छोटा बैकस्विंग, ब्लॉक और पंच — जो रैकेट ताक़त लौटाता है वह उससे बेहतर जो ताक़त माँगता है",
+"क्लासिक बीच का रास्ता: पूरी लेकिन नियंत्रित तैयारी, न सिकुड़ी न बेतहाशा",
+"लंबे तेज़ स्ट्रोक जो अपनी गति खुद बनाते हैं — कंट्रोल-केंद्रित भारी रैकेट फ़ायदेमंद",
+"गेंद के आर-पार जाता है, नेट के ऊपर नीचा, कम घुमाव — सटीकता और नियंत्रण रैंकिंग में आगे",
+"गेंद के पिछले हिस्से को ब्रश करता है, भारी घुमाव, बड़ा नेट मार्जिन — स्पिन और स्नैपबैक आगे",
+"पॉइंट के हिसाब से फ्लैट और स्पिन मिलाता है — कुछ भी अतिरिक्त भारित नहीं, संतुलन तय करता है",
+"महीने में कुछ बार — टाइमिंग सधी न हो तो हल्के, आसान रैकेट बाँह को बचाते हैं",
+"हफ़्ते में एक सत्र — आराम और क्षमाशीलता अब भी कोरी माँग से ऊपर",
+"नियमित खेल — कठिनाई सीमा का मध्य भाग आपका है",
+"लगभग रोज़ टेनिस — सबसे माँग वाले रैकेट भी व्यावहारिक हो जाते हैं",
+"कोहनी या कंधे की तकलीफ़ के बाद टिक करें — तब आराम और कम कठोरता हर धुरी से ऊपर, और सख़्त बेड पोडियम से बाहर",
+"सिर्फ़ मिलान वाले रैकेट का वज़न-बैंड तय करता है; स्कोरिंग में और कुछ नहीं बदलता",
+"पुरुष · महिला"]);
 window.SRF_LANG = (() => { try {
   const s = localStorage.getItem("srf:lang:v1");
   if (s && (s === "en" || SRF_I18N[s])) return s;
@@ -5744,6 +6101,7 @@ window.srfLangSet = function(code){
     clearTimeout(tm); tm = setTimeout(() => { try { srfLangApply(); } catch(e){} }, 400); };
   document.addEventListener("DOMContentLoaded", () => {
     try {
+      srfQmarks();                                       // english labels still in place
       window.SRF_I18N_OBS = new MutationObserver(kick);   // repaints re-anglicize their subtree; re-apply settles it
       srfLangApply();
     } catch(e){}
