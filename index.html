@@ -26,14 +26,14 @@
 <meta property="og:title" content="Tennis Racket Finder &amp; String Finder">
 <meta property="og:description" content="Compare tennis racquets and strings on power, control, comfort, spin and arm friendliness. Free, no signup.">
 <meta property="og:url" content="https://stringandracketfinder.com/">
-<!-- <meta property="og:image" content="https://stringandracketfinder.com/og.png"> -->
-<!-- <meta property="og:image:width" content="1200"> -->
-<!-- <meta property="og:image:height" content="630"> -->
+<meta property="og:image" content="https://stringandracketfinder.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 
-<meta name="twitter:card" content="summary">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Tennis Racket Finder &amp; String Finder">
 <meta name="twitter:description" content="Compare tennis racquets and strings on power, control, comfort and spin. Free, no signup.">
-<!-- <meta name="twitter:image" content="https://stringandracketfinder.com/og.png"> -->
+<meta name="twitter:image" content="https://stringandracketfinder.com/og.png">
 
 <!-- Minimal on purpose. No FAQPage markup: Google treats FAQ structured data
      as a violation unless the identical Q&amp;A text is visible on the page. -->
@@ -2938,6 +2938,16 @@
     body.mode-mid:has(.cmpbar.show) #midWrap{ padding-bottom:150px; }
   }
 
+
+  /* the static browse nav: crawlable link paths to the SEO pages, and a genuine
+     way out of the app for a reader who wants to compare a whole family */
+  #srf_seonav{ max-width:900px; margin:32px auto 8px; padding:16px 18px;
+    background:var(--card); border:1px solid var(--line); border-radius:12px; }
+  #srf_seonav .seonav_h{ font-size:11px; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--muted); margin-bottom:10px; }
+  #srf_seonav ul{ list-style:none; margin:0; padding:0; display:grid; gap:8px; }
+  #srf_seonav a{ color:var(--soft); text-decoration:none; font-size:14px; }
+  #srf_seonav a:hover{ color:var(--bright); text-decoration:underline; }
 </style>
 </head>
 <body>
@@ -2945,7 +2955,7 @@
 <button type="button" id="gearbtn" aria-label="settings — theme, export, import" aria-haspopup="true"
         aria-expanded="false" onclick="srfGearToggle(event)">⚙</button>
 <div id="gearpop" hidden>
-  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-08-31.22 · b93</span></div>
+  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-08-31.23 · b94</span></div>
   <span class="toolbit" id="themeCtl">theme
     <span class="themepick" id="themePick">
       <button type="button" class="thememain" id="themeBtn" aria-expanded="false" aria-controls="themeList"
@@ -15367,7 +15377,19 @@ srfChapApply();
 const DEPT_KEY = "srf:prodept:v1";
 const DEPT_OF_CHAP = { pb: "pb", rk: "rk", sb: "sb", cal: "cal", room: "home" };   // cal = its own 5th tab (Alexey 2026-08-30)
 const CHAP_OF_DEPT = { rk: "rk", sb: "sb", pb: "pb", cal: "cal" };
-window.SRF_DEPT = (() => { try { const v = localStorage.getItem(DEPT_KEY);
+window.SRF_DEPT = (() => {
+  /* ?dept= wins over the stored value: visitors arrive here from the static SEO
+     landing pages (/tennis-racket-finder.html etc), which deep-link into the
+     department they were reading about. Long names in the URL, short internal
+     codes here, so the links stay readable. Deliberately NOT written back to
+     localStorage - a deep link should not permanently retag a returning user. */
+  try {
+    const q = new URLSearchParams(location.search).get("dept");
+    const MAP = { rackets:"rk", racquets:"rk", rk:"rk", strings:"sb", sb:"sb",
+                  player:"pb", pb:"pb", calibrator:"cal", cal:"cal", home:"home" };
+    if (q && MAP[q.toLowerCase()]) return MAP[q.toLowerCase()];
+  } catch(e){}
+  try { const v = localStorage.getItem(DEPT_KEY);
   return ["home","rk","sb","pb","cal"].includes(v) ? v : "home"; } catch(e){ return "home"; } })();
 window.srfDeptTag = function(){
   const bars = [...document.querySelectorAll(".chapbar")];
@@ -17139,5 +17161,13 @@ window.easyRun = () => {
   window.srfPBRepaint = render;
 })();
 </script>
+<nav id="srf_seonav" aria-label="Browse guides">
+  <div class="seonav_h">Browse the bench</div>
+  <ul>
+    <li><a href="/tennis-racket-finder.html">Tennis racket finder &mdash; 155 frames by family</a></li>
+    <li><a href="/tennis-racquet-finder.html">Tennis racquet finder</a></li>
+    <li><a href="/tennis-string-finder.html">Tennis string finder &mdash; 235 beds, 23 brands</a></li>
+  </ul>
+</nav>
 </body>
 </html>
