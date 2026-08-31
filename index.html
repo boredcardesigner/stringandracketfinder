@@ -2939,14 +2939,21 @@
   }
 
 
-  /* the static browse nav: crawlable link paths to the SEO pages, and a genuine
-     way out of the app for a reader who wants to compare a whole family */
-  #srf_seonav{ max-width:900px; margin:32px auto 8px; padding:16px 18px;
-    background:var(--card); border:1px solid var(--line); border-radius:12px; }
-  #srf_seonav .seonav_h{ font-size:11px; letter-spacing:.06em; text-transform:uppercase;
-    color:var(--muted); margin-bottom:10px; }
-  #srf_seonav ul{ list-style:none; margin:0; padding:0; display:grid; gap:8px; }
-  #srf_seonav a{ color:var(--soft); text-decoration:none; font-size:14px; }
+
+  /* Browse-the-bench, variant B: a quiet row under the three mode cards.
+     Deliberately NOT a fourth .ld_mode - the three cards are the primary choice
+     and a matching fourth would compete with them. Flat, borderless, smaller. */
+  #srf_seonav{ margin:-14px 0 26px; padding:14px 16px; border-radius:11px;
+    background:color-mix(in srgb, var(--field) 60%, transparent);
+    border:1px solid color-mix(in srgb, var(--line) 70%, transparent); }
+  #srf_seonav .seonav_h{ font-size:10px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--muted); margin-bottom:8px; }
+  #srf_seonav ul{ list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap;
+    align-items:baseline; gap:4px 0; }
+  /* middot separators are drawn, not typed: no stray dot after the last item and
+     nothing for a screen reader to announce as content */
+  #srf_seonav li + li::before{ content:"\00b7"; color:var(--muted); margin:0 10px; }
+  #srf_seonav a{ color:var(--soft); text-decoration:none; font-size:13.5px; }
   #srf_seonav a:hover{ color:var(--bright); text-decoration:underline; }
 </style>
 </head>
@@ -2955,7 +2962,7 @@
 <button type="button" id="gearbtn" aria-label="settings — theme, export, import" aria-haspopup="true"
         aria-expanded="false" onclick="srfGearToggle(event)">⚙</button>
 <div id="gearpop" hidden>
-  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-08-31.23 · b94</span></div>
+  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-08-31.26 · b97</span></div>
   <span class="toolbit" id="themeCtl">theme
     <span class="themepick" id="themePick">
       <button type="button" class="thememain" id="themeBtn" aria-expanded="false" aria-controls="themeList"
@@ -3083,6 +3090,15 @@
         <span class="ld_mgo">enter &rarr;</span>
       </button>
     </div>
+
+    <nav id="srf_seonav" aria-label="Browse the bench">
+      <div class="seonav_h">or browse without answering anything &mdash; 155 frames, 235 string beds</div>
+      <ul>
+        <li><a href="/tennis-racket-finder.html">Tennis racket finder</a></li>
+        <li><a href="/tennis-racquet-finder.html">Tennis racquet finder</a></li>
+        <li><a href="/tennis-string-finder.html">Tennis string finder</a></li>
+      </ul>
+    </nav>
     <div class="ld_foot">
       <div class="ld_socials" id="ld_socials"></div>
       <div class="ld_agentur">
@@ -17161,13 +17177,5 @@ window.easyRun = () => {
   window.srfPBRepaint = render;
 })();
 </script>
-<nav id="srf_seonav" aria-label="Browse guides">
-  <div class="seonav_h">Browse the bench</div>
-  <ul>
-    <li><a href="/tennis-racket-finder.html">Tennis racket finder &mdash; 155 frames by family</a></li>
-    <li><a href="/tennis-racquet-finder.html">Tennis racquet finder</a></li>
-    <li><a href="/tennis-string-finder.html">Tennis string finder &mdash; 235 beds, 23 brands</a></li>
-  </ul>
-</nav>
 </body>
 </html>
