@@ -2973,7 +2973,7 @@
 <button type="button" id="gearbtn" aria-label="settings — theme, export, import" aria-haspopup="true"
         aria-expanded="false" onclick="srfGearToggle(event)">⚙</button>
 <div id="gearpop" hidden>
-  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-08-31.28 · b99</span></div>
+  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-08-31.29 · b100</span></div>
   <span class="toolbit" id="themeCtl">theme
     <span class="themepick" id="themePick">
       <button type="button" class="thememain" id="themeBtn" aria-expanded="false" aria-controls="themeList"
@@ -15310,6 +15310,16 @@ window.setMode = (m) => {
   if (mode === "pro" && window.midPaint) midPaint();            // the docked card lists paint for pro too
   if (window.srfCardsDock) srfCardsDock(mode);     // the shared card lists dock the same way
   if (window.srfSearchDock) srfSearchDock(mode);   // both search engines dock into whichever bench is open
+  /* Re-tag AFTER the docks: every call above can rebuild a department's top-level
+     wrapper, and a rebuilt wrapper comes back without the data-dept laid down at
+     boot. Without this the five tabs stop separating and the column reads as one
+     endless page - most obviously on a phone, where the scroll is enormous. */
+  if (mode === "pro"){
+    try { srfDeptTag(); srfDeptGo(window.SRF_DEPT || "home", { noscroll:true }); } catch(e){}
+  }
+  if (mode === "mid"){
+    try { srfMDeptTag(); srfMDeptGo(window.SRF_MDEPT || "home", { noscroll:true }); } catch(e){}
+  }
   /* QW2: the mode intro modals are retired — each header's subtitle already says
      where you are, and a modal that must be clicked away is a toll booth, not help */
   srfIntroDismiss();
@@ -15490,7 +15500,10 @@ window.srfDeptGo = function(d, opts){
      reached with the back button. replaceState on the first paint, pushState
      afterwards - otherwise every load would leave a phantom history entry. */
   try {
-    if (!(opts && opts.nourl)){
+    /* pro mode only: the boot call fires while the body is still mode-landing,
+       and rewriting "/" to "/setups" there would move the homepage out from
+       under the reader - and out from under the canonical tag. */
+    if (!(opts && opts.nourl) && document.body.classList.contains("mode-pro")){
       const want = SRF_ROUTE_OUT[d] || "/";
       if (location.pathname !== want){
         history[SRF_URL_READY ? "pushState" : "replaceState"]({ srfDept: d }, "", want + location.hash);
@@ -15556,8 +15569,13 @@ window.srfMDeptTag = function(){
     if (has(el, "mid_fr") || has(el, "mid_rn") || has(el, "mid_rsSlot") || el.id === "cmpbar2_racket") el.dataset.mdept = "rk";
     else if (has(el, "mid_bd") || has(el, "mid_sn") || has(el, "mid_ssSlot") || el.id === "cmpbar2_string") el.dataset.mdept = "sb";
   });
+  /* The invitation closes EVERY intermediate department, not just home. It used
+     to carry data-mdept="home", which meant a reader who scrolled to the bottom
+     of the rackets or strings tab - the normal thing to do on a phone - simply
+     ran out of page with no way onward. The hiding rule only touches elements
+     that HAVE the attribute, so removing it shows the card everywhere. */
   const inv = document.querySelector("#midWrap .mid_proinv");
-  if (inv) inv.dataset.mdept = "home";
+  if (inv) delete inv.dataset.mdept;
 };
 window.srfMDeptGo = function(d, opts){
   if (!["home","rk","sb"].includes(d)) return;
