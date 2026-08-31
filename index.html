@@ -2955,6 +2955,17 @@
   #srf_seonav li + li::before{ content:"\00b7"; color:var(--muted); margin:0 10px; }
   #srf_seonav a{ color:var(--soft); text-decoration:none; font-size:13.5px; }
   #srf_seonav a:hover{ color:var(--bright); text-decoration:underline; }
+  /* 390x844: the three links do not fit one line, and a wrapped flex row would
+     start the second line with the ::before middot. Stack them, drop the
+     separators, and give each link a real tap target (44px is the minimum). */
+  @media(max-width:640px){
+    #srf_seonav{ margin:-6px 0 20px; padding:12px 14px; }
+    #srf_seonav .seonav_h{ margin-bottom:4px; }
+    #srf_seonav ul{ display:grid; gap:0; }
+    #srf_seonav li + li::before{ content:none; }
+    #srf_seonav li + li{ border-top:1px solid color-mix(in srgb, var(--line) 55%, transparent); }
+    #srf_seonav a{ display:block; padding:11px 0; font-size:14px; }
+  }
 </style>
 </head>
 <body>
@@ -2962,7 +2973,7 @@
 <button type="button" id="gearbtn" aria-label="settings — theme, export, import" aria-haspopup="true"
         aria-expanded="false" onclick="srfGearToggle(event)">⚙</button>
 <div id="gearpop" hidden>
-  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-08-31.27 · b98</span></div>
+  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-08-31.28 · b99</span></div>
   <span class="toolbit" id="themeCtl">theme
     <span class="themepick" id="themePick">
       <button type="button" class="thememain" id="themeBtn" aria-expanded="false" aria-controls="themeList"

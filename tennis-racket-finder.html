@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="format-detection" content="telephone=no">
 <title>Tennis Racket Finder — Compare 155 Frames by Spec and Score</title>
 <meta name="description" content="A free tennis racket finder: compare 155 current frames from 11 brands on weight, head size, pattern, stiffness and swingweight, plus ratings for control, spin, power and feel.">
 <link rel="canonical" href="https://stringandracketfinder.com/tennis-racket-finder.html">
@@ -18,6 +19,7 @@
 :root{--page:#071112;--card:#0d1d1e;--card2:#0a1f1c;--field:#0a1917;--panel:#0c1e1b;
 --fg:#F5F6F8;--muted:#7fa8ab;--bright:#eef6f6;--soft:#b8c9ca;--line:#16222F;--accent:#9ebaab;}
 *{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
 body{background:var(--page);color:var(--fg);margin:0;padding:24px 16px 64px;
 font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
 -webkit-font-smoothing:antialiased;line-height:1.6}
@@ -45,7 +47,26 @@ ul.links a{display:block;background:var(--field);border:1px solid var(--line);
 border-radius:8px;padding:10px 12px;text-decoration:none;font-size:14px}
 footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);
 font-size:13px;color:var(--muted)}
-@media(max-width:640px){h1{font-size:23px}body{padding:18px 12px 48px}}
+
+/* 390x844. The tables are the hard part: eleven score columns plus seven specs
+   cannot reflow, so .scroll carries them sideways and a visible hint says so -
+   a silently scrollable table reads as a truncated one. */
+@media(max-width:640px){
+  body{padding:18px 12px 48px}
+  h1{font-size:23px;line-height:1.2}
+  h2{font-size:18px;margin:26px 0 8px}
+  .lede{font-size:16px}
+  .cta{display:block;text-align:center;padding:15px 18px}
+  table{font-size:12px}
+  th,td{padding:7px 7px}
+  td.name{min-width:128px}
+  .scroll{margin-left:-12px;margin-right:-12px;padding:0 12px}
+  ul.links{grid-template-columns:1fr}
+  ul.links a{padding:13px 12px}
+  nav.crumb{line-height:1.8}
+}
+.swipe{display:none;font-size:12px;color:var(--muted);margin:-4px 0 12px}
+@media(max-width:640px){.swipe{display:block}}
 </style>
 </head>
 <body>

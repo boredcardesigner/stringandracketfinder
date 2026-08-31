@@ -8,5 +8,21 @@
       "destination": "https://stringandracketfinder.com/:path*",
       "permanent": true
     }
+  ],
+  "rewrites": [
+    { "source": "/setups",     "destination": "/index.html" },
+    { "source": "/rackets",    "destination": "/index.html" },
+    { "source": "/racquets",   "destination": "/index.html" },
+    { "source": "/strings",    "destination": "/index.html" },
+    { "source": "/player",     "destination": "/index.html" },
+    { "source": "/calibrator", "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(setups|rackets|racquets|strings|player|calibrator)",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, follow" }
+      ]
+    }
   ]
 }
