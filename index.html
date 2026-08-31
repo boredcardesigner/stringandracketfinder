@@ -2973,7 +2973,7 @@
 <button type="button" id="gearbtn" aria-label="settings — theme, export, import" aria-haspopup="true"
         aria-expanded="false" onclick="srfGearToggle(event)">⚙</button>
 <div id="gearpop" hidden>
-  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-08-31.29 · b100</span></div>
+  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-08-31.35 · b106</span></div>
   <span class="toolbit" id="themeCtl">theme
     <span class="themepick" id="themePick">
       <button type="button" class="thememain" id="themeBtn" aria-expanded="false" aria-controls="themeList"
@@ -3103,7 +3103,7 @@
     </div>
 
     <nav id="srf_seonav" aria-label="Browse the bench">
-      <div class="seonav_h">or browse without answering anything &mdash; 155 frames, 235 string beds</div>
+      <div class="seonav_h">or browse without answering anything &mdash; 158 frames, 350 string beds</div>
       <ul>
         <li><a href="/tennis-racket-finder.html">Tennis racket finder</a></li>
         <li><a href="/tennis-racquet-finder.html">Tennis racquet finder</a></li>
@@ -11843,6 +11843,129 @@ const beds = [
   {m:"TOROLINE Caviar 1.25", x:"full bed", s:[9,6,8,8,5,7,6,5], mt:"23", tag:"ref", est:ALL},
   {m:"TOROLINE Enso Pro 1.25", x:"full bed", s:[8,8,7,7,7,6,7,7], mt:"23", tag:"ref", est:ALL},
   {m:"GAMMA Moto 1.24", x:"full bed", s:[9,6,8,8,6,7,6,6], mt:"23", tag:"ref", est:ALL},
+/* 115 computed hybrid beds, blended from two strings already on this bench.
+   Generated per PLAYING STYLE (topspin, flat/control, power, precision, arm-
+   first, all-round, string-breakers) and then topped up per CONSTRUCTION
+   ARCHETYPE, so every pattern is represented and not only the ones that win a
+   style ranking: gut mains with a poly cross (the tour pattern), poly mains
+   with a gut cross, poly with a multifilament cross (the club hybrid), poly on
+   poly (durability), soft mains, and all-soft. NONE has been strung and hit:
+   est:ALL marks all eight axes estimated. */
+  {m:"WILSON Revolve Spin", x:"MSV Swift Comfort 1.25", s:[9,8,7,7,7,6,5,8], tag:"ref", est:ALL},
+  {m:"WILSON Revolve Spin", x:"ISOSPEED Professional 1.20", s:[9,8,7,7,8,6,5,8], tag:"ref", est:ALL},
+  {m:"TOROLINE O-Toro", x:"MSV Swift Comfort 1.25", s:[9,8,7,7,7,6,7,8], tag:"ref", est:ALL},
+  {m:"TOROLINE O-Toro", x:"ISOSPEED Professional 1.20", s:[9,8,7,7,8,6,7,8], tag:"ref", est:ALL},
+  {m:"GAMMA Glide 1.20", x:"LUXILON Element 1.25", s:[9,8,7,7,7,6,6,8], tag:"ref", est:ALL},
+  {m:"WEISS CANNON Explosiv 1.22", x:"ISOSPEED Professional Classic 1.20", s:[9,8,7,7,8,6,6,8], tag:"ref", est:ALL},
+  {m:"WEISS CANNON Red Ghost 1.18", x:"BABOLAT Origin 1.25", s:[9,8,7,8,7,6,6,8], tag:"ref", est:ALL},
+  {m:"WEISS CANNON Red Ghost 1.18", x:"ISOSPEED Professional 1.20", s:[9,8,7,8,8,6,6,8], tag:"ref", est:ALL},
+  {m:"VÖLKL V-Square 1.20", x:"LUXILON Element 1.25", s:[9,7,7,7,7,6,5,7], tag:"ref", est:ALL},
+  {m:"VÖLKL V-Square 1.20", x:"BABOLAT RPM Soft 1.25", s:[9,7,8,7,6,6,5,7], tag:"ref", est:ALL},
+  {m:"BABOLAT RPM Blast 1.25", x:"LUXILON Element 1.25", s:[9,7,7,8,7,6,4,7], tag:"ref", est:ALL},
+  {m:"BABOLAT RPM Blast 1.25", x:"MSV Swift Comfort 1.25", s:[9,7,8,8,7,6,4,7], tag:"ref", est:ALL},
+  {m:"TECNIFIBRE Black Code 1.24", x:"BABOLAT Origin 1.25", s:[9,7,7,8,6,6,6,7], tag:"ref", est:ALL},
+  {m:"TECNIFIBRE Black Code 1.24", x:"ISOSPEED Professional Classic 1.20", s:[9,7,8,8,7,6,6,7], tag:"ref", est:ALL},
+  {m:"VÖLKL Cyclone Tour 1.25", x:"POLYFIBRE Cobra 1.25", s:[9,7,8,8,6,6,6,7], tag:"ref", est:ALL},
+  {m:"VÖLKL V-Torque 1.23", x:"BABOLAT Origin 1.25", s:[9,7,7,8,6,6,5,7], tag:"ref", est:ALL},
+  {m:"VÖLKL V-Torque 1.23", x:"ISOSPEED Professional Classic 1.20", s:[9,7,8,8,7,6,5,7], tag:"ref", est:ALL},
+  {m:"GAMMA Glide 1.20", x:"SIGNUM PRO X-Perience 1.24", s:[9,8,7,7,7,6,6,7], tag:"ref", est:ALL},
+  {m:"LUXILON Original 1.30", x:"TOROLINE Absolute 1.20", s:[8,6,9,9,6,6,4,5], tag:"ref", est:ALL},
+  {m:"BABOLAT RPM Blast Rough 1.25", x:"TOROLINE Absolute 1.20", s:[9,6,9,9,6,6,4,5], tag:"ref", est:ALL},
+  {m:"YONEX Poly Tour Strike 1.25", x:"TOROLINE Absolute 1.20", s:[8,6,9,9,6,6,5,5], tag:"ref", est:ALL},
+  {m:"SOLINCO Outlast 1.25", x:"TOROLINE Wasabi X 1.20", s:[8,6,9,9,6,6,7,5], tag:"ref", est:ALL},
+  {m:"TOROLINE Absolute 1.20", x:"GAMMA Glide 1.20", s:[9,7,8,8,8,6,6,7], tag:"ref", est:ALL},
+  {m:"ISOSPEED Baseline Spin 1.20", x:"TOROLINE Wasabi X 1.20", s:[9,6,9,8,7,6,7,6], tag:"ref", est:ALL},
+  {m:"TIER ONE Durafluxx 1.25", x:"TOROLINE Wasabi X 1.20", s:[9,6,9,9,6,6,7,5], tag:"ref", est:ALL},
+  {m:"VÖLKL V-Square 1.20", x:"GAMMA Glide 1.20", s:[9,7,8,7,8,6,5,7], tag:"ref", est:ALL},
+  {m:"BABOLAT RPM Blast 1.25", x:"WILSON Revolve Spin", s:[9,7,8,8,7,6,3,6], tag:"ref", est:ALL},
+  {m:"BABOLAT RPM Blast 1.25", x:"TOROLINE O-Toro", s:[9,7,8,8,7,6,4,6], tag:"ref", est:ALL},
+  {m:"LUXILON ALU Power Soft 1.25", x:"TOROLINE O-Toro", s:[8,7,8,8,7,6,6,6], tag:"ref", est:ALL},
+  {m:"LUXILON ALU Power Soft 1.25", x:"GAMMA Glide 1.20", s:[8,7,8,8,7,6,5,6], tag:"ref", est:ALL},
+  {m:"LUXILON Eco Power 1.25", x:"ISOSPEED Professional Classic 1.20", s:[8,7,8,8,7,6,5,7], tag:"ref", est:ALL},
+  {m:"LUXILON Savage 1.27", x:"VÖLKL V-Square 1.20", s:[9,6,9,8,6,6,5,5], tag:"ref", est:ALL},
+  {m:"LUXILON Original 1.30", x:"VÖLKL V-Square 1.20", s:[8,6,9,8,6,6,3,5], tag:"ref", est:ALL},
+  {m:"BABOLAT RPM Blast Rough 1.25", x:"VÖLKL V-Square 1.20", s:[9,6,9,8,6,6,3,5], tag:"ref", est:ALL},
+  {m:"BABOLAT Pro Hurricane Tour 1.25", x:"BABOLAT RPM Blast 1.25", s:[9,6,9,9,5,6,3,4], tag:"ref", est:ALL},
+  {m:"BABOLAT Pro Hurricane Tour 1.25", x:"LUXILON ALU Power Soft 1.25", s:[9,6,9,9,5,6,4,4], tag:"ref", est:ALL},
+  {m:"ISOSPEED Baseline Spin 1.20", x:"WILSON NXT Control 1.30", s:[8,8,8,7,8,6,7,7], tag:"ref", est:ALL},
+  {m:"ISOSPEED Professional Classic 1.20", x:"BABOLAT Addiction 1.30", s:[8,9,6,6,9,6,6,9], tag:"ref", est:ALL},
+  {m:"ISOSPEED Professional Classic 1.20", x:"BABOLAT Touch Tonic 1.30", s:[8,9,6,6,9,7,7,9], tag:"ref", est:ALL},
+  {m:"VÖLKL V-Square 1.20", x:"LUXILON Natural Gut 1.30", s:[8,8,7,6,8,7,6,8], tag:"ref", est:ALL},
+  {m:"VÖLKL V-Square 1.20", x:"BABOLAT Addiction 1.30", s:[8,8,7,6,8,6,5,8], tag:"ref", est:ALL},
+  {m:"TOROLINE O-Toro", x:"LUXILON Natural Gut 1.30", s:[8,8,6,6,9,7,8,8], tag:"ref", est:ALL},
+  {m:"TOROLINE O-Toro", x:"BABOLAT Xcel 1.30", s:[8,8,6,6,9,6,7,8], tag:"ref", est:ALL},
+  {m:"BABOLAT RPM Blast 1.25", x:"LUXILON Natural Gut 1.30", s:[8,8,7,7,8,7,5,7], tag:"ref", est:ALL},
+  {m:"BABOLAT RPM Blast 1.25", x:"BABOLAT Addiction 1.30", s:[8,8,7,7,8,6,4,7], tag:"ref", est:ALL},
+  {m:"RESTRING Zero", x:"ISOSPEED Professional 1.20", s:[8,8,7,7,8,6,7,7], tag:"ref", est:ALL},
+  {m:"LUXILON Element 1.25", x:"WILSON Synthetic Gut Power 1.30", s:[7,9,6,6,8,5,7,9], tag:"ref", est:ALL},
+  {m:"LUXILON Savage 1.27", x:"WILSON Sensation Plus 1.28", s:[8,8,8,7,7,6,5,7], tag:"ref", est:ALL},
+  {m:"LUXILON Original 1.30", x:"WILSON NXT Control 1.30", s:[6,8,8,8,7,6,4,7], tag:"ref", est:ALL},
+  {m:"LUXILON Original 1.30", x:"WILSON Sensation Plus 1.28", s:[7,8,8,8,7,6,4,7], tag:"ref", est:ALL},
+  {m:"BABOLAT Origin 1.25", x:"WILSON Synthetic Gut Power 1.30", s:[7,9,6,6,8,5,5,9], tag:"ref", est:ALL},
+  {m:"WILSON Synthetic Gut Power 1.30", x:"ISOSPEED Professional Classic 1.20", s:[5,9,6,6,8,6,6,8], tag:"ref", est:ALL},
+  {m:"YONEX Poly Tour Air 1.25", x:"BABOLAT Xcel 1.30", s:[7,9,6,6,8,6,7,8], tag:"ref", est:ALL},
+  {m:"LUXILON Original 1.30", x:"WEISS CANNON Red Ghost 1.18", s:[8,7,8,9,6,6,4,5], tag:"ref", est:ALL},
+  {m:"BABOLAT RPM Blast Rough 1.25", x:"WEISS CANNON Red Ghost 1.18", s:[9,6,8,9,6,6,4,6], tag:"ref", est:ALL},
+  {m:"BABOLAT Pro Hurricane Tour 1.25", x:"WEISS CANNON Red Ghost 1.18", s:[9,6,8,9,6,6,4,5], tag:"ref", est:ALL},
+  {m:"BABOLAT Pro Hurricane Tour 1.25", x:"TOROLINE Wasabi 1.20", s:[9,6,8,9,6,7,4,5], tag:"ref", est:ALL},
+  {m:"YONEX Poly Tour Strike 1.25", x:"TOROLINE Wasabi 1.20", s:[8,6,8,9,6,7,5,5], tag:"ref", est:ALL},
+  {m:"YONEX Poly Tour Drive 1.25", x:"TOROLINE Wasabi 1.20", s:[8,6,8,9,6,7,4,5], tag:"ref", est:ALL},
+  {m:"WEISS CANNON Red Ghost 1.18", x:"TOROLINE O-Toro", s:[9,7,7,8,8,6,6,7], tag:"ref", est:ALL},
+  {m:"LUXILON ALU Power Rough 1.25", x:"TOROLINE Wasabi X 1.20", s:[9,6,9,9,6,6,3,5], tag:"ref", est:ALL},
+  {m:"TOROLINE Wasabi 1.20", x:"ISOSPEED Professional Classic 1.20", s:[9,8,7,8,8,6,5,7], tag:"ref", est:ALL},
+  {m:"BABOLAT Xcel 1.30", x:"BABOLAT Touch Tonic 1.30", s:[4,9,2,4,9,7,7,9], tag:"ref", est:ALL},
+  {m:"BABOLAT Xcel 1.30", x:"WILSON NXT Control 1.30", s:[4,9,3,4,9,6,6,9], tag:"ref", est:ALL},
+  {m:"BABOLAT Addiction 1.30", x:"BABOLAT Touch Tonic 1.30", s:[4,9,4,5,9,7,7,9], tag:"ref", est:ALL},
+  {m:"BABOLAT Syn Gut 1.30", x:"BABOLAT Addiction 1.30", s:[4,9,5,5,9,6,6,9], tag:"ref", est:ALL},
+  {m:"BABOLAT Syn Gut 1.30", x:"BABOLAT Touch Tonic 1.30", s:[4,9,4,5,9,6,7,9], tag:"ref", est:ALL},
+  {m:"BABOLAT Touch Tonic 1.30", x:"DUNLOP Silk 1.22", s:[5,9,3,5,9,6,8,9], tag:"ref", est:ALL},
+  {m:"WILSON NXT 1.30", x:"LUXILON Natural Gut 1.30", s:[4,9,3,4,9,7,7,9], tag:"ref", est:ALL},
+  {m:"WILSON NXT Power 1.30", x:"DUNLOP Silk 1.22", s:[5,9,3,4,9,6,5,9], tag:"ref", est:ALL},
+  {m:"WILSON NXT Control 1.30", x:"DUNLOP Silk 1.22", s:[5,9,4,5,9,6,5,9], tag:"ref", est:ALL},
+  {m:"WILSON Sensation Plus 1.28", x:"LUXILON Natural Gut 1.30", s:[5,9,4,5,9,7,6,9], tag:"ref", est:ALL},
+  {m:"WILSON Synthetic Gut Power 1.30", x:"BABOLAT Xcel 1.30", s:[4,9,4,5,9,6,6,9], tag:"ref", est:ALL},
+  {m:"GAMMA TNT2 1.27", x:"LUXILON Natural Gut 1.30", s:[5,9,4,5,9,6,6,9], tag:"ref", est:ALL},
+  {m:"GAMMA TNT2 1.27", x:"TECNIFIBRE X-One Biphase 1.30", s:[5,9,3,5,9,6,5,9], tag:"ref", est:ALL},
+  {m:"GAMMA Live Wire 1.27", x:"BABOLAT Touch VS 1.30", s:[5,9,3,4,9,7,6,9], tag:"ref", est:ALL},
+  {m:"GAMMA Synthetic Gut WearGuard 1.30", x:"GAMMA TNT2 1.27", s:[4,9,5,5,9,5,6,9], tag:"ref", est:ALL},
+  {m:"ISOSPEED Professional Classic 1.20", x:"GAMMA TNT2 1.27", s:[8,9,6,6,9,5,6,9], tag:"ref", est:ALL},
+  {m:"ISOSPEED Professional 1.20", x:"BABOLAT Xcel 1.30", s:[8,9,5,6,9,6,6,9], tag:"ref", est:ALL},
+  {m:"TOROLINE Absolute 1.20", x:"LUXILON Natural Gut 1.30", s:[8,8,7,7,8,7,7,8], tag:"ref", est:ALL},
+  {m:"MSV Swift Comfort 1.25", x:"BABOLAT Touch Tonic 1.30", s:[7,9,6,6,8,7,8,9], tag:"ref", est:ALL},
+  {m:"WEISS CANNON Silverstring 1.25", x:"BABOLAT Touch Tonic 1.30", s:[7,8,7,7,8,7,8,8], tag:"ref", est:ALL},
+  {m:"ISOSPEED Baseline Control 1.30", x:"ISOSPEED Professional Classic 1.20", s:[8,8,8,8,7,6,8,7], tag:"ref", est:ALL},
+  {m:"ISOSPEED Baseline Spin 1.20", x:"LUXILON Element 1.25", s:[9,7,8,8,7,6,8,7], tag:"ref", est:ALL},
+  {m:"ISOSPEED Baseline Spin 1.20", x:"LUXILON Natural Gut 1.30", s:[8,8,7,7,8,7,8,7], tag:"ref", est:ALL},
+  {m:"LUXILON Smart 1.25", x:"BABOLAT Touch VS 1.30", s:[7,8,6,7,8,7,8,8], tag:"ref", est:ALL},
+  {m:"YONEX Poly Tour Air 1.25", x:"WILSON Natural Gut 1.30", s:[7,9,6,6,8,7,8,8], tag:"ref", est:ALL},
+  {m:"YONEX Poly Tour Air 1.25", x:"ISOSPEED Professional 1.20", s:[8,8,7,7,8,6,7,8], tag:"ref", est:ALL},
+  {m:"TECNIFIBRE Razor Soft 1.25", x:"MSV Swift Comfort 1.25", s:[8,8,7,8,7,6,7,8], tag:"ref", est:ALL},
+  {m:"GAMMA Glide 1.20", x:"WILSON Natural Gut 1.30", s:[8,8,6,6,9,7,7,8], tag:"ref", est:ALL},
+  {m:"TOROLINE O-Toro Spin 1.23", x:"WILSON Natural Gut 1.30", s:[8,8,6,7,8,7,7,8], tag:"ref", est:ALL},
+  {m:"WEISS CANNON Mosquito Bite 1.16", x:"BABOLAT Touch VS 1.30", s:[8,8,7,7,8,7,7,7], tag:"ref", est:ALL},
+  {m:"ISOSPEED Baseline Control 1.30", x:"ISOSPEED Baseline Speed 1.25", s:[7,7,8,8,6,6,9,6], tag:"ref", est:ALL},
+  {m:"ISOSPEED Baseline Spin 1.20", x:"RESTRING Zero", s:[9,7,8,8,7,6,8,6], tag:"ref", est:ALL},
+  {m:"RESTRING Zero", x:"BABOLAT RPM Soft 1.25", s:[8,7,7,7,6,6,8,7], tag:"ref", est:ALL},
+  {m:"RESTRING Zero", x:"YONEX Poly Tour Air 1.25", s:[8,8,7,7,7,6,8,7], tag:"ref", est:ALL},
+  {m:"LUXILON Element 1.25", x:"ISOSPEED Baseline Control 1.30", s:[8,8,7,7,6,6,8,6], tag:"ref", est:ALL},
+  {m:"LUXILON Smart 1.25", x:"ISOSPEED Baseline Control 1.30", s:[8,7,7,8,5,6,8,5], tag:"ref", est:ALL},
+  {m:"BABOLAT RPM Soft 1.25", x:"ISOSPEED Baseline Control 1.30", s:[8,7,7,7,5,6,8,6], tag:"ref", est:ALL},
+  {m:"ISOSPEED Baseline Control 1.30", x:"WILSON Revolve Spin", s:[8,7,8,8,6,6,8,6], tag:"ref", est:ALL},
+  {m:"ISOSPEED Baseline Speed 1.25", x:"LUXILON Element 1.25", s:[8,7,7,8,7,6,8,7], tag:"ref", est:ALL},
+  {m:"ISOSPEED Baseline Speed 1.25", x:"BABOLAT RPM Soft 1.25", s:[8,7,8,8,6,6,8,7], tag:"ref", est:ALL},
+  {m:"ISOSPEED Control Classic 1.30", x:"TOROLINE O-Toro", s:[8,7,8,8,7,6,8,6], tag:"ref", est:ALL},
+  {m:"ISOSPEED Control Classic 1.30", x:"TIER ONE Tour Status 1.25", s:[8,7,8,8,5,7,8,5], tag:"ref", est:ALL},
+  {m:"TIER ONE Durafluxx 1.25", x:"BABOLAT Touch Tonic 1.30", s:[8,7,7,8,7,7,8,7], tag:"ref", est:ALL},
+  {m:"TIER ONE Tour Status 1.25", x:"BABOLAT Touch Tonic 1.30", s:[8,8,7,7,7,7,8,7], tag:"ref", est:ALL},
+  {m:"LUXILON Element 1.25", x:"BABOLAT Touch Tonic 1.30", s:[7,9,5,6,8,7,8,9], tag:"ref", est:ALL},
+  {m:"LUXILON Smart 1.25", x:"LUXILON Natural Gut 1.30", s:[7,8,6,7,8,7,8,8], tag:"ref", est:ALL},
+  {m:"LUXILON Natural Gut 1.30", x:"YONEX Poly Tour Air 1.25", s:[5,9,4,6,8,6,8,8], tag:"ref", est:ALL},
+  {m:"LUXILON Natural Gut 1.30", x:"ISOSPEED Baseline Spin 1.20", s:[5,8,5,6,7,7,9,7], tag:"ref", est:ALL},
+  {m:"DUNLOP Synthetic S-Gut 1.25", x:"TOROLINE O-Toro", s:[6,8,6,6,8,6,6,8], tag:"ref", est:ALL},
+  {m:"BABOLAT Syn Gut 1.30", x:"TOROLINE O-Toro", s:[5,8,6,6,8,6,6,8], tag:"ref", est:ALL},
+  {m:"BABOLAT Syn Gut 1.30", x:"YONEX Poly Tour Air 1.25", s:[5,9,6,6,7,6,6,8], tag:"ref", est:ALL},
+  {m:"WILSON Natural Gut 1.30", x:"WILSON Revolve Spin", s:[5,8,4,6,8,6,8,8], tag:"ref", est:ALL},
+  {m:"LUXILON Natural Gut 1.30", x:"BABOLAT Syn Gut 1.30", s:[4,9,4,5,8,6,8,9], tag:"ref", est:ALL},
 ];
 const PRESETS = { spin:[10,8,6,6,5,2,2,3], dura:[5,5,7,7,3,2,10,5], arm:[5,5,6,6,5,2,3,10], flat:[5,5,5,5,5,5,5,5], touch:[3,5,6,6,10,7,4,7] };
 let w = PRESETS.spin.slice();
