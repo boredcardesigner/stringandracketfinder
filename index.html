@@ -3045,7 +3045,7 @@
 <button type="button" id="gearbtn" aria-label="settings — theme, export, import" aria-haspopup="true"
         aria-expanded="false" onclick="srfGearToggle(event)">⚙</button>
 <div id="gearpop" hidden>
-  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-08-31.43 · b114</span></div>
+  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-09-01.01 · b115</span></div>
   <span class="toolbit" id="themeCtl">theme
     <span class="themepick" id="themePick">
       <button type="button" class="thememain" id="themeBtn" aria-expanded="false" aria-controls="themeList"
@@ -3087,6 +3087,8 @@
   </span>
   <div class="gear_row">
     <button type="button" class="mcap ghost" onclick="exportAll()" title="download everything you've built as a JSON file">export</button>
+    <button type="button" class="mcap ghost" onclick="srfFactoryReset()"
+            title="back to stock: removes every custom frame, every &quot;my feel&quot; row, every shelf and every deletion, and restores the bench exactly as it ships. Your theme and language are kept. This cannot be undone \u2014 export first if you want a copy.">reset to stock</button>
     <label class="mcap ghost" style="cursor:pointer;">import
       <input type="file" id="importFile" accept="application/json" style="display:none;" onchange="importAll(event)">
     </label>
@@ -7209,6 +7211,26 @@ document.addEventListener("keydown", e => { if (e.key === "Escape") srfMethodClo
 window.srfMethLink = function(){
   return '<button type="button" class="methlink" onclick="srfMethodShow(event)" ' +
     'title="what these numbers are computed from, what they are not, and where the model stops">how we score &#9432;</button>';
+};
+/* Back to stock. Everything a member adds - custom frames, "my feel" readings,
+   shelves, deletions, saved orders, sessions - lives in localStorage, never in
+   this file: the shipped bench is 155 frames and 350 beds with no user rows in
+   it at all. So a reset is a matter of dropping those keys, not of touching the
+   data. Theme, language and the chosen mode are kept, because none of them is
+   something you "built" and losing them would be a surprise rather than a
+   reset. */
+window.srfFactoryReset = function(){
+  const KEEP = ["srf:theme", "srf:lang:v1", "srf:mode", "srf:model:v1",
+                "srf:wcontrast:v1", "srf:introOff"];
+  let n = 0;
+  try {
+    Object.keys(localStorage)
+      .filter(k => k.indexOf("srf:") === 0 && KEEP.indexOf(k) < 0)
+      .forEach(k => { localStorage.removeItem(k); n++; });
+  } catch(e){}
+  try { if (window.srfGearClose) srfGearClose(); } catch(e){}
+  location.reload();
+  return n;
 };
 window.srfModelSet = function(m){
   if (m !== "phys" && m !== "scored") return;
