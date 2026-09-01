@@ -130,7 +130,9 @@
 </script>
 <style>
 :root{--page:#071112;--card:#0d1d1e;--card2:#0a1f1c;--field:#0a1917;--panel:#0c1e1b;
---fg:#F5F6F8;--muted:#7fa8ab;--bright:#eef6f6;--soft:#b8c9ca;--line:#16222F;--accent:#9ebaab;}
+--fg:#F5F6F8;--muted:#7fa8ab;--bright:#eef6f6;--soft:#b8c9ca;--line:#16222F;--accent:#9ebaab;
+/* same concentric scale as the app: each step is the one above minus its inset */
+--r-xl:14px;--r-lg:12px;--r-md:10px;--r-sm:8px;--r-xs:4px;--r-pill:999px;}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{background:var(--page);color:var(--fg);margin:0;padding:24px 16px 64px;
@@ -146,8 +148,8 @@ h3{font-size:16px;color:var(--bright);margin:24px 0 6px}
 p{color:var(--soft);margin:0 0 14px}
 .lede{font-size:17px;color:var(--fg)}
 .cta{display:inline-block;background:var(--accent);color:#06201c;font-weight:600;
-padding:13px 22px;border-radius:10px;text-decoration:none;margin:14px 0 6px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:16px 0}
+padding:13px 22px;border-radius:var(--r-md);text-decoration:none;margin:14px 0 6px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:18px;margin:16px 0}
 table{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0;
 font-variant-numeric:tabular-nums}
 th,td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
@@ -157,7 +159,7 @@ td.name{white-space:normal;min-width:150px;color:var(--bright)}
 ul.links{list-style:none;padding:0;display:grid;gap:8px;
 grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
 ul.links a{display:block;background:var(--field);border:1px solid var(--line);
-border-radius:8px;padding:10px 12px;text-decoration:none;font-size:14px}
+border-radius:var(--r-sm);padding:10px 12px;text-decoration:none;font-size:14px}
 footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);
 font-size:13px;color:var(--muted)}
 
