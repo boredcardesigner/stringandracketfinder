@@ -3038,6 +3038,141 @@
   @media(max-width:640px){
     .mode-mid .mid_srch{ padding:var(--sp-1) 0; margin:0 0 var(--sp-2); }
   }
+
+  /* ---- scrollers bleed to the panel edge ---------------------------------
+     The department panels take var(--sp-5) of padding on each side. A table
+     that already needed every pixel it had - the racket bench is 250 + 58 +
+     eleven 46px cells + difficulty + overall - loses 36px to that padding and
+     drops its last column out of view. #grid does scroll, but on a desktop
+     with no visible scrollbar a clipped Overall column just reads as broken.
+
+     So every horizontal scroller inside a panel pulls back out to the panel
+     edge and re-applies the padding inside itself. The content keeps its
+     breathing room, the scroll starts and ends flush with the card, and the
+     last column is reachable. Same trick the guide pages use on mobile. */
+  .mode-pro [data-dept] #grid,
+  .mode-pro [data-dept] #sb_grid,
+  .mode-pro [data-dept] #specs,
+  .mode-pro [data-dept] .cmp_gridwrap,
+  .mode-pro [data-dept] .critbar,
+  .mode-pro [data-dept] #pb_root .tablewrap,
+  .mode-pro [data-dept] #pb_root .logwrap{
+    margin-left:calc(var(--sp-5) * -1); margin-right:calc(var(--sp-5) * -1);
+    padding-left:var(--sp-5); padding-right:var(--sp-5);
+    scrollbar-width:thin;
+  }
+  /* a scroller with no visible scrollbar looks like a truncated table, so give
+     the desktop one a permanent slim bar rather than the overlay kind */
+  .mode-pro [data-dept] #grid::-webkit-scrollbar,
+  .mode-pro [data-dept] #sb_grid::-webkit-scrollbar{ height:9px; }
+  .mode-pro [data-dept] #grid::-webkit-scrollbar-thumb,
+  .mode-pro [data-dept] #sb_grid::-webkit-scrollbar-thumb{
+    background:color-mix(in srgb, var(--fg) 22%, transparent); border-radius:var(--r-pill);
+  }
+  /* The bench template is written inline by the renderer as
+       minmax(274px,1fr) 34px 62px 160px repeat(11,46px) 52px 58px
+     which needs 1146px before it can show its last column. Inside a 1220px
+     wrap that is 38px of headroom - one narrower window, one scrollbar, and
+     Overall is cut in half again, which is exactly what happened.
+
+     Below 1340px the name and curve columns give back what they can afford:
+     the name still fits a frame name, the curve is still readable, and the
+     table needs 1002px instead of 1146. !important because the renderer sets
+     the template inline. */
+  @media(max-width:1340px){
+    .mode-pro #grid > [role="table"]{
+      grid-template-columns:minmax(200px,1fr) 34px 62px 110px repeat(11,46px) 52px 58px !important; }
+    .mode-pro #sb_grid > [role="table"]{
+      grid-template-columns:minmax(200px,1fr) 34px 62px 110px repeat(8,46px) 52px 58px !important; }
+  }
+  /* Below 1100px the curve is the column to lose. It is a shape, not a number,
+     and eleven readable scores plus Overall beat a sparkline you cannot size. */
+  @media(max-width:1100px){
+    .mode-pro #grid > [role="table"]{
+      grid-template-columns:minmax(190px,1fr) 34px 62px repeat(11,46px) 52px 58px !important; }
+    .mode-pro #sb_grid > [role="table"]{
+      grid-template-columns:minmax(190px,1fr) 34px 62px repeat(8,46px) 52px 58px !important; }
+    /* .curvecell is on the header and the cells alike, so one selector does it */
+    .mode-pro #grid .curvecell,
+    .mode-pro #sb_grid .curvecell{ display:none !important; }
+  }
+  @media(max-width:640px){
+    .mode-pro [data-dept] #grid,
+    .mode-pro [data-dept] #sb_grid,
+    .mode-pro [data-dept] #specs,
+    .mode-pro [data-dept] .cmp_gridwrap,
+    .mode-pro [data-dept] .critbar,
+    .mode-pro [data-dept] #pb_root .tablewrap,
+    .mode-pro [data-dept] #pb_root .logwrap{
+      margin-left:calc(var(--sp-4) * -1); margin-right:calc(var(--sp-4) * -1);
+      padding-left:var(--sp-4); padding-right:var(--sp-4);
+      -webkit-overflow-scrolling:touch; overscroll-behavior-x:contain;
+    }
+  }
+
+  /* ---- physics mode drops the three columns it cannot fill ----------------
+     Serve, smash and slice are not derivable from published specs, so in
+     physics mode every one of those 155 cells reads em-dash. Three columns of
+     nothing still cost 138px of table width, and that is what was pushing
+     Overall off the right edge - the string bench fits precisely because it
+     has fewer columns to carry.
+
+     Hiding cells alone would break the grid: display:none removes them from
+     flow and the survivors slide left into the wrong tracks. So the template
+     drops to repeat(8,46px) in the same breath. body.model-phys is already
+     toggled by srfModelSet, so this costs nothing to maintain. */
+  body.model-phys #grid [role="columnheader"][data-i="7"],
+  body.model-phys #grid [role="columnheader"][data-i="8"],
+  body.model-phys #grid [role="columnheader"][data-i="9"],
+  body.model-phys #grid [role="cell"][data-cat="Serve"],
+  body.model-phys #grid [role="cell"][data-cat="Smash & overhead"],
+  body.model-phys #grid [role="cell"][data-cat="Slice / touch"]{ display:none !important; }
+
+  body.model-phys #grid > [role="table"]{
+    grid-template-columns:minmax(274px,1fr) 34px 62px 160px repeat(8,46px) 52px 58px !important; }
+  @media(max-width:1340px){
+    body.model-phys #grid > [role="table"]{
+      grid-template-columns:minmax(200px,1fr) 34px 62px 110px repeat(8,46px) 52px 58px !important; }
+  }
+  @media(max-width:1100px){
+    body.model-phys #grid > [role="table"]{
+      grid-template-columns:minmax(190px,1fr) 34px 62px repeat(8,46px) 52px 58px !important; }
+  }
+
+  /* ---- column headers wrap instead of bleeding --------------------------
+     "Difficulty" and "Overall" translate to Schwierigkeit, Moeilijkheid,
+     Dificuldade, Складність - all wider than the 52px and 58px tracks they sit
+     in at 9px type. With white-space unset a header that does not fit does not
+     wrap, it runs into the header to its right, which is why Gesamt arrived
+     half-visible. Wrap, hyphenate on the document language, clip the box, and
+     let a long word break anywhere as a last resort. Two lines is the ceiling;
+     the row grows to hold them and nothing below moves. */
+  #grid [role="columnheader"], #sb_grid [role="columnheader"]{
+    white-space:normal; overflow-wrap:anywhere; hyphens:auto;
+    line-height:1.15; min-width:0; overflow:hidden;
+    display:flex; align-items:flex-end; justify-content:center;
+    max-height:2.6em;
+  }
+  /* the sort glyph stays glued to the last word rather than dropping alone */
+  #grid [role="columnheader"] > span:last-child,
+  #sb_grid [role="columnheader"] > span:last-child{ white-space:nowrap; }
+
+  /* ---- the bench background has to cover its own overflow -----------------
+     The renderer writes the table inline as display:grid with a fixed track
+     list and background:var(--page), but no width. So the BOX is only as wide
+     as #grid, while the TRACKS run past it. A background paints the box, not
+     the overflow, which is why Difficulty and Overall sat on bare page while
+     every other column had the dark band behind it. Nothing was clipped - the
+     backdrop simply stopped early.
+
+     width:max-content sizes the box to the tracks it actually has; min-width
+     100% keeps it filling the container when the tracks are narrower than the
+     bench, so a short string table still spans the full card. */
+  #grid > [role="table"],
+  #sb_grid > [role="table"]{
+    width:max-content !important;
+    min-width:100% !important;
+  }
 </style>
 </head>
 <body>
@@ -3045,7 +3180,7 @@
 <button type="button" id="gearbtn" aria-label="settings — theme, export, import" aria-haspopup="true"
         aria-expanded="false" onclick="srfGearToggle(event)">⚙</button>
 <div id="gearpop" hidden>
-  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-09-01.01 · b115</span></div>
+  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-09-02.02 · b120</span></div>
   <span class="toolbit" id="themeCtl">theme
     <span class="themepick" id="themePick">
       <button type="button" class="thememain" id="themeBtn" aria-expanded="false" aria-controls="themeList"
