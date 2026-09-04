@@ -19,6 +19,9 @@
 <meta name="description" content="Free tennis racquet and string finder. Compare frames and string beds side by side on power, control, comfort, spin and arm friendliness. No signup.">
 <link rel="canonical" href="https://stringandracketfinder.com/">
 <meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
 <meta name="theme-color" content="#071112">
 
 <meta property="og:type" content="website">
@@ -411,7 +414,8 @@
     /* a phone is narrow, not small: the band keeps most of the extra size but drops the
        label a notch so "SEARCH ONLINE" plus two buttons still fit on one label row */
     .srchbar{--sbs:1.1; --sbt:1;
-             flex:1 1 100%;width:100%;max-width:none;order:3;flex-wrap:wrap;row-gap:7px;column-gap:8px;
+             flex:1 1 100%;width:100%;box-sizing:border-box;max-width:none;order:3;flex-wrap:wrap;row-gap:7px;column-gap:8px;
+             /* border-box: width:100% plus 10px padding and the 6px accent border measured 395-407px on a 390px phone (2026-09-03) */
              border-radius:var(--r-lg);border-left-width:6px;
              padding:calc(9px * var(--sbs)) calc(10px * var(--sbs));}
     .sb_kick{font-size:10px;letter-spacing:.18em;}
@@ -603,6 +607,7 @@
     color:var(--cyan);padding:1px 6px;border-radius:var(--r-xs);margin-left:5px;cursor:help;}
   .cpanel{display:none;background:var(--panel);border:1px solid var(--cyan);border-radius:var(--r-lg);padding:16px 18px;margin:0 0 14px;}
   .cpanel.open{display:block;}
+  .cpanel, #addPanel, #sb_addPanel{ scroll-margin-top:calc(var(--srfPnH, 56px) + 12px); }
   .cpanel h4{margin:0 0 3px;font-size:12px;font-weight:600;color:var(--cyan);letter-spacing:.05em;text-transform:uppercase;}
   .cpanel .sub{font-size:11px;color:var(--muted);margin-bottom:12px;}
   .c_adv{ background:color-mix(in srgb, var(--cyan) 5%, transparent); border-left:2px solid var(--cyan);
@@ -1038,7 +1043,7 @@
                               min-width:0; max-width:100%; }
   #cal_pickF, #cal_pickS{ min-width:0; max-width:100%; flex:1 1 auto;
                           text-overflow:ellipsis; }
-  .srflegal{ width:100%; margin:26px 0 0; padding:12px 4px 2px; font-size:11px;
+  .srflegal{ width:100%; box-sizing:border-box; margin:26px 0 0; padding:12px 4px 2px; font-size:11px;   /* border-box: width:100% + 12px phone padding was the 24px sideways scroll (measured 2026-09-03) */
              color:var(--muted); text-align:center; letter-spacing:.03em;
              border-top:0.5px solid color-mix(in srgb, var(--fg) 10%, transparent); }
   /* Belt and braces: should this ever end up as a direct child of the flex body again
@@ -1508,10 +1513,10 @@
        grid the spider joins the curve in display:none, so tracks = name·price·cells·rest */
     body.tablemode  #rk_dept #grid > [role="table"]{
       width:max-content; min-width:0;
-      grid-template-columns:250px 58px repeat(11,46px) 46px 46px !important; }
+      grid-template-columns:250px 58px repeat(11,46px) 66px 66px !important; }
     body.tablemodeS #sb_dept #sb_grid > [role="table"]{
       width:max-content; min-width:0;
-      grid-template-columns:250px 58px repeat(8,46px) 46px 46px !important; }
+      grid-template-columns:250px 58px repeat(8,46px) 66px 66px !important; }
 
     /* square score cells — width comes from the track, height matches it */
     body.tablemode  #rk_dept [role="table"] .cell,
@@ -1572,6 +1577,9 @@
              border-radius:var(--r-lg); padding:13px 15px 14px; color:var(--fg);
              box-shadow:0 14px 40px rgba(0,0,0,.55); display:none; }
   #playnote.on{ display:block; }
+  /* on a phone the sheet docks at the bottom - exactly where the fixed tab row
+     (z100) lives. The sheet and its backdrop go above it while they are open. */
+  @media (max-width:820px){ #playnote{ z-index:130; } #playnote_bd{ z-index:129; } }
   #playnote_bd{ position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:59; display:none; }
   #playnote_bd.on{ display:block; }
   .pn_head{ display:flex; align-items:flex-start; gap:10px; margin-bottom:8px; }
@@ -1980,7 +1988,11 @@
     background:var(--card); color:var(--soft); border:1px solid color-mix(in srgb, var(--fg) 14%, transparent);
     border-radius:var(--r-md); padding:var(--sp-3) var(--sp-1); cursor:pointer; font-family:inherit;
     transition:color .15s ease, border-color .15s ease, background .15s ease; }
-  .deptbtn .dt_ic{ font-size:15px; line-height:1; }
+  /* Alexey 2026-09-03: own line icons instead of emoji - on an iPhone Apple paints the
+     emoji in colour (blue head, pink ball of yarn), the only foreign colour on the page.
+     Five SVG glyphs in currentColor, 1.6px stroke, the family of the balance glyph. */
+  .deptbtn .dt_ic{ line-height:0; display:block; }
+  .deptbtn .dt_ic svg{ width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
   .deptbtn .dt_lb{ font-size:10px; letter-spacing:.14em; text-transform:uppercase; }
   .deptbtn .dt_n{ font-size:8.5px; color:var(--muted); letter-spacing:.04em; }
   .deptbtn:hover, .deptbtn:focus-visible{ color:var(--cyan); border-color:color-mix(in srgb, var(--cyan) 45%, transparent); outline:none; }
@@ -2014,8 +2026,12 @@
       padding:6px 8px calc(6px + env(safe-area-inset-bottom, 0px)); gap:6px;
       background:color-mix(in srgb, var(--card) 96%, transparent);
       border-top:1px solid color-mix(in srgb, var(--fg) 14%, transparent); border-bottom:0; }
-    .deptbtn{ padding:6px 2px 5px; border-radius:var(--r-md); min-height:44px; }
+    .deptbtn{ padding:6px 2px 5px; border-radius:var(--r-md); min-height:44px; position:relative; }
     .deptbtn .dt_n{ display:none; }
+    /* the count survives as a small figure in the corner (variant A, 2026-09-03) */
+    .deptbtn[data-n]::after{ content:attr(data-n); position:absolute; top:3px; right:6px;
+      font-size:7.5px; letter-spacing:.04em; color:var(--muted); pointer-events:none; }
+    .deptbtn .dt_ic svg{ width:20px; height:20px; }
     .mode-pro #proWrap{ padding-bottom:82px; }
     .mode-mid #deptnavM{ position:fixed; top:auto; bottom:0; left:0; right:0; margin:0;
       padding:6px 8px calc(6px + env(safe-area-inset-bottom, 0px)); gap:6px;
@@ -3033,6 +3049,14 @@
   }
   /* the tab row sits under it, not under the page top */
   .mode-mid #deptnavM{ top:var(--srfMidSrchH, 52px); }
+  /* Alexey 2026-09-03, iPhone: intermediate opened as three empty columns the
+     height of the screen. The rule above is a BASE rule written AFTER the phone
+     block, so on a phone the bar was position:fixed with bottom:0 AND top:52px -
+     a fixed box stretched over the whole viewport, with align-items:stretch
+     pulling the three tabs down with it, and a blurred backdrop swallowing every
+     tap underneath. Media queries never win by being media queries; they win by
+     coming last (srf-finder, rule 6). So the phone value is restated here. */
+  @media (max-width:760px){ .mode-mid #deptnavM{ top:auto; } }
   /* the hint line travels with the bar instead of stranding mid-page */
   .mode-mid .mid_srch + .mid_note{ margin-top:calc(var(--sp-1) * -1); }
   @media(max-width:640px){
@@ -3070,7 +3094,7 @@
     background:color-mix(in srgb, var(--fg) 22%, transparent); border-radius:var(--r-pill);
   }
   /* The bench template is written inline by the renderer as
-       minmax(274px,1fr) 34px 62px 160px repeat(11,46px) 52px 58px
+       minmax(274px,1fr) 34px 62px 160px repeat(11,46px) 66px 66px
      which needs 1146px before it can show its last column. Inside a 1220px
      wrap that is 38px of headroom - one narrower window, one scrollbar, and
      Overall is cut in half again, which is exactly what happened.
@@ -3081,17 +3105,17 @@
      the template inline. */
   @media(max-width:1340px){
     .mode-pro #grid > [role="table"]{
-      grid-template-columns:minmax(200px,1fr) 34px 62px 110px repeat(11,46px) 52px 58px !important; }
+      grid-template-columns:minmax(200px,1fr) 34px 62px 110px repeat(11,46px) 66px 66px !important; }
     .mode-pro #sb_grid > [role="table"]{
-      grid-template-columns:minmax(200px,1fr) 34px 62px 110px repeat(8,46px) 52px 58px !important; }
+      grid-template-columns:minmax(200px,1fr) 34px 62px 110px repeat(8,46px) 66px 66px !important; }
   }
   /* Below 1100px the curve is the column to lose. It is a shape, not a number,
      and eleven readable scores plus Overall beat a sparkline you cannot size. */
   @media(max-width:1100px){
     .mode-pro #grid > [role="table"]{
-      grid-template-columns:minmax(190px,1fr) 34px 62px repeat(11,46px) 52px 58px !important; }
+      grid-template-columns:minmax(190px,1fr) 34px 62px repeat(11,46px) 66px 66px !important; }
     .mode-pro #sb_grid > [role="table"]{
-      grid-template-columns:minmax(190px,1fr) 34px 62px repeat(8,46px) 52px 58px !important; }
+      grid-template-columns:minmax(190px,1fr) 34px 62px repeat(8,46px) 66px 66px !important; }
     /* .curvecell is on the header and the cells alike, so one selector does it */
     .mode-pro #grid .curvecell,
     .mode-pro #sb_grid .curvecell{ display:none !important; }
@@ -3129,14 +3153,14 @@
   body.model-phys #grid [role="cell"][data-cat="Slice / touch"]{ display:none !important; }
 
   body.model-phys #grid > [role="table"]{
-    grid-template-columns:minmax(274px,1fr) 34px 62px 160px repeat(8,46px) 52px 58px !important; }
+    grid-template-columns:minmax(274px,1fr) 34px 62px 160px repeat(8,46px) 66px 66px !important; }
   @media(max-width:1340px){
     body.model-phys #grid > [role="table"]{
-      grid-template-columns:minmax(200px,1fr) 34px 62px 110px repeat(8,46px) 52px 58px !important; }
+      grid-template-columns:minmax(200px,1fr) 34px 62px 110px repeat(8,46px) 66px 66px !important; }
   }
   @media(max-width:1100px){
     body.model-phys #grid > [role="table"]{
-      grid-template-columns:minmax(190px,1fr) 34px 62px repeat(8,46px) 52px 58px !important; }
+      grid-template-columns:minmax(190px,1fr) 34px 62px repeat(8,46px) 66px 66px !important; }
   }
 
   /* ---- column headers wrap instead of bleeding --------------------------
@@ -3168,11 +3192,20 @@
      width:max-content sizes the box to the tracks it actually has; min-width
      100% keeps it filling the container when the tracks are narrower than the
      bench, so a short string table still spans the full card. */
+  /* b120 set width:max-content here so the background would cover the tracks
+     that overflow. It fixed the band and broke the fit: the name track is
+     minmax(274px,1fr), and under max-content a 1fr sizes to its WIDEST content -
+     the frame name plus BUY, why this?, + shelf and the overflow button - so it
+     grew past 470px and pushed Overall off the right edge.
+
+     The band belongs on the SCROLLER, not on the table. #grid paints it, so it
+     covers whatever is on screen at any scroll position, and the table goes back
+     to filling its container exactly: the 1fr absorbs the leftover, every fixed
+     track keeps its width, and nothing overflows until the container is genuinely
+     too narrow - at which point the scroller's own background is already there. */
+  #grid, #sb_grid{ background:var(--page); }
   #grid > [role="table"],
-  #sb_grid > [role="table"]{
-    width:max-content !important;
-    min-width:100% !important;
-  }
+  #sb_grid > [role="table"]{ width:auto !important; min-width:100% !important; }
 
   /* ---- logo and wordmark return to the start page ------------------------
      Buttons rather than click handlers on a div: this is navigation, so it has
@@ -3188,6 +3221,24 @@
   .srf_homelink:focus-visible{
     outline:2px solid var(--cyan); outline-offset:3px; border-radius:var(--r-xs);
   }
+
+  /* ---- the tab row never grows past its content ---------------------------
+     #deptnav and #deptnavM use align-items:stretch so the five tabs share one
+     height. That is correct in normal flow, where the row is sized by its
+     tallest button - but stretch inherits whatever height the row is given, so
+     any host that forces a full-height ancestor turns the tabs into columns
+     the length of the viewport. It shows up in embedded previews and would
+     show up in any iframe that sets html,body{height:100%}.
+
+     A cap costs nothing here: a tab is about 50px with its icon, label and
+     count, so 76px leaves room for a wrapped label in a long language and
+     still forbids the failure. */
+  #deptnav, #deptnavM{ flex:0 0 auto; align-self:flex-start; width:100%; box-sizing:border-box; }
+  /* measured 2026-09-03: width:100% on the FIXED phone bar is content-box, so the
+     8px of side padding pushed the bar to 424px on a 390px screen - the 24px
+     horizontal overflow that had survived since v50. border-box ends it. */
+  .deptbtn{ max-height:76px; }
+  @media(max-width:640px){ .deptbtn{ max-height:64px; } }
 </style>
 </head>
 <body>
@@ -3195,7 +3246,7 @@
 <button type="button" id="gearbtn" aria-label="settings — theme, export, import" aria-haspopup="true"
         aria-expanded="false" onclick="srfGearToggle(event)">⚙</button>
 <div id="gearpop" hidden>
-  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-09-02.05 · b123</span></div>
+  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-09-04.58 · b141</span></div>
   <span class="toolbit" id="themeCtl">theme
     <span class="themepick" id="themePick">
       <button type="button" class="thememain" id="themeBtn" aria-expanded="false" aria-controls="themeList"
@@ -3232,8 +3283,10 @@
     <span class="toolnote" style="line-height:1.35;">Physics mode recomputes every frame from its own published specs
       &mdash; recoil weight from the parallel axis theorem, spin from strings per square inch, power from stiffness and
       the beam profile (average depth plus taper &mdash; 23/26/23 is not a constant 26). <b>Serve, smash and slice go blank</b>: they trade racket speed against effective mass, or they belong to
-      your hand, and no honest formula reaches them. The two views disagree on purpose &mdash; that disagreement is
-      itself the interesting number.</span>
+      your hand, and no honest formula reaches them. <b>String beds follow the same switch</b>: each bed is recomputed
+      from its lab row &mdash; dynamic stiffness, gauge, cross-section, measured tension loss and energy return, lifespan band
+      and the tension it is strung at &mdash; with precision and sound left blank. The two views disagree on purpose &mdash;
+      that disagreement is itself the interesting number.</span>
   </span>
   <div class="gear_row">
     <button type="button" class="mcap ghost" onclick="exportAll()" title="download everything you've built as a JSON file">export</button>
@@ -3327,7 +3380,7 @@
     </div>
 
     <nav id="srf_seonav" aria-label="Browse the bench">
-      <div class="seonav_h">or browse without answering anything &mdash; 158 frames, 350 string beds</div>
+      <div class="seonav_h">or browse without answering anything &mdash; 155 frames, 354 string beds</div>
       <ul>
         <li><a href="/tennis-racket-finder.html">Tennis racket finder</a></li>
         <li><a href="/tennis-racquet-finder.html">Tennis racquet finder</a></li>
@@ -3471,11 +3524,11 @@
   </div>
   <nav id="deptnavM" aria-label="intermediate departments">
     <button type="button" class="deptbtn" data-mdept-go="home" aria-pressed="true" onclick="srfMDeptGo('home')">
-      <span class="dt_ic" aria-hidden="true">&#9733;</span><span class="dt_lb azonix">setups</span><span class="dt_n">your answer &amp; priorities</span></button>
+      <span class="dt_ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1.1 5.9L12 16.9l-5.3 2.8 1.1-5.9L3.5 9.7l5.9-.8z"/></svg></span><span class="dt_lb azonix">setups</span><span class="dt_n">your answer &amp; priorities</span></button>
     <button type="button" class="deptbtn" data-mdept-go="rk" aria-pressed="false" onclick="srfMDeptGo('rk')">
-      <span class="dt_ic" aria-hidden="true">&#127934;</span><span class="dt_lb azonix">rackets</span><span class="dt_n" id="mdeptn_rk"></span></button>
+      <span class="dt_ic"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="14" cy="9" rx="6.5" ry="7.5" transform="rotate(35 14 9)"/><path d="M9.5 14.5L4 20"/><path d="M11 5.5l6 7M9 8.5l6 7M13 4l5 6"/></svg></span><span class="dt_lb azonix">rackets</span><span class="dt_n" id="mdeptn_rk"></span></button>
     <button type="button" class="deptbtn" data-mdept-go="sb" aria-pressed="false" onclick="srfMDeptGo('sb')">
-      <span class="dt_ic" aria-hidden="true">&#129526;</span><span class="dt_lb azonix">strings</span><span class="dt_n" id="mdeptn_sb"></span></button>
+      <span class="dt_ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8h18M3 12h18M3 16h18M8 3v18M12 3v18M16 3v18"/></svg></span><span class="dt_lb azonix">strings</span><span class="dt_n" id="mdeptn_sb"></span></button>
   </nav>
 
   <div class="mid_card">
@@ -3578,7 +3631,7 @@
        The logo and the three social anchors below are THE originals — every other
        screen clones them from here, so they moved but were not rewritten. -->
   <div class="ez_top">
-    <span class="ez_logo" ><img src="data:image/png;base64,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" alt="A³ Agentur logo" style="width:54px;height:54px;object-fit:contain;filter:drop-shadow(0 0 7px color-mix(in srgb, var(--magenta) 40%, transparent));"></span>
+    <span class="ez_logo" ><img src="data:image/png;base64,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" alt="A³ Agentur logo" style="width:54px;height:54px;object-fit:contain;filter:drop-shadow(0 0 7px color-mix(in srgb, var(--magenta) 40%, transparent));"></span>
     <div class="ez_head">
       <div class="ez_title azonix"><button type="button" class="srf_homelink" onclick="setMode('landing')" title="back to the start page">String &amp; Racket Finder</button></div>
       <div class="ez_sub">pro mode &mdash; the workshop &middot; friend's edition</div>
@@ -3630,15 +3683,15 @@
 </nav>
 <nav id="deptnav" aria-label="pro departments">
   <button type="button" class="deptbtn" data-dept-go="home" aria-pressed="true" onclick="srfDeptGo('home')">
-    <span class="dt_ic" aria-hidden="true">&#9733;</span><span class="dt_lb azonix">setups</span><span class="dt_n">your answer &amp; priorities</span></button>
+    <span class="dt_ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1.1 5.9L12 16.9l-5.3 2.8 1.1-5.9L3.5 9.7l5.9-.8z"/></svg></span><span class="dt_lb azonix">setups</span><span class="dt_n">your answer &amp; priorities</span></button>
   <button type="button" class="deptbtn" data-dept-go="rk" aria-pressed="false" onclick="srfDeptGo('rk')">
-    <span class="dt_ic" aria-hidden="true">&#127934;</span><span class="dt_lb azonix">rackets</span><span class="dt_n" id="deptn_rk"></span></button>
+    <span class="dt_ic"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="14" cy="9" rx="6.5" ry="7.5" transform="rotate(35 14 9)"/><path d="M9.5 14.5L4 20"/><path d="M11 5.5l6 7M9 8.5l6 7M13 4l5 6"/></svg></span><span class="dt_lb azonix">rackets</span><span class="dt_n" id="deptn_rk"></span></button>
   <button type="button" class="deptbtn" data-dept-go="sb" aria-pressed="false" onclick="srfDeptGo('sb')">
-    <span class="dt_ic" aria-hidden="true">&#129526;</span><span class="dt_lb azonix">strings</span><span class="dt_n" id="deptn_sb"></span></button>
+    <span class="dt_ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8h18M3 12h18M3 16h18M8 3v18M12 3v18M16 3v18"/></svg></span><span class="dt_lb azonix">strings</span><span class="dt_n" id="deptn_sb"></span></button>
   <button type="button" class="deptbtn" data-dept-go="pb" aria-pressed="false" onclick="srfDeptGo('pb')">
-    <span class="dt_ic" aria-hidden="true">&#128100;</span><span class="dt_lb azonix">player</span><span class="dt_n">your own game</span></button>
+    <span class="dt_ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7.5" r="3.5"/><path d="M4.5 20.5c1.2-4.2 4-6.3 7.5-6.3s6.3 2.1 7.5 6.3"/></svg></span><span class="dt_lb azonix">player</span><span class="dt_n">your own game</span></button>
   <button type="button" class="deptbtn" data-dept-go="cal" aria-pressed="false" onclick="srfDeptGo('cal')">
-    <span class="dt_ic" aria-hidden="true">&#8646;</span><span class="dt_lb azonix">calibrator</span><span class="dt_n">frame &#8646; string matchup</span></button>
+    <span class="dt_ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h13M13 4l4 4-4 4"/><path d="M20 16H7M11 12l-4 4 4 4"/></svg></span><span class="dt_lb azonix">calibrator</span><span class="dt_n">frame &#8646; string matchup</span></button>
 </nav>
 <!-- the shelf legend is a CONTROL now: each chip filters the heatmap to that group -->
 <div class="glegend" id="rk_legend" role="group" aria-label="filter the bench by shelf"></div>
@@ -4197,7 +4250,7 @@
 <hr class="deptrule">
 <div class="depthead azonix">stringbed test bench</div>
 <div style="font-size:11px;color:var(--muted);letter-spacing:0.04em;margin-bottom:4px;">string department</div>
-<div class="deptsub">Same bench, the other half of the equation: what you put <em>in</em> the frame. Claim a bed to mark it court-tested or queue it up; <span class="est">†</span> marks a derived value. Every score cell is editable — tap it to overwrite the estimate with your own rating.</div>
+<div class="deptsub" data-prose="deptsub">Same bench, the other half of the equation: what you put <em>in</em> the frame. Claim a bed to mark it court-tested or queue it up; <span class="est">†</span> marks a derived value. Every score cell is editable — tap it to overwrite the estimate with your own rating.</div>
 
 <div style="background:var(--card);border-radius:var(--r-lg);padding:1.25rem;color:var(--fg);">
 
@@ -4299,6 +4352,22 @@
     <button class="sbbtn" id="sb_trash" hidden onclick="srfRestore()" title="bring every deleted racket and string back"></button>
   </div>
   <div class="boostbar" id="sb_boost"></div>
+  <!-- Physics is a FRAME model: it recomputes the eleven racket axes from six
+       measured quantities (mass, balance, swingweight, stiffness, head size,
+       pattern). String beds carry no equivalent published specs on this bench -
+       m, x, s, tag, est, mt is the whole record - so there is nothing to compute
+       from, and the switch has always been inert here. It used to be inert in
+       silence, which reads as a broken toggle rather than an absent model. -->
+  <div id="sb_physnote" data-prose="physnote" hidden style="font-size:11.5px;color:var(--muted);background:var(--card2);
+       border:1px dashed color-mix(in srgb, var(--amber) 34%, transparent);
+       border-radius:var(--r-sm);padding:9px 12px;margin:8px 0 4px;">
+    <b>Pure physics view.</b> Every bed is recomputed from its lab row alone — dynamic
+    stiffness in lb/in, gauge, the real cross-section, measured tension loss and energy
+    return, the lifespan band and the tension it is strung at — then placed against the
+    whole bed field, capped at 9. <b>Precision and sound stay blank</b>: precision is the
+    player’s hand on the frame, and nobody publishes a sound measurement. Beds without a
+    lab row show blanks in this view.
+  </div>
   <div id="sb_hint" style="display:none;font-size:11.5px;color:var(--muted);background:var(--card2);border:1px dashed color-mix(in srgb, var(--cyan) 30%, transparent);border-radius:var(--r-sm);padding:9px 12px;margin-bottom:10px;">
     Your string bench starts clean — click any bed to claim it, set your benchmark, or queue it up.
     <button class="sbbtn" data-label="copy the demo bench" onclick="sbAdoptDemo()" style="margin-left:8px;">copy the demo bench</button>
@@ -4356,7 +4425,7 @@
       </span>
     </div>
     <div id="sb_sliders" style="display:grid;grid-template-columns:1fr;gap:4px 20px;"></div>
-    <div style="font-size:10.5px;color:var(--muted);">string priorities sit at the top of the page now, beside the racket priorities — they re-rank this bench live from up there.</div>
+    <div data-prose="prio" style="font-size:10.5px;color:var(--muted);">string priorities sit at the top of the page now, beside the racket priorities — they re-rank this bench live from up there.</div>
   </div>
   <div id="sb_dept"><section>
   <div class="mobileonly">
@@ -4391,7 +4460,7 @@
   </div>
 
 
-  <div style="margin-top:16px;border-top:0.5px solid color-mix(in srgb, var(--fg) 15%, transparent);padding-top:12px;font-size:11.5px;color:var(--muted);line-height:1.6;">
+  <div data-prose="benchnote" style="margin-top:16px;border-top:0.5px solid color-mix(in srgb, var(--fg) 15%, transparent);padding-top:12px;font-size:11.5px;color:var(--muted);line-height:1.6;">
     Every bed here is <b>derived from its specs</b> — material, profile, gauge and tension — not from anyone else's hitting. Mark a bed <span style="color:var(--cyan);">court-tested</span> once you have actually played it, and set one as your <span style="color:var(--cyan);">benchmark</span>: from then on every other bed is read against yours. Until then a † means the figure is calculated rather than measured.
     <span style="color:var(--cyan);">Solinco Conf. Soft × Head Lynx Tour</span> is the other court-tested row: liked, but clearly below it, and the field gap matches the index gap.
     Queued next: the <span style="color:var(--amber);">1.30 Solinco Mach 10</span> gauge step, then a <span style="color:var(--amber);">full bed of ReString Zero</span>, then <span style="color:var(--amber);">ReString Zero 1.28 × Sync 1.23</span>.
@@ -4401,7 +4470,7 @@
 
   <div style="margin-top:26px;border-top:0.5px solid color-mix(in srgb, var(--fg) 15%, transparent);padding-top:16px;">
     <div style="font-size:15px;font-weight:700;letter-spacing:0.06em;color:var(--amber);margin-bottom:3px;">NEEERDY STUFF</div>
-    <div style="font-size:11.5px;color:var(--muted);margin-bottom:14px;">
+    <div data-prose="nerdintro" style="font-size:11.5px;color:var(--muted);margin-bottom:14px;">
       The lab side of the stringbed: material class, profile, dynamic stiffness, tension loss, energy return, street price.
       Stiffness is <b style="color:var(--fg);">dynamic stiffness in lb/in</b> — lower = softer, more elastic, kinder to the arm.
       Figures marked <span class="est">†</span> are typical published values rather than a measurement of your exact set.
@@ -4837,6 +4906,22 @@ window.srfShelfJump = function(key){
 window.srfRowMenuClose = function(){
   const p = document.getElementById("srf_rowmenu");
   if (p) p.remove();
+};
+/* A panel that opens 2000px above the row you tapped is a panel that "does not
+   work" (Alexey, iPhone, 2026-09-03: customize from the card menu). The panels
+   are in-flow cards near the top of their department; on a desktop the field's
+   focus() dragged the page up to them, on iOS Safari a programmatic focus does not
+   reliably scroll and a keyboard popping up for a field off-screen leaves the
+   reader looking at nothing. One helper for every panel: bring the panel into
+   view first, focus the field only where a keyboard is not the price of it. */
+window.srfPanelReveal = function(panelId, focusId){
+  const p = document.getElementById(panelId);
+  if (!p) return;
+  const touch = window.matchMedia("(max-width:820px), (pointer:coarse)").matches;
+  try { p.scrollIntoView({ block: "start", behavior: touch ? "auto" : "smooth" }); } catch(e){ p.scrollIntoView(); }
+  if (touch) return;
+  const f = focusId ? document.getElementById(focusId) : null;
+  if (f) try { f.focus({ preventScroll: true }); } catch(e){ f.focus(); }
 };
 window.srfRowMenu = function(kind, id, ev){
   if (ev){ ev.stopPropagation(); ev.preventDefault(); }
@@ -5346,8 +5431,8 @@ window.srfPhysVec = function(f){
 };
 window.srfRecoil = function(f){ const d = srfPhysDerive(f && f.sp, f && f.cust);
   return d ? Math.round(d.Icm * 10) / 10 : null; };
-/* ONE accessor decides which vector the whole app shows. Strings are unaffected:
-   the physics view is about frames, and a string bed has different physics. */
+/* ONE accessor decides which vector the whole app shows for FRAMES; srfSbAxes below
+   is its twin for string beds (2026-09-03 - the switch used to stop at the frames). */
 window.srfAxes = function(f){
   if (!f) return null;
   if (window.SRF_MODEL !== "phys" || !f.sp) return f.s;
@@ -5357,6 +5442,105 @@ window.srfAxes = function(f){
      the model may only replace its own numbers, never the player's. */
   if (f.feel || f.feelOf != null) return f.s;
   return window.srfPhysVec(f) || f.s;
+};
+/* ================= pure physics for STRING BEDS (Alexey 2026-09-03) =================
+   "pure physics vs scored - same results" - because the switch never touched the
+   string section. It does now. A bed is recomputed from its LAB ROW alone: dynamic
+   stiffness (lb/in), gauge, the real cross-section, the measured tension-loss and
+   energy-return classes, the lifespan band, the material class - and the tension the
+   bed is strung at. No hand-written base vectors, no nudges. Two axes have no formula
+   and stay honest blanks: PRECISION (launch-angle consistency is the player's hand on
+   the frame, not a string constant) and SOUND (nobody publishes it). Scores are
+   min-max over the whole bed field, half-point steps, capped at 9: every number here
+   is an estimate, and a 10 is earned on court. */
+const SRF_SB_AXW = [0.75,0.55,0.70,0.70,0.40,0.50,0.45,0.40];   // mains' share per axis (same table the scored model uses)
+function srfSbLabPhys(name, tension){
+  const look = q => (window.SRF && SRF.sbLabRowFor) ? SRF.sbLabRowFor(q) : null;
+  /* bench shorthand ("Conf. Soft") must still find its lab row ("Confidential Soft") */
+  const row = look(name) || look(String(name).replace(/\bConf\.\s*/i, "Confidential "));
+  if (!row) return null;
+  const n = srfPhysNum;
+  const S = n(row[5]); if (S == null) return null;
+  /* gauge: the bed name first ("1.25"), else the row's first listed gauge */
+  const gm = String(name).match(/(\d\.\d\d)/);
+  const g = gm ? parseFloat(gm[1]) : (n(row[4]) || 1.25);
+  const pf = String(row[3] || "").toLowerCase();
+  const edges = /hept/.test(pf) ? 2.5 : /tri/.test(pf) ? 3 : /hex|square|penta|octa|sided|pent/.test(pf) ? 2
+              : /textur|rough|shaped|twist/.test(pf) ? 1 : 0;
+  const mat = String(row[2] || "").toLowerCase();
+  const soft = /gut/.test(mat) ? 4 : /multi/.test(mat) ? 3 : /syn/.test(mat) ? 1.5 : 0;
+  const tl = String(row[6] || "").toLowerCase();
+  const TL = /%/.test(tl) ? 4 : /lowest/.test(tl) ? 4 : /very low/.test(tl) ? 3.5 : /low.mid|low–mid|low-mid/.test(tl) ? 2.5
+           : /^low/.test(tl) ? 3 : /mid.high|mid–high|mid-high/.test(tl) ? 1.5 : /high/.test(tl) ? 1 : /mid/.test(tl) ? 2 : 2;
+  const er = String(row[7] || "").toLowerCase();
+  const ER = /highest/.test(er) ? 4 : /high/.test(er) ? 3 : /mid/.test(er) ? 2 : /low.mid|low–mid|low-mid/.test(er) ? 1 : 0;
+  const hm = String(row[9] || "").match(/(\d+)\s*[–-]\s*(\d+)/);
+  const hours = hm ? (parseFloat(hm[1]) + parseFloat(hm[2])) / 2 : (n(row[9]) || 10);
+  const t = tension || 23;
+  return [
+    edges * 1.2 + (1.30 - g) * 10 + (S - 100) / 40,          // spin: edges bite, thin snaps back, stiff snaps back cleaner
+    (280 - S) / 12 + ER + (23 - t) * 0.4,                      // power: soft bed + energy return + looser tension
+    S / 15 + t * 0.5 - ER * 0.5,                               // control (flat): stiff and tight, minus trampoline
+    null,                                                      // precision - the player's hand
+    (280 - S) / 8 + soft,                                      // feel: dynamic softness + material class
+    null,                                                      // sound - unpublished
+    hours + TL * 2,                                            // longevity: lifespan band + tension holding
+    (280 - S) / 8 + (24 - t) * 0.6 + soft                      // arm: softness, tension, material
+  ];
+}
+function srfSbPhysRaw(b){
+  if (!b) return null;
+  const M = srfSbLabPhys(b.m, parseFloat(b.mt) || null);
+  if (!M) return null;
+  if (/full bed/i.test(b.x || "")) return M;
+  const X = srfSbLabPhys(b.x, parseFloat(b.ct) || parseFloat(b.mt) || null);
+  if (!X) return null;
+  const out = M.map((v, i) => v == null ? null : v * SRF_SB_AXW[i] + X[i] * (1 - SRF_SB_AXW[i]));
+  out[6] = Math.min(M[6], X[6]) * 0.65 + Math.max(M[6], X[6]) * 0.35;   // a bed dies with its faster-dying string
+  return out;
+}
+let SRF_SBPHYS_SC = null, SRF_SBPHYS_BUILD = false;
+window.srfSbPhysVec = function(b){
+  if (!b || !(window.SRF && SRF.bedFull)) return null;
+  const raw = srfSbPhysRaw(b);
+  if (!raw) return null;
+  let k = 0; try { k = (SRF.beds() || []).length; } catch(e){}
+  let S = SRF_SBPHYS_SC;
+  if (!S || S.k !== k){
+    /* the field walk goes through SRF.bedFull, which itself asks this accessor -
+       without the guard that is a recursion that walks 354 beds per level */
+    if (SRF_SBPHYS_BUILD) return null;
+    SRF_SBPHYS_BUILD = true;
+    const rows = [];
+    try { for (let i = 0;; i++){ const f = SRF.bedFull(i); if (!f) break; const r = srfSbPhysRaw(f); if (r) rows.push(r); } } catch(e){}
+    SRF_SBPHYS_BUILD = false;
+    /* 1..9 only: a physics estimate never hands out the court-earned 10.
+       Scaled by RANK in the field, not min-max: one natural gut at 30 h of life
+       would otherwise squash every poly onto 2-3 on longevity, and the whole point
+       of this view is separation. "9" means: among the best beds you could buy. */
+    const sc = (vals) => { const v = vals.filter(x => x != null && isFinite(x)).sort((a, b) => a - b); if (!v.length) return () => null;
+      const n = v.length;
+      return x => { if (x == null) return null;
+        let lo = 0, hi = n;                       // rank = share of the field at or below x
+        while (lo < hi){ const m = (lo + hi) >> 1; if (v[m] <= x) lo = m + 1; else hi = m; }
+        let below = 0, h2 = lo; { let a = 0, b = n; while (a < b){ const m = (a + b) >> 1; if (v[m] < x) a = m + 1; else b = m; } below = a; }
+        const r = n === 1 ? 0.5 : ((below + h2) / 2) / n;   // ties share their average rank
+        return Math.round((1 + 8 * r) * 2) / 2; }; };
+    S = { k, n: rows.length, ax: [0,1,2,3,4,5,6,7].map(i => sc(rows.map(r => r[i]))) };
+    SRF_SBPHYS_SC = S.n > 0 ? S : null;
+    if (!S.n) return null;
+  }
+  return raw.map((v, i) => v == null ? null : S.ax[i](v));
+};
+/* ONE accessor for the string bench, the twin of srfAxes: a "my feel" row keeps the
+   player's own reading; everything else follows the model switch. */
+window.srfSbAxes = function(b){
+  if (!b) return null;
+  if (window.SRF_MODEL !== "phys") return b.s;
+  if (b.feel || b.feelOf != null) return b.s;
+  /* no lab row = nothing to compute from. Blanks, not the scored numbers: a bed that
+     kept its scored 9s would outrank every honestly computed one in this view */
+  return window.srfSbPhysVec(b) || (SRF_SBPHYS_BUILD ? b.s : [null,null,null,null,null,null,null,null]);
 };
 /* ---------- the methodology, openable from anywhere -----------------------------
    The pro-mode details box stays the single source of truth; this overlay CLONES
@@ -6976,8 +7160,52 @@ srfLangAdd("zh-hant",
 ["支球拍與", "套線床 — 來自十一個球拍品牌和二十三個球線品牌的當前市場 — 用同一套軸評分，並由搭配物理互相匹配。告訴它你怎麼打球，它遞上候選清單 — 或開啟整個工坊自己排名。", "告訴它你怎麼打球 — 它用你的配置回答", "若肘/肩舒適度高於一切，請點此", "可選 — 僅設定球拍匹配的重量區間", "幾次點選 — 你的回答跟隨你進入每個模式", "四次點選介紹你的球 → 球拍的金、銀、銅與預算之選，球線亦然，再加上天生一對的搭配。無需任何配置。", "說出你是誰，拖動你在乎的 — 球拍、球線與匹配配置實時重排，容錯搜尋與線上調研一鍵即達。", "兩張測試臺含全部軸、實時重量滑桿、雷達圖、硬資料、實驗表、拍⇆線校準器、引數調研與聊天室。", "簡單模式 — 直接告訴我買什麼", "中級 — 和我一起排名", "專業模式 — 工坊 · friend's edition", "工坊 · friend’s edition", "標有", "的購買按鈕為聯盟連結 — 你的價格不變", "· 點選列排序 · 再點反轉 ·", "· 點選任一列標題排序 ·", "點選任一分數格填你自己的評分", "推薦順序 — 與上方選擇一致", "推薦順序 — 與你的選擇一致", "搜尋 — 總分最高在前", "顏色 — 總分最高在前", "按顏色分組 — 每色中最佳在前"],
 ["這些詞是什麼意思", "經驗 — 初學者：頭幾個月，還在建立回合 · 中級：每週穩定打球，回合穩住 · 高階：聯賽水平，壓力下完整揮拍 · 專業：高水平，自帶節奏", "揮拍 — 緊湊：引拍短，以擋和短促發力為主 · 中等：經典的中間態 · 大而快：又長又快的揮拍，自己製造球速", "風格 — 平擊型：穿透球，過網低，旋轉少 · 強上旋：向上刷球，旋轉重，過網餘量大 · 全面型：按分數需要混合平擊與上旋", "我打球 — 誠實的每週量：打得越多，越能駕馭更重更苛刻的球拍", "我的手臂 — 肘或肩有傷史就勾上：舒適度將壓倒其他一切", "我是 — 只設定球拍匹配的重量區間；其他一切不變"],
 ["校準器", "拍線匹配"]);
+
+
+/* ---------- i18n, second wave (Alexey 2026-09-04: "translate everything") ------
+   The original dictionary is POSITIONAL: K/KX/KE are arrays of english keys and
+   every language is a parallel array. Adding a key there means editing seventeen
+   arrays in lockstep, and one missing entry silently shifts every later string of
+   that language. So new vocabulary arrives keyed by its ENGLISH text instead - the
+   same shape SRF_I18N[lang] already has after srfLangAdd builds it - and this block
+   runs AFTER the last srfLangAdd, which replaces the whole per-language object.
+   Order per row: de fr es it sv ru zh ja pt pl nl tr cs uk ko hi. */
+
+/* ---------- prose blocks, swapped whole (Alexey 2026-09-04) --------------------
+   The text-node translator cannot carry a paragraph: these blocks are broken into
+   fragments by their inline <b> and <span> tags, and every language reorders words
+   ACROSS those tags, so fragment-by-fragment translation produces scrambled
+   sentences. That is why prose stayed english. Each block now carries data-prose
+   and is replaced as ONE piece of HTML per language; the english original is kept
+   on the element so switching back is lossless. */
+window.SRF_PROSE = {};
+window.srfBlockAdd = function(map){ Object.keys(map).forEach(function(k){
+  SRF_PROSE[k] = Object.assign(SRF_PROSE[k] || {}, map[k]); }); };
+window.srfProseApply = function(lang){
+  document.querySelectorAll("[data-prose]").forEach(function(el){
+    if (el.dataset.proseEn == null) el.dataset.proseEn = el.innerHTML;
+    var row = SRF_PROSE[el.dataset.prose];
+    var tx = (lang && lang !== "en" && row && row[lang]) ? row[lang] : el.dataset.proseEn;
+    if (el.innerHTML !== tx) el.innerHTML = tx;
+  });
+};
+window.srfI18nMore = function(map){
+  var L = ["de", "fr", "es", "it", "sv", "ru", "zh", "ja", "pt", "pl", "nl", "tr", "cs", "uk", "ko", "hi"];
+  Object.keys(map).forEach(function(en){
+    var row = map[en];
+    L.forEach(function(lg, i){
+      if (window.SRF_I18N[lg] && row[i]) window.SRF_I18N[lg][en] = row[i];
+    });
+  });
+};
+srfI18nMore({"highest energy return of any material; collagen from cow serosa, stretches and gives it back":["höchste Energierückgabe aller Materialien; Kollagen aus Rinderserosa, dehnt sich und gibt es zurück","la meilleure restitution d'énergie de tous les matériaux ; collagène de séreuse bovine, s'étire et rend l'énergie","el mayor retorno de energía de todos los materiales; colágeno de serosa bovina, se estira y lo devuelve","il ritorno di energia più alto di ogni materiale; collagene da sierosa bovina, si allunga e restituisce","högsta energiåtergivningen av alla material; kollagen från nötserosa, tänjs och ger tillbaka","наивысший возврат энергии среди всех материалов; коллаген из серозы, растягивается и отдаёт обратно","所有材质中能量回弹最高；取自牛浆膜的胶原蛋白，拉伸后回弹","あらゆる素材で最高のエネルギー返還。牛漿膜のコラーゲンが伸びて返す","o maior retorno de energia de todos os materiais; colagénio de serosa bovina, estica e devolve","najwyższy zwrot energii ze wszystkich materiałów; kolagen z surowicy bydlęcej, rozciąga się i oddaje","hoogste energieteruggave van alle materialen; collageen uit runderserosa, rekt en geeft terug","tüm malzemeler arasında en yüksek enerji geri dönüşü; sığır serozasından kolajen, uzar ve geri verir","nejvyšší návrat energie ze všech materiálů; kolagen z hovězí serózy, natáhne se a vrátí","найвище повернення енергії серед усіх матеріалів; колаген із серози, розтягується й віддає","모든 소재 중 최고의 에너지 반발; 소 장막에서 얻은 콜라겐이 늘어났다가 되돌려 준다","सभी सामग्रियों में सर्वाधिक ऊर्जा वापसी; गोजातीय सिरोसा से कोलेजन, खिंचकर लौटाता है"],"thousands of microfibres imitating gut; soft, powerful, frays under spin":["tausende Mikrofasern, die Naturdarm nachahmen; weich, kraftvoll, franst unter Spin aus","des milliers de microfibres imitant le boyau ; souple, puissant, s'effiloche sous le lift","miles de microfibras que imitan la tripa; blanda, potente, se deshilacha con el efecto","migliaia di microfibre che imitano il budello; morbida, potente, si sfilaccia con lo spin","tusentals mikrofibrer som härmar tarm; mjuk, kraftfull, fransar sig under spinn","тысячи микроволокон, имитирующих жилу; мягкая, мощная, лохматится от вращения","数千根模仿羊肠的微纤维；柔软、有力，但在强旋转下易起毛","ガットを模した数千本のマイクロファイバー。柔らかくパワフルだが、スピンで毛羽立つ","milhares de microfibras a imitar a tripa; macia, potente, desfia-se com o efeito","tysiące mikrowłókien naśladujących jelito; miękki, mocny, strzępi się od rotacji","duizenden microvezels die darm nabootsen; zacht, krachtig, rafelt onder spin","bağırsağı taklit eden binlerce mikro lif; yumuşak, güçlü, spin altında lifleniyor","tisíce mikrovláken napodobujících střevo; měkký, silný, pod rotací se třepí","тисячі мікроволокон, що імітують жилу; м'яка, потужна, кошлатиться від обертання","거트를 모방한 수천 가닥의 극세사; 부드럽고 파워풀하지만 스핀에 잘 헤진다","आंत की नकल करते हज़ारों माइक्रोफ़ाइबर; नरम, शक्तिशाली, स्पिन में रेशे छूटते हैं"],"solid nylon core + wraps; the budget all-rounder":["massiver Nylonkern + Umwicklungen; der günstige Allrounder","âme nylon pleine + enroulements ; le polyvalent économique","núcleo macizo de nailon + envolturas; el todoterreno económico","anima piena in nylon + avvolgimenti; il tuttofare economico","massiv nylonkärna + lindningar; den prisvärda allroundaren","цельный нейлоновый сердечник + оплётка; бюджетный универсал","实心尼龙芯加外缠；经济型全能选手","ナイロン単芯＋巻き。低価格のオールラウンダー","núcleo maciço de nylon + envolvimentos; o polivalente económico","lity rdzeń nylonowy + oploty; budżetowy uniwersał","massieve nylonkern + wikkelingen; de voordelige allrounder","masif naylon çekirdek + sargılar; bütçe dostu her işe gelen","plné nylonové jádro + ovinutí; levný všeuměl","суцільне нейлонове осердя + обплетення; бюджетний універсал","단단한 나일론 코어 + 감김 구조; 가성비 올라운더","ठोस नायलॉन कोर + लपेट; किफ़ायती ऑल-राउंडर"],"stiffest and spinniest, lowest energy return, biggest initial tension drop":["am steifsten und spinfreudigsten, geringste Energierückgabe, größter anfänglicher Spannungsabfall","le plus rigide et le plus liftant, la restitution d'énergie la plus faible, la plus forte chute de tension initiale","la más rígida y con más efecto, el menor retorno de energía, la mayor caída inicial de tensión","la più rigida e con più spin, il minor ritorno di energia, il maggior calo iniziale di tensione","styvast och mest spinnvänlig, lägst energiåtergivning, störst initialt spänningsfall","самая жёсткая и самая «крутящая», наименьший возврат энергии, наибольшее начальное падение натяжения","最硬、最出旋转，能量回弹最低，初期张力下降最大","最も硬くスピン量が多い。エネルギー返還は最低で、初期のテンション低下が最大","a mais rígida e com mais efeito, o menor retorno de energia, a maior queda inicial de tensão","najsztywniejszy i najbardziej rotacyjny, najniższy zwrot energii, największy początkowy spadek naprężenia","stijfst en meest spinvriendelijk, laagste energieteruggave, grootste initiële spanningsval","en sert ve en çok spin veren, en düşük enerji geri dönüşü, en büyük başlangıç tansiyon düşüşü","nejtužší a nejrotačnější, nejnižší návrat energie, největší počáteční pokles napětí","найжорсткіша й найбільш «крутна», найнижче повернення енергії, найбільше початкове падіння натягу","가장 단단하고 스핀이 많으며, 에너지 반발은 최저, 초기 텐션 하락은 최대","सबसे कठोर और सबसे अधिक स्पिन, न्यूनतम ऊर्जा वापसी, सबसे बड़ी प्रारंभिक टेंशन गिरावट"]});
+srfI18nMore({"home":["Start","accueil","inicio","home","hem","главная","首页","ホーム","início","start","home","ana sayfa","domů","головна","홈","होम"],"⚙ settings":["⚙ Einstellungen","⚙ réglages","⚙ ajustes","⚙ impostazioni","⚙ inställningar","⚙ настройки","⚙ 设置","⚙ 設定","⚙ definições","⚙ ustawienia","⚙ instellingen","⚙ ayarlar","⚙ nastavení","⚙ налаштування","⚙ 설정","⚙ सेटिंग्स"],"▤ shelves ▾":["▤ Regale ▾","▤ étagères ▾","▤ estantes ▾","▤ scaffali ▾","▤ hyllor ▾","▤ полки ▾","▤ 分组 ▾","▤ 棚 ▾","▤ prateleiras ▾","▤ półki ▾","▤ planken ▾","▤ raflar ▾","▤ police ▾","▤ полиці ▾","▤ 선반 ▾","▤ शेल्फ़ ▾"],"155 frames":["155 Rahmen","155 cadres","155 cuadros","155 telai","155 ramar","155 рам","155 支球拍","155 フレーム","155 quadros","155 ram","155 frames","155 kasa","155 rámů","155 рам","155 프레임","155 फ्रेम"],"354 beds":["354 Bespannungen","354 cordages","354 encordados","354 incordature","354 uppsättningar","354 полотна","354 线床","354 ストリングベッド","354 encordoamentos","354 naciągi","354 bespanningen","354 kordaj seti","354 výpletů","354 полотна","354 스트링 베드","354 स्ट्रिंग बेड"],"join":["registrieren","s'inscrire","unirse","iscriviti","gå med","регистрация","注册","登録","registar","dołącz","aanmelden","katıl","registrace","реєстрація","가입","जुड़ें"],"log in":["anmelden","se connecter","entrar","accedi","logga in","войти","登录","ログイン","entrar","zaloguj","inloggen","giriş","přihlásit","увійти","로그인","लॉग इन"],"by colour":["nach Farbe","par couleur","por color","per colore","efter färg","по цвету","按颜色","色で","por cor","wg koloru","op kleur","renge göre","podle barvy","за кольором","색상별","रंग के अनुसार"],"stringbed test bench":["Bespannungs-Prüfstand","banc d'essai des cordages","banco de pruebas de encordados","banco prova incordature","testbänk för uppsättningar","испытательный стенд полотен","线床测试台","ストリングベッド試験台","bancada de teste de encordoamentos","stanowisko testowe naciągów","testbank voor bespanningen","kordaj test tezgâhı","testovací stolice výpletů","випробувальний стенд полотен","스트링 베드 테스트 벤치","स्ट्रिंगबेड टेस्ट बेंच"],"string department":["Saiten-Abteilung","rayon cordages","sección de cuerdas","reparto corde","strängavdelning","отдел струн","线材专区","ストリング部門","secção de cordas","dział naciągów","snarenafdeling","kordaj bölümü","oddělení výpletů","відділ струн","스트링 부문","स्ट्रिंग विभाग"]});
+srfI18nMore({"tension":["Spannung","tension","tensión","tensione","spänning","натяжение","张力","テンション","tensão","naprężenie","spanning","tansiyon","napětí","натяг","텐션","टेंशन"],"loss":["Verlust","perte","pérdida","perdita","förlust","потеря","衰减","低下","perda","spadek","verlies","kayıp","ztráta","втрата","손실","हानि"],"energy":["Energie","énergie","energía","energia","energi","энергия","能量","エネルギー","energia","energia","energie","enerji","energie","енергія","에너지","ऊर्जा"],"return":["Rückgabe","restitution","retorno","ritorno","återgivning","возврат","回弹","返還","retorno","zwrot","teruggave","dönüş","návrat","повернення","반발","वापसी"],"Spin":["Spin","Lift","Efect","Spin","Spinn","Вращ.","旋转","スピン","Efeito","Rotac","Spin","Spin","Rotace","Оберт.","스핀","स्पिन"],"Power":["Kraft","Puiss","Pot.","Pot.","Kraft","Сила","力量","パワー","Pot.","Moc","Kracht","Güç","Síla","Сила","파워","पावर"],"Control":["Kontr.","Contr.","Contr.","Contr.","Kontr.","Контр.","控制","コント","Contr.","Kontr.","Contr.","Kontr.","Kontr.","Контр.","컨트롤","नियंत्र."],"(flat)":["(flach)","(plat)","(plano)","(piatto)","(platt)","(плоск.)","（平击）","（フラット）","(plano)","(płaski)","(vlak)","(düz)","(plochý)","(плоск.)","(플랫)","(फ्लैट)"],"Precision":["Präz.","Préc.","Prec.","Prec.","Prec.","Точн.","精准","精度","Prec.","Prec.","Prec.","Hass.","Přesn.","Точн.","정밀","सटीक."],"Feel":["Gefühl","Touch","Tacto","Tocco","Känsla","Отклик","手感","感触","Toque","Czucie","Gevoel","His","Cit","Відчут.","감각","फील"],"Sound":["Klang","Son","Sonido","Suono","Ljud","Звук","声音","打球音","Som","Dźwięk","Klank","Ses","Zvuk","Звук","소리","ध्वनि"],"Long.":["Halt.","Durée","Dur.","Dur.","Livsl.","Ресурс","耐久","耐久","Dur.","Trwał.","Duurz.","Ömür","Život.","Ресурс","내구","टिकाऊ"],"Arm":["Arm","Bras","Brazo","Braccio","Arm","Рука","护臂","腕","Braço","Ramię","Arm","Kol","Paže","Рука","팔","बांह"],"354 beds ":["354 Bespannungen ","354 cordages ","354 encordados ","354 incordature ","354 uppsättningar ","354 полотна ","354 线床 ","354 ストリングベッド ","354 encordoamentos ","354 naciągi ","354 bespanningen ","354 kordaj seti ","354 výpletů ","354 полотна ","354 스트링 베드 ","354 स्ट्रिंग बेड "],"+ 1 suggested":["+ 1 vorgeschlagen","+ 1 suggéré","+ 1 sugerido","+ 1 suggerito","+ 1 föreslagen","+ 1 предложено","+ 1 推荐","+ 1 提案","+ 1 sugerido","+ 1 sugerowany","+ 1 voorgesteld","+ 1 önerilen","+ 1 navržený","+ 1 запропоновано","+ 1 제안됨","+ 1 सुझाया"],"205 strings":["205 Saiten","205 cordes","205 cuerdas","205 corde","205 strängar","205 струн","205 条线","205 ストリング","205 cordas","205 naciągów","205 snaren","205 kordaj","205 výpletů","205 струн","205 스트링","205 स्ट्रिंग"],"click a header to sort":["Spaltenkopf klicken zum Sortieren","cliquez sur un en-tête pour trier","haz clic en una cabecera para ordenar","clicca un'intestazione per ordinare","klicka på en rubrik för att sortera","нажмите заголовок для сортировки","点击表头排序","見出しをクリックで並べ替え","clique num cabeçalho para ordenar","kliknij nagłówek, aby sortować","klik een kop om te sorteren","sıralamak için başlığa tıklayın","klikněte na záhlaví pro řazení","натисніть заголовок для сортування","헤더를 클릭해 정렬","क्रमबद्ध करने के लिए हेडर पर क्लिक करें"],"by stiffness lb/in":["nach Steifigkeit lb/in","par rigidité lb/in","por rigidez lb/in","per rigidità lb/in","efter styvhet lb/in","по жёсткости lb/in","按硬度 lb/in","硬さ lb/in 順","por rigidez lb/in","wg sztywności lb/in","op stijfheid lb/in","sertliğe göre lb/in","podle tuhosti lb/in","за жорсткістю lb/in","강성 lb/in 순","कठोरता lb/in से"],"2–5% tension loss":["2–5 % Spannungsverlust","2–5 % de perte de tension","2–5 % de pérdida de tensión","2–5 % di perdita di tensione","2–5 % spänningsförlust","потеря натяжения 2–5 %","张力衰减 2–5%","テンション低下2–5%","2–5 % de perda de tensão","2–5 % spadku naprężenia","2–5 % spanningsverlies","%2–5 tansiyon kaybı","2–5 % ztráty napětí","втрата натягу 2–5 %","텐션 손실 2–5%","2–5% टेंशन हानि"],"moderate loss":["moderater Verlust","perte modérée","pérdida moderada","perdita moderata","måttlig förlust","умеренная потеря","中等衰减","中程度の低下","perda moderada","umiarkowany spadek","matig verlies","ılımlı kayıp","mírná ztráta","помірна втрата","보통 손실","मध्यम हानि"],"10–20% in the first 24–48 h":["10–20 % in den ersten 24–48 h","10–20 % dans les 24–48 premières h","10–20 % en las primeras 24–48 h","10–20 % nelle prime 24–48 h","10–20 % de första 24–48 h","10–20 % за первые 24–48 ч","前 24–48 小时衰减 10–20%","最初の24–48時間で10–20%","10–20 % nas primeiras 24–48 h","10–20 % w pierwszych 24–48 h","10–20 % in de eerste 24–48 u","ilk 24–48 saatte %10–20","10–20 % v prvních 24–48 h","10–20 % за перші 24–48 год","첫 24–48시간에 10–20%","पहले 24–48 घंटों में 10–20%"],"spin-first":["Spin zuerst","priorité lift","efecto primero","spin prima","spinn först","вращение прежде всего","旋转优先","スピン優先","efeito primeiro","najpierw rotacja","spin eerst","önce spin","nejdřív rotace","оберт. передусім","스핀 우선","स्पिन पहले"],"durability-first":["Haltbarkeit zuerst","priorité durée","durabilidad primero","durata prima","hållbarhet först","ресурс прежде всего","耐久优先","耐久優先","durabilidade primeiro","najpierw trwałość","duurzaamheid eerst","önce dayanıklılık","nejdřív životnost","ресурс передусім","내구 우선","टिकाऊपन पहले"],"arm-first":["Arm zuerst","priorité bras","brazo primero","braccio prima","arm först","рука прежде всего","护臂优先","腕優先","braço primeiro","najpierw ramię","arm eerst","önce kol","nejdřív paže","рука передусім","팔 우선","बांह पहले"],"touch-first":["Gefühl zuerst","priorité toucher","tacto primero","tocco prima","känsla först","отклик прежде всего","手感优先","感触優先","toque primeiro","najpierw czucie","gevoel eerst","önce his","nejdřív cit","відчуття передусім","감각 우선","फील पहले"],"flat":["flach","plat","plano","piatto","platt","плоский","平击","フラット","plano","płaski","vlak","düz","plochý","плоский","플랫","फ्लैट"]});
+srfI18nMore({"string":["Saite","corde","cuerda","corda","sträng","струна","线","ストリング","corda","naciąg","snaar","kordaj","výplet","струна","스트링","स्ट्रिंग"],"brand":["Marke","marque","marca","marca","märke","бренд","品牌","ブランド","marca","marka","merk","marka","značka","бренд","브랜드","ब्रांड"],"material":["Material","matériau","material","materiale","material","материал","材质","素材","material","materiał","materiaal","malzeme","materiál","матеріал","소재","सामग्री"],"profile":["Profil","profil","perfil","profilo","profil","профиль","截面","形状","perfil","profil","profiel","profil","profil","профіль","단면","प्रोफ़ाइल"],"gauges (mm)":["Stärken (mm)","jauges (mm)","calibres (mm)","calibri (mm)","grovlekar (mm)","калибры (мм)","线径 (mm)","ゲージ (mm)","calibres (mm)","grubości (mm)","diktes (mm)","kalınlıklar (mm)","tloušťky (mm)","калібри (мм)","게이지 (mm)","गेज (mm)"],"stiffness":["Steifigkeit","rigidité","rigidez","rigidità","styvhet","жёсткость","硬度","硬さ","rigidez","sztywność","stijfheid","sertlik","tuhost","жорсткість","강성","कठोरता"],"tension loss":["Spannungsverlust","perte de tension","pérdida de tensión","perdita di tensione","spänningsförlust","потеря натяжения","张力衰减","テンション低下","perda de tensão","spadek naprężenia","spanningsverlies","tansiyon kaybı","ztráta napětí","втрата натягу","텐션 손실","टेंशन हानि"],"energy return":["Energierückgabe","restitution d'énergie","retorno de energía","ritorno di energia","energiåtergivning","возврат энергии","能量回弹","エネルギー返還","retorno de energia","zwrot energii","energieteruggave","enerji geri dönüşü","návrat energie","повернення енергії","에너지 반발","ऊर्जा वापसी"],"lifespan":["Lebensdauer","durée de vie","vida útil","durata","livslängd","срок службы","使用寿命","寿命","vida útil","żywotność","levensduur","ömür","životnost","термін служби","수명","आयु"],"natural gut":["Naturdarm","boyau naturel","tripa natural","budello naturale","naturtarm","натуральная жила","天然羊肠","ナチュラルガット","tripa natural","jelito naturalne","natuurdarm","doğal bağırsak","přírodní střevo","натуральна жила","내추럴 거트","नैचुरल गट"],"multifilament":["Multifilament","multifilament","multifilamento","multifilamento","multifilament","мультифиламент","多丝","マルチフィラメント","multifilamento","multifilament","multifilament","multifilament","multifilament","мультифіламент","멀티필라멘트","मल्टीफिलामेंट"],"synthetic gut":["Synthetikdarm","boyau synthétique","tripa sintética","budello sintetico","syntetisk tarm","синтетическая жила","合成羊肠","シンセティックガット","tripa sintética","jelito syntetyczne","synthetische darm","sentetik bağırsak","syntetické střevo","синтетична жила","신세틱 거트","सिंथेटिक गट"],"co-poly":["Co-Poly","co-poly","co-poli","co-poli","co-poly","кополимер","聚酯","コポリ","co-poli","kopolimer","co-poly","ko-poli","kopolymer","кополімер","코폴리","को-पॉली"],"co-polyester":["Co-Polyester","co-polyester","co-poliéster","co-poliestere","co-polyester","кополиэстер","共聚酯","コポリエステル","co-poliéster","kopoliester","co-polyester","ko-poliester","kopolyester","кополіестер","코폴리에스터","को-पॉलिएस्टर"],"co-poly (softened)":["Co-Poly (weich)","co-poly (adouci)","co-poli (suavizado)","co-poli (ammorbidito)","co-poly (mjukad)","кополимер (смягчённый)","聚酯（软化）","コポリ（軟質）","co-poli (suavizado)","kopolimer (zmiękczony)","co-poly (verzacht)","ko-poli (yumuşatılmış)","kopolymer (změkčený)","кополімер (пом'якшений)","코폴리(연질)","को-पॉली (नरम)"],"co-poly (soft)":["Co-Poly (weich)","co-poly (souple)","co-poli (blando)","co-poli (morbido)","co-poly (mjuk)","кополимер (мягкий)","聚酯（软）","コポリ（ソフト）","co-poli (macio)","kopolimer (miękki)","co-poly (zacht)","ko-poli (yumuşak)","kopolymer (měkký)","кополімер (м'який)","코폴리(소프트)","को-पॉली (नरम)"],"round":["rund","rond","redonda","tonda","rund","круглый","圆形","ラウンド","redonda","okrągły","rond","yuvarlak","kulatý","круглий","라운드","गोल"],"textured":["texturiert","texturé","texturizada","testurizzata","texturerad","текстурный","表面纹理","テクスチャー","texturizada","teksturowany","getextureerd","dokulu","texturovaný","текстурний","텍스처","बनावटी"],"twisted (ridged)":["gedreht (gerippt)","torsadé (nervuré)","trenzada (con nervios)","ritorta (rigata)","tvinnad (räfflad)","витой (рифлёный)","螺旋棱纹","ツイスト（リブ）","torcida (com nervuras)","skręcany (żebrowany)","gedraaid (geribbeld)","bükümlü (yivli)","kroucený (žebrovaný)","кручений (рифлений)","트위스트(리브)","मुड़ा हुआ (उभरा)"],"hexagonal":["sechseckig","hexagonal","hexagonal","esagonale","sexkantig","шестигранный","六边形","六角形","hexagonal","sześciokątny","zeshoekig","altıgen","šestihranný","шестигранний","육각","षटकोणीय"],"octagonal":["achteckig","octogonal","octagonal","ottagonale","åttkantig","восьмигранный","八边形","八角形","octogonal","ośmiokątny","achthoekig","sekizgen","osmihranný","восьмигранний","팔각","अष्टकोणीय"],"square":["quadratisch","carré","cuadrada","quadrata","fyrkantig","квадратный","方形","スクエア","quadrada","kwadratowy","vierkant","kare","čtvercový","квадратний","사각","वर्गाकार"],"10-sided":["zehneckig","à 10 pans","de 10 lados","a 10 lati","tiokantig","десятигранный","十边形","10角形","de 10 lados","dziesięciokątny","tienhoekig","on kenarlı","desetihranný","десятигранний","10각","10-भुजा"],"heptagonal":["siebeneckig","heptagonal","heptagonal","ettagonale","sjukantig","семигранный","七边形","七角形","heptagonal","siedmiokątny","zevenhoekig","yedigen","sedmihranný","семигранний","칠각","सप्तकोणीय"],"four-paddle":["vierflügelig","à quatre pales","de cuatro palas","a quattro pale","fyrbladig","четырёхлопастный","四叶","4枚羽根","de quatro pás","czterołopatkowy","vierbladig","dört kanatlı","čtyřlopatkový","чотирилопатевий","4엽","चार-फलक"],"shaped":["kantig","à arêtes","con aristas","sagomata","kantad","гранёный","异形","異形","com arestas","profilowany","gevormd","köşeli","hranatý","гранований","각진","आकारित"],"highest":["am höchsten","le plus élevé","el más alto","il più alto","högst","наивысший","最高","最高","o mais alto","najwyższy","hoogste","en yüksek","nejvyšší","найвищий","최고","सर्वाधिक"],"high":["hoch","élevé","alto","alto","hög","высокий","高","高","alto","wysoki","hoog","yüksek","vysoký","високий","높음","उच्च"],"mid–high":["mittel–hoch","moyen–élevé","medio–alto","medio–alto","medel–hög","средне-высокий","中高","中〜高","médio–alto","średnio–wysoki","midden–hoog","orta–yüksek","střední–vysoký","середньо-високий","중–고","मध्यम–उच्च"],"mid":["mittel","moyen","medio","medio","medel","средний","中","中","médio","średni","midden","orta","střední","середній","중간","मध्यम"],"low–mid":["niedrig–mittel","faible–moyen","bajo–medio","basso–medio","låg–medel","низко-средний","中低","低〜中","baixo–médio","nisko–średni","laag–midden","düşük–orta","nízký–střední","низько-середній","저–중","निम्न–मध्यम"],"low":["niedrig","faible","bajo","basso","låg","низкий","低","低","baixo","niski","laag","düşük","nízký","низький","낮음","निम्न"],"lowest":["am niedrigsten","le plus faible","el más bajo","il più basso","lägst","наименьший","最低","最低","o mais baixo","najniższy","laagste","en düşük","nejnižší","найнижчий","최저","न्यूनतम"],"moderate":["moderat","modéré","moderado","moderato","måttlig","умеренный","中等","中程度","moderado","umiarkowany","matig","ılımlı","mírný","помірний","보통","मध्यम"],"very low":["sehr niedrig","très faible","muy bajo","molto basso","mycket låg","очень низкий","极低","非常に低い","muito baixo","bardzo niski","zeer laag","çok düşük","velmi nízký","дуже низький","매우 낮음","बहुत कम"],"lowest of the polys":["am niedrigsten aller Polys","le plus faible des polys","el más bajo de los polis","il più basso tra i poli","lägst av alla polyester","наименьший среди полиэстеров","聚酯中最低","ポリ中で最低","o mais baixo dos polis","najniższy wśród poli","laagste van alle polys","poliesterler arasında en düşük","nejnižší ze všech polyesterů","найнижчий серед поліестерів","폴리 중 최저","सभी पॉली में न्यूनतम"],"2–5% only":["nur 2–5 %","seulement 2–5 %","solo 2–5 %","solo 2–5 %","endast 2–5 %","всего 2–5 %","仅 2–5%","わずか2–5%","apenas 2–5 %","tylko 2–5 %","slechts 2–5 %","sadece %2–5","jen 2–5 %","лише 2–5 %","2–5%뿐","केवल 2–5%"],"NEEERDY STUFF":["DER NEEERDY TEIL","LE COIN NEEERDY","LA PARTE NEEERDY","ROBA DA NEEERD","NEEERDY GREJER","NEEERDY-ЧАСТЬ","极客数据","ニヤーディな話","PARTE NEEERDY","CZĘŚĆ NEEERDY","NEEERDY SPUL","NEEERDY KISIM","NEEERDY ČÁST","NEEERDY-ЧАСТИНА","너드 존","नीरडी हिस्सा"],"NATURAL GUT":["NATURDARM","BOYAU NATUREL","TRIPA NATURAL","BUDELLO NATURALE","NATURTARM","НАТУРАЛЬНАЯ ЖИЛА","天然羊肠","ナチュラルガット","TRIPA NATURAL","JELITO NATURALNE","NATUURDARM","DOĞAL BAĞIRSAK","PŘÍRODNÍ STŘEVO","НАТУРАЛЬНА ЖИЛА","내추럴 거트","नैचुरल गट"],"MULTIFILAMENT":["MULTIFILAMENT","MULTIFILAMENT","MULTIFILAMENTO","MULTIFILAMENTO","MULTIFILAMENT","МУЛЬТИФИЛАМЕНТ","多丝","マルチフィラメント","MULTIFILAMENTO","MULTIFILAMENT","MULTIFILAMENT","MULTIFILAMENT","MULTIFILAMENT","МУЛЬТИФІЛАМЕНТ","멀티필라멘트","मल्टीफिलामेंट"],"SYNTHETIC GUT":["SYNTHETIKDARM","BOYAU SYNTHÉTIQUE","TRIPA SINTÉTICA","BUDELLO SINTETICO","SYNTETISK TARM","СИНТЕТИЧЕСКАЯ ЖИЛА","合成羊肠","シンセティックガット","TRIPA SINTÉTICA","JELITO SYNTETYCZNE","SYNTHETISCHE DARM","SENTETİK BAĞIRSAK","SYNTETICKÉ STŘEVO","СИНТЕТИЧНА ЖИЛА","신세틱 거트","सिंथेटिक गट"],"CO-POLYESTER":["CO-POLYESTER","CO-POLYESTER","CO-POLIÉSTER","CO-POLIESTERE","CO-POLYESTER","КОПОЛИЭСТЕР","共聚酯","コポリエステル","CO-POLIÉSTER","KOPOLIESTER","CO-POLYESTER","KO-POLİESTER","KOPOLYESTER","КОПОЛІЕСТЕР","코폴리에스터","को-पॉलिएस्टर"],"click a header to sort":["Spaltenkopf klicken zum Sortieren","cliquez sur un en-tête pour trier","haz clic en una cabecera para ordenar","clicca un'intestazione per ordinare","klicka på en rubrik för att sortera","нажмите заголовок для сортировки","点击表头排序","見出しをクリックで並べ替え","clique num cabeçalho para ordenar","kliknij nagłówek, aby sortować","klik een kop om te sorteren","sıralamak için başlığa tıklayın","klikněte na záhlaví pro řazení","натисніть заголовок для сортування","헤더를 클릭해 정렬","क्रमबद्ध करने के लिए हेडर पर क्लिक करें"],"by stiffness lb/in":["nach Steifigkeit lb/in","par rigidité lb/in","por rigidez lb/in","per rigidità lb/in","efter styvhet lb/in","по жёсткости lb/in","按硬度 lb/in","硬さ lb/in 順","por rigidez lb/in","wg sztywności lb/in","op stijfheid lb/in","sertliğe göre lb/in","podle tuhosti lb/in","за жорсткістю lb/in","강성 lb/in 순","कठोरता lb/in से"],"string, brand or material…":["Saite, Marke oder Material…","corde, marque ou matériau…","cuerda, marca o material…","corda, marca o materiale…","sträng, märke eller material…","струна, бренд или материал…","线、品牌或材质…","ストリング・ブランド・素材…","corda, marca ou material…","naciąg, marka lub materiał…","snaar, merk of materiaal…","kordaj, marka veya malzeme…","výplet, značka nebo materiál…","струна, бренд або матеріал…","스트링, 브랜드 또는 소재…","स्ट्रिंग, ब्रांड या सामग्री…"],"beds":["Bespannungen","cordages","encordados","incordature","uppsättningar","полотна","线床","ストリングベッド","encordoamentos","naciągi","bespanningen","kordaj setleri","výplety","полотна","스트링 베드","स्ट्रिंग बेड"],"suggested":["vorgeschlagen","suggéré","sugerido","suggerito","föreslagen","предложено","推荐","提案","sugerido","sugerowane","voorgesteld","önerilen","navrženo","запропоновано","제안됨","सुझाया गया"],"NEW":["NEU","NOUVEAU","NUEVO","NUOVO","NY","НОВОЕ","新","新着","NOVO","NOWY","NIEUW","YENİ","NOVÉ","НОВЕ","신규","नया"],"BELOW YOUR LEVEL":["UNTER DEINEM NIVEAU","SOUS VOTRE NIVEAU","POR DEBAJO DE TU NIVEL","SOTTO IL TUO LIVELLO","UNDER DIN NIVÅ","НИЖЕ ВАШЕГО УРОВНЯ","低于你的水平","レベル未満","ABAIXO DO SEU NÍVEL","PONIŻEJ TWOJEGO POZIOMU","ONDER JOUW NIVEAU","SEVİYENİZİN ALTINDA","POD VAŠÍ ÚROVNÍ","НИЖЧЕ ВАШОГО РІВНЯ","레벨 미만","आपके स्तर से नीचे"],"shelf":["Regal","étagère","estante","scaffale","hylla","полка","分组","棚","prateleira","półka","plank","raf","police","полиця","선반","शेल्फ"],"est.":["gesch.","est.","est.","stim.","upps.","оц.","估算","推定","est.","szac.","gesch.","tah.","odh.","оц.","추정","अनु."],"AD":["ANZEIGE","PUB","PUBLI","ADV","ANNONS","РЕКЛАМА","广告","広告","PUB","REKLAMA","ADV","REKLAM","REKLAMA","РЕКЛАМА","광고","विज्ञापन"]});
 srfExplAdd("zh-hant", ["上場頭幾個月，回合還在建立 — 輕、寬容的球拍與柔軟線床領先", "每週穩定打球，回合穩得住，開始有可靠上旋 — 測試臺的廣闊中段", "俱樂部或聯賽比賽，壓力下完整揮拍 — 更重、更苛刻的球拍開放", "自帶節奏的高水平網球 — 整張測試臺，毫無保留", "引拍短，以擋和短促發力為主 — 會回饋力量的球拍勝過索取力量的球拍", "經典的中間態：完整但受控的準備動作，既不侷促也不誇張", "又長又快、自造節奏的揮拍 — 偏控制的重拍最划算", "穿透球，過網低，旋轉少 — 精準與控制主導排名", "向上刷球背面，旋轉重，過網餘量大 — 旋轉與回彈主導", "按分數需要混合平擊與上旋 — 沒有額外加權，由平衡決定", "一個月幾次 — 更輕更易用的球拍在手感不佳時保護手臂", "每週一次 — 舒適與寬容仍勝過純粹的苛刻度", "規律打球 — 難度區間的中段屬於你", "幾乎每天打球 — 最苛刻的球拍變得現實", "肘或肩有過傷就勾選 — 舒適度與低硬度將壓過其他所有軸，生硬線床跌出領獎臺", "僅設定匹配球拍的重量區間；評分中其他一切不變", "男 · 女"]);
 srfProseAdd("zh-hant", ["這裡的每個排名都是十一個軸的加權平均，而大多數球拍的平均值相近 — 所以在", "檔位下，榜首之間的差距在零點一分以內，你的優先順序無法顯現。每上調一檔，你抬高的滑桿在結論中的權重就更大。", "物理模式用每支球拍自己公佈的引數重新計算 — 回彈重量用平行軸定理，旋轉用每平方英寸的線密度，力量用硬度與拍框剖面（平均厚度加錐度 — 23/26/23 不等於恆定的 26）。", "發球、高壓和削球留空", "：它們在拍速與有效質量之間權衡，或取決於你的手，沒有誠實的公式能算出。兩種檢視故意分歧 — 這個分歧本身就是有意思的數字。"]);
+srfBlockAdd({"benchnote":{"de":"Jede Bespannung hier ist <b>aus ihren Specs abgeleitet</b> — Material, Profil, Stärke und Spannung — nicht aus dem Schlag eines anderen. Markieren Sie eine Bespannung als <span style=\"color:var(--cyan);\">platzgetestet</span>, sobald Sie sie wirklich gespielt haben, und setzen Sie eine als Ihren <span style=\"color:var(--cyan);\">Maßstab</span>: von da an wird jede andere gegen Ihre gelesen. Bis dahin bedeutet ein †, dass der Wert berechnet und nicht gemessen ist. <span style=\"color:var(--cyan);\">Solinco Conf. Soft × Head Lynx Tour</span> ist die andere platzgetestete Zeile: gemocht, aber klar darunter, und der Feldabstand entspricht dem Indexabstand. Als Nächstes: der <span style=\"color:var(--amber);\">1.30 Solinco Mach 10</span>-Stärkenschritt, dann ein <span style=\"color:var(--amber);\">full bed of ReString Zero</span>, dann <span style=\"color:var(--amber);\">ReString Zero 1.28 × Sync 1.23</span>. Mit <span class=\"est\">†</span> gekennzeichnete Zellen sind für diesen Neubau neu abgeleitet statt von der alten Bank übernommen — überschreiben Sie sie ruhig. <b>Babolat RPM Blast × Touch VS gut</b> ist hier die einzige Naturdarm-Bespannung — sie setzt die Obergrenze bei Gefühl und Armfreundlichkeit, um den Preis von Kosten und einer Lebensdauer, in der Poly den Darm zersägt. Beachten Sie den Zug zwischen den Achsen: mehr Spannung Richtung 25/23 kg hebt die Kontrolle, drückt aber jede Zeile die Arm-Spalte hinunter.","fr":"Chaque cordage ici est <b>dérivé de ses specs</b> — matériau, profil, jauge et tension — pas de la frappe de quelqu'un d'autre. Marquez un cordage <span style=\"color:var(--cyan);\">testé sur le court</span> une fois que vous l'avez réellement joué, et désignez-en un comme votre <span style=\"color:var(--cyan);\">référence</span> : dès lors chaque autre est lu par rapport au vôtre. En attendant, un † signifie que la valeur est calculée et non mesurée. <span style=\"color:var(--cyan);\">Solinco Conf. Soft × Head Lynx Tour</span> est l'autre ligne testée sur le court : appréciée, mais nettement en dessous, et l'écart de terrain correspond à l'écart d'indice. Ensuite : le pas de jauge <span style=\"color:var(--amber);\">1.30 Solinco Mach 10</span>, puis un <span style=\"color:var(--amber);\">full bed of ReString Zero</span>, puis <span style=\"color:var(--amber);\">ReString Zero 1.28 × Sync 1.23</span>. Les cellules marquées <span class=\"est\">†</span> sont redérivées pour cette reconstruction plutôt que reprises du banc d'origine — écrasez-les librement. <b>Babolat RPM Blast × Touch VS gut</b> est le seul cordage en boyau naturel ici — il fixe le plafond en toucher et en confort du bras, au prix du tarif et d'une durée de vie où le poly scie le boyau. Notez la tension entre les axes : monter vers 25/23 kg augmente le contrôle mais fait descendre chaque ligne dans la colonne bras.","es":"Cada encordado aquí está <b>derivado de sus specs</b> — material, perfil, calibre y tensión — no del golpeo de otra persona. Marca un encordado como <span style=\"color:var(--cyan);\">probado en pista</span> una vez que lo hayas jugado de verdad, y fija uno como tu <span style=\"color:var(--cyan);\">referencia</span>: desde entonces cada otro se lee contra el tuyo. Hasta entonces un † significa que la cifra está calculada, no medida. <span style=\"color:var(--cyan);\">Solinco Conf. Soft × Head Lynx Tour</span> es la otra fila probada en pista: gustó, pero claramente por debajo, y la distancia de campo coincide con la de índice. Después: el salto de calibre <span style=\"color:var(--amber);\">1.30 Solinco Mach 10</span>, luego un <span style=\"color:var(--amber);\">full bed of ReString Zero</span>, luego <span style=\"color:var(--amber);\">ReString Zero 1.28 × Sync 1.23</span>. Las celdas marcadas con <span class=\"est\">†</span> están rederivadas para esta reconstrucción en vez de arrastradas del banco original — sobrescríbelas sin reparo. <b>Babolat RPM Blast × Touch VS gut</b> es el único encordado de tripa natural aquí — fija el techo en tacto y amabilidad con el brazo, a costa del precio y de una vida útil en que el poli sierra la tripa. Fíjate en el tirón entre ejes: subir hacia 25/23 kg eleva el control pero baja cada fila en la columna del brazo.","it":"Ogni incordatura qui è <b>derivata dalle sue specs</b> — materiale, profilo, calibro e tensione — non dal colpo di qualcun altro. Segna un'incordatura come <span style=\"color:var(--cyan);\">testata in campo</span> una volta che l'hai davvero giocata, e impostane una come tuo <span style=\"color:var(--cyan);\">riferimento</span>: da lì in poi ogni altra si legge rispetto alla tua. Fino ad allora un † significa che il valore è calcolato e non misurato. <span style=\"color:var(--cyan);\">Solinco Conf. Soft × Head Lynx Tour</span> è l'altra riga testata in campo: piaciuta, ma nettamente sotto, e il divario di campo corrisponde a quello di indice. Poi: lo scalino di calibro <span style=\"color:var(--amber);\">1.30 Solinco Mach 10</span>, quindi un <span style=\"color:var(--amber);\">full bed of ReString Zero</span>, quindi <span style=\"color:var(--amber);\">ReString Zero 1.28 × Sync 1.23</span>. Le celle marcate <span class=\"est\">†</span> sono riderivate per questa ricostruzione anziché riportate dal banco originale — sovrascrivile liberamente. <b>Babolat RPM Blast × Touch VS gut</b> è l'unica incordatura in budello naturale qui — fissa il tetto su tocco e comfort del braccio, al prezzo del costo e di una durata in cui il poly sega il budello. Nota la trazione tra gli assi: salire verso 25/23 kg alza il controllo ma spinge ogni riga giù nella colonna braccio.","sv":"Varje uppsättning här är <b>härledd ur sina specs</b> — material, profil, grovlek och spänning — inte ur någon annans slag. Märk en uppsättning <span style=\"color:var(--cyan);\">bantestad</span> när du faktiskt har spelat den, och sätt en som din <span style=\"color:var(--cyan);\">måttstock</span>: därefter läses varje annan mot din. Fram till dess betyder ett † att siffran är beräknad, inte uppmätt. <span style=\"color:var(--cyan);\">Solinco Conf. Soft × Head Lynx Tour</span> är den andra bantestade raden: omtyckt, men klart under, och fältgapet matchar indexgapet. Härnäst: grovlekssteget <span style=\"color:var(--amber);\">1.30 Solinco Mach 10</span>, sedan en <span style=\"color:var(--amber);\">full bed of ReString Zero</span>, sedan <span style=\"color:var(--amber);\">ReString Zero 1.28 × Sync 1.23</span>. Celler märkta <span class=\"est\">†</span> är omhärledda för det här bygget snarare än överförda från den ursprungliga bänken — skriv gärna över dem. <b>Babolat RPM Blast × Touch VS gut</b> är den enda naturtarmsuppsättningen här — den sätter taket för känsla och armvänlighet, till priset av kostnaden och en livslängd där polyestern sågar tarmen. Notera dragkampen mellan axlarna: högre spänning mot 25/23 kg lyfter kontrollen men trycker varje rad nedåt i armkolumnen.","ru":"Каждое полотно здесь <b>выведено из своих характеристик</b> — материал, профиль, калибр и натяжение — а не из чужого удара. Отметьте полотно как <span style=\"color:var(--cyan);\">проверенное на корте</span> после того, как действительно им сыграли, и назначьте одно своим <span style=\"color:var(--cyan);\">эталоном</span>: с этого момента все остальные читаются относительно вашего. До тех пор † означает, что величина рассчитана, а не измерена. <span style=\"color:var(--cyan);\">Solinco Conf. Soft × Head Lynx Tour</span> — вторая строка, проверенная на корте: понравилась, но заметно ниже, и разрыв в поле совпадает с разрывом в индексе. Дальше в очереди: шаг калибра <span style=\"color:var(--amber);\">1.30 Solinco Mach 10</span>, затем <span style=\"color:var(--amber);\">full bed of ReString Zero</span>, затем <span style=\"color:var(--amber);\">ReString Zero 1.28 × Sync 1.23</span>. Ячейки, помеченные <span class=\"est\">†</span>, пересчитаны для этой сборки, а не перенесены со старого стенда — смело переписывайте их. <b>Babolat RPM Blast × Touch VS gut</b> — единственное полотно из натуральной жилы здесь: оно задаёт потолок по отклику и бережности к руке ценой цены и срока службы, в котором полиэстер перепиливает жилу. Обратите внимание на натяжение между осями: рост натяжения к 25/23 кг поднимает контроль, но опускает каждую строку по колонке руки.","zh":"此处每一条线床都<b>源自其自身规格</b> —— 材质、截面、线径与张力 —— 而非他人的击球感受。真正打过之后，把它标记为<span style=\"color:var(--cyan);\">已在场上测试</span>，并把其中一条设为您的<span style=\"color:var(--cyan);\">基准</span>：此后其他线床都以您的为参照。在此之前，† 表示该数值为计算所得而非实测。<span style=\"color:var(--cyan);\">Solinco Conf. Soft × Head Lynx Tour</span> 是另一条已在场上测试的：受欢迎，但明显更低，且实测差距与指数差距一致。接下来排队的是：<span style=\"color:var(--amber);\">1.30 Solinco Mach 10</span> 线径档，然后是<span style=\"color:var(--amber);\">full bed of ReString Zero</span>，再是 <span style=\"color:var(--amber);\">ReString Zero 1.28 × Sync 1.23</span>。标有 <span class=\"est\">†</span> 的单元格是为本次重建重新推算的，而非沿用旧工作台的数据 —— 可以放心覆盖。<b>Babolat RPM Blast × Touch VS gut</b> 是这里唯一的天然羊肠线床 —— 它在手感与护臂上设定了上限，代价是价格，以及聚酯锯断羊肠的寿命。请注意各轴之间的拉扯：张力升向 25/23 kg 会提升控制，却让每一行在护臂列上下降。","ja":"ここに並ぶストリングベッドはすべて<b>そのスペックから導かれています</b> — 素材、断面、ゲージ、テンション — 他人の打感からではありません。実際に打ったうえで<span style=\"color:var(--cyan);\">コートで試した</span>と記録し、ひとつを自分の<span style=\"color:var(--cyan);\">基準</span>に設定してください。そこから先、他のすべてはあなたの基準に照らして読まれます。それまで † は、その数値が測定ではなく計算であることを示します。<span style=\"color:var(--cyan);\">Solinco Conf. Soft × Head Lynx Tour</span> はもう一つのコート実測行です。好評でしたが明確に下で、実測差はインデックス差と一致します。次に控えているのは <span style=\"color:var(--amber);\">1.30 Solinco Mach 10</span> のゲージ違い、続いて<span style=\"color:var(--amber);\">full bed of ReString Zero</span>、そして <span style=\"color:var(--amber);\">ReString Zero 1.28 × Sync 1.23</span>。<span class=\"est\">†</span> の付いたセルは、旧ベンチから引き継いだのではなく今回の再構築で導き直したものです。遠慮なく上書きしてください。<b>Babolat RPM Blast × Touch VS gut</b> はここで唯一のナチュラルガットのベッドです。感触と腕へのやさしさで天井を決めますが、その代償は価格と、ポリがガットを削る寿命です。軸どうしの綱引きにご注目を：25/23 kg に向けてテンションを上げるとコントロールは上がりますが、腕の列ではすべての行が下がります。","pt":"Cada encordoamento aqui é <b>derivado das suas specs</b> — material, perfil, calibre e tensão — não do toque de outra pessoa. Marque um encordoamento como <span style=\"color:var(--cyan);\">testado em quadra</span> depois de o ter realmente jogado, e defina um como a sua <span style=\"color:var(--cyan);\">referência</span>: a partir daí cada outro é lido contra o seu. Até lá um † significa que o valor é calculado e não medido. <span style=\"color:var(--cyan);\">Solinco Conf. Soft × Head Lynx Tour</span> é a outra linha testada em quadra: agradou, mas claramente abaixo, e a distância de campo coincide com a de índice. A seguir: o salto de calibre <span style=\"color:var(--amber);\">1.30 Solinco Mach 10</span>, depois um <span style=\"color:var(--amber);\">full bed of ReString Zero</span>, depois <span style=\"color:var(--amber);\">ReString Zero 1.28 × Sync 1.23</span>. As células marcadas com <span class=\"est\">†</span> foram rederivadas para esta reconstrução em vez de arrastadas do banco original — sobrescreva-as à vontade. <b>Babolat RPM Blast × Touch VS gut</b> é o único encordoamento de tripa natural aqui — fixa o tecto em toque e conforto para o braço, ao preço do custo e de uma vida útil em que o poli serra a tripa. Repare no puxão entre eixos: subir para 25/23 kg eleva o controlo mas empurra cada linha para baixo na coluna do braço.","pl":"Każdy naciąg tutaj jest <b>wyprowadzony ze swoich specyfikacji</b> — materiał, profil, grubość i naprężenie — a nie z czyjegoś uderzenia. Oznacz naciąg jako <span style=\"color:var(--cyan);\">przetestowany na korcie</span>, gdy naprawdę nim zagrasz, i ustaw jeden jako swój <span style=\"color:var(--cyan);\">wzorzec</span>: od tej chwili każdy inny czytany jest względem twojego. Do tego czasu † oznacza, że wartość jest wyliczona, a nie zmierzona. <span style=\"color:var(--cyan);\">Solinco Conf. Soft × Head Lynx Tour</span> to druga pozycja przetestowana na korcie: podobała się, ale wyraźnie niżej, a różnica w polu odpowiada różnicy indeksu. W kolejce: skok grubości <span style=\"color:var(--amber);\">1.30 Solinco Mach 10</span>, potem <span style=\"color:var(--amber);\">full bed of ReString Zero</span>, następnie <span style=\"color:var(--amber);\">ReString Zero 1.28 × Sync 1.23</span>. Komórki oznaczone <span class=\"est\">†</span> zostały wyliczone od nowa na potrzeby tej przebudowy, a nie przeniesione ze starego warsztatu — śmiało je nadpisuj. <b>Babolat RPM Blast × Touch VS gut</b> to jedyny naciąg z jelita naturalnego tutaj — wyznacza pułap czucia i łagodności dla ramienia, kosztem ceny i żywotności, w której poliester przecina jelito. Zwróć uwagę na napięcie między osiami: podnoszenie naprężenia ku 25/23 kg podnosi kontrolę, ale spycha każdy wiersz w dół kolumny ramienia.","nl":"Elke bespanning hier is <b>afgeleid uit haar specs</b> — materiaal, profiel, dikte en spanning — niet uit iemand anders' slag. Markeer een bespanning als <span style=\"color:var(--cyan);\">baangetest</span> zodra je haar echt gespeeld hebt, en stel er één in als jouw <span style=\"color:var(--cyan);\">ijkpunt</span>: vanaf dan wordt elke andere tegen die van jou gelezen. Tot dan betekent een † dat het cijfer berekend is en niet gemeten. <span style=\"color:var(--cyan);\">Solinco Conf. Soft × Head Lynx Tour</span> is de andere baangeteste regel: gewaardeerd, maar duidelijk eronder, en het veldgat komt overeen met het indexgat. Hierna: de diktestap <span style=\"color:var(--amber);\">1.30 Solinco Mach 10</span>, dan een <span style=\"color:var(--amber);\">full bed of ReString Zero</span>, dan <span style=\"color:var(--amber);\">ReString Zero 1.28 × Sync 1.23</span>. Cellen gemarkeerd met <span class=\"est\">†</span> zijn voor deze herbouw opnieuw afgeleid in plaats van meegenomen van de oude werkbank — overschrijf ze gerust. <b>Babolat RPM Blast × Touch VS gut</b> is hier de enige natuurdarm-bespanning — zij bepaalt het plafond voor gevoel en armvriendelijkheid, ten koste van de prijs en een levensduur waarin poly de darm doorzaagt. Let op de trek tussen de assen: hogere spanning richting 25/23 kg verhoogt de controle maar duwt elke regel omlaag in de armkolom.","tr":"Buradaki her kordaj <b>kendi özelliklerinden türetilmiştir</b> — malzeme, kesit, kalınlık ve tansiyon — başkasının vuruşundan değil. Gerçekten oynadıktan sonra bir kordajı <span style=\"color:var(--cyan);\">kortta test edildi</span> olarak işaretleyin ve birini kendi <span style=\"color:var(--cyan);\">ölçütünüz</span> yapın: o andan itibaren diğerleri sizinkine göre okunur. O zamana dek † değerin ölçülmediğini, hesaplandığını gösterir. <span style=\"color:var(--cyan);\">Solinco Conf. Soft × Head Lynx Tour</span> kortta test edilen diğer satır: beğenildi ama belirgin şekilde altta ve saha farkı indeks farkıyla örtüşüyor. Sırada: <span style=\"color:var(--amber);\">1.30 Solinco Mach 10</span> kalınlık basamağı, ardından bir <span style=\"color:var(--amber);\">full bed of ReString Zero</span>, sonra <span style=\"color:var(--amber);\">ReString Zero 1.28 × Sync 1.23</span>. <span class=\"est\">†</span> işaretli hücreler eski tezgâhtan taşınmak yerine bu yeniden kurulum için yeniden türetildi — gönül rahatlığıyla üzerine yazın. <b>Babolat RPM Blast × Touch VS gut</b> buradaki tek doğal bağırsak kordajı — his ve kola nazikliğin tavanını belirliyor; bedeli fiyat ve poliesterin bağırsağı testere gibi kestiği bir ömür. Eksenler arasındaki çekişmeye dikkat: tansiyonu 25/23 kg'a doğru yükseltmek kontrolü artırır ama her satırı kol sütununda aşağı iter.","cs":"Každý výplet zde je <b>odvozen z vlastních parametrů</b> — materiál, profil, tloušťka a napětí — nikoli z úderu někoho jiného. Označte výplet jako <span style=\"color:var(--cyan);\">testovaný na kurtu</span>, až ho skutečně odehrajete, a jeden nastavte jako své <span style=\"color:var(--cyan);\">měřítko</span>: od té chvíle se každý další čte proti vašemu. Do té doby † znamená, že údaj je vypočtený, ne naměřený. <span style=\"color:var(--cyan);\">Solinco Conf. Soft × Head Lynx Tour</span> je druhý řádek testovaný na kurtu: líbil se, ale je zřetelně níž a rozdíl v poli odpovídá rozdílu v indexu. Ve frontě: krok tloušťky <span style=\"color:var(--amber);\">1.30 Solinco Mach 10</span>, pak <span style=\"color:var(--amber);\">full bed of ReString Zero</span>, poté <span style=\"color:var(--amber);\">ReString Zero 1.28 × Sync 1.23</span>. Buňky označené <span class=\"est\">†</span> jsou pro tuto přestavbu odvozené znovu, nikoli přenesené z původní dílny — klidně je přepište. <b>Babolat RPM Blast × Touch VS gut</b> je zde jediný výplet z přírodního střeva — určuje strop v citu a šetrnosti k paži, za cenu peněz a životnosti, v níž polyester střevo prořízne. Všimněte si tahu mezi osami: vyšší napětí směrem k 25/23 kg zvedá kontrolu, ale posouvá každý řádek dolů ve sloupci paže.","uk":"Кожне полотно тут <b>виведене зі своїх характеристик</b> — матеріал, профіль, калібр і натяг — а не з чийогось удару. Позначте полотно як <span style=\"color:var(--cyan);\">перевірене на корті</span> після того, як справді ним зіграли, і призначте одне своїм <span style=\"color:var(--cyan);\">еталоном</span>: відтоді всі інші читаються відносно вашого. До того часу † означає, що величина обчислена, а не виміряна. <span style=\"color:var(--cyan);\">Solinco Conf. Soft × Head Lynx Tour</span> — другий рядок, перевірений на корті: сподобався, але помітно нижче, і розрив у полі збігається з розривом в індексі. Далі в черзі: крок калібру <span style=\"color:var(--amber);\">1.30 Solinco Mach 10</span>, потім <span style=\"color:var(--amber);\">full bed of ReString Zero</span>, далі <span style=\"color:var(--amber);\">ReString Zero 1.28 × Sync 1.23</span>. Клітинки, позначені <span class=\"est\">†</span>, перераховані для цієї збірки, а не перенесені зі старого стенда — сміливо переписуйте їх. <b>Babolat RPM Blast × Touch VS gut</b> — єдине полотно з натуральної жили тут: воно задає стелю за відчуттям і дбайливістю до руки ціною вартості та терміну служби, у якому поліестер перепилює жилу. Зверніть увагу на натяг між осями: зростання натягу до 25/23 кг піднімає контроль, але опускає кожен рядок у колонці руки.","ko":"여기 있는 모든 스트링 베드는 <b>자신의 사양에서 도출되었습니다</b> — 소재, 단면, 게이지, 텐션 — 다른 사람의 타구감이 아닙니다. 실제로 쳐 본 뒤에 그 베드를 <span style=\"color:var(--cyan);\">코트 테스트 완료</span>로 표시하고, 하나를 당신의 <span style=\"color:var(--cyan);\">기준</span>으로 설정하세요. 그때부터 다른 모든 베드는 당신의 기준에 견주어 읽힙니다. 그전까지 † 는 그 값이 측정이 아니라 계산된 것임을 뜻합니다. <span style=\"color:var(--cyan);\">Solinco Conf. Soft × Head Lynx Tour</span> 는 코트에서 검증된 또 하나의 행입니다. 좋았지만 분명히 아래에 있고, 실측 격차가 지수 격차와 일치합니다. 다음 대기 항목: <span style=\"color:var(--amber);\">1.30 Solinco Mach 10</span> 게이지 단계, 그다음 <span style=\"color:var(--amber);\">full bed of ReString Zero</span>, 그리고 <span style=\"color:var(--amber);\">ReString Zero 1.28 × Sync 1.23</span>. <span class=\"est\">†</span> 표시가 있는 셀은 예전 벤치에서 그대로 가져온 것이 아니라 이번 재구축을 위해 다시 도출한 값입니다 — 마음껏 덮어쓰세요. <b>Babolat RPM Blast × Touch VS gut</b> 는 여기 유일한 내추럴 거트 베드입니다 — 감각과 팔에 대한 편안함의 상한을 정하지만, 그 대가는 가격과 폴리가 거트를 톱질하는 수명입니다. 축 사이의 당김에 주목하세요: 텐션을 25/23 kg 쪽으로 올리면 컨트롤은 오르지만 모든 행이 팔 열에서 내려갑니다.","hi":"यहाँ का हर स्ट्रिंग बेड <b>अपने स्पेक्स से व्युत्पन्न है</b> — सामग्री, प्रोफ़ाइल, गेज और टेंशन — किसी और के शॉट से नहीं। वास्तव में खेलने के बाद किसी बेड को <span style=\"color:var(--cyan);\">कोर्ट-परीक्षित</span> चिह्नित करें, और एक को अपना <span style=\"color:var(--cyan);\">मानक</span> बनाएँ: उसके बाद हर दूसरा बेड आपके मानक के सापेक्ष पढ़ा जाता है। तब तक † का अर्थ है कि यह मान मापा नहीं, गणना किया गया है। <span style=\"color:var(--cyan);\">Solinco Conf. Soft × Head Lynx Tour</span> कोर्ट पर परखी गई दूसरी पंक्ति है: पसंद आई, पर स्पष्ट रूप से नीचे, और क्षेत्र का अंतर सूचकांक के अंतर से मेल खाता है। कतार में अगला: <span style=\"color:var(--amber);\">1.30 Solinco Mach 10</span> गेज चरण, फिर <span style=\"color:var(--amber);\">full bed of ReString Zero</span>, फिर <span style=\"color:var(--amber);\">ReString Zero 1.28 × Sync 1.23</span>। <span class=\"est\">†</span> चिह्नित कोशिकाएँ पुरानी बेंच से लाई नहीं गईं, बल्कि इस पुनर्निर्माण के लिए दोबारा निकाली गई हैं — बेझिझक बदलें। <b>Babolat RPM Blast × Touch VS gut</b> यहाँ का एकमात्र नैचुरल गट बेड है — यह फील और बांह की सहजता की ऊपरी सीमा तय करता है, कीमत और उस आयु की कीमत पर जिसमें पॉली गट को काट देता है। अक्षों के बीच खिंचाव पर ध्यान दें: टेंशन 25/23 kg की ओर बढ़ाने से नियंत्रण बढ़ता है पर हर पंक्ति बांह के कॉलम में नीचे चली जाती है।"}});
+srfBlockAdd({"physnote":{"de":"<b>Reine Physik-Ansicht.</b> Jede Bespannung wird allein aus ihrer Laborzeile neu berechnet — dynamische Steifigkeit in lb/in, Stärke, der echte Querschnitt, gemessener Spannungsverlust und Energierückgabe, das Lebensdauer-Band und die Spannung, mit der sie bespannt ist — und dann gegen das gesamte Feld gestellt, gedeckelt bei 9. <b>Präzision und Klang bleiben leer</b>: Präzision ist die Hand des Spielers am Rahmen, und eine Klangmessung veröffentlicht niemand. Bespannungen ohne Laborzeile zeigen in dieser Ansicht Striche.","fr":"<b>Vue physique pure.</b> Chaque cordage est recalculé à partir de sa seule ligne de laboratoire — rigidité dynamique en lb/in, jauge, la section réelle, perte de tension et restitution d'énergie mesurées, la plage de durée de vie et la tension de montage — puis situé face à tout le champ, plafonné à 9. <b>Précision et son restent vides</b>: la précision, c'est la main du joueur sur le cadre, et personne ne publie de mesure sonore. Les cordages sans ligne de laboratoire affichent des tirets dans cette vue.","es":"<b>Vista de física pura.</b> Cada encordado se recalcula solo a partir de su fila de laboratorio — rigidez dinámica en lb/in, calibre, la sección real, pérdida de tensión y retorno de energía medidos, la franja de vida útil y la tensión con la que está montado — y luego se sitúa frente a todo el campo, con tope en 9. <b>Precisión y sonido quedan en blanco</b>: la precisión es la mano del jugador sobre el cuadro, y nadie publica una medición de sonido. Los encordados sin fila de laboratorio muestran guiones en esta vista.","it":"<b>Vista di fisica pura.</b> Ogni incordatura è ricalcolata dalla sola riga di laboratorio — rigidità dinamica in lb/in, calibro, la sezione reale, perdita di tensione e ritorno di energia misurati, la fascia di durata e la tensione di montaggio — e poi collocata rispetto all'intero campo, con tetto a 9. <b>Precisione e suono restano vuoti</b>: la precisione è la mano del giocatore sul telaio, e nessuno pubblica una misura del suono. Le incordature senza riga di laboratorio mostrano trattini in questa vista.","sv":"<b>Ren fysikvy.</b> Varje uppsättning räknas om enbart ur sin labbrad — dynamisk styvhet i lb/in, grovlek, det verkliga tvärsnittet, uppmätt spänningsförlust och energiåtergivning, livslängdsbandet och spänningen den är strängad med — och ställs sedan mot hela fältet, med tak vid 9. <b>Precision och ljud lämnas tomma</b>: precisionen är spelarens hand på ramen, och ingen publicerar en ljudmätning. Uppsättningar utan labbrad visar streck i den här vyn.","ru":"<b>Режим чистой физики.</b> Каждое полотно пересчитывается только по своей лабораторной строке — динамическая жёсткость в lb/in, калибр, реальное сечение, измеренная потеря натяжения и возврат энергии, диапазон срока службы и натяжение, на котором оно натянуто — и затем сопоставляется со всем полем, с потолком 9. <b>Точность и звук остаются пустыми</b>: точность — это рука игрока на раме, а измерение звука никто не публикует. Полотна без лабораторной строки показывают прочерки в этом режиме.","zh":"<b>纯物理视图。</b> 每条线床仅依据自己的实验室数据重新计算 —— lb/in 动态硬度、线径、真实截面、实测张力衰减与能量回弹、寿命区间以及穿线张力 —— 然后与整个线床field 比较，上限为 9。 <b>精准与声音留空</b>: 精准取决于握拍的手，而声音无人公布测量值。 没有实验室数据的线床在此视图中显示为破折号。","ja":"<b>ピュア・フィジックス表示。</b> 各ストリングベッドはラボ行のみから再計算されます — lb/in の動的硬度、ゲージ、実際の断面、実測のテンション低下とエネルギー返還、寿命帯、そして張り上げテンション — その上で全ベッドと比較し、上限は9です。 <b>精度と打球音は空欄のまま</b>: 精度はフレームを握る手の領域であり、打球音の実測値は公表されていません。 ラボ行のないベッドはこの表示では空欄になります。","pt":"<b>Vista de física pura.</b> Cada encordoamento é recalculado apenas a partir da sua linha de laboratório — rigidez dinâmica em lb/in, calibre, a secção real, perda de tensão e retorno de energia medidos, a faixa de vida útil e a tensão a que está montado — e depois colocado perante todo o campo, com tecto em 9. <b>Precisão e som ficam em branco</b>: a precisão é a mão do jogador no quadro, e ninguém publica uma medição de som. Encordoamentos sem linha de laboratório mostram traços nesta vista.","pl":"<b>Widok czystej fizyki.</b> Każdy naciąg jest przeliczany wyłącznie na podstawie własnego wiersza laboratoryjnego — sztywność dynamiczna w lb/in, grubość, rzeczywisty przekrój, zmierzony spadek naprężenia i zwrot energii, przedział żywotności oraz naprężenie, na jakim jest naciągnięty — a następnie zestawiany z całym polem, z pułapem 9. <b>Precyzja i dźwięk pozostają puste</b>: precyzja to ręka gracza na ramie, a pomiaru dźwięku nikt nie publikuje. Naciągi bez wiersza laboratoryjnego pokazują w tym widoku myślniki.","nl":"<b>Pure fysica-weergave.</b> Elke bespanning wordt uitsluitend uit haar labregel herberekend — dynamische stijfheid in lb/in, dikte, de werkelijke doorsnede, gemeten spanningsverlies en energieteruggave, de levensduurband en de spanning waarop ze is gespannen — en daarna tegen het hele veld gezet, met een plafond van 9. <b>Precisie en klank blijven leeg</b>: precisie is de hand van de speler op het frame, en niemand publiceert een klankmeting. Bespanningen zonder labregel tonen streepjes in deze weergave.","tr":"<b>Saf fizik görünümü.</b> Her kordaj yalnızca kendi laboratuvar satırından yeniden hesaplanır — lb/in cinsinden dinamik sertlik, kalınlık, gerçek kesit, ölçülmüş tansiyon kaybı ve enerji geri dönüşü, ömür aralığı ve gerildiği tansiyon — ardından tüm alanla karşılaştırılır, tavan 9'dur. <b>Hassasiyet ve ses boş kalır</b>: hassasiyet oyuncunun kasadaki elidir ve ses ölçümünü kimse yayımlamaz. Laboratuvar satırı olmayan kordajlar bu görünümde çizgi gösterir.","cs":"<b>Zobrazení čisté fyziky.</b> Každý výplet se přepočítá výhradně z vlastního laboratorního řádku — dynamická tuhost v lb/in, tloušťka, skutečný průřez, naměřená ztráta napětí a návrat energie, pásmo životnosti a napětí, na které je vypleten — a poté se postaví proti celému poli, se stropem 9. <b>Přesnost a zvuk zůstávají prázdné</b>: přesnost je ruka hráče na rámu a měření zvuku nikdo nezveřejňuje. Výplety bez laboratorního řádku zobrazují v tomto pohledu pomlčky.","uk":"<b>Режим чистої фізики.</b> Кожне полотно перераховується лише за власним лабораторним рядком — динамічна жорсткість у lb/in, калібр, реальний переріз, виміряна втрата натягу та повернення енергії, діапазон терміну служби і натяг, на якому воно натягнуте — а потім зіставляється з усім полем, зі стелею 9. <b>Точність і звук залишаються порожніми</b>: точність — це рука гравця на рамі, а вимірювання звуку ніхто не публікує. Полотна без лабораторного рядка показують прочерки в цьому режимі.","ko":"<b>순수 물리 보기.</b> 각 스트링 베드는 오직 자신의 랩 데이터로만 재계산됩니다 — lb/in 동적 강성, 게이지, 실제 단면, 측정된 텐션 손실과 에너지 반발, 수명 구간, 그리고 실제 장착 텐션 — 그런 다음 전체 베드와 비교되며 상한은 9입니다. <b>정밀도와 소리는 비워 둡니다</b>: 정밀도는 프레임을 쥔 선수의 손이고, 타구음 측정값은 아무도 공개하지 않습니다. 랩 데이터가 없는 베드는 이 보기에서 빈칸으로 표시됩니다.","hi":"<b>शुद्ध भौतिकी दृश्य।</b> हर स्ट्रिंग बेड की गणना केवल उसकी लैब पंक्ति से होती है — lb/in में डायनैमिक कठोरता, गेज, वास्तविक अनुप्रस्थ काट, मापी गई टेंशन हानि और ऊर्जा वापसी, आयु सीमा और वह टेंशन जिस पर वह लगी है — फिर पूरे क्षेत्र के सामने रखा जाता है, अधिकतम 9। <b>सटीकता और ध्वनि खाली रहती हैं</b>: सटीकता फ्रेम पर खिलाड़ी का हाथ है, और ध्वनि का माप कोई प्रकाशित नहीं करता। बिना लैब पंक्ति वाले बेड इस दृश्य में डैश दिखाते हैं।"},"nerdintro":{"de":"Die Laborseite der Bespannung: Materialklasse, Profil, dynamische Steifigkeit, Spannungsverlust, Energierückgabe, Straßenpreis. Steifigkeit ist <b style=\"color:var(--fg);\">dynamische Steifigkeit in lb/in</b> — niedriger = weicher, elastischer, armschonender. Mit <span class=\"est\">†</span> gekennzeichnete Werte sind typische Herstellerangaben, keine Messung Ihres genauen Satzes.","fr":"Le côté laboratoire du cordage : classe de matériau, profil, rigidité dynamique, perte de tension, restitution d'énergie, prix de rue. La rigidité est la <b style=\"color:var(--fg);\">rigidité dynamique en lb/in</b> — plus bas = plus souple, plus élastique, plus doux pour le bras. Les valeurs marquées <span class=\"est\">†</span> sont des valeurs publiées typiques, pas une mesure de votre jeu exact.","es":"El lado de laboratorio del encordado: clase de material, perfil, rigidez dinámica, pérdida de tensión, retorno de energía, precio de calle. La rigidez es <b style=\"color:var(--fg);\">rigidez dinámica en lb/in</b> — más bajo = más blando, más elástico, más amable con el brazo. Los valores marcados <span class=\"est\">†</span> son valores publicados típicos, no una medición de tu juego exacto.","it":"Il lato di laboratorio dell'incordatura: classe di materiale, profilo, rigidità dinamica, perdita di tensione, ritorno di energia, prezzo di strada. La rigidità è <b style=\"color:var(--fg);\">rigidità dinamica in lb/in</b> — più basso = più morbido, più elastico, più gentile con il braccio. I valori con <span class=\"est\">†</span> sono valori pubblicati tipici, non una misura del tuo set esatto.","sv":"Labbsidan av uppsättningen: materialklass, profil, dynamisk styvhet, spänningsförlust, energiåtergivning, gatupris. Styvhet är <b style=\"color:var(--fg);\">dynamisk styvhet i lb/in</b> — lägre = mjukare, mer elastisk, snällare mot armen. Värden märkta <span class=\"est\">†</span> är typiska publicerade värden, inte en mätning av just din uppsättning.","ru":"Лабораторная сторона полотна: класс материала, профиль, динамическая жёсткость, потеря натяжения, возврат энергии, розничная цена. Жёсткость — это <b style=\"color:var(--fg);\">динамическая жёсткость в lb/in</b> — ниже = мягче, эластичнее, бережнее к руке. Значения с <span class=\"est\">†</span> — типичные опубликованные величины, а не измерение именно вашего комплекта.","zh":"线床的实验室一面：材质类别、截面、动态硬度、张力衰减、能量回弹、市售价格。硬度指 <b style=\"color:var(--fg);\">lb/in 动态硬度</b> —— 越低越软、越有弹性、对手臂越友好。标有 <span class=\"est\">†</span> 的数值是典型公布值，而非对您这一具体线床的实测。","ja":"ストリングベッドのラボ側：素材クラス、断面形状、動的硬度、テンション低下、エネルギー返還、実売価格。硬さとは <b style=\"color:var(--fg);\">lb/in の動的硬度</b> のことです — 低いほど柔らかく、弾性があり、腕にやさしい。<span class=\"est\">†</span> の付いた数値は一般に公表されている典型値であり、あなたのセットの実測値ではありません。","pt":"O lado de laboratório do encordoamento: classe de material, perfil, rigidez dinâmica, perda de tensão, retorno de energia, preço de rua. A rigidez é a <b style=\"color:var(--fg);\">rigidez dinâmica em lb/in</b> — mais baixo = mais macio, mais elástico, mais amável para o braço. Os valores marcados com <span class=\"est\">†</span> são valores publicados típicos, não uma medição do seu conjunto exacto.","pl":"Laboratoryjna strona naciągu: klasa materiału, profil, sztywność dynamiczna, spadek naprężenia, zwrot energii, cena rynkowa. Sztywność to <b style=\"color:var(--fg);\">sztywność dynamiczna w lb/in</b> — niżej = miękciej, bardziej elastycznie, łagodniej dla ramienia. Wartości oznaczone <span class=\"est\">†</span> to typowe wartości publikowane, a nie pomiar właśnie twojego kompletu.","nl":"De labkant van de bespanning: materiaalklasse, profiel, dynamische stijfheid, spanningsverlies, energieteruggave, straatprijs. Stijfheid is <b style=\"color:var(--fg);\">dynamische stijfheid in lb/in</b> — lager = zachter, elastischer, vriendelijker voor de arm. Waarden met <span class=\"est\">†</span> zijn typische gepubliceerde waarden, geen meting van jouw exacte set.","tr":"Kordajın laboratuvar tarafı: malzeme sınıfı, kesit, dinamik sertlik, tansiyon kaybı, enerji geri dönüşü, piyasa fiyatı. Sertlik, <b style=\"color:var(--fg);\">lb/in cinsinden dinamik sertlik</b> demektir — düşük olan daha yumuşak, daha elastik ve kola daha nazik. <span class=\"est\">†</span> işaretli değerler tipik yayımlanmış değerlerdir, sizin setinizin ölçümü değildir.","cs":"Laboratorní strana výpletu: třída materiálu, profil, dynamická tuhost, ztráta napětí, návrat energie, pouliční cena. Tuhost znamená <b style=\"color:var(--fg);\">dynamickou tuhost v lb/in</b> — nižší = měkčí, pružnější, šetrnější k paži. Hodnoty označené <span class=\"est\">†</span> jsou typické publikované údaje, nikoli měření právě vaší sady.","uk":"Лабораторний бік полотна: клас матеріалу, профіль, динамічна жорсткість, втрата натягу, повернення енергії, роздрібна ціна. Жорсткість — це <b style=\"color:var(--fg);\">динамічна жорсткість у lb/in</b> — нижче = м'якше, еластичніше, дбайливіше до руки. Значення з <span class=\"est\">†</span> — типові опубліковані величини, а не вимірювання саме вашого комплекту.","ko":"스트링 베드의 실험실 측면: 소재 등급, 단면, 동적 강성, 텐션 손실, 에너지 반발, 시중 가격. 강성이란 <b style=\"color:var(--fg);\">lb/in 동적 강성</b>을 뜻합니다 — 낮을수록 부드럽고 탄성이 좋으며 팔에 편합니다. <span class=\"est\">†</span> 표시가 있는 값은 일반적으로 공표된 수치이며, 당신의 세트를 실측한 값이 아닙니다.","hi":"स्ट्रिंग बेड का प्रयोगशाला पक्ष: सामग्री वर्ग, प्रोफ़ाइल, डायनैमिक कठोरता, टेंशन हानि, ऊर्जा वापसी, बाज़ार मूल्य। कठोरता का अर्थ है <b style=\"color:var(--fg);\">lb/in में डायनैमिक कठोरता</b> — जितनी कम, उतनी नरम, अधिक लचीली और बांह के लिए बेहतर। <span class=\"est\">†</span> चिह्नित मान सामान्य प्रकाशित मान हैं, आपके सटीक सेट का माप नहीं।"},"deptsub":{"de":"Dieselbe Bank, die andere Hälfte der Gleichung: was Sie <em>in</em> den Rahmen spannen. Beanspruchen Sie eine Bespannung, um sie als platzgetestet zu markieren oder einzureihen; <span class=\"est\">†</span> kennzeichnet einen abgeleiteten Wert. Jede Score-Zelle ist editierbar — tippen Sie darauf, um die Schätzung mit Ihrer eigenen Bewertung zu überschreiben.","fr":"Le même banc, l'autre moitié de l'équation : ce que vous mettez <em>dans</em> le cadre. Revendiquez un cordage pour le marquer testé sur le court ou le mettre en file ; <span class=\"est\">†</span> signale une valeur dérivée. Chaque cellule de note est modifiable — touchez-la pour remplacer l'estimation par votre propre note.","es":"El mismo banco, la otra mitad de la ecuación: lo que pones <em>dentro</em> del cuadro. Reclama un encordado para marcarlo probado en pista o ponerlo en cola; <span class=\"est\">†</span> señala un valor derivado. Cada celda de puntuación es editable — tócala para sobrescribir la estimación con tu propia valoración.","it":"Lo stesso banco, l'altra metà dell'equazione: ciò che metti <em>dentro</em> il telaio. Rivendica un'incordatura per segnarla testata in campo o metterla in coda; <span class=\"est\">†</span> indica un valore derivato. Ogni cella di punteggio è modificabile — toccala per sovrascrivere la stima con la tua valutazione.","sv":"Samma bänk, andra halvan av ekvationen: det du sätter <em>i</em> ramen. Gör anspråk på en uppsättning för att märka den bantestad eller ställa den i kö; <span class=\"est\">†</span> markerar ett härlett värde. Varje poängruta går att ändra — tryck på den för att skriva över uppskattningen med ditt eget betyg.","ru":"Тот же стенд, вторая половина уравнения: то, что вы натягиваете <em>в</em> раму. Отметьте полотно как проверенное на корте или поставьте его в очередь; <span class=\"est\">†</span> обозначает расчётное значение. Любая ячейка оценки редактируема — нажмите на неё, чтобы заменить оценку своей собственной.","zh":"同一张工作台，方程的另一半：您装<em>进</em>球拍的东西。认领一条线床，把它标为已在场上测试或排入队列；<span class=\"est\">†</span> 表示推算值。每个评分格都可编辑 —— 点一下即可用您自己的评价覆盖估算。","ja":"同じベンチ、方程式のもう半分 — フレームの<em>中</em>に張るものです。ストリングベッドを自分のものにして「コートで試した」と記録するか、順番待ちに入れてください。<span class=\"est\">†</span> は推定値を示します。すべてのスコアセルは編集可能で、タップすれば推定値をご自身の評価で上書きできます。","pt":"O mesmo banco, a outra metade da equação: o que você põe <em>dentro</em> do quadro. Reivindique um encordoamento para marcá-lo testado em quadra ou colocá-lo na fila; <span class=\"est\">†</span> assinala um valor derivado. Cada célula de nota é editável — toque nela para sobrescrever a estimativa com a sua própria avaliação.","pl":"Ten sam warsztat, druga połowa równania: to, co wkładasz <em>w</em> ramę. Przypisz sobie naciąg, aby oznaczyć go jako przetestowany na korcie lub ustawić w kolejce; <span class=\"est\">†</span> oznacza wartość wyliczoną. Każda komórka oceny jest edytowalna — dotknij jej, aby nadpisać oszacowanie własną oceną.","nl":"Dezelfde werkbank, de andere helft van de vergelijking: wat je <em>in</em> het frame zet. Claim een bespanning om haar als baangetest te markeren of in de wachtrij te zetten; <span class=\"est\">†</span> duidt een afgeleide waarde aan. Elke scorecel is bewerkbaar — tik erop om de schatting met je eigen oordeel te overschrijven.","tr":"Aynı tezgâh, denklemin diğer yarısı: kasanın <em>içine</em> koyduğunuz şey. Bir kordajı sahiplenip kortta test edildi olarak işaretleyin ya da sıraya alın; <span class=\"est\">†</span> türetilmiş bir değeri gösterir. Her puan hücresi düzenlenebilir — dokunarak tahmini kendi değerlendirmenizle değiştirin.","cs":"Stejná dílna, druhá polovina rovnice: to, co dáte <em>do</em> rámu. Přihlaste si výplet, označte ho jako testovaný na kurtu nebo ho zařaďte do fronty; <span class=\"est\">†</span> značí odvozenou hodnotu. Každá buňka hodnocení je editovatelná — klepnutím přepíšete odhad vlastním hodnocením.","uk":"Той самий стенд, друга половина рівняння: те, що ви натягуєте <em>в</em> раму. Позначте полотно як перевірене на корті або поставте його в чергу; <span class=\"est\">†</span> позначає розрахункове значення. Будь-яку клітинку оцінки можна редагувати — торкніться її, щоб замінити оцінку власною.","ko":"같은 작업대, 방정식의 나머지 절반 — 프레임 <em>안에</em> 넣는 것입니다. 스트링 베드를 내 것으로 등록해 코트 테스트 완료로 표시하거나 대기열에 넣으세요. <span class=\"est\">†</span> 는 추정값을 뜻합니다. 모든 점수 칸은 편집할 수 있습니다 — 눌러서 추정값을 직접 매긴 평가로 덮어쓰세요.","hi":"वही बेंच, समीकरण का दूसरा आधा: जो आप फ्रेम के <em>अंदर</em> लगाते हैं। किसी स्ट्रिंग बेड को अपना बताकर कोर्ट-परीक्षित चिह्नित करें या कतार में रखें; <span class=\"est\">†</span> व्युत्पन्न मान दर्शाता है। हर स्कोर सेल संपादन योग्य है — उस पर टैप करके अनुमान को अपनी रेटिंग से बदलें।"},"prio":{"de":"Die Saiten-Prioritäten stehen jetzt oben auf der Seite, neben den Rahmen-Prioritäten — von dort ranken sie diese Bank live neu.","fr":"Les priorités cordage sont désormais en haut de la page, à côté des priorités cadre — elles reclassent ce banc en direct depuis là-haut.","es":"Las prioridades de cuerda están ahora en la parte superior de la página, junto a las de raqueta — desde ahí reordenan este banco en vivo.","it":"Le priorità delle corde sono ora in cima alla pagina, accanto a quelle del telaio — da lassù riordinano questo banco in tempo reale.","sv":"Strängprioriteringarna ligger nu högst upp på sidan, bredvid ramprioriteringarna — därifrån rangordnar de den här bänken live.","ru":"Приоритеты струн теперь наверху страницы, рядом с приоритетами рам — оттуда они пересортировывают этот стенд вживую.","zh":"线材优先级现在位于页面顶部，与球拍优先级并列 —— 从那里实时重新排序本工作台。","ja":"ストリングの優先度はページ上部、ラケットの優先度の隣に移りました。そこからこのベンチをリアルタイムで並べ替えます。","pt":"As prioridades de corda estão agora no topo da página, ao lado das da raquete — daí reordenam este banco ao vivo.","pl":"Priorytety naciągu są teraz na górze strony, obok priorytetów rakiety — stamtąd na żywo przestawiają ten warsztat.","nl":"De snaarprioriteiten staan nu boven aan de pagina, naast die van het frame — van daaruit herschikken ze deze werkbank live.","tr":"Kordaj öncelikleri artık sayfanın üstünde, kasa önceliklerinin yanında — bu tezgâhı oradan canlı olarak yeniden sıralarlar.","cs":"Priority výpletu jsou teď nahoře na stránce, vedle priorit rámu — odtud tuto dílnu řadí živě.","uk":"Пріоритети струн тепер угорі сторінки, поруч із пріоритетами рам — звідти вони перевпорядковують цей стенд наживо.","ko":"스트링 우선순위는 이제 페이지 상단, 라켓 우선순위 옆에 있습니다 — 거기서 이 벤치를 실시간으로 다시 정렬합니다.","hi":"स्ट्रिंग प्राथमिकताएँ अब पृष्ठ के शीर्ष पर, रैकेट प्राथमिकताओं के बगल में हैं — वहीं से यह बेंच लाइव पुनः क्रमित होती है।"}});
 if (window.SRF_LANGS && !SRF_LANGS.some(x => x[0] === "zh-hant"))
   SRF_LANGS.splice(SRF_LANGS.findIndex(x => x[0] === "zh") + 1, 0, ["zh-hant", "繁體中文"]);
 
@@ -7048,6 +7276,7 @@ window.srfLangApply = function(){
       if (changed.length) SRF_I18N_ATTR.set(el, changed);
     });
   }
+  try { if (window.srfProseApply) srfProseApply(lang); } catch(e){}
   document.documentElement.lang = lang;
   const sel = document.getElementById("srf_langsel");
   if (sel && sel.value !== lang) sel.value = lang;
@@ -7364,7 +7593,7 @@ window.srfMethLink = function(){
 };
 /* Back to stock. Everything a member adds - custom frames, "my feel" readings,
    shelves, deletions, saved orders, sessions - lives in localStorage, never in
-   this file: the shipped bench is 155 frames and 350 beds with no user rows in
+   this file: the shipped bench is 155 frames and 354 beds with no user rows in
    it at all. So a reset is a matter of dropping those keys, not of touching the
    data. Theme, language and the chosen mode are kept, because none of them is
    something you "built" and losing them would be a surprise rather than a
@@ -7396,6 +7625,9 @@ window.srfModelSet = function(m){
   try { if (window.paintSetups4) paintSetups4(); } catch(e){}
   try { if (window.srfSeedFlags) srfSeedFlags(); } catch(e){}
   try { if (window.srfMethLead) srfMethLead(); } catch(e){}
+  /* say so on the string bench rather than leaving an inert switch */
+  try { const n = document.getElementById("sb_physnote");
+    if (n) n.hidden = (m !== "phys"); } catch(e){}
 };
 document.addEventListener("DOMContentLoaded", () => { try { srfModelSet(window.SRF_MODEL); } catch(e){} });
 
@@ -7535,6 +7767,9 @@ window.srfFullTable = () => {
   if (document.body.classList.contains("mode-pro")){
     if (window.srfNavGo) srfNavGo("rk", "chap");
   } else setMode("pro");
+  /* on a phone the chapter opens as CARDS - a button that says "full table" and
+     lands on cards is a button that did nothing (measured 2026-09-03) */
+  try { if (window.setView && window.matchMedia("(max-width:820px)").matches) setView("table"); } catch(e){}
 };
 /* Slider track colours, shared by all three benches.
    The filled half is the theme accent, but three palettes (obsidian x2, ultramarine
@@ -7943,9 +8178,72 @@ const THEMES = {
             vars:{signal:"#639C77",magenta:"#8FB89D",ultra:"#1F5233",cyan:"#7FE0A8",gold:"#E5C463",amber:"#D8B14A",bronze:"#B08A50",
                   card:"#0B1710",page:"#06100A",card2:"#0A1A0F",field:"#08140C",panel:"#0B1811",fg:"#DFEDE2",slate:"#152718",muted:"#84A88D",soft:"#B7CCBB",bright:"#EFF7F0"} },
   /* terminal phosphor on near-black — the classic. One hue, opacity does the levels. */
+  /* one tone, bright. Same single hue, inverted: paper instead of phosphor. */
+  "monoL": { light:true, label:"one tone \u00b7 pure green (bright)", mode:"ramp", low:[222,238,228], mid:[60,132,90], hi:[8,52,28], g8:0.80, g9:0.62, bg:[244,249,245], ten:"#125C36", tenFg:"#FFFFFF",
+            vars:{signal:"#4E7A60",magenta:"#1B5A38",ultra:"#CFE3D6",cyan:"#22684A",gold:"#8A6A15",amber:"#7A5A1E",bronze:"#7A4E20",
+                  card:"#FFFFFF",page:"#F4F9F5",card2:"#EAF2EC",field:"#FBFDFB",panel:"#EFF6F1",fg:"#06100A",slate:"#D5E4DA",muted:"#3F6B52",soft:"#28503A",bright:"#06100A"} },
   "matrix": { label:"matrix \u00b7 phosphor monochrome", mode:"ramp", low:[2,22,8], mid:[0,124,44], hi:[64,255,128], g8:1.06, g9:1.12, ten:"#B4FFCE", tenFg:"#02180A",
             vars:{signal:"#2E9A54",magenta:"#63C687",ultra:"#064018",cyan:"#00E653",gold:"#E5C463",amber:"#D8B14A",bronze:"#B08A50",
                   card:"#04140A",page:"#010A04",card2:"#031208",field:"#020E06",panel:"#03130A",fg:"#C9F6D6",slate:"#0A2412",muted:"#4E9E6A",soft:"#93DCAC",bright:"#E8FFEF"} },
+  /* Obsidian with optic yellow. The heat ramp is pure LUMINANCE - near-black to
+     near-white - so yellow is the only hue on the page and therefore always means
+     "look here". That also settles the collision that made this theme awkward:
+     optic yellow sits almost exactly where medal gold sits, so if the cells were
+     a yellow ramp the medals would disappear into them. Cells carry value,
+     yellow carries attention, and the two never argue.
+     Greys keep a faint green cast from the existing obsidian so the yellow reads
+     as felt rather than as acid. The label deliberately leads with "optic", not
+     "obsidian": the monochrome-twin generator keys its famDone set on the word
+     before the middot, so sharing a family word with 3.0a would make this entry
+     claim the obsidian family and stop 3.0aM - the default - from being built. Accents measured on the card surface:
+     Pale on purpose. Full-strength optic yellow (#D8F320) carries a chroma of 211
+     where the sage accents it replaces sit at 28-41, so it read as a different
+     kind of interface rather than the same one in another colour. These stops
+     hold chroma near 50 and match the sage LUMINANCE almost exactly - #C7D19B
+     against #9EBAAB, #9AA774 against #7FA894, #78855A against #5D7E70 - so the
+     accent lands with the restraint the theme already had. Contrast on card:
+     11.4, 7.1 and 4.6 to one. */
+  /* Sampled off the A\u00b3 site itself, by pixel area rather than by eye:
+       #0D1D1E card 72%   #081416 page 13%   #1C393C rule 7%
+       #E9F1F1 text        #6E8A8B subtle    #D9EA55 accent, 0.4%
+     Two things that a first pass got wrong. The subtle tone is NOT a dim yellow,
+     it is a desaturated teal (#6E8A8B) - so bright and subtle are different
+     HUES, not two stops of one. And yellow covers less than half a percent of
+     that page: it is the CTA and nothing else, which is what makes it read as
+     a signal rather than as a colour scheme.
+     Medals stay metal. Gold, silver and bronze are the one place a second hue
+     earns its keep, and turning them yellow would have made first, second and
+     third indistinguishable from every other accent on the page.
+     Heat ramp runs card -> subtle teal -> text, so the cells carry value on the
+     site's own axis and the yellow still has the page to itself. */
+  /* phosphor, bright. The terminal look on paper: ink is the hue, not the glow. */
+  "matrixL": { light:true, label:"matrix \u00b7 phosphor monochrome (bright)", mode:"ramp", low:[218,238,224], mid:[30,120,64], hi:[2,44,20], g8:0.80, g9:0.62, bg:[243,250,245], ten:"#0A5C28", tenFg:"#FFFFFF",
+            vars:{signal:"#43775A",magenta:"#0A5C28",ultra:"#CBE6D4",cyan:"#17693A",gold:"#8A6A15",amber:"#7A5A1E",bronze:"#7A4E20",
+                  card:"#FFFFFF",page:"#F3FAF5",card2:"#E8F4EC",field:"#FAFDFB",panel:"#EEF7F1",fg:"#02180A",slate:"#D2E8D9",muted:"#3B6B4B",soft:"#245038",bright:"#02180A"} },
+  "opticA": { label:"a\u00b3 \u00b7 brand yellow", mode:"ramp", low:[20,34,36], mid:[110,138,139], hi:[233,241,241], g8:1.04, g9:1.09, ten:"#D9EA55", tenFg:"#0D1D1E",
+            vars:{signal:"#40595A",magenta:"#D9EA55",ultra:"#1C393C",cyan:"#6E8A8B",gold:"#E5C463",amber:"#C9D2D4",bronze:"#B08A50",
+                  card:"#0D1D1E",page:"#081416",card2:"#102122",field:"#0A1819",panel:"#0E1F20",fg:"#E9F1F1",slate:"#1C393C",muted:"#6E8A8B",soft:"#B9C4C4",bright:"#E9F1F1"} },
+  /* the first cut: full-strength optic yellow, chroma 211. Loud on purpose. */
+  /* a\u00b3 brand, bright. The accent must darken hard: #D9EA55 on white is 1.6:1,
+     unreadable, so the bright twin carries the same hue at ink weight (#6F7C10,
+     4.6:1) and keeps the yellow itself only for fills that hold dark text. */
+  "opticAL": { light:true, label:"a\u00b3 \u00b7 brand yellow (bright)", mode:"ramp", low:[224,235,235], mid:[110,138,139], hi:[13,29,30], g8:0.80, g9:0.62, bg:[244,248,248], ten:"#D9EA55", tenFg:"#0D1D1E",
+            vars:{signal:"#7C8E8F",magenta:"#6F7C10",ultra:"#E3EFB8",cyan:"#3E5657",gold:"#8A6A15",amber:"#5C6A6C",bronze:"#7A4E20",
+                  card:"#FFFFFF",page:"#F4F8F8",card2:"#EAF1F1",field:"#FBFDFD",panel:"#EFF5F5",fg:"#0D1D1E",slate:"#D8E2E2",muted:"#4A6062",soft:"#2C4244",bright:"#0D1D1E"} },
+  "opticF": { label:"full optic \u00b7 court yellow", mode:"ramp", low:[18,22,21], mid:[122,131,128], hi:[242,244,242], g8:1.04, g9:1.09, ten:"#D8F320", tenFg:"#0E1614",
+            vars:{signal:"#7F901C",magenta:"#D8F320",ultra:"#2A3320",cyan:"#A8BF2E",gold:"#D8F320",amber:"#A8BF2E",bronze:"#7F901C",
+                  card:"#0E1614",page:"#07100F",card2:"#111A17",field:"#0B1311",panel:"#101815",fg:"#F2F4F2",slate:"#1C2523",muted:"#8A9691",soft:"#C3CBC7",bright:"#F2F4F2"} },
+  /* full optic, bright. */
+  "opticFL": { light:true, label:"full optic \u00b7 court yellow (bright)", mode:"ramp", low:[226,234,224], mid:[118,128,120], hi:[14,22,20], g8:0.80, g9:0.62, bg:[246,248,244], ten:"#D8F320", tenFg:"#0E1614",
+            vars:{signal:"#7E8A7E",magenta:"#5E6B0A",ultra:"#E4F0B4",cyan:"#3A4038",gold:"#8A6A15",amber:"#6B7358",bronze:"#7A4E20",
+                  card:"#FFFFFF",page:"#F6F8F4",card2:"#ECF0E8",field:"#FBFCFA",panel:"#F1F4EE",fg:"#0E1614",slate:"#DDE2DC",muted:"#4E5852",soft:"#2E362F",bright:"#0E1614"} },
+  "optic": { label:"optic \u00b7 pale yellow on obsidian", mode:"ramp", low:[18,22,21], mid:[122,131,128], hi:[242,244,242], g8:1.04, g9:1.09, ten:"#CFD8A4", tenFg:"#0E1614",
+            vars:{signal:"#78855A",magenta:"#C7D19B",ultra:"#2A3320",cyan:"#9AA774",gold:"#CFD8A4",amber:"#9AA774",bronze:"#78855A",
+                  card:"#0E1614",page:"#07100F",card2:"#111A17",field:"#0B1311",panel:"#101815",fg:"#F2F4F2",slate:"#1C2523",muted:"#8A9691",soft:"#C3CBC7",bright:"#F2F4F2"} },
+  /* pale optic, bright. */
+  "opticL": { light:true, label:"optic \u00b7 pale yellow on obsidian (bright)", mode:"ramp", low:[226,232,222], mid:[120,132,124], hi:[14,22,20], g8:0.80, g9:0.62, bg:[246,248,243], ten:"#C7D19B", tenFg:"#0E1614",
+            vars:{signal:"#7F8C82",magenta:"#5A6533",ultra:"#E2E9C8",cyan:"#42504A",gold:"#8A6A15",amber:"#6B7358",bronze:"#7A4E20",
+                  card:"#FFFFFF",page:"#F6F8F3",card2:"#ECF0E7",field:"#FBFCFA",panel:"#F1F4EC",fg:"#0E1614",slate:"#DEE2DB",muted:"#4F5C55",soft:"#303830",bright:"#0E1614"} },
   "1.0a": { label:"cyan · vivid",        mode:"ramp",  low:[5,45,49],   mid:[2,164,179],  hi:[150,251,255], g8:1.05, g9:1.10, ten:"#ed2867", tenFg:"#ffffff",
             vars:{signal:"",magenta:"#ed2867",ultra:"#00566b",cyan:"#00e9fe",gold:"#ffb400",amber:"#fead00",bronze:"#c77b3b",
                   card:"#0d1d1e",page:"#071112",card2:"#0a1f1c",field:"#0a1917",panel:"#0c1e1b",fg:"#d7e4e5",slate:"#16222F",muted:"#7fa8ab",soft:"#b8c9ca",bright:"#eef6f6"} },
@@ -8082,7 +8380,10 @@ const THEMES = {
   src.forEach(([k, v]) => {
     out.push([k, v]);
     if (pend[k]){ out.push(...pend[k]); delete pend[k]; }
-    if (k.endsWith("L") || k === "mono" || k === "matrix") return;
+    /* already monochrome by construction - a twin of these is the same theme
+       with a duller ramp, so the picker would carry a pointless near-duplicate */
+    if (k.endsWith("L") || k === "mono" || k === "matrix"
+        || k === "optic" || k === "opticA" || k === "opticF") return;
     const fam = String(v.label).split("\u00b7")[0].trim();
     if (famDone.has(fam)) return;
     famDone.add(fam);
@@ -8190,51 +8491,70 @@ function cellColorBase(v){
   return [`rgb(${c[0]},${c[1]},${c[2]})`, lum > 0.45 ? "#0a1020" : "#e8edff"];
 }
 
-/* Every theme's scale bunched up somewhere: measured across all twenty, the weakest
-   adjacent step was 10 RGB units (wimbledon 1->2) and five modes sat under 22. Half the
-   scale then reads as one block — survivable on a bright desktop panel, not on a phone.
-   This pulls each score onto an evenly spaced LUMINANCE curve at half strength. Hue and
-   the desaturated character are untouched; only the lightness spacing evens out. The 10
-   keeps its own dedicated colour and is never touched. The ink is kept unless the new
-   background would drop it below 4.5:1, in which case it flips to whichever reads. */
+/* ---------- the heat ramp, second generation (Alexey 2026-09-03: "too bright") -------
+   The first wrapper evened the LUMINANCE of each theme's ramp at half strength and then
+   multiplied RGB up — which is exactly why an 8 and a 9 on the default obsidian theme
+   arrived as near-white slabs: multiplying a pale green toward "want" clips the channels
+   and the hue drains out. Measured on 3.0aM the 9 sat at 93 % lightness; a wall of them
+   glared and the whole scale read as grey→white with no colour in it.
+   This one works in OKLCH, the perceptual space, and takes only the theme's OWN three
+   stops (low / mid / hi) for hue and chroma — never the bg-dampened cells, whose hue
+   drifts toward the page (the clay theme went olive that way). Rules, all themes at once:
+     · lightness runs on an even curve from 24 % (1) to 74 % (9) on dark themes and
+       from 92 % down to 42 % on bright twins — a 9 is never white, a 1 never black
+     · chroma RISES toward the top and peaks at 8–9, so a high score reads as the
+       theme's colour at full strength rather than as a light tint of it
+     · out-of-gamut colours give up chroma, never hue (channel clamping shifts hue)
+     · ink is whichever of the two inks actually wins WCAG against that exact cell
+   The 10 keeps its own token and is never touched; tier/duo/blend/trio palettes
+   separate by hue and are left exactly as designed, as before. */
+const SRF_OK = (() => {
+  const srgb2lin = c => { c /= 255; return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); };
+  const lin2srgb = c => { c = c <= 0.0031308 ? 12.92 * c : 1.055 * Math.pow(c, 1 / 2.4) - 0.055; return Math.max(0, Math.min(255, Math.round(c * 255))); };
+  const toLCH = rgb => { const [r, g, b] = rgb.map(srgb2lin);
+    const l = Math.cbrt(0.4122214708*r + 0.5363325363*g + 0.0514459929*b), m = Math.cbrt(0.2119034982*r + 0.6806995451*g + 0.1073969566*b), s = Math.cbrt(0.0883024619*r + 0.2817188376*g + 0.6299787005*b);
+    const L = 0.2104542553*l + 0.7936177850*m - 0.0040720468*s, A = 1.9779984951*l - 2.4285922050*m + 0.4505937099*s, B = 0.0259040371*l + 0.7827717662*m - 0.8086757660*s;
+    return [L, Math.hypot(A, B), Math.atan2(B, A)]; };
+  const okLin = (L, a, b) => { const l_ = L + 0.3963377774*a + 0.2158037573*b, m_ = L - 0.1055613458*a - 0.0638541728*b, s_ = L - 0.0894841775*a - 1.2914855480*b;
+    const l = l_*l_*l_, m = m_*m_*m_, s = s_*s_*s_;
+    return [4.0767416621*l - 3.3077115913*m + 0.2309699292*s, -1.2684380046*l + 2.6097574011*m - 0.3413193965*s, -0.0041960863*l - 0.7034186147*m + 1.7076147010*s]; };
+  const fromLCH = (L, C, h) => { let k = 1, lin;
+    for (let i = 0; i < 12; i++){ lin = okLin(L, C*k*Math.cos(h), C*k*Math.sin(h)); if (lin.every(x => x >= -0.0005 && x <= 1.0005)) break; k *= 0.82; }
+    return lin.map(x => lin2srgb(Math.max(0, Math.min(1, x)))); };
+  const hueLerp = (h1, h2, t) => { let d = h2 - h1; if (d > Math.PI) d -= 2*Math.PI; if (d < -Math.PI) d += 2*Math.PI; return h1 + d*t; };
+  return { toLCH, fromLCH, hueLerp };
+})();
 function cellColor(v){
   const base = cellColorBase(v);
-  /* Ramp themes only. The tier/duo/blend/trio palettes separate their scores by HUE,
-     not by lightness — measured, forcing an even luminance curve on them made things
-     WORSE (tier 15 -> 10, duo 15 -> 11), so they are left exactly as designed. */
-  const md = THEMES[THEME].mode;
-  if (v >= 10 || (md && md !== "ramp")) return base;
-  /* must handle BOTH forms: the ramp returns rgb(...) but the ink constants are hex.
-     A digits-only regex turns "#0a1020" into [0,1020] and the contrast guard then
-     mis-fires — that is exactly what happened on the first attempt. */
+  const T = THEMES[THEME], md = T.mode;
+  if (v >= 10 || (md && md !== "ramp") || !T.low || !T.mid || !T.hi) return base;
   const px = s => { s = String(s).trim();
     if (s[0] === "#"){ let q = s.slice(1);
       if (q.length === 3) q = q.split("").map(x => x + x).join("");
       return [0,2,4].map(i => parseInt(q.substr(i,2), 16)); }
     const m = s.match(/[\d.]+/g); return m ? m.slice(0,3).map(Number) : [0,0,0]; };
-  /* TWO luminance measures, on purpose. The flat one drives the SPACING: it is the one
-     the ramp was tuned against, and swapping it for the gamma curve blew the middle of
-     the scale out to clipping (values 2..6 all hit 255 green). The gamma-correct one is
-     WCAG's and drives only the INK decision, where the flat version picks wrong. */
-  const L = q => (0.2126*q[0] + 0.7152*q[1] + 0.0722*q[2]) / 255;
   const Lw = q => { const s = q.map(x => x/255).map(x => x <= 0.03928 ? x/12.92 : Math.pow((x+0.055)/1.055, 2.4));
                     return 0.2126*s[0] + 0.7152*s[1] + 0.0722*s[2]; };
   const cr = (a,b) => { const A=Lw(a), B=Lw(b); return (Math.max(A,B)+0.05)/(Math.min(A,B)+0.05); };
-  const c0 = px(base[0]), L1 = L(px(cellColorBase(1)[0])), L9 = L(px(cellColorBase(9)[0]));
-  const want = L1 + (L9 - L1) * Math.pow((v-1)/8, 0.85);
-  const have = L(c0) || 0.001;
-  const f = 1 + (want/have - 1) * 0.5;
-  const c = c0.map(x => Math.max(0, Math.min(255, Math.round(x * f))));
-  const bg = `rgb(${c[0]},${c[1]},${c[2]})`;
-  let ink = base[1];
-  if (cr(c, px(ink)) < 4.5){
-    /* pick the ink that actually wins against this exact background, rather than
-       guessing from a luminance threshold — at value 5 the threshold re-chose the
-       same failing light ink and left the cell at 3.81:1 */
-    const dark = "#0a1020", light = "#e8edff";
-    ink = cr(c, px(dark)) >= cr(c, px(light)) ? dark : light;
+  const lo = SRF_OK.toLCH(T.low), mid = SRF_OK.toLCH(T.mid), hi = SRF_OK.toLCH(T.hi);
+  const light = !!T.light, t = (Math.max(1, Math.min(9, v)) - 1) / 8;   // physics hands out half steps; they land between the integers
+  const Ltop = light ? 0.42 : 0.74, Lbot = light ? 0.92 : 0.24;
+  const L = Lbot + (Ltop - Lbot) * Math.pow(t, 0.9);
+  const Cmax = Math.max(lo[1], mid[1], hi[1], 0.06) * 1.35;
+  const C = 0.02 + (Cmax - 0.02) * Math.sin(Math.min(1, t / 0.85) * Math.PI / 2);
+  const h = t < 0.625 ? SRF_OK.hueLerp(lo[2], mid[2], t / 0.625) : SRF_OK.hueLerp(mid[2], hi[2], (t - 0.625) / 0.375);
+  const dark = "#0a1020", lightInk = "#e8edff", D = px(dark), W = px(lightInk);
+  /* the crossover: around 50 % lightness NEITHER ink reaches 4.5:1 on a saturated
+     cell (measured: 73 of 798 cells, all between 6 and 7, all in the vivid families).
+     Step the cell away from the crossover - a little less chroma, a little more
+     distance in lightness - until the better ink passes. Neighbours 5 and 7 sit
+     0.06 L away, so the order of the scale survives the nudge. */
+  let c = SRF_OK.fromLCH(L, C, h), ink = cr(c, D) >= cr(c, W) ? dark : lightInk;
+  for (let i = 0, L2 = L, C2 = C; i < 10 && cr(c, px(ink)) < 4.5; i++){
+    L2 += (ink === dark ? 0.012 : -0.012); C2 *= 0.88;
+    c = SRF_OK.fromLCH(L2, C2, h); ink = cr(c, D) >= cr(c, W) ? dark : lightInk;
   }
-  return [bg, ink];
+  return [`rgb(${c[0]},${c[1]},${c[2]})`, ink];
 }
 
 function perfCurve(vals, w, h){
@@ -9748,14 +10068,14 @@ function buildGrid(){
       `<button type="button" class="${SEL.get(i)===-1?"on":""}" aria-label="rank ${cats[i]} highest first" aria-pressed="${SEL.get(i)===-1}" onclick="event.stopPropagation();SD(${i},-1)">\u25B2</button>`+
       `<button type="button" class="${SEL.get(i)===1?"on":""}" aria-label="rank ${cats[i]} lowest first" aria-pressed="${SEL.get(i)===1}" onclick="event.stopPropagation();SD(${i},1)">\u25BC</button></span>`;
   const cols = cats.map((c,i)=>`<div role="columnheader" aria-sort="${SEL.has(i)?(SEL.get(i)===-1?"descending":"ascending"):"none"}" class="hdr${SEL.has(i)?" on":""}${SEL.get(i)===1?" low":""}" data-i="${i}" data-label="${c}" tabindex="0" onclick="S(${i})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();S(${i});}" title="rank by ${c} — Enter to toggle" style="--d:${(i*0.21).toFixed(2)}s;animation-delay:${(i*0.21).toFixed(2)}s">${catsShort[i]}${dirs(i)}</div>`).join("");
-  let h = `<div role="table" aria-label="racket bench — 11 axes, difficulty and price" style="display:grid;grid-template-columns:minmax(274px,1fr) 34px 62px 160px repeat(11,46px) 52px 58px;gap:2px;background:var(--page);font-size:12.5px;">` +
+  let h = `<div role="table" aria-label="racket bench — 11 axes, difficulty and price" style="display:grid;grid-template-columns:minmax(274px,1fr) 34px 62px 160px repeat(11,46px) 66px 66px;gap:2px;background:var(--page);font-size:12.5px;">` +
     `<div class="namecell"></div>` +
     `<div class="spdcell" aria-hidden="true"></div>` +
     `<div class="hdr price pricecell${sortIdx==="p"?" on":""}" data-i="p" data-label="Ø price" onclick="S('p')" title="rank by average price" style="--d:1.6s;animation-delay:1.6s">Ø price</div>` +
     `<div class="hdr curvecell" data-label="curve" title="overall profile across all eleven axes" style="--d:1.5s;animation-delay:1.5s;color:var(--cyan);">curve</div>` +
     cols +
-    `<div class="hdr diff${sortIdx==="d"?" on":""}" data-i="d" data-label="Difficulty" onclick="S('d')" title="rank by difficulty" style="--d:${(cats.length*0.21).toFixed(2)}s;animation-delay:${(cats.length*0.21).toFixed(2)}s">Difficulty</div>`;
-  h += `<div class="hdr ovh${sortIdx==="ov"?" on":""}" data-i="ov" data-label="Overall" tabindex="0" ` +
+    `<div class="hdr diff${sortIdx==="d"?" on":""}" role="columnheader" data-i="d" data-label="Difficulty" onclick="S('d')" title="rank by difficulty" style="--d:${(cats.length*0.21).toFixed(2)}s;animation-delay:${(cats.length*0.21).toFixed(2)}s">Difficulty</div>`;
+  h += `<div class="hdr ovh${sortIdx==="ov"?" on":""}" role="columnheader" data-i="ov" data-label="Overall" tabindex="0" ` +
     `onclick="S('ov')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();S('ov');}" ` +
     `title="rank by overall weighted score \u2014 the same number the ranking below uses, following your sliders" ` +
     `style="--d:${(cats.length*0.21+0.2).toFixed(2)}s;animation-delay:${(cats.length*0.21+0.2).toFixed(2)}s;color:var(--cyan);text-align:center;">Overall</div>`;
@@ -10029,7 +10349,7 @@ function openAddPanel(){
     // would recurse until the stack blew.
     fillFromSpecs(known.key);
     document.getElementById("addPanel").classList.add("open");
-    document.getElementById("af_name").focus();
+    srfPanelReveal("addPanel", "af_name");
     return;
   }
   if(raw){
@@ -10038,7 +10358,7 @@ function openAddPanel(){
     document.getElementById("af_name").value  = parts.slice(1).join(" ")||raw;
   }
   document.getElementById("addPanel").classList.add("open");
-  document.getElementById("af_name").focus();
+  srfPanelReveal("addPanel", "af_name");
 }
 function closeAddPanel(){ document.getElementById("addPanel").classList.remove("open"); }
 function addResearched(){
@@ -10766,7 +11086,7 @@ window.useSpecs = (key) => {
   // overwriting the frame the user actually picked from a family or spec card.
   fillFromSpecs(key);
   document.getElementById("addPanel").classList.add("open");
-  document.getElementById("af_name").focus();
+  srfPanelReveal("addPanel", "af_name");
 };
 function updateMeta(){
   const el = document.getElementById("searchMeta");
@@ -11510,7 +11830,7 @@ window.cOpen = (no) => {
   C_AUTO = { w: "", sw: "", bal: "" };
   const ah = document.getElementById("c_autohint"); if (ah) ah.innerHTML = "";
   cPreview();
-  document.getElementById("c_text").focus();
+  srfPanelReveal("c_panel", "c_text");
 };
 window.cClose = () => { document.getElementById("c_panel").classList.remove("open"); cNo=null; };
 window.cSave = () => {
@@ -11604,6 +11924,7 @@ window.fOpen = (no) => {
     `<span class="fp_stock">stock ${base.s[i]}</span></div>`).join("");
   document.querySelectorAll("#f_rows .a3-slider").forEach(el => fRowPaint(el, true));
   document.getElementById("f_panel").classList.add("open");
+  srfPanelReveal("f_panel", null);
 };
 window.fRowPaint = (el, initOnly) => {
   const t = window.srfTrackColors(false);
@@ -12220,6 +12541,21 @@ const beds = [
   {m:"BABOLAT Syn Gut 1.30", x:"YONEX Poly Tour Air 1.25", s:[5,9,6,6,7,6,6,8], tag:"ref", est:ALL},
   {m:"WILSON Natural Gut 1.30", x:"WILSON Revolve Spin", s:[5,8,4,6,8,6,8,8], tag:"ref", est:ALL},
   {m:"LUXILON Natural Gut 1.30", x:"BABOLAT Syn Gut 1.30", s:[4,9,4,5,8,6,8,9], tag:"ref", est:ALL},
+  /* Alexey 2026-09-03: SOLINCO Barb Wire, the reference bed plus three crosses.
+     Every vector below was produced by sbEstimate() from the new lab row and the
+     tension written in mt/ct - none of it typed by hand. The three crosses are the
+     snapback argument, coarse to fine: a textured, ridged main needs a SLICK ROUND
+     cross to slide against, and the three chosen ones differ where it matters, in
+     dynamic stiffness - Sync 200 (softest, most arm), Confidential 215 (the
+     same-brand middle), ALU Power 225 (firmest, most control, least feel).
+     The Confidential pairing lands on the same derived vector as KIRSCHBAUM Max
+     Power Rough as a full bed, so it carries the twin chip rather than an invented
+     difference. */
+  {m:"SOLINCO Barb Wire 1.25", x:"full bed",                  s:[9,6,8,8,5,7,3,4], mt:"23",            tag:"ref", est:ALL},
+  {m:"SOLINCO Barb Wire 1.25", x:"RESTRING Sync",             s:[9,5,9,9,5,7,4,5], mt:"25", ct:"23",   tag:"ref", est:ALL},
+  {m:"SOLINCO Barb Wire 1.25", x:"SOLINCO Confidential 1.25", s:[9,6,8,8,5,7,4,4], mt:"24", ct:"22",   tag:"ref", est:ALL,
+   twin:"KIRSCHBAUM Max Power Rough 1.25"},
+  {m:"SOLINCO Barb Wire 1.25", x:"LUXILON ALU Power 1.25",    s:[9,6,9,8,4,7,3,4], mt:"24", ct:"22",   tag:"ref", est:ALL},
 ];
 const PRESETS = { spin:[10,8,6,6,5,2,2,3], dura:[5,5,7,7,3,2,10,5], arm:[5,5,6,6,5,2,3,10], flat:[5,5,5,5,5,5,5,5], touch:[3,5,6,6,10,7,4,7] };
 let w = PRESETS.spin.slice();
@@ -12252,7 +12588,7 @@ const SBG={ mine:["var(--magenta)","my beds — currently strung"], benchmark:["
 const SBORDER=["researched","mine","benchmark","validated","tested","queued","ref"];   // researched leads, before my beds
 const SBSEL = new Map();   // axis -> -1 (want it high) | +1 (want it low)
 let SBDIR = -1;            // direction for the single-column sorts (index, price, demand)
-function sbSelScore(b){ let t=0; SBSEL.forEach((d,i)=> t += (d===-1 ? b.s[i] : -b.s[i])); return t; }
+function sbSelScore(b){ const a=(window.srfSbAxes ? srfSbAxes(b) : b.s)||b.s; let t=0; SBSEL.forEach((d,i)=>{ const v=a[i]==null?0:a[i]; t += (d===-1 ? v : -v); }); return t; }
 const gkey=b=>SBG[b.tag]?b.tag:"ref";
 // demand: how much the bed asks of the player — stiff poly, thin gauge and high tension are demanding;
 // gut and multifilament are forgiving. 1 = plays itself, 10 = punishing.
@@ -12756,7 +13092,7 @@ function sbOpenAddPanel(){
   if (mq && xq && (SBMODE === "hybrid" || !raw)){
     document.getElementById("sb_addPanel").classList.add("open");
     sbPrefill(mq, xq);
-    document.getElementById("sb_af_m").focus();
+    srfPanelReveal("sb_addPanel", "sb_af_m");
     return;
   }
   const q = raw || mq || xq;
@@ -12789,7 +13125,7 @@ function sbOpenAddPanel(){
     srfLiveLookup(q);
   }
   document.getElementById("sb_addPanel").classList.add("open");
-  document.getElementById("sb_af_m").focus();
+  srfPanelReveal("sb_addPanel", "sb_af_m");
 }
 function sbCloseAddPanel(){ document.getElementById("sb_addPanel").classList.remove("open"); }
 function sbAddResearched(){
@@ -13082,6 +13418,7 @@ window.sbFOpen = (i) => {
     `<span class="fp_stock">stock ${base.s[k]}</span></div>`).join("");
   document.querySelectorAll("#sb_f_rows .a3-slider").forEach(el => fRowPaint(el, true));
   document.getElementById("sb_f_panel").classList.add("open");
+  srfPanelReveal("sb_f_panel", null);
 };
 window.sbFClose = () => { document.getElementById("sb_f_panel").classList.remove("open"); sbFKey = null; };
 window.sbFSave = () => {
@@ -13204,7 +13541,7 @@ window.sbGroupView = () => { sortIdx = (sortIdx === "g" ? null : "g"); SBSEL.cle
 function buildGrid(){
   const tot=w.reduce((a,b)=>a+b,0)||1;
   beds.forEach((b,i)=>{ b.i=i; b.no=i+1; });
-  let scored=beds.filter(b => !window.srfIsDel || !srfIsDel("string", b)).map(b=>({...b, idx:srfWScore(b.s, w)}));
+  let scored=beds.filter(b => !window.srfIsDel || !srfIsDel("string", b)).map(b=>({...b, idx:srfWScore(srfSbAxes(b), w)}));
   if (window.srfColPaint) srfColPaint("string", scored);
   if (window.SRF_COLF && SRF_COLF.string) scored = scored.filter(b => srfColOf("string", b).indexOf(SRF_COLF.string) >= 0);
   if(SBSEL.size){ scored.sort((a,b)=> sbSelScore(b)-sbSelScore(a)); }
@@ -13219,7 +13556,8 @@ function buildGrid(){
   else if(sortIdx==="idx") scored.sort((a,b)=>SBDIR*(a.idx-b.idx));
   else if(sortIdx==="p")  scored.sort((a,b)=>SBDIR*((bedPrice(a)?bedPrice(a).v:0)-(bedPrice(b)?bedPrice(b).v:0)));
   else if(sortIdx==="d")  scored.sort((a,b)=>SBDIR*(bedDemand(a)-bedDemand(b)));
-  else scored.sort((a,b)=>SBDIR*(a.s[sortIdx]-b.s[sortIdx]));
+  else { const ax=(b,i)=>{ const v=(srfSbAxes(b)||b.s)[i]; return v==null ? -1 : v; };   // blanks sink in physics view
+    scored.sort((a,b)=>SBDIR*(ax(a,sortIdx)-ax(b,sortIdx))); }
   if(typeof sbQ!=="undefined" && sbQ) scored=scored.filter(b=>sbMatches(b,sbQ));
   /* the racket bench's search rule, mirrored: a query with no chosen sort leads
      with the new highest overall (idx IS the weighted score, computed above) */
@@ -13266,13 +13604,13 @@ function buildGrid(){
   const sbBudgetI = sbBudget && sbBudget.bed.i != null && sbBudget.bed.i >= 0 ? sbBudget.bed.i : null;
   const SB_EURO = `<span class="medal" style="background:linear-gradient(135deg,var(--amber),#8a6a28);" title="your budget pick — same as your suggestions">€</span>`;
   const sbBandOf = b => { try { return srfBandOf("string", b, b.i); } catch(e){ return null; } };
-  let h=`<div role="table" aria-label="string bench — 8 axes, demand and price" style="display:grid;grid-template-columns:minmax(274px,1fr) 34px 62px 160px repeat(8,46px) 52px 56px;gap:2px;background:var(--page);font-size:12.5px;">`+
+  let h=`<div role="table" aria-label="string bench — 8 axes, demand and price" style="display:grid;grid-template-columns:minmax(274px,1fr) 34px 62px 160px repeat(8,46px) 66px 66px;gap:2px;background:var(--page);font-size:12.5px;">`+
     `<div class="sbhdr namecell"></div>`+
     `<div class="spdcell" aria-hidden="true"></div>`+
     `<div class="sbhdr pricecell" data-i="p" data-label="Ø price" onclick="sbS('p')" title="rank by price per bed" style="--d:1.5s;animation-delay:1.5s;color:var(--amber);">Ø price</div>`+
     `<div class="sbhdr curvecell" data-label="curve" title="overall profile across all eight axes" style="--d:1.3s;animation-delay:1.3s;color:var(--cyan);">curve</div>` +
     SHORT.map((c,i)=>`<div role="columnheader" aria-sort="${SBSEL.has(i)?(SBSEL.get(i)===-1?"descending":"ascending"):"none"}" class="sbhdr${SBSEL.has(i)?" on":""}${SBSEL.get(i)===1?" low":""}" data-i="${i}" data-label="${AX[i]}" tabindex="0" onclick="sbS(${i})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();sbS(${i});}" title="rank by ${AX[i]} — Enter to toggle" style="--d:${(i*0.21).toFixed(2)}s;animation-delay:${(i*0.21).toFixed(2)}s">${c}<span class="dirs"><button type="button" class="${SBSEL.get(i)===-1?"on":""}" aria-label="rank ${AX[i]} highest first" aria-pressed="${SBSEL.get(i)===-1}" onclick="event.stopPropagation();sbSD(${i},-1)">\u25B2</button><button type="button" class="${SBSEL.get(i)===1?"on":""}" aria-label="rank ${AX[i]} lowest first" aria-pressed="${SBSEL.get(i)===1}" onclick="event.stopPropagation();sbSD(${i},1)">\u25BC</button></span></div>`).join("")+
-    `<div class="sbhdr" data-i="d" data-label="Demand" onclick="sbS('d')" title="rank by how demanding the bed is" style="--d:1.4s;animation-delay:1.4s;color:var(--magenta-fg,var(--magenta));">Demand</div>` +
+    `<div class="sbhdr" role="columnheader" data-i="d" data-label="Demand" onclick="sbS('d')" title="rank by how demanding the bed is" style="--d:1.4s;animation-delay:1.4s;color:var(--magenta-fg,var(--magenta));">Demand</div>` +
     `<div class="sbhdr idxh${sortIdx==="idx"?" on":""}" data-i="idx" data-label="Index" onclick="sbS('idx')" title="rank by weighted index" style="--d:1.7s;animation-delay:1.7s">Index</div>`;
   
 
@@ -13299,7 +13637,12 @@ function buildGrid(){
     const pr=bedPrice(b);
     h+=`<div role="cell" class="pricecell" style="display:flex;align-items:center;justify-content:center;">${pr?`<span style="color:var(--amber);font-weight:600;font-size:11.5px;">${pr.own?"":"~"}${pr.v}<span style="font-size:9px;font-weight:400;">€</span></span>`:`<span style="color:var(--fg);opacity:.55;font-size:11px;">—</span>`}</div>`;
     h+=`<div role="cell" class="curvecell" style="display:flex;align-items:center;justify-content:center;">${sbPerfCurve(b.s,200,44)}</div>`;
-    b.s.forEach((v,i)=>{
+    /* physics view: what the lab row can compute - and an honest blank where it cannot */
+    (srfSbAxes(b)||b.s).forEach((v,i)=>{
+      if (v == null){
+        h+=`<div role="cell" class="cell nocell" data-cat="${AX[i]}" title="${esc(AX[i])} \u2014 not derivable from a lab sheet: ${i===3?"precision is the player's hand on the frame":"nobody publishes a sound measurement"}">\u2014</div>`;
+        return;
+      }
       const [bg,fg]=cellColor(v);
       const ring = SBSEL.has(i) ? `box-shadow:inset 0 0 0 1.5px ${SBSEL.get(i)===1?"var(--magenta)":"var(--cyan)"};` : "";
       const est  = (b.est||[]).includes(i) ? `<span class="est" title="re-derived for this rebuild">†</span>` : "";
@@ -13573,7 +13916,8 @@ function sbMobileCards(rows, total){
     return;
   }
   el.innerHTML = window.srfLimitBar("string", total || rows.length, "sbLimSet") + rows.map((b,n)=>{
-    const grid = b.s.map((v,i)=>{ const [bg,fg]=cellColor(v);
+    const grid = (srfSbAxes(b)||b.s).map((v,i)=>{ if (v == null) return `<div class="scell nocell" title="${esc(AX[i])} \u2014 not derivable from a lab sheet"><i>${AXshort[i]}</i><b>\u2014</b></div>`;
+      const [bg,fg]=cellColor(v);
       return `<div class="scell${b.baseS&&b.baseS[i]!==v?" mycell":""}" role="button" tabindex="0"         title="${esc(AX[i])} ${v}/10 — tap to set your own"         onclick="srfScorePop('string',${b.i},${i},event)"         style="position:relative;background:${bg};color:${fg};"><i>${AXshort[i]}</i><b>${v}</b>        ${b.baseS&&b.baseS[i]!==v?`<i class="stckv" title="estimated: ${b.baseS[i]}">${b.baseS[i]}</i>`:b.feel&&b.stockS&&b.stockS[i]!==v?`<i class="stckv" title="stock: ${b.stockS[i]}">${b.stockS[i]}</i>`:""}</div>`; }).join("")
       + `<div class="scell tri"><i>Dem</i>${sbDiffCell(bedDemand(b),false).match(/<svg.*<\/svg>/s)[0]}</div>`;
     const pr=bedPrice(b);
@@ -13914,6 +14258,13 @@ const NERD=[
   ["Durafluxx","TIER ONE","co-poly","hexagonal","1.20 / 1.25 / 1.30",225,"very low","low","14–17","14–20 h"],
   ["Tour Status","TIER ONE","co-poly","octagonal","1.20 / 1.25 / 1.30",205,"very low","low–mid","14–17","12–18 h"],
   ["Lux Supreme","TIER ONE","multifilament","round","1.25 / 1.30",130,"moderate","high","15–18","10–16 h"],
+  /* Alexey 2026-09-03. Solinco's own listing calls it a textured and ridged poly, sold
+     16 / 16L / 17 and pitched on spin AND durability - so the profile is the twisted
+     ridge, not a cut polygon, and the lifespan band sits with Mach 10 rather than with
+     the shaved shaped strings. Stiffness, loss and return are the SOLINCO co-poly class
+     (Confidential 215, Mach 10 220): typical published values like every row here, not a
+     Percept measurement of this exact string. */
+  ["Barb Wire","SOLINCO","co-poly","twisted (ridged)","1.20 / 1.25 / 1.30",215,"mid–high","low","14–17","8–12 h"],
 ];
 const NHEAD=["string","brand","material","profile","gauges (mm)","stiffness<br>lb/in","tension<br>loss","energy<br>return","€ / set","lifespan"];
 let nerdSort=5, nerdDesc=false;   // default: softest first
@@ -14044,10 +14395,12 @@ buildPrimer(); buildNerd();
 window.SRF = window.SRF || {};
 window.SRF.sbWeights = () => w.slice();
 window.SRF.bedFull = (i) => { const b = beds[i]; if(!b) return null;
-  return { i, m:b.m, x:b.x, s:b.s.slice(), axes:AX.slice(), mt:b.mt, ct:b.ct,
+  /* follows the model switch like SRF.frameFull's consumers do; the two axes physics
+     leaves blank borrow the scored value so the calibrator's chips never read "null" */
+  const ax = (window.srfSbAxes ? srfSbAxes(b) : b.s) || b.s;
+  return { i, m:b.m, x:b.x, s:ax.map((v,k)=> v==null ? b.s[k] : v), sAx:ax.slice(), axes:AX.slice(), mt:b.mt, ct:b.ct,
            demand:bedDemand(b),
-           idx:(function(){ const tw=w.reduce((x,y)=>x+y,0)||1;   // the string closure's own weights
-                            return b.s.reduce((x,v,i)=>x+v*w[i],0)/tw; })(),
+           idx:srfWScore(ax, w),   // the string closure's own weights; blanks are skipped, not zeroed
            price:(bedPrice(b)? (bedPrice(b).own?"":"~")+bedPrice(b).v+"\u20ac" : "") }; };
 window.SRF.beds = () => beds.map((b,i)=>({ i, m:b.m, x:b.x, tag:b.tag,
   g:gkey(b), gcolor:(SBG[gkey(b)]||SBG.ref)[0], glabel:(SBG[gkey(b)]||SBG.ref)[1] }));
@@ -15934,8 +16287,8 @@ window.srfDeptGo = function(d, opts){
   }
   try {
     const nr = document.getElementById("deptn_rk"), ns = document.getElementById("deptn_sb");
-    if (nr && window.SRF && SRF.frames) nr.textContent = SRF.frames().length + " frames";
-    if (ns && window.SRF && SRF.beds) ns.textContent = SRF.beds().length + " beds";
+    if (nr && window.SRF && SRF.frames){ const n = SRF.frames().length; nr.textContent = n + " frames"; nr.closest(".deptbtn").dataset.n = n; }
+    if (ns && window.SRF && SRF.beds){ const n = SRF.beds().length; ns.textContent = n + " beds"; ns.closest(".deptbtn").dataset.n = n; }
   } catch(e){}
   /* keep the address bar honest so a department can be linked, bookmarked and
      reached with the back button. replaceState on the first paint, pushState
@@ -16058,8 +16411,8 @@ window.srfMDeptGo = function(d, opts){
   }
   try {
     const nr = document.getElementById("mdeptn_rk"), ns = document.getElementById("mdeptn_sb");
-    if (nr && window.SRF && SRF.frames) nr.textContent = SRF.frames().length + " frames";
-    if (ns && window.SRF && SRF.beds) ns.textContent = SRF.beds().length + " beds";
+    if (nr && window.SRF && SRF.frames){ const n = SRF.frames().length; nr.textContent = n + " frames"; nr.closest(".deptbtn").dataset.n = n; }
+    if (ns && window.SRF && SRF.beds){ const n = SRF.beds().length; ns.textContent = n + " beds"; ns.closest(".deptbtn").dataset.n = n; }
   } catch(e){}
 };
 /* typing in the shared search while on SETUPS surfaces the racket results */
@@ -16616,7 +16969,7 @@ window.srfShortlist = (kind) => {
   const gp = srfGatePool("string", all.map(x => x.bed));
   const keep = new Set(gp.pool);
   const rows = all.filter(x => keep.has(x.bed))
-    .map(x => ({ bed: x.bed, tech: x.tech, sc: srfWScore(x.bed.s, sw) }))
+    .map(x => ({ bed: x.bed, tech: x.tech, sc: srfWScore(x.bed.sAx || x.bed.s, sw) }))
     .sort((a, b) => b.sc - a.sc || String(a.bed.m).localeCompare(String(b.bed.m)));
   const meds = (window.srfMedalPool ? srfMedalPool("string", rows.map(x => x.bed)) : rows.map(x => x.bed)).slice(0, 3);
   const priced = rows.filter(x => meds.indexOf(x.bed) < 0 && x.tech.priceV != null);
@@ -16691,7 +17044,7 @@ window.midPaint = (skipSliderSync) => {
   // ---- strings
   const sw = midSW(); const twS = sw.reduce((a, b) => a + b, 0) || 1;
   const bedsAll = calBeds().concat(mkBeds());
-  const bScore = x => ({ bed: x.bed, tech: x.tech, sc: srfWScore(x.bed.s, sw) });
+  const bScore = x => ({ bed: x.bed, tech: x.tech, sc: srfWScore(x.bed.sAx || x.bed.s, sw) });
   const bSort = arr => arr.sort((a, b) => b.sc - a.sc || String(a.bed.m).localeCompare(String(b.bed.m)));
   const SLB = srfShortlist("string");
   const gpB = { gated: SLB.gated };
