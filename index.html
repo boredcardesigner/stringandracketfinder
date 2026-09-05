@@ -71,6 +71,35 @@
 <!-- Privacy-friendly analytics by Plausible -->
 <script async src="https://plausible.io/js/pa-2PZ3dvuEUkVWfxD8JdPia.js"></script>
 <script>
+/* ---------- deferred boot painting (b149) ----------
+   Measured on b148: the LANDING page finished with 8,710 DOM elements and 1.85 MB
+   of innerHTML, because the racket grid, the string grid, both mobile card lists,
+   both rankings, both hard-spec tables and the calibrator all painted at boot -
+   while the reader was looking at three cards. On a mid phone (4x CPU, fast 4G)
+   that was ~1.2 s of the 2.9 s of main-thread work between first paint and DCL.
+
+   Nothing is removed and nothing is reordered. Each boot paint REGISTERS here in
+   the order it used to run, and the queue is replayed either when the reader
+   leaves the landing page (synchronously, before the new mode is shown) or at the
+   first idle moment after load - whichever comes first. A painter that registers
+   after the flush simply runs immediately, so late boot code behaves as before. */
+window.SRF_BOOTQ = [];
+window.SRF_BOOTED = false;
+window.srfBootQ = function(fn){
+  if (window.SRF_BOOTED){ try { fn(); } catch(e){ console.warn("bootpaint", e); } return; }
+  window.SRF_BOOTQ.push(fn);
+};
+window.srfBootPaint = function(){
+  if (window.SRF_BOOTED) return;
+  window.SRF_BOOTED = true;
+  const q = window.SRF_BOOTQ; window.SRF_BOOTQ = [];
+  for (let i = 0; i < q.length; i++){ try { q[i](); } catch(e){ console.warn("bootpaint", e); } }
+};
+addEventListener("load", function(){
+  const go = function(){ window.srfBootPaint(); };
+  if (window.requestIdleCallback) requestIdleCallback(go, { timeout: 1200 });
+  else setTimeout(go, 60);
+});
   window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
   plausible.init()
 </script>
@@ -3269,7 +3298,7 @@
 <button type="button" id="gearbtn" aria-label="settings — theme, export, import" aria-haspopup="true"
         aria-expanded="false" onclick="srfGearToggle(event)">⚙</button>
 <div id="gearpop" hidden>
-  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-09-04.65 · b148</span></div>
+  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-09-05.68 · b151</span></div>
   <span class="toolbit" id="themeCtl">theme
     <span class="themepick" id="themePick">
       <button type="button" class="thememain" id="themeBtn" aria-expanded="false" aria-controls="themeList"
@@ -3282,6 +3311,20 @@
         <button type="button" class="modebtn" id="modeBright" aria-pressed="false" onclick="setThemeMode('bright')">bright</button>
       </span>
     </span>
+  </span>
+  <span class="toolbit" id="rallyCtl" style="align-items:stretch;flex-direction:column;gap:5px;">
+    <span style="letter-spacing:.03em;">background rally</span>
+    <span class="modeseg" id="rallySeg" style="width:100%;" role="group" aria-label="background rally">
+      <button type="button" class="modebtn" data-rl="off" aria-pressed="false" onclick="srfRallySet('off')"
+              title="no ball, no canvas, no listeners">off</button>
+      <button type="button" class="modebtn" data-rl="silent" aria-pressed="true" onclick="srfRallySet('silent')"
+              title="the ball plays, silently">silent</button>
+      <button type="button" class="modebtn" data-rl="sound" aria-pressed="false" onclick="srfRallySet('sound')"
+              title="add the racket impact and the bounce">sound</button>
+    </span>
+    <span class="toolnote" style="line-height:1.35;">Swipe, drag or scroll on the start page and a ball is played
+      across the court. The harder the gesture the harder the shot; its angle decides flat, topspin, slice or dropshot.
+      <b>Start page only</b>, and no frame is drawn while nothing is in the air. Sound needs one tap after switching it on.</span>
   </span>
   <span class="toolbit" id="wcCtl" style="align-items:stretch;flex-direction:column;gap:5px;">
     <span style="letter-spacing:.03em;">how hard your sliders steer</span>
@@ -5321,12 +5364,19 @@ window.srfWCSet = function(mode){
   document.querySelectorAll("#wcSeg .modebtn").forEach(b =>
     b.setAttribute("aria-pressed", b.dataset.wc === mode ? "true" : "false"));
   /* every surface that ranks anything, repainted in the order a render would */
-  try { if (window.SRF && SRF.redraw) SRF.redraw(); } catch(e){}
-  try { if (window.sbRedraw) sbRedraw(); } catch(e){}
-  try { if (window.midPaint) midPaint(); } catch(e){}
-  try { if (window.srfPaintWinners) srfPaintWinners(); } catch(e){}
-  try { if (window.paintSetups4) paintSetups4(); } catch(e){}
-  try { if (window.srfSeedFlags) srfSeedFlags(); } catch(e){}
+  /* Both setters run once at BOOT to restore the saved choice, and each of these
+     six lines repaints a bench - measured: three full repaints of both benches
+     before the reader has chosen a mode. Through the boot queue they collapse
+     into the single paint that was going to happen anyway; after boot srfBootQ
+     runs its argument immediately, so a click still repaints at once. */
+  srfBootQ(function(){
+    try { if (window.SRF && SRF.redraw) SRF.redraw(); } catch(e){}
+    try { if (window.sbRedraw) sbRedraw(); } catch(e){}
+    try { if (window.midPaint) midPaint(); } catch(e){}
+    try { if (window.srfPaintWinners) srfPaintWinners(); } catch(e){}
+    try { if (window.paintSetups4) paintSetups4(); } catch(e){}
+    try { if (window.srfSeedFlags) srfSeedFlags(); } catch(e){}
+  });
 };
 document.addEventListener("DOMContentLoaded", () => { try { srfWCSet(window.SRF_WC); } catch(e){} });
 
@@ -7641,12 +7691,19 @@ window.srfModelSet = function(m){
   document.querySelectorAll("#mdSeg .modebtn").forEach(b =>
     b.setAttribute("aria-pressed", b.dataset.md === m ? "true" : "false"));
   document.body.classList.toggle("model-phys", m === "phys");
-  try { if (window.SRF && SRF.redraw) SRF.redraw(); } catch(e){}
-  try { if (window.sbRedraw) sbRedraw(); } catch(e){}
-  try { if (window.midPaint) midPaint(); } catch(e){}
-  try { if (window.srfPaintWinners) srfPaintWinners(); } catch(e){}
-  try { if (window.paintSetups4) paintSetups4(); } catch(e){}
-  try { if (window.srfSeedFlags) srfSeedFlags(); } catch(e){}
+  /* Both setters run once at BOOT to restore the saved choice, and each of these
+     six lines repaints a bench - measured: three full repaints of both benches
+     before the reader has chosen a mode. Through the boot queue they collapse
+     into the single paint that was going to happen anyway; after boot srfBootQ
+     runs its argument immediately, so a click still repaints at once. */
+  srfBootQ(function(){
+    try { if (window.SRF && SRF.redraw) SRF.redraw(); } catch(e){}
+    try { if (window.sbRedraw) sbRedraw(); } catch(e){}
+    try { if (window.midPaint) midPaint(); } catch(e){}
+    try { if (window.srfPaintWinners) srfPaintWinners(); } catch(e){}
+    try { if (window.paintSetups4) paintSetups4(); } catch(e){}
+    try { if (window.srfSeedFlags) srfSeedFlags(); } catch(e){}
+  });
   try { if (window.srfMethLead) srfMethLead(); } catch(e){}
   /* say so on the string bench rather than leaving an inert switch */
   try { const n = document.getElementById("sb_physnote");
@@ -11224,7 +11281,7 @@ window.resetOrder = () => {
     b.classList.add("gold"); setTimeout(()=>b.classList.remove("gold"), 1100);
   });
 };
-buildGrid();
+srfBootQ(function(){ buildGrid(); });
 const w = [10,5,5,5,5,5,5,5,5,5,5];
 document.getElementById("sliders").innerHTML = cats.map((c,i) =>
   `<div style="display:flex;align-items:center;gap:8px;font-size:11px;color:var(--soft);">
@@ -11622,7 +11679,7 @@ window.W = (i,v) => { w[i]=Math.max(0, parseFloat(v)||0); document.getElementByI
   render();
   try { buildSpecs(); } catch(e){}   // the specs table shows slider-independent numbers, so nothing repainted it on a drag - until its ORDER began following the sliders
   if (window.prefRememberWeights) prefRememberWeights("racket", w); };
-render();
+srfBootQ(function(){ render(); });
 const specLabels = ["weight","head","pattern","stiffness","swingweight","balance","beam"];
 let specSort = null;   // null = original order
 let hsRQ = "", hsRRaw = "";   // the spec table's own filter bar
@@ -11696,7 +11753,7 @@ window.SP = i => {
   const node = document.querySelector(`.hdr[data-sp="${i}"]`);
   if (node){ node.classList.add("gold"); setTimeout(()=>node.classList.remove("gold"), 1100); }
 };
-buildSpecs();
+srfBootQ(function(){ buildSpecs(); });
 
 // ---------- customization: re-spec a frame and re-score it from the new numbers ----------
 let cNo=null;
@@ -12045,12 +12102,14 @@ function applyMap(map){
       const row = mkCustRow(r); reapplyCust(row, m.cust); custStore2(r.no, m.cust);   // imported mods land on a copy too
     }
   });
-  buildGrid(); buildSpecs(); render();
+  /* boot restores the saved layout before the reader has chosen a mode; the DATA
+     lands now, the repaint waits for the boot queue (immediate once flushed). */
+  srfBootQ(function(){ buildGrid(); buildSpecs(); render(); });
 }
 window.SRF = window.SRF || {};
 window.SRF.applyLayout = (map) => {                    // null -> back to the built-in demo bench
   if(!map){ DEMO.forEach(d=>{ const r=rk.find(x=>x.no===d.no); if(r){ r.g=d.g; r.o=d.o?d.o.slice():null; r.pt=d.pt; } });
-            buildGrid(); buildSpecs(); render(); return; }
+            srfBootQ(function(){ buildGrid(); buildSpecs(); render(); }); return; }
   applyMap(map);
 };
 // the customization travels with the layout — it is the member's own work and
@@ -13541,7 +13600,7 @@ window.SRF.sbApply = (arr) => {
     const m = arr ? arr[i] : SBDEMO[i];
     b.tag=m?m.tag:""; b.mt=m?m.mt:""; b.ct=m?m.ct:""; b.note=m?m.note:""; b.paid=m?m.paid:"";
   });
-  buildGrid();
+  srfBootQ(function(){ buildGrid(); });
 };
 window.SRF.sbDemo = () => SBDEMO.map(x=>({...x}));
 window.SRF.sbOnChange = (fn) => { sbOnChange=fn; };
@@ -14058,7 +14117,7 @@ document.querySelectorAll(".sbbtn[data-p]").forEach(b=>b.addEventListener("click
 }));
 
 syncSliders();
-buildGrid();
+srfBootQ(function(){ buildGrid(); });
 
 // ---------- NEEERDY STUFF: material physics + per-string lab data ----------
 // Sources: TW University string testing, published manufacturer specs, retail pricing (EU).
@@ -16053,9 +16112,14 @@ window.calRun = () => {
 };
 (function calInit(){
   const tick = () => { calFill(); if (!document.getElementById("cal_pods").innerHTML) calRun(); };
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", tick);
-  else tick();
-  setInterval(calFill, 3000);   // pickers follow the bench as frames/beds are added
+  /* the calibrator paints with the rest of the boot queue: its pickers and podium
+     are two taps away from the landing page, and calRun() alone cost 76 ms there. */
+  srfBootQ(tick);
+  /* the picker refresh only runs while pro is open - it was repainting two
+     <select>s every 3 s forever, on every page, including the landing. */
+  setInterval(function(){
+    if (document.body.classList.contains("mode-pro")) calFill();
+  }, 3000);
 })();
 
 
@@ -16119,6 +16183,9 @@ window.srfIntroShow = (mode) => {
   const card = ov.querySelector(".srfintro_card"); if (card) card.focus({ preventScroll:true });
 };
 window.setMode = (m) => {
+  /* whatever the boot queue still owes, it is owed NOW - the reader is leaving the
+     landing page and every mode below reads the DOM those paints produce. */
+  if (m && m !== "landing") { try { window.srfBootPaint(); } catch(e){} }
   const prev = ["landing","easy","mid","pro"].find(k => document.body.classList.contains("mode-" + k));
   const mode = ["landing","easy","mid","pro"].includes(m) ? m : "landing";
   document.body.classList.remove("mode-landing","mode-easy","mode-mid","mode-pro");
@@ -18122,5 +18189,7 @@ window.easyRun = () => {
   window.srfPBRepaint = render;
 })();
 </script>
+<script>/* background rally, loaded after load so it costs the boot nothing */
+addEventListener("load",function(){var s=document.createElement("script");s.src="/srf-rally.js";s.async=true;document.head.appendChild(s);});</script>
 </body>
 </html>
