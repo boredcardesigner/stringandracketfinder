@@ -677,7 +677,16 @@
     zGrow: 0.55,            // how much bigger the ball gets at the top of its arc
     maxLive: 3,             // balls allowed in the air at once
     minGapMs: 90,           // ignore gestures closer together than this
-    idleHintMs: 0           // 0 = no idle serve; >0 = auto-rally every N ms
+    idleHintMs: 0,          // 0 = no idle serve; >0 = auto-rally every N ms
+
+    /* CSS selector for surfaces the ball must NOT paint over. Empty = paint
+       everywhere. This exists for one measured reason: on the benches the
+       score cells carry an OKLCH heat ramp where the COLOUR IS THE DATA, and
+       screen-blending optic yellow into a cell reading 4 lands it 44 units
+       from the colour of a real 8 — while the six ramp steps sit only 39-91
+       units apart. The ball would misreport a score. Masking the cells lets
+       the ball cross the bench between them and never touch a number. */
+    mask: ""
   };
 
   var onShot = null;        // optional observer, set via api.onShot()
@@ -793,9 +802,57 @@
     if (cx) { cx.clearRect(0, 0, VW, VH); }
   }
 
+  /* ------------------------------------------------------------- the mask
+   * Punch CFG.mask's elements out of the drawable area with an even-odd clip:
+   * one outer rect for the viewport, one inner rect per masked element, and
+   * evenodd leaves everything OUTSIDE the inner rects.
+   *
+   * Rects are re-read once per frame rather than cached, because the page can
+   * scroll while a ball is in the air and a stale rect would let the ball paint
+   * on a cell. getBoundingClientRect on the handful that are actually on screen
+   * is cheap; the off-screen ones are culled before they are added to the path,
+   * and the whole thing is skipped when no mask is set (landing, static pages).
+   */
+  var maskNodes = null, maskSel = "", maskAt = 0;
+  var MASK_TTL = 250;        // ms; how stale the NODE LIST may get
+
+  /* Cache the node LIST, re-read the RECTS every frame.
+     Measured at 4x CPU throttle with 145 matches: querySelectorAll 3.87 ms,
+     getBoundingClientRect on all of them 0.855 ms, building and applying the
+     145-rect clip 0.122 ms. The selector query was 80% of the whole cost and
+     is the one part that does not change between frames — so it is cached and
+     refreshed every 250 ms (and immediately when setMask is called, which is
+     what a mode or department change does). The rects stay per-frame, because
+     those DO change: the page can scroll while a ball is in the air, and a
+     stale rect would let the ball paint on a cell. */
+  function maskList() {
+    var t = now();
+    if (maskNodes && maskSel === CFG.mask && (t - maskAt) < MASK_TTL) { return maskNodes; }
+    maskNodes = document.querySelectorAll(CFG.mask);
+    maskSel = CFG.mask; maskAt = t;
+    return maskNodes;
+  }
+
+  function maskClip() {
+    if (!CFG.mask) { return false; }
+    var els = maskList(), i, r;
+    cx.save();
+    cx.beginPath();
+    cx.rect(0, 0, VW, VH);
+    for (i = 0; i < els.length; i++) {
+      r = els[i].getBoundingClientRect();
+      if (r.width <= 0 || r.height <= 0) { continue; }
+      if (r.bottom < 0 || r.top > VH || r.right < 0 || r.left > VW) { continue; }
+      cx.rect(r.left, r.top, r.width, r.height);
+    }
+    cx.clip("evenodd");
+    return true;
+  }
+
   function frame() {
     var t = now(), i, b, p, u;
     cx.clearRect(0, 0, VW, VH);
+    var clipped = maskClip();
     drawNet();
 
     for (i = live.length - 1; i >= 0; i--) {
@@ -815,6 +872,7 @@
       drawBall(b, p, u);
     }
 
+    if (clipped) { cx.restore(); }
     if (live.length) { raf = W.requestAnimationFrame(frame); }
     else { stop(); }          /* NOTHING in the air -> no rAF at all */
   }
@@ -911,9 +969,20 @@
   var wDX = 0, wDY = 0, wT0 = 0, wTimer = 0;
   var WHEEL_FLUSH = 90;       // ms of quiet that ends a scroll burst
 
+  /* A drag that STARTS on a control is that control being used, not a stroke.
+     Measured before this guard: one drag of a weight slider in pro mode served
+     a ball, so every slider pull threw a shot across the bench. Wheel/scroll is
+     deliberately NOT guarded — scrolling anywhere is a stroke, that is the
+     whole idea. */
+  var CTL = "input,button,select,textarea,label,a,summary,[role=slider]," +
+            "[role=button],[role=tab],[contenteditable],.a3-slider";
+  function onControl(t) {
+    try { return !!(t && t.closest && t.closest(CTL)); } catch (e) { return false; }
+  }
+
   function onTouchStart(e) {
     var t = e.touches && e.touches[0]; if (!t) { return; }
-    tStart = { x: t.clientX, y: t.clientY, t: now() };
+    tStart = onControl(e.target) ? null : { x: t.clientX, y: t.clientY, t: now() };
     unlockAudio();
   }
   function onTouchEnd(e) {
@@ -923,7 +992,10 @@
             ms: now() - tStart.t, kind: "swipe" });
     tStart = null;
   }
-  function onDown(e) { mDown = { x: e.clientX, y: e.clientY, t: now() }; unlockAudio(); }
+  function onDown(e) {
+    mDown = onControl(e.target) ? null : { x: e.clientX, y: e.clientY, t: now() };
+    unlockAudio();
+  }
   function onUp(e) {
     if (!mDown) { return; }
     var dx = e.clientX - mDown.x, dy = e.clientY - mDown.y;
@@ -1011,6 +1083,10 @@
     setTreatment: function (t) { CFG.treatment = t; return api; },
     setBall: function (rgb) { BALL = rgb || BALL; return api; },   // "r,g,b"
     setAlpha: function (a) { CFG.alpha = a; return api; },
+    setMask: function (sel) { CFG.mask = sel || ""; maskNodes = null; return api; },
+    maskCount: function () {                                        // for the suite
+      return CFG.mask ? document.querySelectorAll(CFG.mask).length : 0;
+    },
     soundOn: soundOn,
     setSound: setSound,
     repaintAccent: function () { readAccent(); accentRGB = rgbOf(accent); return api; },
@@ -1028,15 +1104,14 @@
  * everything site-specific lives here, and ONE file serves two very different
  * kinds of page:
  *
- *   the APP (index.html)  - four modes in one document. The rally belongs to
- *                           the LANDING page only: the benches are working
- *                           surfaces, their score cells carry an OKLCH heat
- *                           ramp where the colour IS the data, and their
- *                           sliders are drag targets (a measured drag on a
- *                           weight slider serves a ball). Detected by the
- *                           control the app carries in its gear panel.
+ *   the APP (index.html)  - four modes in one document. The ball plays in all
+ *                           of them, but on the three BENCH modes the score
+ *                           cells are masked out of the canvas: their colour is
+ *                           the number, and a screen-blended ball would shift a
+ *                           4 into the colour of an 8. Detected by the control
+ *                           the app carries in its gear panel.
  *   a STATIC page         - one column of prose and plain tables, no modes, no
- *                           heat map, no drag targets. The whole page is the
+ *                           heat map. Nothing to mask; the whole page is the
  *                           court, and the control is injected into the footer
  *                           so a visitor arriving from a search result can turn
  *                           it off without going to the homepage first.
@@ -1065,17 +1140,35 @@
   }
   function put(v){ try { localStorage.setItem(KEY, v); } catch(e){} }
 
-  /* Where the rally is allowed to run. In the app: the landing page only.
-     On a static page: everywhere, because there is only one surface. */
-  function onSurface(){
-    return APP ? document.body.classList.contains("mode-landing") : true;
+  /* --- the ball plays on EVERY page and every mode -------------------------
+     What changes between them is not WHETHER it runs but what it may paint on.
+
+     MASK: the score cells carry an OKLCH heat ramp where the colour IS the
+     number. Measured: screen-blending the ball over a cell reading 4 lands it
+     44 units from the colour of a real 8, while the six ramp steps sit 39-91
+     units apart — the ball would misreport a score. So on the benches the
+     cells are punched out of the canvas and the ball weaves between them. The
+     landing page and the static pages have no such surface and mask nothing.
+
+     ALPHA: 0.42 where you are browsing, 0.30 on a working bench — the same
+     ball, quieter over a surface you are reading numbers off. */
+  var MASK = ".cell,.cd,.cal_pod,.ez_pod,.dv";
+  var A_BROWSE = 0.42, A_WORK = 0.30;
+
+  function onBench(){
+    return APP && !document.body.classList.contains("mode-landing");
   }
 
   function sync(){
-    var want = (get() !== "off") && onSurface();
+    var want = (get() !== "off");
     if (want && !mounted){ V.start(); mounted = true; }
     else if (!want && mounted){ V.stop(); mounted = false; }
-    if (mounted){ V.setSound(get() === "sound"); }
+    if (mounted){
+      V.setSound(get() === "sound");
+      var bench = onBench();
+      V.setMask(bench ? MASK : "");
+      V.setAlpha(bench ? A_WORK : A_BROWSE);
+    }
     else if (window.SRFRallySound){ window.SRFRallySound.setEnabled(false); }
   }
 
@@ -1141,7 +1234,7 @@
     }
   };
 
-  /* --- the app only: leaving the landing page tears it down --------------- */
+  /* --- the app only: a mode change swaps the mask and the alpha ----------- */
   if (APP && typeof window.setMode === "function"){
     var _setMode = window.setMode;
     window.setMode = function(){
@@ -1161,7 +1254,25 @@
     };
   }
 
+  /* --- ONE ball on arrival -------------------------------------------------
+     The rally is gesture-driven, so a reader who opens the page and does not
+     move sees nothing at all and reasonably concludes it is broken. This is a
+     DEMONSTRATION, not an ambient animation: exactly one shot, once per page
+     load, skipped if the reader has already gestured, and never repeated. The
+     loop still costs zero frames from the moment it lands. */
+  var HINT_MS = 1400;
+  var hinted = false;
+  V.onShot(function(){ hinted = true; });        /* a real gesture cancels it */
+
+  function hint(){
+    if (hinted || !mounted || get() === "off") { return; }
+    V.serve({ dx: 420, dy: 40, ms: 130, kind: "swipe" });
+  }
+
+  /* the pro/mid department routers rebuild whole sections; the mask is a
+     selector, so it survives that without a hook. */
   if (!APP) { buildFoot(); }
   paint();
   try { sync(); } catch(e){}
+  if (window.setTimeout) { setTimeout(hint, HINT_MS); }
 })();

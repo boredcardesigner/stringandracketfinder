@@ -3298,7 +3298,7 @@ addEventListener("load", function(){
 <button type="button" id="gearbtn" aria-label="settings — theme, export, import" aria-haspopup="true"
         aria-expanded="false" onclick="srfGearToggle(event)">⚙</button>
 <div id="gearpop" hidden>
-  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-09-05.68 · b151</span></div>
+  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-09-06.70 · b153</span></div>
   <span class="toolbit" id="themeCtl">theme
     <span class="themepick" id="themePick">
       <button type="button" class="thememain" id="themeBtn" aria-expanded="false" aria-controls="themeList"
@@ -3322,9 +3322,10 @@ addEventListener("load", function(){
       <button type="button" class="modebtn" data-rl="sound" aria-pressed="false" onclick="srfRallySet('sound')"
               title="add the racket impact and the bounce">sound</button>
     </span>
-    <span class="toolnote" style="line-height:1.35;">Swipe, drag or scroll on the start page and a ball is played
-      across the court. The harder the gesture the harder the shot; its angle decides flat, topspin, slice or dropshot.
-      <b>Start page only</b>, and no frame is drawn while nothing is in the air. Sound needs one tap after switching it on.</span>
+    <span class="toolnote" style="line-height:1.35;">Swipe, drag or scroll and a ball is played across the court,
+      on every page of the site. The harder the gesture the harder the shot; its angle decides flat, topspin, slice or
+      dropshot. On the benches it runs quieter and never paints over a score cell &mdash; the colour there is the number.
+      No frame is drawn while nothing is in the air. Sound needs one tap after switching it on.</span>
   </span>
   <span class="toolbit" id="wcCtl" style="align-items:stretch;flex-direction:column;gap:5px;">
     <span style="letter-spacing:.03em;">how hard your sliders steer</span>
@@ -18189,7 +18190,11 @@ window.easyRun = () => {
   window.srfPBRepaint = render;
 })();
 </script>
-<script>/* background rally, loaded after load so it costs the boot nothing */
-addEventListener("load",function(){var s=document.createElement("script");s.src="/srf-rally.js";s.async=true;document.head.appendChild(s);});</script>
+<script>/* background rally, loaded after load so it costs the boot nothing.
+   The path is absolute on the web and RELATIVE when the file is opened from
+   disk: under file:// an absolute "/srf-rally.js" resolves to the filesystem
+   root, not the folder, so opening index.html locally silently got no rally
+   at all. Pages live at the root or one level down in rackets/ or strings/. */
+addEventListener("load",function(){var s=document.createElement("script");s.src=(location.protocol==="file:"?(/\/(rackets|strings)\/[^\/]*$/.test(location.pathname)?"../":"./"):"/")+"srf-rally.js";s.async=true;document.head.appendChild(s);});</script>
 </body>
 </html>
