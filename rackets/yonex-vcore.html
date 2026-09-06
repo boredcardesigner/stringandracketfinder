@@ -235,7 +235,11 @@ Specifications are unstrung manufacturer figures unless noted. Part of
 comparison tool by Alexey Semenov von Rosenberg.</p>
 </footer>
 </div>
-<script>/* background rally, loaded after load so it costs the boot nothing */
-addEventListener("load",function(){var s=document.createElement("script");s.src="/srf-rally.js";s.async=true;document.head.appendChild(s);});</script>
+<script>/* background rally, loaded after load so it costs the boot nothing.
+   The path is absolute on the web and RELATIVE when the file is opened from
+   disk: under file:// an absolute "/srf-rally.js" resolves to the filesystem
+   root, not the folder, so opening index.html locally silently got no rally
+   at all. Pages live at the root or one level down in rackets/ or strings/. */
+addEventListener("load",function(){var s=document.createElement("script");s.src=(location.protocol==="file:"?(/\/(rackets|strings)\/[^\/]*$/.test(location.pathname)?"../":"./"):"/")+"srf-rally.js";s.async=true;document.head.appendChild(s);});</script>
 </body>
 </html>

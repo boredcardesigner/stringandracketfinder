@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="format-detection" content="telephone=no">
-<title>Arm-Friendly Tennis Strings — 108 Beds Rated 8+ for Comfort</title>
+<title>Arm-Friendly Tennis Strings — 114 Beds Rated 8+ for Comfort</title>
 <meta name="description" content="Tennis string beds rated 8 or higher for arm friendliness, with spin, power, control and longevity alongside. Equipment guidance, not medical advice.">
 <link rel="canonical" href="https://stringandracketfinder.com/arm-friendly-tennis-strings.html">
 <meta name="robots" content="index, follow, max-image-preview:large">
@@ -17,7 +17,7 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="String &amp; Racket Finder">
-<meta property="og:title" content="Arm-Friendly Tennis Strings — 108 Beds Rated 8+ for Comfort">
+<meta property="og:title" content="Arm-Friendly Tennis Strings — 114 Beds Rated 8+ for Comfort">
 <meta property="og:description" content="Tennis string beds rated 8 or higher for arm friendliness, with spin, power, control and longevity alongside. Equipment guidance, not medical advice.">
 <meta property="og:url" content="https://stringandracketfinder.com/arm-friendly-tennis-strings.html">
 
@@ -86,7 +86,7 @@ font-size:13px;color:var(--muted)}
 <img src="/icon-96.png" width="28" height="28" alt="" loading="lazy" decoding="async"><span>String &amp; Racket Finder</span></a>
 <nav class="crumb"><a href="/">Home</a> &rsaquo; <a href="/tennis-string-finder.html">Strings</a> &rsaquo; Arm-friendly tennis strings</nav>
 <h1>Arm-friendly tennis strings</h1>
-<p class="lede">108 of the 354 beds here rate 8 or better on arm friendliness; 9 rate 3 or below. That axis is the one most string charts leave out, and it is the reason this list exists.</p>
+<p class="lede">114 of the 376 beds here rate 8 or better on arm friendliness; 9 rate 3 or below. That axis is the one most string charts leave out, and it is the reason this list exists.</p>
 <a class="cta" href="/?dept=strings">Open the string bench &rarr;</a>
 <p><strong>This is equipment guidance, not medical advice.</strong> Persistent elbow, wrist or shoulder pain is worth showing to a physiotherapist or doctor &mdash; string choice can reduce load, but it cannot treat an injury, and technique and racket stiffness usually matter more than either.</p>
 <h2>Where the shock comes from</h2>
@@ -217,7 +217,7 @@ font-size:13px;color:var(--muted)}
 <h3>VÖLKL V-Square 1.20</h3><p>A shaped spin polyester with genuinely aggressive bite — the square-ish profile grabs the ball hard. Expect big spin potential and firm, controlled depth. Like most sharply shaped strings, the edges round off and the bite fades before the string actually breaks, so its best window is short.</p>
 <h2>Related</h2>
 <ul class="links">
-<li><a href="/tennis-string-finder.html">All 354 string beds</a></li>
+<li><a href="/tennis-string-finder.html">All 376 string beds</a></li>
 <li><a href="/tennis-racket-finder.html">Tennis racket finder</a></li>
 <li><a href="/">Open the finder</a></li>
 </ul>
@@ -228,7 +228,11 @@ Specifications are unstrung manufacturer figures unless noted. Part of
 comparison tool by Alexey Semenov von Rosenberg.</p>
 </footer>
 </div>
-<script>/* background rally, loaded after load so it costs the boot nothing */
-addEventListener("load",function(){var s=document.createElement("script");s.src="/srf-rally.js";s.async=true;document.head.appendChild(s);});</script>
+<script>/* background rally, loaded after load so it costs the boot nothing.
+   The path is absolute on the web and RELATIVE when the file is opened from
+   disk: under file:// an absolute "/srf-rally.js" resolves to the filesystem
+   root, not the folder, so opening index.html locally silently got no rally
+   at all. Pages live at the root or one level down in rackets/ or strings/. */
+addEventListener("load",function(){var s=document.createElement("script");s.src=(location.protocol==="file:"?(/\/(rackets|strings)\/[^\/]*$/.test(location.pathname)?"../":"./"):"/")+"srf-rally.js";s.async=true;document.head.appendChild(s);});</script>
 </body>
 </html>

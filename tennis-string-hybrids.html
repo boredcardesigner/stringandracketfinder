@@ -86,7 +86,7 @@ font-size:13px;color:var(--muted)}
 <img src="/icon-96.png" width="28" height="28" alt="" loading="lazy" decoding="async"><span>String &amp; Racket Finder</span></a>
 <nav class="crumb"><a href="/">Home</a> &rsaquo; <a href="/tennis-string-finder.html">Strings</a> &rsaquo; Tennis string hybrids</nav>
 <h1>Tennis string hybrids</h1>
-<p class="lede">A hybrid puts one string in the mains and a different one in the crosses. 151 of the 354 beds here are hybrids, rated as their own thing &mdash; because a hybrid does not play like the average of its two strings.</p>
+<p class="lede">A hybrid puts one string in the mains and a different one in the crosses. 162 of the 376 beds here are hybrids, rated as their own thing &mdash; because a hybrid does not play like the average of its two strings.</p>
 <a class="cta" href="/?dept=strings">Open the string bench &rarr;</a>
 <h2>Why hybrid at all</h2>
 <p>Almost every hybrid exists to resolve one trade: polyester gives bite, control and durability but transmits shock and goes dead; multifilament and natural gut give comfort and feel but move, fray and lose tension. Putting the poly in the mains and the softer string in the crosses keeps most of the bite &mdash; the mains do the snapback &mdash; while the crosses take some of the harshness out.</p>
@@ -257,7 +257,7 @@ font-size:13px;color:var(--muted)}
 <h3>SOLINCO Mach 10</h3><p>A firm, low-powered control polyester aimed at players who swing hard and want the stringbed to keep everything in front of them. Expect a very direct, muted response and excellent depth control on full-blooded strokes. It gives back little on a short swing — this is a string that assumes you are generating your own pace.</p>
 <h2>Related</h2>
 <ul class="links">
-<li><a href="/tennis-string-finder.html">All 354 string beds</a></li>
+<li><a href="/tennis-string-finder.html">All 376 string beds</a></li>
 <li><a href="/tennis-racket-finder.html">Tennis racket finder</a></li>
 <li><a href="/">Open the finder</a></li>
 </ul>
@@ -268,7 +268,11 @@ Specifications are unstrung manufacturer figures unless noted. Part of
 comparison tool by Alexey Semenov von Rosenberg.</p>
 </footer>
 </div>
-<script>/* background rally, loaded after load so it costs the boot nothing */
-addEventListener("load",function(){var s=document.createElement("script");s.src="/srf-rally.js";s.async=true;document.head.appendChild(s);});</script>
+<script>/* background rally, loaded after load so it costs the boot nothing.
+   The path is absolute on the web and RELATIVE when the file is opened from
+   disk: under file:// an absolute "/srf-rally.js" resolves to the filesystem
+   root, not the folder, so opening index.html locally silently got no rally
+   at all. Pages live at the root or one level down in rackets/ or strings/. */
+addEventListener("load",function(){var s=document.createElement("script");s.src=(location.protocol==="file:"?(/\/(rackets|strings)\/[^\/]*$/.test(location.pathname)?"../":"./"):"/")+"srf-rally.js";s.async=true;document.head.appendChild(s);});</script>
 </body>
 </html>
