@@ -1794,6 +1794,14 @@ addEventListener("load", function(){
   .secname{ color:var(--bright); letter-spacing:.09em; text-transform:uppercase; font-size:11px; }
   .secflash{ animation: srfSecFlash 1.8s ease; }
   @keyframes srfSecFlash{ 0%{ box-shadow:0 0 0 3px var(--cyan); } 100%{ box-shadow:0 0 0 3px transparent; } }
+  /* 64px is DELIBERATE — do not "fix" it to var(--srfPnH). Twice now a probe has
+     reported this as a header-overlap bug and twice it was a false positive: the
+     first measured the sticky chrome BEFORE the scroll, the second counted .limbar,
+     which is sticky on the LEFT only (no `top`) and never covers anything
+     vertically. Screenshotted at 390x844: the jump lands clean, because #pronav
+     stops sticking once its container ends and is nowhere near the grid by then.
+     Raising this to --srfPnH pushed the grid 95px further down — a fifth of a phone
+     screen — for nothing. If an overlap is ever seen here, screenshot it first. */
   #grid,#gridM,#rank,#specs,#winners,#sb_grid,#sb_gridM,#sb_rank,#sb_nerd,#sb_specs,#mid_fr,#mid_bd{ scroll-margin-top:64px; }
   #grid,#gridM,#rank,#specs,#sb_grid,#sb_gridM,#sb_rank,#sb_nerd,#sb_specs,#mid_fr,#mid_bd{ overflow-anchor:none; }
   .grppop{ position:fixed; z-index:500; min-width:210px; max-width:min(300px, 92vw);
@@ -2718,44 +2726,38 @@ addEventListener("load", function(){
   #pb_root .spacer{ flex:1; }
   #pb_root :focus-visible{ outline:2px solid var(--pb-jade); outline-offset:2px; }
 
+  /* ---- what the stance actually produces -------------------------------------
+     Two short live lists sitting directly under the slider. Deliberately quiet at
+     rest — a plain rank, brand, model — and colour only where something MOVED on
+     the last drag, so the eye is drawn to the change rather than to the list. */
+  #pb_root .pb-outcome{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:8px; }
+  #pb_root .oc_col{ background:var(--card); border:1px solid var(--pb-line);
+                    border-radius:var(--r-lg); padding:10px 12px 11px; min-width:0; }
+  #pb_root .oc_h{ font-size:9.5px; letter-spacing:.16em; text-transform:uppercase;
+                  color:var(--pb-mute); margin-bottom:7px; display:flex; gap:8px;
+                  align-items:baseline; justify-content:space-between; }
+  #pb_root .oc_note{ letter-spacing:.06em; text-transform:none; font-size:10px; color:var(--pb-dim); }
+  #pb_root .oc_list{ list-style:none; margin:0; padding:0; }
+  #pb_root .oc_list li{ display:flex; align-items:baseline; gap:8px; padding:3px 0;
+                        font-size:12px; color:var(--pb-fg); min-width:0; }
+  #pb_root .oc_r{ font-size:10px; color:var(--pb-dim); width:13px; flex:0 0 13px;
+                  font-variant-numeric:tabular-nums; }
+  #pb_root .oc_n{ flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  #pb_root .oc_n b{ font-weight:600; letter-spacing:.04em; }
+  /* the movement marker: the only colour in the block, and only after a drag */
+  #pb_root .oc_d{ font-size:9px; letter-spacing:.1em; text-transform:uppercase;
+                  color:var(--pb-accent); opacity:0; transition:opacity .25s;
+                  flex:0 0 auto; font-variant-numeric:tabular-nums; }
+  #pb_root .oc_d.on{ opacity:1; }
+  #pb_root .oc_list li.moved .oc_n{ color:var(--bright); }
+  #pb_root .oc_x{ color:var(--pb-dim); }
+  #pb_root .pb-outcome.inert{ opacity:.45; }
+
   /* ---- axis table ---- */
   #pb_root .tablewrap{ overflow-x:auto; background:var(--card); border:1px solid var(--pb-line); border-radius:var(--r-lg); }
   #pb_root table{ border-collapse:collapse; width:100%; min-width:860px; }
   .scell.pnocell{ background:transparent; border:1px dashed color-mix(in srgb, var(--fg) 22%, transparent);
                   color:var(--muted); }
-  /* ---- the player bench on a phone: the 860px six-column table becomes a
-     stacked card per axis - name+number up top, description, then full-width
-     score and weight sliders with their own captions, then the evidence toggle.
-     Nothing scrolls sideways any more. */
-  @media (max-width: 760px){
-    #pb_root table{ min-width:0; }
-    #pb_root thead{ display:none; }
-    #pb_root tbody tr{ display:grid; grid-template-columns:1fr 74px; gap:3px 10px;
-      padding:12px 2px 13px; border-bottom:1px solid var(--pb-line); }
-    #pb_root tbody td{ display:block; padding:1px 0; border:0; }
-    #pb_root tbody td:nth-child(1){ grid-column:1; grid-row:1; }
-    #pb_root tbody td:nth-child(2){ grid-column:1 / -1; grid-row:2; }
-    #pb_root tbody td:nth-child(3){ grid-column:2; grid-row:1; justify-self:end; text-align:right; }
-    #pb_root tbody td:nth-child(4){ grid-column:1 / -1; grid-row:3; }
-    #pb_root tbody td:nth-child(5){ grid-column:1 / -1; grid-row:4; }
-    #pb_root tbody td:nth-child(6){ grid-column:1 / -1; grid-row:5; }
-    #pb_root tbody td:nth-child(4)::before{ content:"score"; display:block; font-size:9px;
-      letter-spacing:.16em; text-transform:uppercase; color:var(--pb-mute); margin-bottom:2px; }
-    #pb_root tbody td:nth-child(5) .wcell::before{ content:"weight"; font-size:9px;
-      letter-spacing:.16em; text-transform:uppercase; color:var(--pb-mute); margin-right:8px; }
-    #pb_root input[type=range]{ width:100%; }
-    #pb_root .wcell{ display:flex; align-items:center; gap:8px; }
-    #pb_root .wcell input[type=range]{ flex:1; }
-    #pb_root .tog{ width:100%; padding:9px 0; }
-    #pb_root .bignum{ font-size:38px; }
-    #pb_root .bigrow{ flex-wrap:wrap; gap:12px 16px; }
-    #pb_root .utrbox{ border-left:0; padding-left:0; }
-    #pb_root .big{ padding:14px 14px; }
-    #pb_root .notes{ padding:12px 14px; }
-    /* the session log is a wide table by nature - on a phone it scrolls inside
-       its own box instead of stretching the whole page */
-    #pb_root table.logtable{ display:block; overflow-x:auto; max-width:100%; min-width:0; -webkit-overflow-scrolling:touch; }
-  }
   #pb_root thead th{ font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--pb-mute);
                      font-weight:600; text-align:left; padding:11px 12px; border-bottom:1px solid var(--pb-line);
                      white-space:nowrap; background:var(--panel); }
@@ -2813,7 +2815,11 @@ addEventListener("load", function(){
   #pb_root .empty{ padding:20px 22px; color:var(--pb-dim); font-size:12px; }
 
   /* ---- protocol ---- */
-  #pb_root .pgrid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:12px; }
+  /* minmax(320px,...) is a HARD floor: in a container narrower than 320 the track
+     still claims 320 and pushes the page sideways — measured 32px of overflow in the
+     Player Bench at a 320px viewport. min(320px,100%) keeps the intent (cards stop
+     growing past 320) without letting the floor exceed the space available. */
+  #pb_root .pgrid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(min(320px,100%),1fr)); gap:12px; }
   #pb_root .pcard{ background:var(--card); border:1px solid var(--pb-line); border-radius:var(--r-lg);
                    padding:14px 16px; display:flex; flex-direction:column; gap:8px;
                    transition:border-color .3s, background .3s; }
@@ -2863,6 +2869,104 @@ addEventListener("load", function(){
                     border-top:1px solid var(--pb-line); padding-top:14px; }
   #pb_root .pbfoot a{ color:var(--pb-mute); text-decoration:none; border-bottom:1px solid var(--pb-line); }
   #pb_root .pbfoot a:hover{ color:var(--pb-fg); border-bottom-color:var(--pb-accent); }
+  /* ============================================================
+     PHONE LAYOUT FOR THE PLAYER BENCH — KEEP THIS BLOCK LAST.
+     ------------------------------------------------------------
+     It used to sit ABOVE the base #pb_root rules. Same specificity, earlier in
+     the source, so on a phone every property it shares with a base rule LOST:
+       - "input[type=range]{width:100%}" lost to the base "width:112px", so the
+         score slider rendered 112px inside a 320px cell (35%) while the weight
+         slider beside it measured 207px — the primary control visibly shorter
+         than the secondary one, 11.0px per step instead of 21.5.
+       - ".tog{width:100%;padding:9px 0}" lost its padding to "padding:4px 10px",
+         so the evidence toggle came out 21px tall instead of ~32.
+     Only the REDECLARED properties died, which is why the block looked like it
+     worked. This is the same trap as #deptnavM in v53. Anything added here must
+     stay BELOW every unconditional #pb_root rule.
+     ============================================================ */
+  /* ---- the player bench on a phone: the 860px six-column table becomes a
+     stacked card per axis - name+number up top, description, then full-width
+     score and weight sliders with their own captions, then the evidence toggle.
+     Nothing scrolls sideways any more. */
+  @media (max-width: 760px){
+    #pb_root table{ min-width:0; }
+    #pb_root thead{ display:none; }
+    #pb_root tbody tr{ display:grid; grid-template-columns:1fr 74px; gap:3px 10px;
+      padding:12px 2px 13px; border-bottom:1px solid var(--pb-line); }
+    #pb_root tbody td{ display:block; padding:1px 0; border:0; }
+    #pb_root tbody td:nth-child(1){ grid-column:1; grid-row:1; }
+    #pb_root tbody td:nth-child(2){ grid-column:1 / -1; grid-row:2; }
+    #pb_root tbody td:nth-child(3){ grid-column:2; grid-row:1; justify-self:end; text-align:right; }
+    #pb_root tbody td:nth-child(4){ grid-column:1 / -1; grid-row:3; }
+    #pb_root tbody td:nth-child(5){ grid-column:1 / -1; grid-row:4; }
+    #pb_root tbody td:nth-child(6){ grid-column:1 / -1; grid-row:5; }
+    #pb_root tbody td:nth-child(4)::before{ content:"score"; display:block; font-size:9px;
+      letter-spacing:.16em; text-transform:uppercase; color:var(--pb-mute); margin-bottom:2px; }
+    #pb_root tbody td:nth-child(5) .wcell::before{ content:"weight"; font-size:9px;
+      letter-spacing:.16em; text-transform:uppercase; color:var(--pb-mute); margin-right:8px; }
+    #pb_root input[type=range]{ width:100%; }
+    #pb_root .wcell{ display:flex; align-items:center; gap:8px; }
+    #pb_root .wcell input[type=range]{ flex:1; }
+    #pb_root .tog{ width:100%; padding:9px 0; }
+    #pb_root .bignum{ font-size:38px; }
+    #pb_root .bigrow{ flex-wrap:wrap; gap:12px 16px; }
+    #pb_root .utrbox{ border-left:0; padding-left:0; }
+    #pb_root .big{ padding:14px 14px; }
+    #pb_root .notes{ padding:12px 14px; }
+    /* the session log is a wide table by nature - on a phone it scrolls inside
+       its own box instead of stretching the whole page */
+    #pb_root table.logtable{ display:block; overflow-x:auto; max-width:100%; min-width:0; -webkit-overflow-scrolling:touch; }
+
+    /* ---- touch targets ----------------------------------------------------
+       Measured on this bench at 390px: every one of the 55 controls was under
+       44px tall — sliders 22, toggles 21, buttons 28, the axis-name jump links
+       36.4. The app already holds the 44px line elsewhere (.deptbtn), so this
+       was scoped drift, not a decision. The RANGE inputs grow in HEIGHT only:
+       the visible track stays 3px and the thumb stays 13px, so nothing looks
+       heavier — there is simply 44px of finger. Height, not padding: padding on
+       a range input moves the track instead of enlarging the hit area. */
+    #pb_root input[type=range]{ height:44px; }
+    #pb_root .tog{ min-height:44px; }
+    #pb_root .btn{ min-height:44px; padding:0 15px; }
+    #pb_root .axname{ min-height:44px; }
+    #pb_root .pbfoot a, #pb_root .methlink{ display:inline-flex; align-items:center; min-height:44px; }
+    /* the presets/reset/save bar is five buttons plus a desktop spacer. With the
+       buttons now 44px the spacer pushed it to five ragged rows (162px at 390,
+       229px at 320). Two even columns instead: predictable, and every button keeps
+       its full 44px of finger. */
+    #pb_root .bar:not(#pb-stancebar){ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    #pb_root .bar:not(#pb-stancebar) .lab{ grid-column:1 / -1; padding:0; }
+    #pb_root .bar:not(#pb-stancebar) .spacer{ display:none; }
+
+    /* ---- the stance bar ---------------------------------------------------
+       .spacer{flex:1} is a desktop device: it pushes the two buttons to the far
+       right of a 1144px bar. At 390px it instead forced a break, so the bar came
+       out 112px in three ragged rows with the live readout "balanced · 50/100"
+       stranded beside "Copy as JSON", away from the slider it belongs to. Wrapping
+       flex cannot express what this wants, so on a phone it becomes an explicit
+       3-row grid: label and readout face each other on row 1, the slider spans
+       row 2 directly under its own value, the two buttons share row 3.
+       .stance carries min-width:150px for the desktop bar and has to give that up
+       here, or the two-column row cannot hold. */
+    #pb_root .pb-outcome{ grid-template-columns:1fr; gap:8px; }
+    #pb_root #pb-stancebar{ display:grid; grid-template-columns:auto 1fr;
+                            gap:9px 10px; align-items:center; }
+    #pb_root #pb-stancebar .lab{ grid-area:1 / 1; padding:0; }
+    /* "amplify my strengths · 85/100" does not fit one phone line beside the label
+       and was being cut to "· 85/1…", losing the number it exists to show. It wraps
+       instead — two short right-aligned lines beat a truncated one. */
+    #pb_root #pb-stancebar .stance{ grid-area:1 / 2; min-width:0; text-align:right;
+                                    white-space:normal; line-height:1.35; }
+    /* a hybrid's cross name is half the identity of the bed; ellipsing it away left
+       five rows that all began "BABOLAT ..." and could not be told apart */
+    #pb_root .oc_list li{ align-items:flex-start; }
+    #pb_root .oc_n{ white-space:normal; overflow:visible; text-overflow:clip; line-height:1.4; }
+    #pb_root .oc_x{ display:block; }
+    #pb_root #pb-stancebar #pb-mix{ grid-area:2 / 1 / 3 / -1; width:100%; }
+    #pb_root #pb-stancebar .spacer{ display:none; }
+    #pb_root #pb-stancebar #pb-copyall{ grid-area:3 / 1; }
+    #pb_root #pb-stancebar #pb-apply{ grid-area:3 / 2; }
+  }
   @media (prefers-reduced-motion:reduce){
     #pb_root *, #pb_root *::before, #pb_root *::after{ animation:none !important; transition:none !important; }
   }
@@ -3018,6 +3122,23 @@ addEventListener("load", function(){
     .deptbtn .dt_lb{ font-size:9px; letter-spacing:.04em; }
     .deptbtn{ padding:6px 1px 5px; }
     .mode-pro #deptnav, .mode-mid #deptnavM{ gap:4px; padding-left:5px; padding-right:5px; }
+  }
+
+  /* ---- 320px: the smallest phone still in use, and any phone at large text ----
+     .deptbtn is flex:1 1 0, but a flex item will not shrink below its content's
+     min-content width, and "CALIBRATOR" at 9px/.04em measures 64px. Five of those
+     plus gaps needs 350px inside a 320px screen, so every pro department pushed the
+     page 30px sideways — measured on home/rk/sb/pb/cal alike. The label gives up
+     one more point and the rest of its tracking; below 360 only, so 390 is
+     untouched. Nothing here changes the 44px minimum height of the tab. */
+  @media (max-width:360px){
+    .deptbtn .dt_lb{ font-size:7.5px; letter-spacing:0; }
+    .deptbtn{ padding:6px 0 5px; min-width:0; }
+    .deptbtn .dt_ic svg{ width:18px; height:18px; }
+    .mode-pro #deptnav, .mode-mid #deptnavM{ gap:3px; padding-left:3px; padding-right:3px; }
+    .modeseg .modebtn{ padding:10px 6px; font-size:9px; }
+    .mcap{ padding:11px 11px; }
+    #themeBtn.thememain{ padding:11px 9px; }
   }
 
   /* When a compare bar is open it covers the last rows of the bench.
@@ -3299,6 +3420,30 @@ addEventListener("load", function(){
      horizontal overflow that had survived since v50. border-box ends it. */
   .deptbtn{ max-height:76px; }
   @media(max-width:640px){ .deptbtn{ max-height:64px; } }
+
+  /* A STRIP, not a fourth card. The three mode cards are a set — index.html's
+     own comment says a matching fourth would compete with them — so this is a
+     different shape on purpose: full width, one line, flat until hovered. */
+  /* color:inherit is not cosmetic here — an <a> with no colour of its own is
+     browser-default #0000EE, and any text directly inside it renders blue on a
+     dark card. Measured: getComputedStyle(a).color was rgb(0,0,238). */
+  .ld_balls{ display:flex; align-items:baseline; gap:14px; margin:0 0 14px; color:inherit;
+    padding:14px 16px; border-radius:var(--r-md); text-decoration:none;
+    background:color-mix(in srgb, var(--field) 60%, transparent);
+    border:1px solid color-mix(in srgb, var(--line) 70%, transparent);
+    transition:border-color .18s, background .18s; }
+  .ld_balls:hover{ border-color:var(--cyan);
+    background:color-mix(in srgb, var(--cyan) 10%, transparent); }
+  .ld_bk{ font-size:10px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--cyan); flex:0 0 auto; }
+  .ld_bt{ flex:1 1 auto; color:var(--soft); font-size:13.5px; line-height:1.5; }
+  .ld_bg{ flex:0 0 auto; color:var(--muted); font-size:11.5px; letter-spacing:.1em;
+    text-transform:uppercase; }
+  .ld_balls:hover .ld_bg{ color:var(--bright); }
+  @media(max-width:640px){
+    .ld_balls{ display:grid; gap:6px; padding:14px; }
+    .ld_bg{ justify-self:start; }
+  }
 </style>
 </head>
 <body>
@@ -3306,7 +3451,7 @@ addEventListener("load", function(){
 <button type="button" id="gearbtn" aria-label="settings — theme, export, import" aria-haspopup="true"
         aria-expanded="false" onclick="srfGearToggle(event)">⚙</button>
 <div id="gearpop" hidden>
-  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-09-06.71 · b154</span></div>
+  <div class="gear_h">settings <span id="srfBuild" style="margin-left:auto;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-weight:400;">build 2026-09-08.75 · b158</span></div>
   <span class="toolbit" id="themeCtl">theme
     <span class="themepick" id="themePick">
       <button type="button" class="thememain" id="themeBtn" aria-expanded="false" aria-controls="themeList"
@@ -3391,7 +3536,7 @@ addEventListener("load", function(){
       <span class="ld_logo" id="ld_logo"></span>
       <h1 class="ld_title azonix" style="margin:0;">String &amp; Racket Finder</h1>
     </div>
-    <p class="ld_lede"><span id="ld_nf">155</span> frames and <span id="ld_nb">235</span> string beds &mdash; the current market of eleven racket and twenty-four string brands &mdash; scored on the same axes and matched to each other
+    <p class="ld_lede"><span id="ld_nf">155</span> frames and <span id="ld_nb">235</span> string beds &mdash; the current market of eleven racket and twenty-four string brands, plus a bench of tennis balls &mdash; scored on the same axes and matched to each other
        by the physics of the pairing. Tell it how you play and it hands you a shortlist &mdash; or open the whole
        workshop and rank everything yourself.</p>
     <div class="ld_ask" id="ldQ_card">
@@ -3454,12 +3599,20 @@ addEventListener("load", function(){
       </button>
     </div>
 
+    <a class="ld_balls" href="/tennis-ball-finder.html">
+      <span class="ld_bk">Balls</span>
+      <span class="ld_bt">Every ball on one bench &mdash; the court it suits, how long it lasts,
+        and what it costs you per playing hour.</span>
+      <span class="ld_bg">open &rarr;</span>
+    </a>
+
     <nav id="srf_seonav" aria-label="Browse the bench">
-      <div class="seonav_h">or browse without answering anything &mdash; 155 frames, 376 string beds</div>
+      <div class="seonav_h">or browse without answering anything &mdash; 155 frames, 376 string beds, and the ball bench</div>
       <ul>
         <li><a href="/tennis-racket-finder.html">Tennis racket finder</a></li>
         <li><a href="/tennis-racquet-finder.html">Tennis racquet finder</a></li>
         <li><a href="/tennis-string-finder.html">Tennis string finder</a></li>
+        <li><a href="/tennis-ball-finder.html">Tennis ball finder</a></li>
       </ul>
     </nav>
     <div class="ld_foot">
@@ -4020,7 +4173,7 @@ addEventListener("load", function(){
       <b>Click to unlink</b> ends that following and leaves the sliders standing exactly where they are &mdash; nothing
       is restored, nothing is undone; they are simply yours to drag by hand again.
     </p>
-    <div class="bar">
+    <div class="bar" id="pb-stancebar">
       <span class="lab">Stance</span>
       <input type="range" min="0" max="100" step="5" id="pb-mix" aria-label="Compensate to amplify">
       <span class="stance" id="pb-mixlab"></span>
@@ -4028,6 +4181,21 @@ addEventListener("load", function(){
       <button type="button" class="btn" id="pb-copyall">Copy as JSON</button>
       <button type="button" class="btn go" id="pb-apply"
               title="Writes all 19 priority sliders (11 racket, 8 string) from this profile and keeps them in step with the stance until you unlink. Your frames, customs and shelves are not touched.">Sync my priorities</button>
+    </div>
+    <!-- THE RESULT, not the sliders. Reported three times as "the stance does
+         nothing": it moved a set of 19 preview numbers while the frames and
+         strings — the thing anyone actually looks at — stood still until the
+         sync button was pressed. These two short lists answer the question the
+         slider asks, live, without committing anything. -->
+    <div class="pb-outcome" id="pb-outcome" aria-live="polite">
+      <div class="oc_col">
+        <div class="oc_h">Rackets at this stance <span class="oc_note" id="pb-ocrn"></span></div>
+        <ol class="oc_list" id="pb-ocr"></ol>
+      </div>
+      <div class="oc_col">
+        <div class="oc_h">Strings at this stance <span class="oc_note" id="pb-ocsn"></span></div>
+        <ol class="oc_list" id="pb-ocs"></ol>
+      </div>
     </div>
     <div class="pb-mixhint" id="pb-mixhint" aria-live="polite"></div>
     <div class="grid2" style="margin-top:12px">
@@ -9730,6 +9898,9 @@ function applyTheme(name){
       r.style.setProperty(v + "-fg", window.srfAccentFg(v)));
   }
   try { localStorage.setItem("srf:theme", THEME); } catch(e){}
+  /* the Player Bench picks its own ink for the filled "go" buttons from the
+     resolved --cyan; a theme change moves that fill, so the ink must follow */
+  try { if (window.srfPBInk) window.srfPBInk(); } catch(e){}
 }
 
 (function(){
@@ -17840,6 +18011,96 @@ window.easyRun = () => {
     return L > 0.52 ? "#0A0B0E" : "#F5F6F8";
   }
 
+  /* ---------------------------------------------------------------------------
+     pbRGB / pbRatio / pbLift — the same lift srfAccentFg does for theme TOKENS,
+     but for a literal colour.
+
+     WHY IT IS NEEDED. The two headline numbers (#pb-utrnum at 38px and #pb-num)
+     were painted with pbCell(), which returns a colour from the score ramp — a
+     palette designed to be a BACKGROUND behind dark ink. Used as FOREGROUND on
+     the card it collapses at the bottom of the ramp: measured rgb(20,34,32) on
+     rgb(13,29,30) = 1.06:1 at axis score 1, and still only 2.37:1 at 4. The
+     primary output of the whole Player Bench was a ghost for exactly the players
+     whose scores are lowest. Lifting keeps the ramp's HUE — the number still
+     reads warm or cool with the level — and only raises lightness until it
+     clears 4.6:1 against the card, which is the same bar srfAccentFg uses.
+     --------------------------------------------------------------------------- */
+  function pbRGB(c){
+    var s = String(c).trim(), q;
+    if(s.charAt(0) === "#"){ q = s.slice(1);
+      if(q.length === 3) q = q.split("").map(function(x){ return x+x; }).join("");
+      return [parseInt(q.slice(0,2),16), parseInt(q.slice(2,4),16), parseInt(q.slice(4,6),16)]; }
+    var m = (s.match(/[\d.]+/g) || []).slice(0,3).map(Number);
+    return m.length === 3 ? m : null;
+  }
+  function pbRelLum(c){
+    var v = c.map(function(x){ x = x/255; return x <= 0.03928 ? x/12.92 : Math.pow((x+0.055)/1.055, 2.4); });
+    return 0.2126*v[0] + 0.7152*v[1] + 0.0722*v[2];
+  }
+  function pbRatio(a, b){
+    var A = pbRelLum(a), B = pbRelLum(b);
+    return (Math.max(A,B) + 0.05) / (Math.min(A,B) + 0.05);
+  }
+  function pbLift(color){
+    try {
+      var cs = getComputedStyle(document.documentElement);
+      var acc = pbRGB(color), card = pbRGB(cs.getPropertyValue("--card"));
+      if(!acc || !card) return color;
+      if(pbRatio(acc, card) >= 4.6) return color;
+      /* Lift towards the pole that actually RAISES contrast, and go all the way to
+         it if that is what 4.6 costs. An earlier version aimed at the --page token
+         on a light card, copying srfAccentFg — but --page is not guaranteed to be
+         darker than --card, and on the six bright themes it is not, so the lift ran
+         uphill and the number still failed: measured 2.16:1 on 3.0aL and 3.29-3.35
+         on monoL/matrixL/opticAL/opticFL/opticL. Black and white are the only poles
+         that always work; stopping the moment 4.6 is reached keeps as much of the
+         ramp's hue as the theme allows. */
+      var target = pbRelLum(card) > 0.4 ? [0,0,0] : [255,255,255];
+      var out = acc, t;
+      for(t = 0.05; t <= 1.0001 && pbRatio(out, card) < 4.6; t += 0.05){
+        out = acc.map(function(v, i){ return Math.round(v + (target[i]-v)*Math.min(1, t)); });
+      }
+      return "rgb(" + out.join(",") + ")";
+    } catch(e){ return color; }
+  }
+
+  /* The "go" buttons (Save session, Sync my priorities) are a filled var(--cyan)
+     block with hard-coded #04150b ink. On the six BRIGHT themes --cyan is itself
+     dark, so that was dark on dark: measured 2.46:1 on 3.0aML, 2.79-2.88 on the
+     others, against a 4.5 bar for 10.5px bold text. The fill has to keep its
+     theme identity, so the INK is what adapts — textOn() already answers exactly
+     this question and is used for every score cell in the bench. */
+  function pbGoInk(){
+    try {
+      var fill = getComputedStyle(document.documentElement).getPropertyValue("--cyan").trim();
+      if(!fill) return;
+      /* textOn() picks between two inks on a NON-linearised luminance threshold of
+         0.52. That is fine for the score cells, whose fills sit at the ends of the
+         ramp, but --cyan lands mid-scale on some palettes and the threshold then
+         chooses the worse of the two: measured 3.42:1 on opticA — his own desktop
+         theme. Compare both candidates by real WCAG ratio and take the winner. */
+      var f = pbRGB(fill);
+      var ink = !f ? textOn(fill)
+              : (pbRatio([10,11,14], f) >= pbRatio([245,246,248], f) ? "#0A0B0E" : "#F5F6F8");
+      document.querySelectorAll("#pb_root .btn.go").forEach(function(b){
+        /* a LATCHED sync button is not filled — it is an outline in jade, and
+           forcing the fill's ink onto it would erase that state */
+        if(b.classList.contains("pb-linked")){ b.style.removeProperty("color"); return; }
+        b.style.setProperty("color", ink, "important");
+      });
+    } catch(e){}
+  }
+  /* A theme change moves --cyan AND --card, so both the button ink and the lifted
+     headline colour go stale. The button is repainted directly; the headline colour
+     is only computed inside render(), so the bench has to re-render — without this
+     the number kept whatever colour it had when the bench was last drawn, identical
+     across all 30 palettes, which is exactly how it read as "still failing" after
+     the lift was already correct. render() is defined below, hence the late bind. */
+  window.srfPBInk = function(){
+    pbGoInk();
+    try { if (typeof render === "function") render(); } catch(e){}
+  };
+
   function effective(i, scores, measured){
     var v = scores[i];
     return (!measured[i] && v > EST_CAP) ? EST_CAP : v;
@@ -17929,6 +18190,114 @@ window.easyRun = () => {
     return "amplify my strengths";
   }
 
+  /* ---------------------------------------------------------------------------
+     RANKING THE TWO BENCHES AT AN ARBITRARY SET OF WEIGHTS.
+
+     The stance hint already did this for frames, but inline and twice per render.
+     Hoisted here because the outcome preview needs a THIRD ranking (the current
+     stance) and a fourth (the beds), and the drag fires this on every step.
+
+     Two things make it cheap enough to run live:
+     1. The source lists are walked once and cached. frameFull()/bedFull() build a
+        fresh object per call; walking 155 + 376 of them per drag step was the bulk
+        of the cost. A short TTL keeps a user's own added frames from going stale.
+     2. The axis vector is computed ONCE PER ITEM, not inside the comparator. A
+        155-item sort makes ~1100 comparisons, so calling srfAxes from inside it
+        meant ~2200 calls for 155 real lookups. This is also why the existing hint
+        got faster, not just the new preview.
+     Rank with srfAxes/srfSbAxes — the accessors the whole app uses — never the raw
+     scored vector: in the pure-physics view those are different universes, and
+     simulating the wrong one made this hint promise reshuffles the grid never
+     delivered (Alexey's screenshot, 2026-08-30).
+     --------------------------------------------------------------------------- */
+  var PB_SRC = { fr: null, bd: null, at: 0 };
+  var PB_SRC_TTL = 4000;
+  function pbSources(){
+    var t = Date.now();
+    if (PB_SRC.fr && (t - PB_SRC.at) < PB_SRC_TTL) return PB_SRC;
+    var fr = [], bd = [], i, x;
+    try {
+      for (i = 1; ; i++){ x = window.SRF.frameFull(i); if (!x) break;
+        if (window.srfIsDel && window.srfIsDel("racket", x)) continue;
+        fr.push({ o: x, a: (window.srfAxes ? window.srfAxes(x) : x.s) || x.s }); }
+    } catch(e){}
+    try {
+      for (i = 0; ; i++){ x = window.SRF.bedFull(i); if (!x) break;
+        if (window.srfIsDel && window.srfIsDel("string", x)) continue;
+        bd.push({ o: x, a: (window.srfSbAxes ? window.srfSbAxes(x) : x.s) || x.s }); }
+    } catch(e){}
+    PB_SRC = { fr: fr, bd: bd, at: t };
+    return PB_SRC;
+  }
+  function pbRank(list, wv, n){
+    var out = list.slice();
+    out.sort(function(x, y){ return window.srfWScore(y.a, wv) - window.srfWScore(x.a, wv); });
+    return out.slice(0, n);
+  }
+  function pbTopFrames(wv, n){ return pbRank(pbSources().fr, wv, n || 10); }
+  function pbTopBeds(wv, n){ return pbRank(pbSources().bd, wv, n || 10); }
+  function pbFrameKey(z){ return String(z.o.b) + "|" + String(z.o.n); }
+  function pbBedKey(z){ return String(z.o.m) + "|" + String(z.o.x); }
+
+  /* ---------------------------------------------------------------------------
+     THE OUTCOME PREVIEW.
+
+     Three reports of "the stance does nothing" were all the same thing: it moved
+     a block of 19 preview numbers while the frames and strings — the only thing
+     anyone looks at — stood still, because the real sliders stay unlinked until
+     the sync button is pressed. Twice the maths was adjusted; the maths was never
+     the problem. This shows the ANSWER to the question the slider asks, live and
+     without committing anything, right under the slider.
+
+     Movement is marked, not just displayed: an entry that changed rank since the
+     previous render carries a small delta in the accent, and a new entry says NEW.
+     At rest the block is monochrome — colour appears on interaction, not before.
+     --------------------------------------------------------------------------- */
+  var PB_LAST = { r: null, s: null };
+  function pbOutcomeRow(rank, name, prevIdx){
+    var moved = prevIdx != null && prevIdx !== rank;
+    var isNew = prevIdx == null;
+    var d = isNew ? "new" : moved ? ((prevIdx > rank ? "↑" : "↓") + Math.abs(prevIdx - rank)) : "";
+    return '<li class="' + (d ? "moved" : "") + '">' +
+             '<span class="oc_r">' + (rank + 1) + '</span>' +
+             '<span class="oc_n">' + name + '</span>' +
+             '<span class="oc_d' + (d ? " on" : "") + '">' + d + '</span></li>';
+  }
+  function renderOutcome(g, inert){
+    var elR = document.getElementById("pb-ocr"), elS = document.getElementById("pb-ocs");
+    if (!elR || !elS) return;
+    var box = document.getElementById("pb-outcome");
+    try {
+      var FR = pbTopFrames(g.racket.v, 5), BD = pbTopBeds(g.string.v, 5);
+      var kR = FR.map(pbFrameKey), kS = BD.map(pbBedKey), h = "", i;
+      for (i = 0; i < FR.length; i++){
+        var pr = PB_LAST.r ? PB_LAST.r.indexOf(kR[i]) : -1;
+        h += pbOutcomeRow(i, "<b>" + esc2(String(FR[i].o.b)) + "</b> " + esc2(String(FR[i].o.n)),
+                          PB_LAST.r ? (pr < 0 ? null : pr) : i);
+      }
+      elR.innerHTML = h;
+      h = "";
+      for (i = 0; i < BD.length; i++){
+        var ps = PB_LAST.s ? PB_LAST.s.indexOf(kS[i]) : -1;
+        var nm = esc2(String(BD[i].o.m)) + (/full bed/i.test(String(BD[i].o.x)) ? ""
+                 : ' <span class="oc_x">× ' + esc2(String(BD[i].o.x)) + "</span>");
+        h += pbOutcomeRow(i, nm, PB_LAST.s ? (ps < 0 ? null : ps) : i);
+      }
+      elS.innerHTML = h;
+      PB_LAST.r = kR; PB_LAST.s = kS;
+      var nR = document.getElementById("pb-ocrn"), nS = document.getElementById("pb-ocsn");
+      if (nR) nR.textContent = FR.length ? "top " + FR.length + " of " + pbSources().fr.length : "";
+      if (nS) nS.textContent = BD.length ? "top " + BD.length + " of " + pbSources().bd.length : "";
+      if (box) box.classList.toggle("inert", !!inert);
+    } catch(e){
+      /* a preview that throws must not take the bench down with it */
+      if (box) box.classList.add("inert");
+    }
+  }
+  function esc2(s){
+    return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  }
+
   function renderSuggest(){
     var g = suggest();
     document.getElementById("pb-mixlab").textContent = stanceLabel(state.mix) + " · " + state.mix + "/100";
@@ -17953,21 +18322,10 @@ window.easyRun = () => {
        If the answer really is stable, saying so is worth more than silence. */
     var rankMoves = null, rankTop1 = null;
     try {
-      var topAt = function(wv){
-        var fr = [], no2, f2;
-        for (no2 = 1; ; no2++){ f2 = window.SRF.frameFull(no2); if (!f2) break;
-          if (window.srfIsDel && window.srfIsDel("racket", f2)) continue;
-          fr.push(f2); }
-        /* rank with srfAxes - the accessor the whole app uses - NOT the raw scored
-           vector. In the pure-physics view those are different universes: the scored
-           field is full of bucketed near-ties that flip on any breeze, the physics
-           field is sharply separated and flips only when the weights really move.
-           Simulating the wrong one made this hint promise reshuffles the grid never
-           delivered (Alexey's screenshot, 2026-08-30). */
-        var ax = function(z){ return (window.srfAxes ? window.srfAxes(z) : z.s) || z.s; };
-        fr.sort(function(x, y){ return window.srfWScore(ax(y), wv) - window.srfWScore(ax(x), wv); });
-        return fr.slice(0, 10).map(function(z){ return String(z.b) + "|" + String(z.n); });
-      };
+      /* was an inline topAt() that rebuilt and re-derived the whole frame list on
+         every call; now the shared pbTopFrames with a cached source and one axis
+         lookup per frame instead of one per comparison */
+      var topAt = function(wv){ return pbTopFrames(wv, 10).map(pbFrameKey); };
       var TA = topAt(A.racket.v), TB = topAt(B.racket.v), q2;
       rankMoves = 0;
       for (q2 = 0; q2 < TA.length; q2++) if (TA[q2] !== TB[q2]) rankMoves++;
@@ -17990,8 +18348,8 @@ window.easyRun = () => {
         hint.textContent = "End to end, this slider moves " + moves + " of the 19 sliders (axis spread "
           + spread + " points, " + Math.min.apply(null, effAll) + "\u2013" + Math.max.apply(null, effAll) + ")."
           + rankLine + " "
-          + (state.live ? "Your priorities are synced: every drag re-sorts the rankings, the medals and the setups live."
-                        : "Only the suggestion below is following \u2014 your priority sliders are NOT. Press \u201cSync my priorities\u201d once and they will, from then on.");
+          + (state.live ? "Your priorities are synced, so every drag also re-sorts the benches, the medals and the setups \u2014 not just the two lists above."
+                        : "The two lists above follow it already. Your own 19 priority sliders do not, so the benches below still show what they showed before. Press \u201cSync my priorities\u201d once and they will follow too, from then on.");
         hint.className = "pb-mixhint";
       }
     }
@@ -18015,6 +18373,8 @@ window.easyRun = () => {
     }
     paint("pb-sugr", RAX, g.racket);
     paint("pb-sugs", SAX, g.string);
+    /* the answer to the question the slider asks, under the slider */
+    renderOutcome(g, moves === 0);
     return g;
   }
 
@@ -18050,6 +18410,7 @@ window.easyRun = () => {
       : "Writes all 19 priority sliders (11 racket, 8 string) from this profile and keeps them in step with the stance until you unlink. Your frames, customs and shelves are not touched.";
     btn.classList.toggle("pb-linked", !!state.live);
     btn.setAttribute("aria-pressed", state.live ? "true" : "false");
+    pbGoInk();
   }
 
   var rowsEl = document.getElementById("pb-rows");
@@ -18127,7 +18488,9 @@ window.easyRun = () => {
     numEl.textContent = bk;
     /* UTR fronts the readout now, so the computed accent tone paints BOTH numbers —
        the lead range most of all */
-    var pbAcc = pbCell((r.final - 2) * 4);
+    /* pbCell returns a ramp BACKGROUND; as foreground it hits 1.06:1 at the bottom
+       of the scale. pbLift keeps the hue and raises it to 4.6:1 against the card. */
+    var pbAcc = pbLift(pbCell((r.final - 2) * 4));
     numEl.style.color = pbAcc;
     var utrEl0 = document.getElementById("pb-utrnum");
     if (utrEl0) utrEl0.style.color = pbAcc;
@@ -18297,6 +18660,18 @@ window.easyRun = () => {
   window.srfPBRepaint = render;
 })();
 </script>
+<script>/* Root-relative links do not work from disk: under file:// "/x.html"
+   resolves to the filesystem root, so every internal link on the page is dead
+   and a click looks like nothing happened. Same rule the rally loader uses —
+   absolute on the web, relative from a folder. No-op when served. */
+(function(){if(location.protocol!=="file:")return;
+var up=/\/(rackets|strings)\/[^\/]*$/.test(location.pathname)?"..":".";
+function fix(sel,attr){Array.prototype.forEach.call(document.querySelectorAll(sel),function(el){
+var v=el.getAttribute(attr);if(!v||v.charAt(0)!=="/"||v.charAt(1)==="/")return;
+/* a bare "/" is the HOME link. up+"/" is the FOLDER, and a browser shows a
+   directory listing for it — name the file. */
+el.setAttribute(attr,v==="/"?up+"/index.html":up+v);});}
+fix('a[href^="/"]','href');fix('img[src^="/"]','src');})();</script>
 <script>/* background rally, loaded after load so it costs the boot nothing.
    The path is absolute on the web and RELATIVE when the file is opened from
    disk: under file:// an absolute "/srf-rally.js" resolves to the filesystem

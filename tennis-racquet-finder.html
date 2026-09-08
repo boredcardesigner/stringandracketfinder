@@ -107,6 +107,8 @@ comfort one: a stiff frame strung with a stiff polyester is the usual story behi
 player's sore elbow.</p>
 <h2>Browse racquet families</h2>
 <ul class="links"><li><a href="/rackets/babolat-pure-aero.html">BABOLAT PURE AERO <small>(9)</small></a></li><li><a href="/rackets/babolat-pure-drive.html">BABOLAT PURE DRIVE <small>(8)</small></a></li><li><a href="/rackets/babolat-pure-strike.html">BABOLAT PURE STRIKE <small>(5)</small></a></li><li><a href="/rackets/diadem.html">DIADEM <small>(6)</small></a></li><li><a href="/rackets/dunlop-cx.html">DUNLOP CX <small>(7)</small></a></li><li><a href="/rackets/dunlop-fx.html">DUNLOP FX <small>(3)</small></a></li><li><a href="/rackets/dunlop-sx.html">DUNLOP SX <small>(3)</small></a></li><li><a href="/rackets/head-boom.html">HEAD BOOM <small>(3)</small></a></li><li><a href="/rackets/head-extreme.html">HEAD EXTREME <small>(5)</small></a></li><li><a href="/rackets/head-gravity.html">HEAD GRAVITY <small>(3)</small></a></li><li><a href="/rackets/head-prestige.html">HEAD PRESTIGE <small>(4)</small></a></li><li><a href="/rackets/head-radical.html">HEAD RADICAL <small>(3)</small></a></li><li><a href="/rackets/head-speed.html">HEAD SPEED <small>(5)</small></a></li><li><a href="/rackets/head-squared.html">HEAD SQUARED <small>(1)</small></a></li><li><a href="/rackets/lacoste.html">LACOSTE <small>(2)</small></a></li><li><a href="/rackets/prince-phantom.html">PRINCE PHANTOM <small>(4)</small></a></li><li><a href="/rackets/prince-ripstick.html">PRINCE RIPSTICK <small>(3)</small></a></li><li><a href="/rackets/prince-tour.html">PRINCE TOUR <small>(4)</small></a></li><li><a href="/rackets/pro-kennex.html">PRO KENNEX <small>(8)</small></a></li><li><a href="/rackets/solinco.html">SOLINCO <small>(5)</small></a></li><li><a href="/rackets/tecnifibre-fire.html">TECNIFIBRE FIRE <small>(4)</small></a></li><li><a href="/rackets/tecnifibre-t-fight.html">TECNIFIBRE T-FIGHT <small>(4)</small></a></li><li><a href="/rackets/tecnifibre-tempo.html">TECNIFIBRE TEMPO <small>(1)</small></a></li><li><a href="/rackets/tecnifibre-tf40.html">TECNIFIBRE TF40 <small>(5)</small></a></li><li><a href="/rackets/wilson-blade.html">WILSON BLADE <small>(8)</small></a></li><li><a href="/rackets/wilson-burn.html">WILSON BURN <small>(2)</small></a></li><li><a href="/rackets/wilson-clash.html">WILSON CLASH <small>(4)</small></a></li><li><a href="/rackets/wilson-defyer.html">WILSON DEFYER <small>(2)</small></a></li><li><a href="/rackets/wilson-pro-staff.html">WILSON PRO STAFF <small>(5)</small></a></li><li><a href="/rackets/wilson-pro-staff-precision.html">WILSON PRO STAFF PRECISION <small>(1)</small></a></li><li><a href="/rackets/wilson-pro-staff-rf97.html">WILSON PRO STAFF RF97 <small>(1)</small></a></li><li><a href="/rackets/wilson-rf-01.html">WILSON RF 01 <small>(2)</small></a></li><li><a href="/rackets/wilson-shift.html">WILSON SHIFT <small>(2)</small></a></li><li><a href="/rackets/wilson-ultra.html">WILSON ULTRA <small>(6)</small></a></li><li><a href="/rackets/yonex-ezone.html">YONEX EZONE <small>(5)</small></a></li><li><a href="/rackets/yonex-percept.html">YONEX PERCEPT <small>(5)</small></a></li><li><a href="/rackets/yonex-vcore.html">YONEX VCORE <small>(6)</small></a></li><li><a href="/rackets/yonex-vcore-pro.html">YONEX VCORE PRO <small>(1)</small></a></li></ul>
+<h2>Balls</h2>
+<p>A setup is a frame, a string bed and a ball. The <a href="/tennis-ball-finder.html">tennis ball finder</a> rates every ball on the same kind of scale, adds the court it actually suits, and gives each one a cost per playing hour &mdash; the only ball price that means anything.</p>
 <footer>
 <p>Scores are editorial ratings on a 0&ndash;10 scale, not laboratory measurements.
 Specifications are unstrung manufacturer figures unless noted. Part of
@@ -114,6 +116,18 @@ Specifications are unstrung manufacturer figures unless noted. Part of
 comparison tool by Alexey Semenov von Rosenberg.</p>
 </footer>
 </div>
+<script>/* Root-relative links do not work from disk: under file:// "/x.html"
+   resolves to the filesystem root, so every internal link on the page is dead
+   and a click looks like nothing happened. Same rule the rally loader uses —
+   absolute on the web, relative from a folder. No-op when served. */
+(function(){if(location.protocol!=="file:")return;
+var up=/\/(rackets|strings)\/[^\/]*$/.test(location.pathname)?"..":".";
+function fix(sel,attr){Array.prototype.forEach.call(document.querySelectorAll(sel),function(el){
+var v=el.getAttribute(attr);if(!v||v.charAt(0)!=="/"||v.charAt(1)==="/")return;
+/* a bare "/" is the HOME link. up+"/" is the FOLDER, and a browser shows a
+   directory listing for it — name the file. */
+el.setAttribute(attr,v==="/"?up+"/index.html":up+v);});}
+fix('a[href^="/"]','href');fix('img[src^="/"]','src');})();</script>
 <script>/* background rally, loaded after load so it costs the boot nothing.
    The path is absolute on the web and RELATIVE when the file is opened from
    disk: under file:// an absolute "/srf-rally.js" resolves to the filesystem

@@ -114,7 +114,8 @@ for feel. Hybrids are listed as their own entries because they play as their own
 <li><a href="/tennis-string-hybrid-combinations.html">77 hybrid combinations worked out</a></li>
 <li><a href="/tennis-string-gauge-guide.html">Gauge &amp; tension guide</a></li>
 <li><a href="/arm-friendly-tennis-strings.html">Arm-friendly strings</a></li>
-</ul>
+
+<li><a href="/tennis-ball-finder.html">Tennis ball finder</a></li></ul>
 <h2>Browse by brand</h2>
 <ul class="links"><li><a href="/strings/babolat.html">Babolat <small>(36)</small></a></li><li><a href="/strings/diadem.html">Diadem <small>(7)</small></a></li><li><a href="/strings/dunlop.html">Dunlop <small>(10)</small></a></li><li><a href="/strings/gamma.html">Gamma <small>(16)</small></a></li><li><a href="/strings/gosen.html">Gosen <small>(8)</small></a></li><li><a href="/strings/head.html">Head <small>(11)</small></a></li><li><a href="/strings/isospeed.html">Isospeed <small>(27)</small></a></li><li><a href="/strings/kirschbaum.html">Kirschbaum <small>(8)</small></a></li><li><a href="/strings/luxilon.html">Luxilon <small>(33)</small></a></li><li><a href="/strings/msv.html">Msv <small>(7)</small></a></li><li><a href="/strings/polyfibre.html">Polyfibre <small>(6)</small></a></li><li><a href="/strings/prince.html">Prince <small>(9)</small></a></li><li><a href="/strings/restring.html">Restring <small>(10)</small></a></li><li><a href="/strings/signum-pro.html">Signum Pro <small>(9)</small></a></li><li><a href="/strings/solinco.html">Solinco <small>(35)</small></a></li><li><a href="/strings/tecnifibre.html">Tecnifibre <small>(14)</small></a></li><li><a href="/strings/tier-one.html">Tier One <small>(12)</small></a></li><li><a href="/strings/toroline.html">Toroline <small>(27)</small></a></li><li><a href="/strings/tourna.html">Tourna <small>(6)</small></a></li><li><a href="/strings/volkl.html">VöLkl <small>(15)</small></a></li><li><a href="/strings/weiss-cannon.html">Weiss Cannon <small>(15)</small></a></li><li><a href="/strings/wilson.html">Wilson <small>(18)</small></a></li><li><a href="/strings/yonex.html">Yonex <small>(18)</small></a></li><li><a href="/strings/ytex.html">YTEX <small>(19)</small></a></li></ul>
 <h2>Rackets</h2>
@@ -127,6 +128,18 @@ Specifications are unstrung manufacturer figures unless noted. Part of
 comparison tool by Alexey Semenov von Rosenberg.</p>
 </footer>
 </div>
+<script>/* Root-relative links do not work from disk: under file:// "/x.html"
+   resolves to the filesystem root, so every internal link on the page is dead
+   and a click looks like nothing happened. Same rule the rally loader uses —
+   absolute on the web, relative from a folder. No-op when served. */
+(function(){if(location.protocol!=="file:")return;
+var up=/\/(rackets|strings)\/[^\/]*$/.test(location.pathname)?"..":".";
+function fix(sel,attr){Array.prototype.forEach.call(document.querySelectorAll(sel),function(el){
+var v=el.getAttribute(attr);if(!v||v.charAt(0)!=="/"||v.charAt(1)==="/")return;
+/* a bare "/" is the HOME link. up+"/" is the FOLDER, and a browser shows a
+   directory listing for it — name the file. */
+el.setAttribute(attr,v==="/"?up+"/index.html":up+v);});}
+fix('a[href^="/"]','href');fix('img[src^="/"]','src');})();</script>
 <script>/* background rally, loaded after load so it costs the boot nothing.
    The path is absolute on the web and RELATIVE when the file is opened from
    disk: under file:// an absolute "/srf-rally.js" resolves to the filesystem

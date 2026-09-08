@@ -116,6 +116,8 @@ club tennis.</p>
 <h2>Strings</h2>
 <p>A racket is only half the setup. The <a href="/tennis-string-finder.html">string finder</a>
 rates 376 string beds on eight axes including arm friendliness.</p>
+<h2>Balls</h2>
+<p>A setup is a frame, a string bed and a ball. The <a href="/tennis-ball-finder.html">tennis ball finder</a> rates every ball on the same kind of scale, adds the court it actually suits, and gives each one a cost per playing hour &mdash; the only ball price that means anything.</p>
 <footer>
 <p>Scores are editorial ratings on a 0&ndash;10 scale, not laboratory measurements.
 Specifications are unstrung manufacturer figures unless noted. Part of
@@ -123,6 +125,18 @@ Specifications are unstrung manufacturer figures unless noted. Part of
 comparison tool by Alexey Semenov von Rosenberg.</p>
 </footer>
 </div>
+<script>/* Root-relative links do not work from disk: under file:// "/x.html"
+   resolves to the filesystem root, so every internal link on the page is dead
+   and a click looks like nothing happened. Same rule the rally loader uses —
+   absolute on the web, relative from a folder. No-op when served. */
+(function(){if(location.protocol!=="file:")return;
+var up=/\/(rackets|strings)\/[^\/]*$/.test(location.pathname)?"..":".";
+function fix(sel,attr){Array.prototype.forEach.call(document.querySelectorAll(sel),function(el){
+var v=el.getAttribute(attr);if(!v||v.charAt(0)!=="/"||v.charAt(1)==="/")return;
+/* a bare "/" is the HOME link. up+"/" is the FOLDER, and a browser shows a
+   directory listing for it — name the file. */
+el.setAttribute(attr,v==="/"?up+"/index.html":up+v);});}
+fix('a[href^="/"]','href');fix('img[src^="/"]','src');})();</script>
 <script>/* background rally, loaded after load so it costs the boot nothing.
    The path is absolute on the web and RELATIVE when the file is opened from
    disk: under file:// an absolute "/srf-rally.js" resolves to the filesystem
